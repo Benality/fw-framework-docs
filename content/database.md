@@ -2,17 +2,19 @@
 
 Server database name: `TerritoryFRP`. The connection string is the `mysql_connection_string` convar in `server.cfg`. Use `utf8mb4`.
 
-If that database does not exist, oxmysql creates it with `utf8mb4` / `utf8mb4_unicode_ci` and connects again. The name must match `^[A-Za-z0-9_]+$`. That behavior is a local change in `resources/[standalone]/oxmysql/dist/build.js`. Replacing oxmysql with an upstream build removes the auto-create. The tables below are still created by the framework resources on startup.
+If that database does not exist, oxmysql creates it with `utf8mb4` / `utf8mb4_unicode_ci` and connects again. The name must match `^[A-Za-z0-9_]+$`. That behavior is a local change in `resources/[standalone]/oxmysql/dist/build.js` — replacing oxmysql with an upstream build removes the auto-create. The tables below are still created by the framework resources on startup.
 
 Windows error text may show the database name in lowercase (`territoryfrp`). The configured name is `TerritoryFRP`.
 
-`fw_core` and `fw_characters` run their SQL with `CREATE TABLE IF NOT EXISTS`. They then check one expected column (`license` on `fw_players`, `clothing` on `fw_characters`). If a table with that name already exists and the column is missing, the resource logs the mismatch and does not alter the table.
+`fw_core` and `fw_characters` run their SQL with `CREATE TABLE IF NOT EXISTS`, then check one expected column (`license` on `fw_players`, `clothing` on `fw_characters`). If a table with that name already exists and the column is missing, the resource logs the mismatch and does not alter the table.
 
-Do not put inventory, money, or jobs on these tables. A later resource should add its own table and store `fw_characters.id` or `fw_players.id`.
+Do not put inventory, money, or jobs on these tables. A later resource should add its own table and store `fw_characters.id` or `fw_players.id` — see [What a new table should look like](#what-a-new-table-should-look-like).
 
-## fw_players
+## `fw_players`
 
-Created by `fw_core` from `resources/[framework]/fw_core/sql/players.sql`. One row per Rockstar license. `fw_core` is the writer for connect-time columns. There is no Lua export yet for role, warnings, slots, or bans. Change those in the table.
+Created by `fw_core` from `resources/[framework]/fw_core/sql/players.sql`. One row per Rockstar license. `fw_core` is the writer for connect-time columns — there is no Lua export yet for role, warnings, slots, or bans; change those directly in the table.
+
+**Schema**
 
 ```sql
 CREATE TABLE IF NOT EXISTS `fw_players` (
@@ -33,6 +35,8 @@ CREATE TABLE IF NOT EXISTS `fw_players` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
+**Columns**
+
 | Column | Lua field | Written when | Meaning |
 | --- | --- | --- | --- |
 | `id` | `id` | Insert | Account id. Store this on child tables. |
@@ -40,21 +44,25 @@ CREATE TABLE IF NOT EXISTS `fw_players` (
 | `steam` | `steam` | Every successful admit | `steam:…` up to 40 bytes, or NULL. |
 | `discord` | `discord` | Every successful admit | `discord:…` up to 40 bytes, or NULL. |
 | `name` | `name` | Every successful admit | Display name, clipped to 64 characters. |
-| `role` | `role` | Default `user` on insert | Account role. Not a job. Read into memory at connect. The creator's ped permission and admin commands use it. |
-| `character_slots` | `characterSlots` | Default `5` on insert | Max characters for this account. `CreateCharacter` reads this column again at create time. |
+| `role` | `role` | Default `'user'` on insert | Account role. Not a job. Read into memory at connect. The creator's ped permission and admin commands use it. |
+| `character_slots` | `characterSlots` | Default `5` on insert | Max characters for this account. `CreateCharacter` re-reads this column at create time. |
 | `warnings` | `warnings` | Default `0` | Stored only. No enforcement. |
 | `banned` | `banned` | Checked at connect | `1` refuses the connection. A connected player's in-memory copy shows `false`, because a banned license never attaches. |
 | `banned_until` | `bannedUntil` | Checked at connect | Unix time. `0` with `banned = 1` means the ban does not expire. A time in the past clears `banned` on the next connect. |
 | `created_at` | — | Insert | Not included on the Lua player record. |
 | `last_seen` | — | Admit, and again on drop | Not included on the Lua player record. |
 
-Indexes: primary key `id`, unique `license`. Lookups by steam or discord are not indexed. Add an index when a feature queries those columns.
+**Indexes**: primary key `id`, unique `license`. Lookups by steam or discord are not indexed — add one if a feature queries those columns.
 
-`ON DELETE CASCADE` from `fw_characters.player_id` means deleting an account deletes its characters.
+**Relationships**: `ON DELETE CASCADE` from `fw_characters.player_id` — deleting an account deletes its characters.
 
-## fw_characters
+**Lua API**: [`fw_core`](fw-core.md) — see the [Player record](fw-core.md#player-record) shape.
 
-Created by `fw_characters` from `resources/[framework]/fw_characters/sql/characters.sql`. One row per character. The Lua API is in [fw_characters](fw-characters.md). Do not `UPDATE` this table from another resource.
+## `fw_characters`
+
+Created by `fw_characters` from `resources/[framework]/fw_characters/sql/characters.sql`. One row per character. Do not `UPDATE` this table from another resource — use the exports.
+
+**Schema**
 
 ```sql
 CREATE TABLE IF NOT EXISTS `fw_characters` (
@@ -88,6 +96,8 @@ CREATE TABLE IF NOT EXISTS `fw_characters` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 ```
 
+**Columns**
+
 | Column | Lua field | Meaning |
 | --- | --- | --- |
 | `id` | `id` | Character id. The id inventory, money, and jobs should store later. |
@@ -100,9 +110,9 @@ CREATE TABLE IF NOT EXISTS `fw_characters` (
 | `birth_date` | `birthDate` | `YYYY-MM-DD` or NULL. Year must sit in `FwCharactersConfig` (1800–1899). |
 | `description` | `description` | Lore, up to 2000 characters. Always sent on insert, including `''`. |
 | `appearance` | `appearance` | Body and face JSON. NULL until `SetAppearance`. The creator stores the menu ped-data table here. |
-| `clothing` | `clothing` | Worn clothes JSON. NULL today. The creator does not write it. |
-| `barber` | `barber` | Hair, overlays, and presets. Shape is in [fw_creator](fw-creator.md). |
-| `x`, `y`, `z` | `x`, `y`, `z` | Last position. Insert uses `defaultSpawn`. The creator then saves the chosen spawn. |
+| `clothing` | `clothing` | Worn clothes, outfits, and wearable state. NULL until `fw_clothing` saves it — see [fw_clothing](fw-clothing.md#the-clothing-document). |
+| `barber` | `barber` | Hair, overlays, and presets. Shape is in [fw_creator](fw-creator.md#the-barber-document). |
+| `x`, `y`, `z` | `x`, `y`, `z` | Last position. Insert uses `defaultSpawn`; the creator then saves the chosen spawn. |
 | `heading` | `heading` | Degrees. |
 | `health` | `health` | 0–65535. Default 600. |
 | `health_core` | `healthCore` | 0–100. Default 100. |
@@ -111,20 +121,20 @@ CREATE TABLE IF NOT EXISTS `fw_characters` (
 | `created_at` | `createdAt` | Insert time. |
 | `last_played` | `lastPlayed` | Select, clear, or player drop. NULL until the first selection. |
 
-The only secondary index is unique `(player_id, slot)`. Listing one account uses that index. The JSON columns are not indexed. `ROW_FORMAT=DYNAMIC` keeps a large document off the main row.
+**Indexes**: primary key `id`, unique `(player_id, slot)` — listing one account uses this index. The JSON columns are not indexed. `ROW_FORMAT=DYNAMIC` keeps a large document off the main row.
 
-`SaveState` updates position and health only. It does not rewrite `appearance`, `clothing`, or `barber`. Each of those documents must encode to at most 262144 bytes.
+**Write paths**: `SaveState` updates position and health only — it never rewrites `appearance`, `clothing`, or `barber`. Each of those documents must encode to at most 262144 bytes. `GetCharacters` never selects the JSON columns; it selects `(appearance IS NOT NULL) AS has_appearance` (and the same for clothing/barber) and returns those as `hasAppearance`, `hasClothing`, `hasBarber`.
 
-`GetCharacters` does not select the JSON. It selects `(appearance IS NOT NULL) AS has_appearance` and the same for clothing and barber, and returns those as `hasAppearance`, `hasClothing`, and `hasBarber`.
+**Lua API**: [`fw_characters`](fw-characters.md) — see the [Character record](fw-characters.md#character-record) shape.
 
-## What the next table should look like
+## What a new table should look like
 
 A gameplay resource that hangs data on a character should follow this shape:
 
 - Its own table, created by that resource.
 - A column `character_id` that stores `fw_characters.id`.
 - A foreign key to `fw_characters(id)` with `ON DELETE CASCADE` when the data must disappear with the character.
-- No copy of the character's name, gender, or appearance. Read those through `exports.fw_characters`.
+- No copy of the character's name, gender, or appearance — read those through `exports.fw_characters`.
 
 An account-level table uses `player_id` → `fw_players.id` the same way.
 

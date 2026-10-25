@@ -1,5 +1,5 @@
 site_name: Project Territory Framework Docs
-site_description: API reference for the fw_core, fw_characters, and fw_creator resources.
+site_description: API reference for the fw_core, fw_characters, fw_creator, fw_clothing, and fw_admin resources.
 docs_dir: content
 site_dir: site
 
@@ -35,5 +35,7 @@ nav:
   - fw_core: fw-core.md
   - fw_characters: fw-characters.md
   - fw_creator: fw-creator.md
+  - fw_clothing: fw-clothing.md
+  - fw_admin: fw-admin.md
   - Database: database.md
 

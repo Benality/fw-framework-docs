@@ -1,24 +1,24 @@
 # fw_creator
 
-Version `1.0.0`. Registers with `fw_core` API `1`.
+Player-facing character menu. Version `1.0.0`. Registers with `fw_core` API `1`.
 
 Source: `resources/[framework]/fw_creator`.
 
-This is the player-facing character menu. The UI and the client appearance code come from the Murphy creator. The server adapter in `server/adapters/FWAdapter.lua` and `server/callbacks.lua` is the part that belongs to this framework. It calls `fw_core` and `fw_characters`. It does not create `murphy_creator` or `murphy_barber` tables.
+The UI and client appearance code come from the Murphy creator. The server adapter — `server/adapters/FWAdapter.lua` and `server/callbacks.lua` — is the part that belongs to this framework: it calls `fw_core` and `fw_characters` exports and does not create its own `murphy_creator` or `murphy_barber` tables.
 
-`.library/trp_creator` is the untouched original. Do not ensure it.
+`.library/trp_creator` is the untouched original. Do not `ensure` it.
 
-On success the log is:
+On success:
 
 ```
 [fw_creator] ready
 ```
 
-That line is printed after `fw_core` and `fw_characters` are both ready, then `RegisterResource(1)` succeeds. The wait is 120 seconds. Menu events are registered before that wait, so a player who connects during startup still hits the adapter. If the character API is not ready yet, character select tells the client why.
+Printed after `fw_core` and `fw_characters` are both ready, then `RegisterResource(1)` succeeds. The wait is 120 seconds. Menu events are registered before that wait, so a player who connects during startup still hits the adapter — if the character API isn't ready yet, character select tells the client why.
 
-`Config.framework` must stay `'fw'`. The adapter file is wrapped in that check. Another value loads no adapter, and character select never answers.
+`Config.framework` must stay `'fw'`. The adapter file is wrapped in that check; any other value loads no adapter, and character select never answers.
 
-## What a player does
+## Player flow
 
 1. The client session starts. `client/event.lua` fires `murphy_creator:OpenCharSelect`.
 2. The client asks the server for `murphy_creator:getCharacters`.
@@ -34,9 +34,9 @@ Creating a character is synchronous on the server from the menu's point of view:
 4. `SetAppearance` with the menu's ped data.
 5. `SetBarber` from the preset save that follows.
 
-If select fails, the new row is deleted and the callback returns false. The client opens character select again.
+If select fails, the new row is deleted and the callback returns `false`; the client opens character select again.
 
-`CreateCharacter` itself still uses `FwCharactersConfig.defaultSpawn` for the insert. The spawn the player picked is the `SaveState` that runs immediately after. A later reconnect uses that saved position.
+`CreateCharacter` itself still uses `FwCharactersConfig.defaultSpawn` for the insert — the spawn the player picked is the `SaveState` call that runs immediately after. A later reconnect uses that saved position.
 
 ## What is stored where
 
@@ -49,35 +49,33 @@ If select fails, the new row is deleted and the callback returns false. The clie
 | Chosen spawn | `x`, `y`, `z`, `heading` via `SaveState` |
 | Body, face, ped model | `appearance` |
 | Hair, makeup, scars, named presets | `barber` |
-| Worn clothes | Not written. `clothing` stays NULL until a clothing resource exists. |
+| Worn clothes | Not written by `fw_creator` itself. `fw_clothing` owns `clothing` — see [fw_clothing](fw-clothing.md). |
 
-The slot count shown in the menu is `player.characterSlots` from `fw_core`, which is `fw_players.character_slots`. `Config.Slots` in the creator config is not the limit the create call enforces. Change the column on the account.
+The slot count shown in the menu is `player.characterSlots` from `fw_core` (`fw_players.character_slots`) — `Config.Slots` in the creator config is **not** the limit the create call enforces; change the column on the account instead.
 
-Custom ped models follow `Config.PedPermission`. `default` applies first, then `role[player.role]`, then `identifier[player.license]`. The license value includes the `license:` or `license2:` prefix. A steam id in that map does not match. Delete permission is separate and checks every identifier from `GetPlayerIdentifiers`.
+Custom ped models follow `Config.PedPermission`: `default` applies first, then `role[player.role]`, then `identifier[player.license]`. The license value includes the `license:` or `license2:` prefix — a steam id in that map does not match. Delete permission is separate and checks every identifier from `GetPlayerIdentifiers`.
 
-## appearance
+## The `appearance` document
 
-`SetAppearance` stores the ped-data table the menu already built. The framework does not rename those keys. Fields the adapter and the client rely on:
+`SetAppearance` stores the ped-data table the menu already built — the framework does not rename those keys. Fields the adapter and client rely on:
 
 | Key | Used for |
 | --- | --- |
 | `gender` | `Male` or `Female`. The client picks the body set from this. |
 | `skintone` | Index into the creator's skin-tone tables. `GetCharSkinTone` hashes the matching head texture. |
-| `pedmodel.model` | Model name, such as `mp_male` or `mp_female`. |
+| `pedmodel.model` | Model name, e.g. `mp_male` or `mp_female`. |
 | `pedmodel.outfit` | Outfit preset index on that model. |
 | `head`, `upperbody`, `lowerbody` | Indexes into the skin-tone body tables. |
 
-The rest of the table (sliders, eyes, teeth, overlays the menu keeps on the ped) is stored with those keys and applied by the client. Treat the document as owned by the menu. Replace it by calling `SetAppearance` with the whole table the menu would save.
+The rest of the table (sliders, eyes, teeth, overlays the menu keeps on the ped) is stored with those keys and applied by the client. Treat the document as owned by the menu — replace it by calling `SetAppearance` with the whole table the menu would save.
 
-## barber
-
-`SetBarber` stores one document:
+## The `barber` document
 
 ```lua
 {
     hairstyle = {},          -- menu hair table, or {}
     overlays = {},           -- makeup, keyed by overlay name
-    permanentoverlay = {},   -- scars and the other permanent overlays, keyed by name
+    permanentoverlay = {},   -- scars and other permanent overlays, keyed by name
     outfitId = '1230456',    -- menu outfit id string from SavePreset, or a number from updatehairstyle
     presets = {
         {
@@ -109,22 +107,38 @@ Selecting a character, and the event `murphy_creator:GetHealthValues`, send:
 }
 ```
 
-The client event is `murphy_creator:HealthFromCore`. The creator does not write health back when the player disconnects. `fw_characters:SaveState` is the call that would persist a later health change.
+The client event is `murphy_creator:HealthFromCore`. The creator does not write health back when the player disconnects — `fw_characters:SaveState` is the call that would persist a later health change.
 
 ## Internal functions
 
-These are globals inside `fw_creator`. The menu callbacks call them. Other resources should use `fw_characters` exports instead. They exist so the existing callback file can keep its call shape.
+Globals inside `fw_creator`. The menu callbacks call these. **Other resources should use `fw_characters` exports instead** — these exist only so the existing callback file can keep its call shape.
 
-| Function | Returns |
+| Function | Summary |
 | --- | --- |
-| `GetCharIdentifier(source)` | Active character id, or nil. |
-| `GetCharFirstname(source)` | Active `firstName`, or nil. |
-| `GetCharLastname(source)` | Active `lastName`, or nil. |
-| `GetCharGroup(source)` | Account `role` from `fw_core`, or nil. This is the account role, not a job. |
-| `CreateNewCharacter(source, data)` | `true` on success, `false` on failure. |
-| `CanPlayerDeleteCharacter(source)` | `true` when this player may delete. |
+| [`GetCharIdentifier(source)`](#getcharidentifiersource) | Active character id. |
+| [`GetCharFirstname(source)`](#getcharfirstnamesource-getcharlastnamesource) | Active first name. |
+| [`GetCharLastname(source)`](#getcharfirstnamesource-getcharlastnamesource) | Active last name. |
+| [`GetCharGroup(source)`](#getchargroupsource) | Account role from `fw_core`. |
+| [`CreateNewCharacter(source, data)`](#createnewcharactersource-data) | Create-character callback entry point. |
+| [`CanPlayerDeleteCharacter(source)`](#canplayerdeletecharactersource) | Whether this player may delete. |
 
-`CreateNewCharacter` data, as the menu sends it:
+---
+
+### `GetCharIdentifier(source)`
+
+**Returns** `integer | nil` — the active character id, or `nil` when none is selected.
+
+### `GetCharFirstname(source)`, `GetCharLastname(source)`
+
+**Returns** `string | nil` — the active character's first/last name, or `nil` when none is selected.
+
+### `GetCharGroup(source)`
+
+**Returns** `string | nil` — the account's `role` from `fw_core`, or `nil`. This is the account role, not a job.
+
+### `CreateNewCharacter(source, data)`
+
+**Parameters** — `source: integer`; `data: table`, as the menu sends it:
 
 | Field | Maps to |
 | --- | --- |
@@ -136,7 +150,11 @@ These are globals inside `fw_creator`. The menu callbacks call them. Other resou
 | `pedspawn` or `coords` | `x`, `y`, `z` after select. A `vector3` or a table with `x`, `y`, `z` |
 | `pedspawnheading` | `heading`. Missing uses `coords.heading` or `0` |
 
-A second create for the same source while the first is still inside this function returns `false`.
+**Returns** `boolean` — `true` on success, `false` on failure. A second call for the same `source` while the first is still running also returns `false`.
+
+### `CanPlayerDeleteCharacter(source)`
+
+**Returns** `boolean` — `true` when this player may delete, per `Config.CharacterDeletion` (see [Network events](#network-events)).
 
 ## Character list entry
 
@@ -145,7 +163,7 @@ A second create for the same source while the first is still inside this functio
 | Field | Source |
 | --- | --- |
 | `charIdentifier` | `fw_characters.id` |
-| `slot` | Account slot. The list is sorted by this. The menu clicks the array index, and delete uses that index. |
+| `slot` | Account slot. The list is sorted by this; the menu clicks the array index, and delete uses that index. |
 | `firstname`, `lastname` | Name columns |
 | `nickname` | Nickname or `''` |
 | `gender` | `Male` or `Female` |
@@ -155,13 +173,13 @@ A second create for the same source while the first is still inside this functio
 | `coords` | `{ x, y, z, heading }` |
 | `isDead` | Boolean |
 | `peddata` | `appearance`, or `{}` |
-| `informations` | Rebuilt from the row. See below. |
+| `informations` | Rebuilt from the row — see below. |
 | `age` | `Config.GameYear` minus the birth year, or `''` |
 | `group` | Account role |
 | `money`, `gold` | `0` |
 | `job`, `grade` | `''` |
 
-`informations` is rebuilt on read. It is not its own column.
+`informations` is rebuilt on read; it is not its own column.
 
 ```lua
 {
@@ -178,21 +196,21 @@ Empty birth fields are `''` when `birth_date` is NULL.
 
 ## Server callbacks
 
-The menu's callback module is `shared/Callbacks.lua`. Names below are the callback names.
+Registered on the menu's callback module, `shared/Callbacks.lua`.
 
-| Callback | Arguments | Returns |
+| Callback | Parameters | Returns |
 | --- | --- | --- |
-| `murphy_creator:GetCharInformations` | source | The `informations` table, or `{}` when no character is active. |
-| `murphy_creator:CreateNewCharacter` | source, data, peddata | `true` or `false`. `peddata` is stored with `SetAppearance` when it is a table. |
-| `murphy_creator:GetPedData` | source, characterId or nil | `appearance` for that id, or for the active character when the id is nil. `{}` when there is no document. |
-| `murphy_creator:SavePreset` | source, hairstyle, overlays, name, fee, male | `true, outfitId` or `false, outfitId` / `false, nil`. |
-| `murphy_creator:UpdatePedData` | source, peddata | `true` or `false`. Replaces `appearance` on the active character. `peddata` must be a non-empty table. |
-| `murphy_barber_creator:GetCurrentOverlays` | source, characterId or nil | `overlays, permanentoverlay` |
-| `murphy_barber_creator:GetCurrentHairs` | source | `hairstyle, outfitId, overlays, permanentoverlay` for the active character |
-| `murphy_barber_creator:GetCurrentHairsOnCharacter` | source, characterId | Same, for that owned id |
-| `murphy_barber_creator:GetCharSkinTone` | source, male, characterId or nil | Head-texture hash from `appearance.skintone`, or `0` |
+| `murphy_creator:GetCharInformations` | `source` | The `informations` table, or `{}` when no character is active. |
+| `murphy_creator:CreateNewCharacter` | `source, data, peddata` | `true` or `false`. `peddata` is stored with `SetAppearance` when it is a table. |
+| `murphy_creator:GetPedData` | `source, characterId?` | `appearance` for that id, or the active character when `characterId` is nil. `{}` when there is no document. |
+| `murphy_creator:SavePreset` | `source, hairstyle, overlays, name, fee, male` | `true, outfitId` or `false, outfitId` / `false, nil`. |
+| `murphy_creator:UpdatePedData` | `source, peddata` | `true` or `false`. Replaces `appearance` on the active character. `peddata` must be a non-empty table. |
+| `murphy_barber_creator:GetCurrentOverlays` | `source, characterId?` | `overlays, permanentoverlay` |
+| `murphy_barber_creator:GetCurrentHairs` | `source` | `hairstyle, outfitId, overlays, permanentoverlay` for the active character |
+| `murphy_barber_creator:GetCurrentHairsOnCharacter` | `source, characterId` | Same, for that owned id |
+| `murphy_barber_creator:GetCharSkinTone` | `source, male, characterId?` | Head-texture hash from `appearance.skintone`, or `0` |
 
-`male` on the skin-tone callback chooses the `Male` or `Female` texture table. It does not read the character gender column.
+`male` on the skin-tone callback chooses the `Male` or `Female` texture table — it does not read the character's `gender` column. `?` marks an argument that may be `nil`.
 
 ## Network events
 
@@ -200,21 +218,21 @@ The client still uses the `murphy_creator` names so the menu did not have to be 
 
 | Event | Direction | Payload | What it does |
 | --- | --- | --- | --- |
-| `murphy_creator:getCharacters` | client → server | none | Builds the list, or `CharSelectFailed` with a reason. |
+| `murphy_creator:getCharacters` | client → server | none | Builds the list, or fires `CharSelectFailed` with a reason. |
 | `murphy_creator:LaunchCharSelect` | server → client | characters, pedPermission, slots | Opens the menu. |
 | `murphy_creator:CharSelectFailed` | server → client | reason string | The client prints it and retries once. |
 | `murphy_creator:OpenCharSelect` | client local, also server → client | none | Asks for the list again. |
 | `fw_creator:selectCharacter` | client → server | characterId | `SelectCharacter`, leave the routing bucket, then `HealthFromCore`. |
 | `murphy_creator:GetHealthValues` | client → server | none | Sends `HealthFromCore` for the active character. |
-| `murphy_creator:HealthFromCore` | server → client | health table | See the health section. |
+| `murphy_creator:HealthFromCore` | server → client | health table | See [Health the client receives](#health-the-client-receives). |
 | `murphy_creator:deleteCharacter` | client → server | list index | Resolves that index in the list last sent to this player, then `DeleteCharacter`. |
 | `murphy_creator:deleteCharacterClient` | server → client | list index | Drops that entry from the local list. |
 | `murphy_creator:RemovePlayerFromInstance` | client → server | none | Routing bucket `0`. |
-| `fw_creator:characterSelected` | server → client | none | Registered on the client. Fires `murphy_creator:loadskin`. The select path currently loads the skin itself after `fw_creator:selectCharacter`. |
+| `fw_creator:characterSelected` | server → client | none | Registered on the client; fires `murphy_creator:loadskin`. The select path currently loads the skin itself after `fw_creator:selectCharacter`. |
 | `murphy_barber_creator:updatehairstyle` | client → server | hairstyle, overlays, outfitId | Writes the barber document on the active character. |
 | `murphy_creator:retrievehairstyle` | server local | characterId, callback | Calls `callback` with the barber table, or `false`. |
 
-`deleteCharacter` ignores a raw character id. The argument is the index in the list that `getCharacters` last sent to that source. A stale index reopens character select.
+`deleteCharacter` ignores a raw character id — the argument is the index in the list that `getCharacters` last sent to that source. A stale index reopens character select.
 
 Delete permission is `Config.CharacterDeletion`. With `restrictToRoles` false, every player may delete. With it true, `Config.CharacterDeletion.identifier` is checked against the player's identifiers, then `Config.CharacterDeletion.role` against `player.role`.
 
@@ -223,19 +241,19 @@ Delete permission is `Config.CharacterDeletion`. With `restrictToRoles` false, e
 | Command | Default | Who | Effect |
 | --- | --- | --- | --- |
 | `/mc` | `Config.LoadSkinCommand` | The player who runs it | Reloads appearance on that client. |
-| `/deletechar [characterId]` | `Config.Commands.deleteCharacter` | Roles in `allowedRoles`, or identifiers in `allowedIdentifiers`. The console is allowed through the role check and then refused, because delete needs the owning player. | `DeleteCharacter` for the caller. Someone else's id returns `character not found`. |
-| `/secondchance [serverId]` | `Config.Commands.secondChance` | Same role and identifier lists. Console may run it. | Opens the customization menu on that player (`murphy_creator:SecondChance`). |
+| `/deletechar [characterId]` | `Config.Commands.deleteCharacter` | `fw_admin` admins, roles in `allowedRoles`, or identifiers in `allowedIdentifiers`. The console passes the role check but is then refused, because delete needs the owning player. | `DeleteCharacter` for the caller. Someone else's id returns `character not found`. |
+| `/secondchance [serverId]` | `Config.Commands.secondChance` | Same admin, role, and identifier checks. The console may run it. | Opens the customization menu on that player (`murphy_creator:SecondChance`). |
 
 Chat lines use the `chat:addMessage` event with the tag `fw_creator`.
 
-## Config that matters for this framework
+## Config
 
 File: `shared/config.lua`.
 
 | Key | Current | Effect |
 | --- | --- | --- |
 | `Config.framework` | `'fw'` | Loads the framework adapter. |
-| `Config.murphy_clothing` | `false` | The clothes pin stays off. Clothing events (`murphy_clothing` and `murphy_clothes`) are not fired. The starter outfit preset is applied in the same skin load. |
+| `Config.murphy_clothing` | `true` | `fw_clothing` saves worn clothes to the character. Must stay `true` while `fw_clothing` is ensured — see [fw_clothing](fw-clothing.md). |
 | `Config.CreatorClothing.allowCustomization` | `false` | Hides the clothes pin. |
 | `Config.CreatorClothing.starterOutfit.enabled` | `true` | After a skin load, a character with none of the listed clothing categories gets game outfit preset `3` (`male` and `female`). |
 | `Config.UseSpawnSelector` | `true` | The menu asks where to spawn. `false` uses `Config.DefaultSpawnLocationId`. |
@@ -249,7 +267,7 @@ File: `shared/config.lua`.
 | `Config.CharacterDeletion` | enabled, not restricted | Who may delete from the menu. |
 | `Config.Commands` | deletechar, secondchance | Admin commands above. |
 
-`Config.Slots` is leftover menu config. The number of slots the player can create is `fw_players.character_slots`.
+`Config.Slots` is leftover menu config — the number of slots the player can create is `fw_players.character_slots`.
 
 ## Routing buckets
 
@@ -273,7 +291,7 @@ The rest of `client/` and `ui/` is the menu. Keep the `murphy_creator` callback 
 
 ## Not done yet
 
-- Nothing writes `clothing`. The starter outfit is a client preset, not a saved document. Height is stored on `appearance.height` and applied on the client. The old VORP scale event is not sent.
+- The starter outfit (`Config.CreatorClothing.starterOutfit`) is a client preset, not a saved document — it stands down once `fw_clothing` has saved real clothes for that character. Height is stored on `appearance.height` and applied on the client. The old VORP scale event is not sent.
 - Health on the ped is not saved back to the row on disconnect.
-- `Config.PersistVitals` is a leftover from other frameworks. This adapter does not run a health autosave.
+- `Config.PersistVitals` is a leftover from other frameworks — this adapter does not run a health autosave.
 - Inventory, money, and jobs are the zeros and empty strings in the character list.
