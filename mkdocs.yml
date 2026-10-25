@@ -1,0 +1,39 @@
+site_name: Project Territory Framework Docs
+site_description: API reference for the fw_core, fw_characters, and fw_creator resources.
+docs_dir: content
+site_dir: site
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+    - search.suggest
+
+markdown_extensions:
+  - fenced_code
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.highlight
+  - pymdownx.superfences
+
+nav:
+  - Overview: README.md
+  - fw_core: fw-core.md
+  - fw_characters: fw-characters.md
+  - fw_creator: fw-creator.md
+  - Database: database.md
+
