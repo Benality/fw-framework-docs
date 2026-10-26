@@ -4,7 +4,7 @@ Runs on the server and in the player's game. This is the weapon kit: the guns an
 
 The bag still holds the item. Equipping takes it out of the bag and puts it on a slot. Unequipping puts it back.
 
-The slots are `revolver_1` (right revolver), `revolver_2` (left revolver), `longarm`, `bow`, `lasso`, `knife`, `lantern`, and `binoculars`.
+The slots are `revolver_1` (right revolver), `revolver_2` (left revolver), `longarm`, `bow`, `lasso`, `knife`, `lantern`, `binoculars`, and `fishingrod` (fishing pole).
 
 A sidearm needs a gunbelt, and so does the knife. The left revolver also needs the offhand holster, and the right revolver has to be filled first. Dragging a gun onto the empty left slot shows `Equip the right revolver first.` Taking the right revolver off while the left one is still there shows `Take the left revolver off first.` `fw_weapons` reads the belt and holster from [fw_clothing](fw-clothing.md). If the gunbelt comes off, the right revolver, the left revolver, and the knife all go back to the bag. If just the offhand holster comes off, only the left revolver goes back. If the bag is full, the player sees `Make room in the satchel first.`
 
@@ -58,7 +58,7 @@ end
 
 Runs in the player's game. Draws the gun in that loadout slot and plays the inspect hold. The bag closes first, so the player can see it. You get no when that slot is empty, when the thing in it is not a gun, or when an inspect is already playing.
 
-A knife, lasso, lantern, binoculars, or bow cannot be inspected this way. Clean is on the same right-click menu, and it does nothing yet. Unload puts the rounds back in the bag. That is described under `fw_weapons:unload`.
+A knife, lasso, lantern, binoculars, bow, or fishing pole cannot be inspected this way. Clean is on the same right-click menu, and it does nothing yet. Unload puts the rounds back in the bag. That is described under `fw_weapons:unload`.
 
 ```lua
 --- Draws the gun in this loadout slot and plays the inspect hold.
@@ -124,7 +124,7 @@ This is sent whenever `fw_weapons:wear`, `fw_weapons:equip`, `fw_weapons:unequip
 | `Select a character first.` | This player is not playing a character. |
 | `The kit is still loading.` | A character was just selected and the saved kit has not finished loading yet. Try again shortly. |
 | `That item is not in the satchel.` | The placement id passed to `fw_weapons:equip` is not in the bag. |
-| `That does not fit there.` | The slot name is not one of the eight listed above, or the item's `kit` does not match the slot it was aimed at. |
+| `That does not fit there.` | The slot name is not one of the nine listed above, or the item's `kit` does not match the slot it was aimed at. |
 | `That slot is empty.` | `fw_weapons:unequip` or `fw_weapons:move` named a slot that has nothing on it. |
 | `Put on a gunbelt first.` | `revolver_1`, `revolver_2`, or `knife` was used with no gunbelt worn. |
 | `Put on another holster first.` | `revolver_2` was used with no offhand holster worn. |
@@ -155,7 +155,7 @@ TriggerServerEvent('fw_weapons:wear', belt, offhand)
 
 Networked event, sent from the player's game to the server with `TriggerServerEvent` and heard there with `RegisterNetEvent`. The satchel sends this when the player drops a bag item onto a loadout slot.
 
-`placementId` is the `id` from [GetItems](fw-inventory.md). `slotId` is one of the slot names above. The item's `kit` field has to match that slot. A revolver goes on `revolver_1` (the right hip) or `revolver_2` (the left hip). The right slot has to already hold a gun before the left slot will take one. `revolver_1`, `revolver_2`, and `knife` all need a gunbelt worn first, and `revolver_2` also needs the offhand holster. A rifle goes on `longarm`.
+`placementId` is the `id` from [GetItems](fw-inventory.md). `slotId` is one of the slot names above. The item's `kit` field has to match that slot. A revolver goes on `revolver_1` (the right hip) or `revolver_2` (the left hip). The right slot has to already hold a gun before the left slot will take one. `revolver_1`, `revolver_2`, and `knife` all need a gunbelt worn first, and `revolver_2` also needs the offhand holster. A rifle goes on `longarm`. A fishing pole goes on `fishingrod`. The item name for the shipped pole is `weapon_fishingrod`, and its `kit` is `fishingrod`.
 
 If it fails, the player's game gets `fw_weapons:rejected` with one of the reasons listed above.
 

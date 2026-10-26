@@ -591,7 +591,7 @@ return {
 | `stack` | 1 | How many copies share one footprint. Maximum 1000. |
 | `weapon` | false | When true, the item never stacks. |
 | `rotate` | false | The player can turn it. |
-| `kit` | none | Which weapon slot can hold it: `revolver`, `pistol`, `longarm`, `bow`, `lasso`, `melee`, `lantern`, or `binoculars`. |
+| `kit` | none | Which weapon slot can hold it: `revolver`, `pistol`, `longarm`, `bow`, `lasso`, `melee`, `lantern`, `binoculars`, or `fishingrod`. |
 | `hash` | none | Weapon name, such as `WEAPON_REVOLVER_CATTLEMAN`. Required when `kit` is set. |
 | `container` | none | Opens a second grid when the item is used from the satchel. Stack is forced to 1. |
 | `ammo` | none | Loose rounds. `key` is the game ammo name, such as `AMMO_REVOLVER`. `fits` is which guns take it: `revolver`, `pistol`, `repeater`, `rifle`, `elephant`, `shotgun`, `arrow`, or `varmint`. `stack` is one bought pile and the most of that kind the satchel can hold. |

@@ -6,7 +6,7 @@ It has no exports, no events of its own, and no state bag. Give an item, open a 
 
 The player opens the bag with `B`, or by typing `/satchel`. Escape or Tab closes it. Closing the bag also closes an open chest or pouch.
 
-Right-click a filled loadout slot for Inspect, Clean, and Unload. That menu is only on the loadout, not on an item sitting in the bag. Inspect draws the gun and plays the inspect hold, then the bag closes. A knife, lasso, lantern, binoculars, or bow cannot be inspected. Clean does nothing yet. Unload puts that gun's rounds back in the bag.
+Right-click a filled loadout slot for Inspect, Clean, and Unload. That menu is only on the loadout, not on an item sitting in the bag. Inspect draws the gun and plays the inspect hold, then the bag closes. A knife, lasso, lantern, binoculars, bow, or fishing pole cannot be inspected. Clean does nothing yet. Unload puts that gun's rounds back in the bag.
 
 Ammo is loose rounds. Drag a pile from the bag onto the gun you want to load. The slot turns green when those rounds match that gun. The gun takes only what it can hold, and the rest stays in the bag. A full gun shows the number of rounds in the slot. Another script loads and unloads with `fw_weapons:load` and `fw_weapons:unload` on [fw_weapons](fw-weapons.md). Inspect uses `Inspect` on that same page.
 

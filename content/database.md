@@ -191,7 +191,7 @@ CREATE TABLE IF NOT EXISTS `fw_items` (
 | `weapon` | `1` when the item never stacks. A weapon is always one placement. |
 | `item_group` | Filter and sort group. `ammo`, `animals`, `documents`, `food`, `herbs`, `horse`, `medical`, `tools`, `valuables`, `weapons`, or `materials`. |
 | `rotate` | `1` when the player can turn it. |
-| `kit` | Set only on a weapon item. Which equip slot it fills: `lasso`, `binoculars`, `lantern`, `bow`, `revolver`, `pistol`, `longarm`, or `melee`. Empty string on a non-weapon item. |
+| `kit` | Set only on a weapon item. Which equip slot it fills: `lasso`, `binoculars`, `lantern`, `bow`, `revolver`, `pistol`, `longarm`, `melee`, or `fishingrod`. Empty string on a non-weapon item. |
 | `hash` | Set only on a weapon item. The game's weapon name, such as `WEAPON_REVOLVER_CATTLEMAN`. Empty string on a non-weapon item. |
 
 An older version of this table had an `image` column instead of `kit` and `hash`. That column is dropped on start if it is still there — the picture is `fw_inventory/images/<name>.png`, named after the item, not stored in a column. Files in `items/` are written into this table on start and on `fw_items_reload`. A row inserted for an admin tool stays until it is deleted. The field list and the insert example are in [fw_inventory](fw-inventory.md). The `container` block on a pouch is not a column. It stays on the item file and is merged back onto the catalog when the files load.
