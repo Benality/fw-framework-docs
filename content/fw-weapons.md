@@ -223,7 +223,7 @@ Networked event, sent from the player's game to the server with `TriggerServerEv
 
 The gun only holds so many. A Cattleman holds 6. A Winchester holds 14. A Springfield holds 1. A bow holds 20. Dragging a pile loads up to that number and leaves the rest in the bag. Dragging the same kind again fills whatever room is left. Dragging a different kind, such as Express while Normal is still in the gun, is refused with `Unload it first.`
 
-Two copies of the same gun, such as two Cattlemen, share one ammo count. They have to be loaded with the same rounds. Shots come out of the right-hand gun's count first.
+Two copies of the same gun, such as two Cattlemen, share one ammo count. Loading 6 into each one makes 12 on the weapon wheel, on both icons, because the wheel is showing that one shared count. It is not 12 in each gun. They have to be loaded with the same rounds. Unload lowers that shared count. Shots come out of the right-hand gun's count first.
 
 The loaded count is stored on the gun. It stays there when the gun is put back in the bag. `GetKit` shows it on that slot's `metadata`: `ammo` is the item name, `ammoLabel` is the words the player sees, `rounds` is how many are in the gun.
 
