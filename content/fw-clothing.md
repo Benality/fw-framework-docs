@@ -213,14 +213,14 @@ These names stay `murphy_clothing:...` so the existing shop UI can call them unc
 
 ## Money, items, and jobs
 
-No money, inventory, or job resource exists yet:
+Money and jobs are still not resources. `fw_inventory` exists, and this shop does not call it yet:
 
 - `GetCharMoney` returns `100000000`; `RemoveCurrency` / `AddCurrency` do nothing — a purchase always succeeds and nothing is taken.
 - `GetCharGold` returns `0`; `Config.OutfitGold.enabled` is `false`, so the gold payment option stays off.
 - `GiveItem` returns `true` and creates nothing; `RemoveItem` / `GetItemAmount` are no-ops. `Config.OutfitItem` is `nil` and `Config.SingleItemCategory` is empty, so the shop never tries to hand out an item.
 - `GetCharJob` / `GetCharJobGrade` return `nil, 0` — job-locked categories (`Config.JobLocked`) stay hidden.
 
-When a money/inventory/job resource exists, replace `GetCharMoney`, `RemoveCurrency`, `AddCurrency`, `GetCharGold`, `RemoveGold`, `GiveItem`, `RemoveItem`, `GetItemAmount`, `GetCharJob`, and `GetCharJobGrade` in `server/adapters/FWAdapter.lua`.
+When a money or job resource exists, replace `GetCharMoney`, `RemoveCurrency`, `AddCurrency`, `GetCharGold`, `RemoveGold`, `GetCharJob`, and `GetCharJobGrade` in `server/adapters/FWAdapter.lua`. Point `GiveItem`, `RemoveItem`, and `GetItemAmount` at [fw_inventory](fw-inventory.md) when a shop should put an item in the satchel.
 
 ## Commands
 

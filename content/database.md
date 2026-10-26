@@ -6,9 +6,9 @@ If that database does not exist, oxmysql creates it with `utf8mb4` / `utf8mb4_un
 
 Windows error text may show the database name in lowercase (`territoryfrp`). The configured name is `TerritoryFRP`.
 
-`fw_core` and `fw_characters` run their SQL with `CREATE TABLE IF NOT EXISTS`, then check one expected column (`license` on `fw_players`, `clothing` on `fw_characters`). If a table with that name already exists and the column is missing, the resource logs the mismatch and does not alter the table.
+`fw_core`, `fw_characters`, and `fw_inventory` run their SQL with `CREATE TABLE IF NOT EXISTS`, then check one expected column (`license` on `fw_players`, `clothing` on `fw_characters`, `grid` on `fw_inventory`, `grid` on `fw_storage`, `name` on `fw_items`). If a table with that name already exists and the column is missing, the resource logs the mismatch and does not alter the table. The exceptions are `fw_items.weapon` and `fw_items.item_group`: `fw_inventory` adds those columns when they are missing.
 
-Do not put inventory, money, or jobs on these tables. A later resource should add its own table and store `fw_characters.id` or `fw_players.id` — see [What a new table should look like](#what-a-new-table-should-look-like).
+Do not put money or jobs on these tables. Inventory is the `fw_inventory` table below, keyed by `fw_characters.id`. A later resource should add its own table and store `fw_characters.id` or `fw_players.id` — see [What a new table should look like](#what-a-new-table-should-look-like).
 
 ## `fw_players`
 
@@ -112,7 +112,7 @@ CREATE TABLE IF NOT EXISTS `fw_characters` (
 | `appearance` | `appearance` | Body and face JSON. NULL until `SetAppearance`. The creator stores the menu ped-data table here. |
 | `clothing` | `clothing` | Worn clothes, outfits, and wearable state. NULL until `fw_clothing` saves it — see [fw_clothing](fw-clothing.md#the-clothing-document). |
 | `barber` | `barber` | Hair, overlays, and presets. Shape is in [fw_creator](fw-creator.md#the-barber-document). |
-| `x`, `y`, `z` | `x`, `y`, `z` | Last position. Insert uses `defaultSpawn`; the creator then saves the chosen spawn. |
+| `x`, `y`, `z` | `x`, `y`, `z` | Last position. Insert uses `defaultSpawn`; the creator then saves the chosen spawn. While the character is online, a newer sample lives in the `fw_characters` server cache and is what a reconnect reads until the cache is flushed into these columns. |
 | `heading` | `heading` | Degrees. |
 | `health` | `health` | 0–65535. Default 600. |
 | `health_core` | `healthCore` | 0–100. Default 100. |
@@ -139,3 +139,80 @@ A gameplay resource that hangs data on a character should follow this shape:
 An account-level table uses `player_id` → `fw_players.id` the same way.
 
 The character id to use is the one from `CreateCharacter`, `GetActiveCharacter`, or `Player(source).state.fwCharacterId`. The account id is `player.id` from `GetPlayer`, or `Player(source).state.fwPlayerId`.
+
+## `fw_inventory`
+
+Created by `fw_inventory` from `resources/[framework]/fw_inventory/sql/inventory.sql`. One row per character. The grid document and the item fields are in [fw_inventory](fw-inventory.md).
+
+```sql
+CREATE TABLE IF NOT EXISTS `fw_inventory` (
+  `character_id` int unsigned NOT NULL,
+  `grid` json NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`character_id`),
+  CONSTRAINT `fk_fw_inventory_character`
+    FOREIGN KEY (`character_id`) REFERENCES `fw_characters` (`id`)
+    ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+```
+
+| Column | Meaning |
+| --- | --- |
+| `character_id` | `fw_characters.id`. Primary key. Deleting the character deletes the row. |
+| `grid` | JSON document: `width`, `height`, `baseWidth`, `baseHeight`, `bonus`, `nextId`, and `items`. At most 262144 bytes. `width` and `height` are the drawn size. |
+| `updated_at` | Set by the database when the row is written. |
+
+## `fw_items`
+
+Created by `fw_inventory` from `resources/[framework]/fw_inventory/sql/items.sql`. One row per item type. This is not a satchel. Placements stay in `fw_inventory.grid`.
+
+```sql
+CREATE TABLE IF NOT EXISTS `fw_items` (
+  `name` varchar(32) NOT NULL,
+  `label` varchar(48) NOT NULL,
+  `description` varchar(200) NOT NULL DEFAULT '',
+  `width` tinyint unsigned NOT NULL,
+  `height` tinyint unsigned NOT NULL,
+  `stack` smallint unsigned NOT NULL DEFAULT 1,
+  `weapon` tinyint(1) NOT NULL DEFAULT 0,
+  `item_group` varchar(16) NOT NULL DEFAULT '',
+  `rotate` tinyint(1) NOT NULL DEFAULT 0,
+  `image` varchar(128) DEFAULT NULL,
+  PRIMARY KEY (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
+| Column | Meaning |
+| --- | --- |
+| `name` | Primary key. Lowercase letters, digits, and underscores. The name `AddItem` uses. |
+| `label` | Satchel text. |
+| `description` | Side panel. |
+| `width`, `height` | Cell footprint before turning. |
+| `stack` | Copies that share one footprint. `1` means each copy is placed on its own. |
+| `weapon` | `1` when the item never stacks. A weapon is always one placement. |
+| `item_group` | Filter and sort group. `ammo`, `animals`, `documents`, `food`, `herbs`, `horse`, `medical`, `tools`, `valuables`, `weapons`, or `materials`. |
+| `rotate` | `1` when the player can turn it. |
+| `image` | A file in `fw_inventory/images`, or a `nui://` path. |
+
+Files in `items/` are written into this table on start and on `fw_items_reload`. A row inserted for an admin tool stays until it is deleted. The field list and the insert example are in [fw_inventory](fw-inventory.md). The `container` block on a pouch is not a column. It stays on the item file and is merged back onto the catalog when the files load.
+
+## `fw_storage`
+
+Created by `fw_inventory` from `resources/[framework]/fw_inventory/sql/storage.sql`. One row per chest, wagon, horse, or container item. The id is chosen by the caller. Opening and moving items is in [fw_inventory](fw-inventory.md).
+
+```sql
+CREATE TABLE IF NOT EXISTS `fw_storage` (
+  `id` varchar(64) NOT NULL,
+  `grid` json NOT NULL,
+  `groups` json NULL,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+```
+
+| Column | Meaning |
+| --- | --- |
+| `id` | Caller id, such as `chest:valentine_1` or `item:` plus a container id. |
+| `grid` | Same document shape as a satchel: `width`, `height`, `baseWidth`, `baseHeight`, and `items`. At most 262144 bytes. |
+| `groups` | JSON list of item groups this row accepts. `NULL` accepts every group. |
+| `updated_at` | Set by the database when the row is written. |

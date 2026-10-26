@@ -418,7 +418,7 @@ exports.fw_characters:SetClothing(source, characterId, nil)
 exports.fw_characters:SaveState(source, state)
 ```
 
-Writes position and health for the **active character only**. Never touches the JSON columns, and never fires `fw_characters:updated`.
+Writes position and health for the **active character only**. Never touches the JSON columns, and never fires `fw_characters:updated`. A position in this call is written immediately and replaces that character's cache entry. Periodic position samples do not go through `SaveState`.
 
 **Parameters**
 
@@ -512,8 +512,8 @@ Deletes an owned row. `appearance`, `clothing`, and `barber` go with it. If the 
 | `gender` | `string` | `male` or `female`. |
 | `birthDate` | `string \| nil` | `YYYY-MM-DD`, or `nil`. |
 | `description` | `string` | Lore. Empty string when left blank. Max 2000 characters. |
-| `x`, `y`, `z` | `number` | Last saved position. |
-| `heading` | `number` | Last saved facing, in degrees. |
+| `x`, `y`, `z` | `number` | Last known position. A cached sample wins over the database row until that sample is flushed. |
+| `heading` | `number` | Last known facing, in degrees. |
 | `health` | `integer` | Entity health, 0–65535. New characters use `defaultHealth` (600). |
 | `healthCore` | `integer` | 0–100. Default 100. |
 | `staminaCore` | `integer` | 0–100. Default 100. |
@@ -544,8 +544,23 @@ A document that is stored but cannot be decoded becomes `nil` and an error is lo
 | `defaultStaminaCore` | `100` | Integer 0–100. |
 | `minBirthYear` | `1800` | Integer 1–9999, not above `maxBirthYear`. |
 | `maxBirthYear` | `1899` | Integer 1–9999. |
+| `positionSettleMs` | `15000` | Integer 0–120000. Reports in this window after `SelectCharacter` are ignored. |
+| `positionSampleMinMs` | `45000` | Integer 5000–600000, not above `positionSampleMaxMs`. |
+| `positionSampleMaxMs` | `90000` | Integer 5000–600000. |
+| `positionFlushMinMs` | `120000` | Integer 10000–3600000, not above `positionFlushMaxMs`. |
+| `positionFlushMaxMs` | `240000` | Integer 10000–3600000. |
 
 Confirm the spawn coordinates in game. `fw_creator` overwrites them with the player's chosen spawn immediately after selecting the new character.
+
+## Position cache
+
+The client reports the ped's `x`, `y`, `z`, and heading on a random interval between `positionSampleMinMs` and `positionSampleMaxMs`. A report is skipped while the screen is fading or a menu has focus, and for `positionSettleMs` after the character is selected. That keeps the character-select room and the creator camera out of the saved spot.
+
+Reports update a server cache keyed by `fw_characters.id`. They do not write the database. With `fw_characters_debug` on, a new cache entry logs `cached position` and a database write logs `saved position`. `GetCharacters`, `GetCharacter`, `GetActiveCharacter`, and `SelectCharacter` return the cached coordinates when an entry exists, and the database row otherwise.
+
+A random interval between `positionFlushMinMs` and `positionFlushMaxMs` writes every dirty cache entry with one `UPDATE` per character (`x`, `y`, `z`, `heading` only). That flush does not require the player to still be connected. Disconnecting, clearing the active character, or stopping `fw_characters` writes that character immediately. F8 quit stops the client resource first and sends one last position. The server caches it for that character even if `playerDropped` has already removed the player, and flushes it if the player is already gone. The cache entry stays after a disconnect, so a reconnect on the same server still uses it if the flush has not landed. A server restart has only what the last flush or disconnect write stored.
+
+A sample that is within 2 metres and 45 degrees of the cached spot is ignored. `SaveState` still writes position immediately and replaces the cache entry as clean.
 
 ## Local events
 

@@ -1,10 +1,10 @@
 # fw_admin
 
-Version 1.0.0. Server only. Resource name `fw_admin`.
+Version 1.1.0. Resource name `fw_admin`.
 
 Source: `resources/[framework]/fw_admin`.
 
-An in-game admin is a player who holds the ACE `fw.admin`. That ACE is granted in `permissions.cfg`, which `server.cfg` loads with `exec permissions.cfg`. The txAdmin web login is a different list. An account in `txData/admins.json` is not an in-game admin until `permissions.cfg` names one of that player's game identifiers.
+An in-game admin is a player whose identifiers are granted `fw.admin` in `permissions.cfg`. `server.cfg` loads that file with `exec permissions.cfg`, and `fw_admin` also reads the file itself on each check. The txAdmin web login is a different list. An account in `txData/admins.json` is not an in-game admin until `permissions.cfg` names one of that player's game identifiers.
 
 `fw_players.role` is not consulted. It stays a label on the account (`user` by default). Setting it to `admin` in the database does not grant these checks.
 
@@ -110,9 +110,18 @@ end
 
 | Command | Who | Effect |
 | --- | --- | --- |
+| `/admin` | An admin in the game | Opens the admin menu. Anyone else gets a chat line saying they are not an admin. |
 | `/fw_admin` | The player who runs it | Chat says whether that player is an admin. It does not print identifiers. |
 | `fw_admin` | Server console | Prints ready state and the usage line. |
 | `fw_admin [serverId]` | Server console | Prints `admin=true` or `admin=false` and that player's identifiers. |
+
+## Admin menu
+
+`/admin` asks the server, and the server opens the menu only when `IsAdmin` is true. The menu is `fw_menu`.
+
+The first entry is Developer Tools. Inside that, Teleports. Inside that, TP to Waypoint.
+
+TP to Waypoint asks the server again. The server tells that client to move only if they are still an admin. The client reads the map waypoint with `IS_WAYPOINT_ACTIVE` (`0x202B1BBFC6AB5EE4`) and `GET_WAYPOINT_COORDS` (`0x29B30D07C3F7873B`). The screen fades out, the ped is frozen, and the client steps down from height 750, probing with `GET_GROUND_Z_AND_NORMAL_FOR_3D_COORD` (`0x2A29CA9A6319E6AB`). On a hit it loads collision around the ped, places them on that ground, then fades back in. With no waypoint, chat says to set one. If the ground cannot be found, the ped is put back where they started and the screen fades in.
 
 ## Who already calls it
 
