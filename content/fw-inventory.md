@@ -273,7 +273,7 @@ if not ok then
 end
 ```
 
-The player reloads the gun in the world, and those shots come out of this pile. Choosing a kind, such as Express, is on the [weapons](fw-weapons.md) page.
+The player reloads the gun in the world, and those shots come out of this pile. Every kind in the satchel shows on the weapon wheel. Dropping a pile takes that kind off the wheel. That is on the [weapons](fw-weapons.md) page.
 
 ```lua
 local ok, err = exports.fw_inventory:AddItem(source, 'rope', 1)

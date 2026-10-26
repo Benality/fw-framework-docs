@@ -223,9 +223,11 @@ The bag screen updates on the shot. The database write waits and goes out with t
 
 `stack` on the ammo item is the most of that kind the satchel can hold. A shop gives the pile with `AddItem`, on the [inventory](fw-inventory.md) page. Revolver rounds, rifle rounds, arrows, and the rest each have their own pile.
 
-If the player carries more than one kind for the same guns, plain rounds are used. Using the other pile, such as Express, from the satchel switches the gun to that kind. Using it does not spend a round. The next reload spends that pile instead.
+If the player carries more than one kind for the same guns, the weapon wheel lists each kind and the amount still in that pile. Regular and Express can both be there. Switching kinds is done on the weapon wheel. A shot spends the kind the wheel is on.
 
-Two guns that take the same rounds, such as two Cattlemen, share that one pile. The weapon wheel shows how many are left in the pile.
+Dropping a pile, or giving the last of it away, takes that kind off the wheel. The number on the wheel is the pile in the satchel.
+
+Two guns that take the same rounds, such as two Cattlemen, share those piles. The weapon wheel shows how many of each kind are left.
 
 ### fw_weapons:load
 
