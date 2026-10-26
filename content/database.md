@@ -1,14 +1,12 @@
 # Database
 
-Server database name: `TerritoryFRP`. The connection string is the `mysql_connection_string` convar in `server.cfg`. Use `utf8mb4`.
+Do not read or write these tables from your resource. Call the export. This page is which id to store on a table you own, and what the columns mean when an export gives you a copy.
 
-If that database does not exist, oxmysql creates it with `utf8mb4` / `utf8mb4_unicode_ci` and connects again. The name must match `^[A-Za-z0-9_]+$`. That behavior is a local change in `resources/[standalone]/oxmysql/dist/build.js` — replacing oxmysql with an upstream build removes the auto-create. The tables below are still created by the framework resources on startup.
+The database name in `server.cfg` is `TerritoryFRP`. If it does not exist yet, oxmysql creates it and connects again. The name can only contain letters, numbers, and underscores. Replacing oxmysql with an untouched copy removes that auto-create. The framework still creates the tables below when each resource starts.
 
-Windows error text may show the database name in lowercase (`territoryfrp`). The configured name is `TerritoryFRP`.
+If a table already exists and is missing the column that resource expects, the resource logs the mismatch and does not change the table. `fw_items` is the exception: missing `weapon` and `item_group` columns are added.
 
-`fw_core`, `fw_characters`, and `fw_inventory` run their SQL with `CREATE TABLE IF NOT EXISTS`, then check one expected column (`license` on `fw_players`, `clothing` on `fw_characters`, `grid` on `fw_inventory`, `grid` on `fw_storage`, `name` on `fw_items`). If a table with that name already exists and the column is missing, the resource logs the mismatch and does not alter the table. The exceptions are `fw_items.weapon` and `fw_items.item_group`: `fw_inventory` adds those columns when they are missing.
-
-Do not put money or jobs on these tables. Inventory is the `fw_inventory` table below, keyed by `fw_characters.id`. A later resource should add its own table and store `fw_characters.id` or `fw_players.id` — see [What a new table should look like](#what-a-new-table-should-look-like).
+Do not put money or jobs on these tables. A later resource adds its own table and stores a character id or an account id. See [A table of your own](#a-table-of-your-own).
 
 ## `fw_players`
 
@@ -56,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `fw_players` (
 
 **Relationships**: `ON DELETE CASCADE` from `fw_characters.player_id` — deleting an account deletes its characters.
 
-**Lua API**: [`fw_core`](fw-core.md) — see the [Player record](fw-core.md#player-record) shape.
+**Calls**: [`fw_core`](fw-core.md). The fields you get back are the [account record](fw-core.md#account-record).
 
 ## `fw_characters`
 
@@ -110,8 +108,8 @@ CREATE TABLE IF NOT EXISTS `fw_characters` (
 | `birth_date` | `birthDate` | `YYYY-MM-DD` or NULL. Year must sit in `FwCharactersConfig` (1800–1899). |
 | `description` | `description` | Lore, up to 2000 characters. Always sent on insert, including `''`. |
 | `appearance` | `appearance` | Body and face JSON. NULL until `SetAppearance`. The creator stores the menu ped-data table here. |
-| `clothing` | `clothing` | Worn clothes, outfits, and wearable state. NULL until `fw_clothing` saves it — see [fw_clothing](fw-clothing.md#the-clothing-document). |
-| `barber` | `barber` | Hair, overlays, and presets. Shape is in [fw_creator](fw-creator.md#the-barber-document). |
+| `clothing` | `clothing` | Worn clothes, outfits, and wearable state. NULL until `fw_clothing` saves it. The shape is on [fw_clothing](fw-clothing.md). |
+| `barber` | `barber` | Hair, overlays, and presets. The shape is on [fw_creator](fw-creator.md). |
 | `x`, `y`, `z` | `x`, `y`, `z` | Last position. Insert uses `defaultSpawn`; the creator then saves the chosen spawn. While the character is online, a newer sample lives in the `fw_characters` server cache and is what a reconnect reads until the cache is flushed into these columns. |
 | `heading` | `heading` | Degrees. |
 | `health` | `health` | 0–65535. Default 600. |
@@ -125,11 +123,11 @@ CREATE TABLE IF NOT EXISTS `fw_characters` (
 
 **Write paths**: `SaveState` updates position and health only — it never rewrites `appearance`, `clothing`, or `barber`. Each of those documents must encode to at most 262144 bytes. `GetCharacters` never selects the JSON columns; it selects `(appearance IS NOT NULL) AS has_appearance` (and the same for clothing/barber) and returns those as `hasAppearance`, `hasClothing`, `hasBarber`.
 
-**Lua API**: [`fw_characters`](fw-characters.md) — see the [Character record](fw-characters.md#character-record) shape.
+**Calls**: [`fw_characters`](fw-characters.md). The fields you get back are the [character record](fw-characters.md#character-record).
 
-## What a new table should look like
+## A table of your own
 
-A gameplay resource that hangs data on a character should follow this shape:
+A resource that stores something for a character should follow this shape:
 
 - Its own table, created by that resource.
 - A column `character_id` that stores `fw_characters.id`.
@@ -192,7 +190,7 @@ CREATE TABLE IF NOT EXISTS `fw_items` (
 | `weapon` | `1` when the item never stacks. A weapon is always one placement. |
 | `item_group` | Filter and sort group. `ammo`, `animals`, `documents`, `food`, `herbs`, `horse`, `medical`, `tools`, `valuables`, `weapons`, or `materials`. |
 | `rotate` | `1` when the player can turn it. |
-| `image` | A file in `fw_inventory/images`, or a `nui://` path. |
+| `image` | Removed on start when the column is still there. The picture is `fw_inventory/images/<name>.png`. |
 
 Files in `items/` are written into this table on start and on `fw_items_reload`. A row inserted for an admin tool stays until it is deleted. The field list and the insert example are in [fw_inventory](fw-inventory.md). The `container` block on a pouch is not a column. It stays on the item file and is merged back onto the catalog when the files load.
 

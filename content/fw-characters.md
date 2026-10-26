@@ -1,118 +1,60 @@
 # fw_characters
 
-Server-only API for one character row. Version `1.0.0`. Registers with `fw_core` API `1`.
+Server. This is how you create a character, read one, and save position or a document on it. Do not write the `fw_characters` table yourself.
 
-Source: `resources/[framework]/fw_characters`.
+It does not open a menu or move the player. The character menu does that and then calls these exports. Your resource should call them too.
 
-This resource owns `fw_characters`. It does not open a menu, spawn a ped, or move the player — `fw_creator` does that and calls these exports. Any later resource that needs the active character should call these exports too, not read the table directly.
+Wait until `IsReady` is true. If it is not, every call below returns `nil` and the reason `fw_characters is not ready`.
 
-## Startup
+A call that takes a character id checks that this player owns that character. A missing character and someone else's character both come back as `character not found`.
 
-`IsReady()` is `false` until config loads, `fw_core` is ready, `sql/characters.sql` has been applied, and `RegisterResource(1)` succeeds. The wait for core is 120 seconds; if it expires, the log is `fw_core is not ready` and the character table is not created.
+The table you get back is a copy. Changing it does not save. Call `UpdateCharacter`, `SetAppearance`, `SetClothing`, `SetBarber`, or `SaveState`.
 
-On success:
+## Server exports
 
-```
-[fw_characters][info] ready version=1.0.0
-```
+### IsReady
 
-Debug lines need:
-
-```
-set fw_characters_debug true
-```
-
-Creation, deletion, startup, and errors print regardless of the convar.
-
-## Exports
-
-| Export | Summary |
-| --- | --- |
-| [`IsReady()`](#isready) | Whether the resource is ready to serve calls. |
-| [`GetCharacters(source)`](#getcharacterssource) | The lightweight list of an account's characters. |
-| [`GetCharacter(source, characterId)`](#getcharactersource-characterid) | A full character record, by id. |
-| [`GetActiveCharacter(source)`](#getactivecharactersource) | The full record of the currently selected character. |
-| [`CreateCharacter(source, data)`](#createcharactersource-data) | Inserts a new character row. |
-| [`UpdateCharacter(source, characterId, data)`](#updatecharactersource-characterid-data) | Changes identity fields on an existing row. |
-| [`SelectCharacter(source, characterId)`](#selectcharactersource-characterid) | Makes a character the active one for a source. |
-| [`ClearCharacter(source)`](#clearcharactersource) | Deselects the active character for a source. |
-| [`SetAppearance(source, characterId, value)`](#setappearance-setclothing-setbarber) | Replaces the appearance document. |
-| [`SetClothing(source, characterId, value)`](#setappearance-setclothing-setbarber) | Replaces the clothing document. |
-| [`SetBarber(source, characterId, value)`](#setappearance-setclothing-setbarber) | Replaces the barber document. |
-| [`SaveState(source, state)`](#savestatesource-state) | Writes position and health for the active character. |
-| [`DeleteCharacter(source, characterId)`](#deletecharactersource-characterid) | Deletes an owned row. |
-
-Every export that takes a `characterId` checks that `source` is an attached `fw_core` player and that the row's `player_id` is that account. A missing row and someone else's row both return `'character not found'`. When the resource is not ready, every export returns `nil, 'fw_characters is not ready'`.
-
----
-
-### `IsReady()`
-
-**Signature**
+Server. True after startup finished.
 
 ```lua
----@return boolean
+--- True when character calls can be used.
+---@return boolean ready
 exports.fw_characters:IsReady()
 ```
 
-**Parameters** — none.
+### GetCharacters
 
-**Returns**
-
-| Type | Description |
-| --- | --- |
-| `boolean` | `true` once config, `fw_core`, the schema, and registration all succeeded. `false` otherwise, including during the startup wait. |
-
----
-
-### `GetCharacters(source)`
-
-**Signature**
+Server. Every character on this player's account, oldest slot first. The body, clothes, and hair documents are left out. `hasAppearance`, `hasClothing`, and `hasBarber` say whether each one exists.
 
 ```lua
+--- The character list for this player, or nil when the player is not in the server.
 ---@param source integer
 ---@return table[]|nil characters
 ---@return string|nil err
 exports.fw_characters:GetCharacters(source)
 ```
 
-Every character on that account, ordered by `slot`. Documents (`appearance`, `clothing`, `barber`) are omitted — see [Character record](#character-record) for the `has*` flags that say whether each exists.
-
-**Parameters**
-
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `source` | `integer` | yes | Server id of the connected player. |
-
-**Returns**
-
-| Type | Description |
-| --- | --- |
-| `table[]` | List of character records (no documents), ordered by slot. |
-| `nil, 'player is not loaded'` | `source` is not an attached player. |
-
-**Example**
+`player is not loaded` means that server id has not finished joining.
 
 ```lua
 local list, err = exports.fw_characters:GetCharacters(source)
-if not list then
+if list == nil then
     print(err)
     return
 end
 
 for index = 1, #list do
     local character = list[index]
-    print(character.id, character.slot, character.firstName, character.hasAppearance)
+    print(character.id, character.firstName, character.hasAppearance)
 end
 ```
 
----
+### GetCharacter
 
-### `GetCharacter(source, characterId)`
-
-**Signature**
+Server. One full character, including body, clothes, and hair, when this player owns it.
 
 ```lua
+--- One character owned by this player, or nil and a reason.
 ---@param source integer
 ---@param characterId integer
 ---@return table|nil character
@@ -120,64 +62,52 @@ end
 exports.fw_characters:GetCharacter(source, characterId)
 ```
 
-**Parameters**
-
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `source` | `integer` | yes | Server id of the connected player. |
-| `characterId` | `integer` | yes | `fw_characters.id` to read. Must be owned by `source`'s account. |
-
-**Returns**
-
-| Type | Description |
+| `err` | When |
 | --- | --- |
-| `table` | Full copy of the record, including `appearance`, `clothing`, and `barber`. |
-| `nil` | See Errors. |
-
-**Errors**
-
-| `err` value | Condition |
-| --- | --- |
-| `'player is not loaded'` | `source` is not an attached player. |
-| `'character id must be a positive integer'` | `characterId` is missing, fractional, or below 1. |
-| `'character not found'` | No row for that id on that account. |
-
----
-
-### `GetActiveCharacter(source)`
-
-**Signature**
+| `player is not loaded` | That server id has not finished joining. |
+| `character id must be a positive integer` | The id is missing or below 1. |
+| `character not found` | No character with that id on this account. |
 
 ```lua
+local character, err = exports.fw_characters:GetCharacter(source, characterId)
+if character == nil then
+    print(err)
+    return
+end
+```
+
+### GetActiveCharacter
+
+Server. The character this player is playing right now. Nil with no reason when nobody is selected. Nil with a reason when the resource is not ready.
+
+```lua
+--- The character selected for this player.
+--- Nil when no character is selected.
 ---@param source integer
 ---@return table|nil character
 ---@return string|nil err
 exports.fw_characters:GetActiveCharacter(source)
 ```
 
-**Parameters**
+```lua
+local character, err = exports.fw_characters:GetActiveCharacter(source)
+if character == nil then
+    print(err)
+    return
+end
+```
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `source` | `integer` | yes | Server id of the connected player. |
+Call this again when you need a fresh copy. Do not keep the table.
 
-**Returns**
+### CreateCharacter
 
-| Type | Description |
-| --- | --- |
-| `table` | Full copy of the character currently selected for `source`. |
-| `nil, nil` | The resource is ready but nobody is selected. |
-| `nil, err` | The resource is not ready. |
+Server. Inserts a character and returns the new id. It does not select that character. Call `SelectCharacter` if the player should play it now.
 
-The active record lives in memory. `SaveState` and the document setters update it in place; identity updates update it only when the active id is the one being edited.
-
----
-
-### `CreateCharacter(source, data)`
-
-**Signature**
+Position and health on the new row come from the character config, not from `data`. The menu saves the spawn the player picked with `SaveState` right after.
 
 ```lua
+--- Creates a character and returns the new id.
+--- Nil and a reason when the name, gender, slot, or document is rejected.
 ---@param source integer
 ---@param data table
 ---@return integer|nil characterId
@@ -185,56 +115,33 @@ The active record lives in memory. `SaveState` and the document setters update i
 exports.fw_characters:CreateCharacter(source, data)
 ```
 
-Inserts a row and returns the new id. It does **not** select the character — call `SelectCharacter` afterward if it should become active. Position and health on the new row come from config (`FwCharactersConfig.defaultSpawn`), not from `data`.
-
-**Parameters**
-
-`source: integer` — server id of the connected player.
-
-`data: table` —
-
 | Field | Required | Rule |
 | --- | --- | --- |
-| `firstName` | yes | String, 1–50 UTF-8 characters. Trimmed. No NUL or control characters. |
-| `lastName` | yes | Same as `firstName`. |
-| `gender` | yes | String, trimmed and lowercased. `male` or `female`; `Male` is accepted. |
-| `birthDate` | no | `YYYY-MM-DD` inside the config year range, or omit. Must be a real calendar date, leap days included. Empty string stores NULL. |
-| `nickname` | no | 1–50 characters, or `''` to store NULL. |
-| `description` | no | Up to 2000 characters. Newlines allowed. Omitted becomes `''`. |
-| `slot` | no | Integer from 1 through that account's `character_slots`. Omitted uses the lowest free slot. |
-| `appearance` | no | Table, encoded JSON ≤ 262144 bytes. |
-| `clothing` | no | Same limit. |
-| `barber` | no | Same limit. |
+| `firstName` | yes | 1–50 characters. |
+| `lastName` | yes | Same as the first name. |
+| `gender` | yes | `male` or `female`. `Male` is accepted and stored in lowercase. |
+| `birthDate` | no | `YYYY-MM-DD` between the configured years, or leave it out. `''` stores nothing. |
+| `nickname` | no | 1–50 characters, or `''` to store nothing. |
+| `description` | no | Up to 2000 characters. Leave it out and it is stored as empty. |
+| `slot` | no | A free slot from 1 through this account's character limit. Leave it out and the lowest free slot is used. |
+| `appearance`, `clothing`, `barber` | no | A table, or leave it out. The saved text cannot be larger than 262144 bytes. |
 
-The slot limit is read from `fw_players.character_slots` at create time (falling back to the connected player's cached `characterSlots` if that read fails).
-
-**Returns**
-
-| Type | Description |
+| `err` | When |
 | --- | --- |
-| `integer` | The new `fw_characters.id`. |
-| `nil, err` | See Errors. |
-
-**Errors**
-
-| `err` value | Condition |
-| --- | --- |
-| `'player is not loaded'` | `source` is not attached. |
-| `'character data must be a table'` | `data` is not a table. |
-| `'first name must be text'` | `firstName` is not a string. Same shape for last name, nickname, description. |
-| `'first name contains unsupported characters'` | NUL, broken UTF-8, or a control character. |
-| `'first name must be 1 to 50 characters'` | Empty or too long (description uses 2000). |
-| `'gender must be male or female'` | Missing or any other value. |
-| `'birth date must be YYYY-MM-DD'` | Present and not that shape. |
-| `'birth date must be a real date from 1800 to 1899'` | Out of the config's year range, or not a real day. |
-| `'appearance must be a table'` | The field is present and not a table (same for `clothing`, `barber`). `nil` means "do not set." |
-| `'could not encode appearance'` | `json.encode` failed. |
-| `'appearance is too large'` | Encoded size over 262144 bytes. |
-| `'character slot limit reached'` | The account already has `character_slots` rows, or the limit is below 1. |
-| `'character slot is not available'` | The requested slot is out of range, taken, or hit the unique key. |
-| `'could not create the character'` | The insert failed for another reason, or the new id could not be read. |
-
-**Example**
+| `player is not loaded` | That server id has not finished joining. |
+| `character data must be a table` | `data` is not a table. |
+| `first name must be text` | The name is not text. The same shape is used for the last name, nickname, and description. |
+| `first name contains unsupported characters` | The name has a control character. |
+| `first name must be 1 to 50 characters` | Empty or too long. Description uses 2000. |
+| `gender must be male or female` | Missing or any other value. |
+| `birth date must be YYYY-MM-DD` | Present and not that shape. |
+| `birth date must be a real date from 1800 to 1899` | Outside the configured years, or not a real day. |
+| `appearance must be a table` | Present and not a table. The same words are used for clothing and barber. |
+| `could not encode appearance` | The table could not be saved as text. |
+| `appearance is too large` | Over 262144 bytes. |
+| `character slot limit reached` | This account already has as many characters as it is allowed. |
+| `character slot is not available` | That slot is taken or out of range. |
+| `could not create the character` | The insert failed. |
 
 ```lua
 local characterId, err = exports.fw_characters:CreateCharacter(source, {
@@ -242,10 +149,8 @@ local characterId, err = exports.fw_characters:CreateCharacter(source, {
     lastName = 'Doe',
     gender = 'female',
     birthDate = '1870-04-12',
-    nickname = 'JD',
-    description = 'A line of lore.',
 })
-if not characterId then
+if characterId == nil then
     print(err)
     return
 end
@@ -256,140 +161,97 @@ if not selected then
 end
 ```
 
-Fires `fw_characters:created` with `(source, character)` after the insert — the character is a full copy and is not yet active.
+After a successful insert, the local event `fw_characters:created` fires with the new character. It is not selected yet.
 
----
+### UpdateCharacter
 
-### `UpdateCharacter(source, characterId, data)`
-
-**Signature**
+Server. Changes name, gender, nickname, birth date, or description. Fields you leave out stay as they are. This does not change body, clothes, hair, position, or health.
 
 ```lua
+--- Updates identity fields that are present in data.
+--- Nil and a reason when there is nothing to update or the character is not owned.
 ---@param source integer
 ---@param characterId integer
 ---@param data table
----@return boolean|nil success
+---@return boolean|nil ok
 ---@return string|nil err
 exports.fw_characters:UpdateCharacter(source, characterId, data)
 ```
 
-Updates only the identity fields present in `data`; omitted fields are left unchanged. Never touches documents, position, or health.
+`''` for nickname or birth date clears that field. `''` for description stores an empty description.
 
-**Parameters**
+`nothing to update` means `data` had none of those fields. `character not found` means this player does not own that id.
 
-`source: integer`, `characterId: integer` — must be owned by `source`'s account.
+The local event `fw_characters:updated` fires with the source and the character id. It does not include the new values. Call `GetCharacter`.
 
-`data: table` —
+### SelectCharacter
 
-| Field | Effect when present |
-| --- | --- |
-| `firstName`, `lastName`, `gender` | Replaced. Same validation as `CreateCharacter`. |
-| `nickname` | Replaced. `''` sets NULL. |
-| `birthDate` | Replaced. `''` sets NULL. |
-| `description` | Replaced. `''` stores an empty string. |
-
-**Returns**
-
-| Type | Description |
-| --- | --- |
-| `true` | Row updated (or already matched the given values — `changedRows == 0` still counts as success). |
-| `nil, err` | See Errors. |
-
-**Errors**
-
-| `err` value | Condition |
-| --- | --- |
-| `'nothing to update'` | `data` contains none of the updatable fields. |
-| `'character not found'` | The id is not owned by that account. |
-
-Fires `fw_characters:updated` with `(source, characterId)` — the event does not carry the new values; call `GetCharacter` for those. If `characterId` is the active character, the in-memory copy is updated too.
-
----
-
-### `SelectCharacter(source, characterId)`
-
-**Signature**
+Server. Makes this character the one the player is playing. It does not move the ped. Your script does that, using `x`, `y`, `z`, and `heading` from the character you get back.
 
 ```lua
+--- Selects an owned character for this player.
 ---@param source integer
 ---@param characterId integer
----@return boolean|nil success
+---@return boolean|nil ok
 ---@return string|nil err
 exports.fw_characters:SelectCharacter(source, characterId)
 ```
 
-Loads an owned character into the active slot, sets state bag `fwCharacterId`, and touches `last_played`. Does **not** move the ped or change routing buckets — the caller teleports.
+`character not found` means this player does not own that id. Selecting the character they are already playing returns true and fires nothing. Selecting a different one fires `fw_characters:cleared` for the old id, then `fw_characters:selected` with a copy of the new character.
 
-**Parameters**
+### ClearCharacter
 
-`source: integer`, `characterId: integer` — must be owned by `source`'s account.
-
-**Returns**
-
-`boolean|nil success`, `string|nil err` — `'character not found'` when not owned; otherwise the same errors as other id-taking exports.
-
-Selecting the id that's already active returns `true` without firing anything. Selecting a different id first clears the previous one (`fw_characters:cleared` with the old id), then fires `fw_characters:selected` with `(source, character)` — a full copy.
-
----
-
-### `ClearCharacter(source)`
-
-**Signature**
+Server. The player is no longer playing a character. True when it cleared one, and true when none was selected. `player is not loaded` when `source` is not a player id.
 
 ```lua
+--- Clears the character selected for this player.
 ---@param source integer
----@return boolean|nil success
+---@return boolean|nil ok
 ---@return string|nil err
 exports.fw_characters:ClearCharacter(source)
 ```
 
-Clears the active character for `source`.
+`fw_characters:cleared` fires only when a character was actually selected.
 
-**Parameters**
+### SetAppearance, SetClothing, SetBarber
 
-`source: integer`.
-
-**Returns**
-
-| Type | Description |
-| --- | --- |
-| `true` | Cleared, or there was nothing to clear. |
-| `nil, 'player is not loaded'` | `source` is not a positive integer. |
-
-Fires `fw_characters:cleared` with `(source, characterId)` only when a character was actually active. Sets `fwCharacterId` to `nil` and touches `last_played`. This does not require the account to still be in the `fw_core` cache — it's also the path used while a player is disconnecting.
-
----
-
-### `SetAppearance`, `SetClothing`, `SetBarber`
-
-**Signature**
+Server. Replaces one document on a character this player owns. Pass nil to clear it. The same rules apply to all three calls.
 
 ```lua
+--- Replaces the body document. Nil clears it.
 ---@param source integer
 ---@param characterId integer
 ---@param value table|nil
----@return boolean|nil success
+---@return boolean|nil ok
 ---@return string|nil err
 exports.fw_characters:SetAppearance(source, characterId, value)
 ```
 
-`SetClothing` and `SetBarber` take identical arguments — the third argument is the document for that column.
+```lua
+--- Replaces the clothing document. Nil clears it.
+---@param source integer
+---@param characterId integer
+---@param value table|nil
+---@return boolean|nil ok
+---@return string|nil err
+exports.fw_characters:SetClothing(source, characterId, value)
+```
 
-**Parameters**
+```lua
+--- Replaces the hair and makeup document. Nil clears it.
+---@param source integer
+---@param characterId integer
+---@param value table|nil
+---@return boolean|nil ok
+---@return string|nil err
+exports.fw_characters:SetBarber(source, characterId, value)
+```
 
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `source` | `integer` | yes | Server id of the connected player. |
-| `characterId` | `integer` | yes | Must be owned by `source`'s account. |
-| `value` | `table \| nil` | yes | A table is encoded and stored (≤ 262144 bytes). `nil` sets the column to NULL. No keys are required inside the table — `fw_creator` defines the keys it writes; see [fw_creator](fw-creator.md). |
+The table is saved as text and cannot be larger than 262144 bytes. `appearance must be a table`, `could not encode appearance`, and `appearance is too large` use the document name. `character not found` means this player does not own that id.
 
-**Returns**
+`fw_characters:updated` fires. It does not include the document. Call `GetCharacter`.
 
-`boolean|nil success`, `string|nil err` — same error set as `CreateCharacter`'s document fields: not a table, encode failure, too large, character not found, player not loaded, bad id.
-
-Fires `fw_characters:updated` with `(source, characterId)`. If this character is active, the in-memory copy of that document is replaced. (`SaveState` is the only write that does *not* fire `updated`.)
-
-**Example**
+The character menu decides the keys inside `appearance` and `barber`. See [fw_creator](fw-creator.md). Worn clothes should go through [fw_clothing](fw-clothing.md), which calls `SetClothing` for you.
 
 ```lua
 local ok, err = exports.fw_characters:SetAppearance(source, characterId, {
@@ -398,64 +260,45 @@ local ok, err = exports.fw_characters:SetAppearance(source, characterId, {
 })
 if not ok then
     print(err)
+    return
 end
-
--- Clear the clothing document.
-exports.fw_characters:SetClothing(source, characterId, nil)
 ```
 
----
+### SaveState
 
-### `SaveState(source, state)`
-
-**Signature**
+Server. Saves position and health for the character this player is playing. It does not change name or documents, and it does not fire `fw_characters:updated`.
 
 ```lua
+--- Saves position and health for the active character.
 ---@param source integer
 ---@param state table
----@return boolean|nil success
+---@return boolean|nil ok
 ---@return string|nil err
 exports.fw_characters:SaveState(source, state)
 ```
 
-Writes position and health for the **active character only**. Never touches the JSON columns, and never fires `fw_characters:updated`. A position in this call is written immediately and replaces that character's cache entry. Periodic position samples do not go through `SaveState`.
-
-**Parameters**
-
-`source: integer`.
-
-`state: table` — all fields optional, but position is all-or-nothing:
+Every field is optional, but position is all or nothing. If you send any of `x`, `y`, `z`, or `heading`, send all four.
 
 | Field | Rule |
 | --- | --- |
-| `x`, `y`, `z`, `heading` | If any one is present, all four are required and must be finite numbers. |
-| `health` | Integer 0–65535. |
-| `healthCore` | Integer 0–100. |
-| `staminaCore` | Integer 0–100. |
-| `isDead` | Boolean. |
+| `x`, `y`, `z`, `heading` | Numbers. Heading is degrees. |
+| `health` | Whole number from 0 to 65535. |
+| `healthCore` | Whole number from 0 to 100. |
+| `staminaCore` | Whole number from 0 to 100. |
+| `isDead` | True or false. |
 
-There is no stamina-outer column — only `health`, `healthCore`, and `staminaCore` are stored.
-
-**Returns**
-
-`boolean|nil success`, `string|nil err`.
-
-**Errors**
-
-| `err` value | Condition |
+| `err` | When |
 | --- | --- |
-| `'state must be a table'` | |
-| `'player is not loaded'` | |
-| `'no active character'` | `SelectCharacter` has not been called for this source. |
-| `'position requires x, y, z, and heading'` | A partial position. |
-| `'health must be an integer from 0 to 65535'` | |
-| `'healthCore must be an integer from 0 to 100'` | |
-| `'staminaCore must be an integer from 0 to 100'` | |
-| `'isDead must be true or false'` | |
-| `'nothing to save'` | `state` had none of these fields. |
-| `'character not found'` | The active row disappeared. |
-
-**Example**
+| `state must be a table` | `state` is not a table. |
+| `player is not loaded` | That server id is not a player. |
+| `no active character` | No character is selected. |
+| `position requires x, y, z, and heading` | Only part of the position was sent. |
+| `health must be an integer from 0 to 65535` | Health is out of range. |
+| `healthCore must be an integer from 0 to 100` | Health core is out of range. |
+| `staminaCore must be an integer from 0 to 100` | Stamina core is out of range. |
+| `isDead must be true or false` | `isDead` is not a boolean. |
+| `nothing to save` | None of these fields were sent. |
+| `character not found` | The selected character no longer exists. |
 
 ```lua
 local ok, err = exports.fw_characters:SaveState(source, {
@@ -464,177 +307,145 @@ local ok, err = exports.fw_characters:SaveState(source, {
     z = 114.09,
     heading = 90.0,
     health = 540,
-    healthCore = 80,
-    staminaCore = 100,
     isDead = false,
 })
+if not ok then
+    print(err)
+end
 ```
 
----
+The game also reports where the ped is standing. Those reports update the coordinates `GetCharacter` returns, and they are written to the database on a timer, on disconnect, and when the character is cleared. `SaveState` writes immediately.
 
-### `DeleteCharacter(source, characterId)`
+### DeleteCharacter
 
-**Signature**
+Server. Deletes a character this player owns. Body, clothes, and hair go with it. If it was selected, it is cleared first.
 
 ```lua
+--- Deletes an owned character.
 ---@param source integer
 ---@param characterId integer
----@return boolean|nil success
+---@return boolean|nil ok
 ---@return string|nil err
 exports.fw_characters:DeleteCharacter(source, characterId)
 ```
 
-Deletes an owned row. `appearance`, `clothing`, and `barber` go with it. If the row was active, it's cleared first (`fw_characters:cleared` fires), then `fw_characters:deleted` fires with `(source, characterId)`. The freed slot can be used by the next `CreateCharacter`.
-
-**Parameters**
-
-`source: integer`, `characterId: integer` — must be owned by `source`'s account.
-
-**Returns**
-
-`boolean|nil success`, `string|nil err` — same ownership/validation errors as the other id-taking exports.
-
----
+`character not found` means this player does not own that id. `fw_characters:cleared` fires when it was selected. `fw_characters:deleted` fires after the row is gone.
 
 ## Character record
 
-`GetCharacter` and `GetActiveCharacter` return a copy of this record. `GetCharacters` returns the same fields minus `appearance`, `clothing`, and `barber` (replaced by the `has*` flags).
+| Field | Meaning |
+| --- | --- |
+| `id` | Character id. Store this when a row belongs to one character. |
+| `source` | Server id the row was loaded for. |
+| `playerId` | Account id of the owner. |
+| `slot` | Slot on that account, starting at 1. |
+| `firstName`, `lastName` | 1–50 characters. |
+| `nickname` | Optional. Nil when empty. |
+| `gender` | `male` or `female`. |
+| `birthDate` | `YYYY-MM-DD`, or nil. |
+| `description` | Lore. Empty string when blank. |
+| `x`, `y`, `z`, `heading` | Last known position. A recent sample can be newer than the last database write. |
+| `health` | 0–65535. A new character starts at 600. |
+| `healthCore`, `staminaCore` | 0–100. A new character starts at 100. |
+| `isDead` | True or false. |
+| `createdAt` | When the row was created. |
+| `lastPlayed` | When they last played it. Nil until the first selection. |
+| `hasAppearance`, `hasClothing`, `hasBarber` | True when that document exists. |
+| `appearance`, `clothing`, `barber` | The documents. Only on `GetCharacter` and `GetActiveCharacter`. |
 
-| Field | Type | Meaning |
-| --- | --- | --- |
-| `id` | `integer` | `fw_characters.id`. The id other resources should store. |
-| `source` | `integer` | Server id the row was loaded for. |
-| `playerId` | `integer` | `fw_players.id` of the owner. |
-| `slot` | `integer` | Slot on that account, 1 through `character_slots`. |
-| `firstName` | `string` | 1–50 characters. |
-| `lastName` | `string` | 1–50 characters. |
-| `nickname` | `string \| nil` | Optional, 1–50 characters. `nil` when the column is NULL. |
-| `gender` | `string` | `male` or `female`. |
-| `birthDate` | `string \| nil` | `YYYY-MM-DD`, or `nil`. |
-| `description` | `string` | Lore. Empty string when left blank. Max 2000 characters. |
-| `x`, `y`, `z` | `number` | Last known position. A cached sample wins over the database row until that sample is flushed. |
-| `heading` | `number` | Last known facing, in degrees. |
-| `health` | `integer` | Entity health, 0–65535. New characters use `defaultHealth` (600). |
-| `healthCore` | `integer` | 0–100. Default 100. |
-| `staminaCore` | `integer` | 0–100. Default 100. |
-| `isDead` | `boolean` | |
-| `createdAt` | `string` | Database timestamp. |
-| `lastPlayed` | `string \| nil` | Set on select, clear, or drop. `nil` until the first selection. |
-| `hasAppearance` | `boolean` | The appearance column is non-NULL. |
-| `hasClothing` | `boolean` | The clothing column is non-NULL. |
-| `hasBarber` | `boolean` | The barber column is non-NULL. |
-| `appearance` | `table \| nil` | Present on the full record only. |
-| `clothing` | `table \| nil` | Present on the full record only. |
-| `barber` | `table \| nil` | Present on the full record only. |
+`GetCharacters` leaves the three documents out.
 
-A document that is stored but cannot be decoded becomes `nil` and an error is logged — the rest of the row is still returned. The record is always a copy: changing it does not change the database; call `UpdateCharacter`, `SetAppearance`, `SetClothing`, `SetBarber`, or `SaveState`.
+A new character is placed at the default spawn in `server/config.lua` until something calls `SaveState`. Birth years must fall between `minBirthYear` and `maxBirthYear` in that file. Today that is 1800 through 1899.
 
-## Config
+## Events
 
-`server/config.lua`, table `FwCharactersConfig`. Read once at startup — a bad value aborts startup and the resource stays not ready.
+Local server events. Listen with `AddEventHandler`. They are not saved. Your script must already be running. `fw_characters:ready` is the exception: if you start later, call `IsReady`.
 
-| Field | Current value | Rule |
-| --- | --- | --- |
-| `defaultSpawn.x` | `-174.39` | Finite number. Used only when `CreateCharacter` inserts a row. |
-| `defaultSpawn.y` | `633.78` | Finite number. |
-| `defaultSpawn.z` | `114.09` | Finite number. |
-| `defaultSpawn.heading` | `0.0` | Finite number. |
-| `defaultHealth` | `600` | Integer 0–65535. |
-| `defaultHealthCore` | `100` | Integer 0–100. |
-| `defaultStaminaCore` | `100` | Integer 0–100. |
-| `minBirthYear` | `1800` | Integer 1–9999, not above `maxBirthYear`. |
-| `maxBirthYear` | `1899` | Integer 1–9999. |
-| `positionSettleMs` | `15000` | Integer 0–120000. Reports in this window after `SelectCharacter` are ignored. |
-| `positionSampleMinMs` | `45000` | Integer 5000–600000, not above `positionSampleMaxMs`. |
-| `positionSampleMaxMs` | `90000` | Integer 5000–600000. |
-| `positionFlushMinMs` | `120000` | Integer 10000–3600000, not above `positionFlushMaxMs`. |
-| `positionFlushMaxMs` | `240000` | Integer 10000–3600000. |
+Listeners for `created`, `selected`, `cleared`, `updated`, and `deleted` run before the export returns.
 
-Confirm the spawn coordinates in game. `fw_creator` overwrites them with the player's chosen spawn immediately after selecting the new character.
+### fw_characters:ready
 
-## Position cache
-
-The client reports the ped's `x`, `y`, `z`, and heading on a random interval between `positionSampleMinMs` and `positionSampleMaxMs`. A report is skipped while the screen is fading or a menu has focus, and for `positionSettleMs` after the character is selected. That keeps the character-select room and the creator camera out of the saved spot.
-
-Reports update a server cache keyed by `fw_characters.id`. They do not write the database. With `fw_characters_debug` on, a new cache entry logs `cached position` and a database write logs `saved position`. `GetCharacters`, `GetCharacter`, `GetActiveCharacter`, and `SelectCharacter` return the cached coordinates when an entry exists, and the database row otherwise.
-
-A random interval between `positionFlushMinMs` and `positionFlushMaxMs` writes every dirty cache entry with one `UPDATE` per character (`x`, `y`, `z`, `heading` only). That flush does not require the player to still be connected. Disconnecting, clearing the active character, or stopping `fw_characters` writes that character immediately. F8 quit stops the client resource first and sends one last position. The server caches it for that character even if `playerDropped` has already removed the player, and flushes it if the player is already gone. The cache entry stays after a disconnect, so a reconnect on the same server still uses it if the flush has not landed. A server restart has only what the last flush or disconnect write stored.
-
-A sample that is within 2 metres and 45 degrees of the cached spot is ignored. `SaveState` still writes position immediately and replaces the cache entry as clean.
-
-## Local events
-
-Server events. Listeners run before the export returns.
+Fires once, when the resource is ready. `version` is a string such as `1.0.0`.
 
 ```lua
+---@param version string
 AddEventHandler('fw_characters:ready', function(version)
-    -- version: manifest string, e.g. '1.0.0'
 end)
+```
 
+### fw_characters:created
+
+The new character is a copy and is not selected yet.
+
+```lua
+---@param source integer
+---@param character table
 AddEventHandler('fw_characters:created', function(source, character)
-    -- character: full copy, not selected yet
 end)
+```
 
+### fw_characters:selected
+
+A copy of the character that just became active. Call `GetCharacter` when you need a fresh one.
+
+```lua
+---@param source integer
+---@param character table
 AddEventHandler('fw_characters:selected', function(source, character)
-    -- character: full copy of the newly active character
 end)
+```
 
+### fw_characters:cleared
+
+The player is no longer on that character. Also fires when they disconnect, if one was selected. It does not fire when this resource stops.
+
+```lua
+---@param source integer
+---@param characterId integer
 AddEventHandler('fw_characters:cleared', function(source, characterId)
 end)
+```
 
+### fw_characters:updated
+
+Name or a document was saved. Not fired by `SaveState`. The new values are not in the event. Call `GetCharacter`.
+
+```lua
+---@param source integer
+---@param characterId integer
 AddEventHandler('fw_characters:updated', function(source, characterId)
-    -- identity or document save, not SaveState. The JSON is not in the event.
 end)
+```
 
+### fw_characters:deleted
+
+The character id that was deleted.
+
+```lua
+---@param source integer
+---@param characterId integer
 AddEventHandler('fw_characters:deleted', function(source, characterId)
 end)
 ```
 
-A resource started after `ready` has already fired should call `IsReady` directly.
+## Value on the player
 
-On `playerDropped`: an active character is cleared, `last_played` is updated, and `fw_characters:cleared` fires. `fw_core:playerDropped` also fires — the order between the two handlers follows resource start order. On resource stop: active rows get `last_played` updated, but `cleared` is **not** fired for that path.
-
-## State bag
-
-`Player(source).state.fwCharacterId` is the selected character id, or `nil` when none is selected. It replicates. The account id remains `fwPlayerId`.
+`Player(source).state.fwCharacterId` is the selected character id, or nil when none is selected. The client can read it. The account id is still `fwPlayerId` from [fw_core](fw-core.md).
 
 ```lua
-AddStateBagChangeHandler('fwCharacterId', nil, function(bagName, _, value)
-    local player = GetPlayerFromStateBagName(bagName)
-    if player == 0 then
-        return
-    end
-    -- value is the character id, or nil
-end)
+local characterId = Player(source).state.fwCharacterId
 ```
-
-After a resource restart, a still-connected player is restored from this state bag. A restore that fails clears the bag.
 
 ## Console commands
 
-Restricted to the server console — a player gets no output.
+These do nothing when a player types them.
 
-```
-fw_characters
-fw_char_list <serverId>
-fw_char_create <serverId> <firstName> <lastName> <male|female> [YYYY-MM-DD]
-fw_char_select <serverId> <characterId>
-fw_char_delete <serverId> <characterId>
-```
-
-| Command | Output |
+| Command | What it does |
 | --- | --- |
-| `fw_characters` | Prints `ready` and how many sources have an active character. |
-| `fw_char_list` | Prints `id`, `slot`, name, and gender for that server id. |
-| `fw_char_create` | Single-word names only (the console splits on spaces); the export accepts spaces inside `firstName`. Does not select the new character. |
+| `fw_characters` | Prints whether the resource is ready, and how many players have a character selected. |
+| `fw_char_list <serverId>` | Lists that player's characters. |
+| `fw_char_create <serverId> <firstName> <lastName> <male\|female> [YYYY-MM-DD]` | Creates one. Names cannot contain a space here. It does not select the new character. |
+| `fw_char_select <serverId> <characterId>` | Selects that character. |
+| `fw_char_delete <serverId> <characterId>` | Deletes that character. |
 
-`serverId` is the live server id from `fw_health`, after `playerJoining`. A character can be created only for a connected player.
-
-## Files
-
-| File | Purpose |
-| --- | --- |
-| `fxmanifest.lua` | Version `1.0.0`. Dependencies `oxmysql` and `fw_core`. |
-| `server/config.lua` | Spawn, health defaults, birth years. |
-| `sql/characters.sql` | Table definition. |
-| `server/main.lua` | Schema, exports, events, console commands. |
+`serverId` is the live server id from `fw_health`.

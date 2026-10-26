@@ -1,80 +1,22 @@
 # fw_core
 
-Server-only core API. Version `1.1.0`. API major `1`.
+Server. This is the account for a player who has joined. Your resource reads that account here, and tells the server which API number it was written for.
 
-Source: `resources/[framework]/fw_core`.
+There is no client script.
 
-`fw_core` parses its manifest version, creates `fw_players` if that table is missing, and admits the connecting player. It has no client script. Gameplay resources register with it so a future API break fails at startup with a named error, instead of failing silently later.
+The version is `1.1.0`. The first number, `1`, is the API number. Pass that number to `RegisterResource`. A later `1.2.0` can add calls and your resource still works. A future `2.0.0` is a different API, and your resource must be updated.
 
-## API versioning
+## Server exports
 
-Manifest version is `MAJOR.MINOR.PATCH`. The API version is `MAJOR`.
+### IsReady
 
-| Rule | Detail |
-| --- | --- |
-| Minor bump | May add exports. Callers of the current API major keep working. |
-| Patch bump | Never changes the API. |
-| Major bump | A different API. No compatibility shims are kept for the old major. |
-| `RegisterResource` | Takes one positive integer. Succeeds only when it equals the running major — there is no range syntax. |
-
-`1.1.0` is API `1`. The player exports (`GetPlayer`, `GetPlayerById`, `GetSourceByPlayerId`) were added in `1.1.0` without changing the major.
-
-## Startup
-
-`IsReady()` stays `false` until the manifest version is a valid `MAJOR.MINOR.PATCH` and `sql/players.sql` has been applied. A bad version or a failed table setup logs the error and leaves the resource not ready; connecting players are then refused.
-
-The resource yields inside `MySQL.ready.await` before it becomes ready, while FXServer already reports it as started. A dependent that calls `IsReady()` once and gives up will run too early — poll it, as `fw_characters` does, for up to 120 seconds.
-
-On success:
-
-```
-[fw_core][info] ready version=1.1.0 api=1
-```
-
-The local event `fw_core:ready` fires with `(version, apiVersion)` right after. A resource started later by `ensure` has already missed that event and should call `IsReady()` directly instead.
-
-Debug lines are off unless this convar is `1`, `true`, or `yes` (checked at the moment each line is written):
-
-```
-set fw_core_debug true
-```
-
-Startup, registration, and errors print regardless of the convar.
-
-## Exports
-
-All exports are server-side. Where an argument is documented as `integer`, a whole-number float also works — the implementation normalizes with `math.tointeger`, so `1` and `1.0` both resolve to `1`, while `1.5` is rejected.
-
-| Export | Summary |
-| --- | --- |
-| [`IsReady()`](#isready) | Whether the resource is ready to serve calls. |
-| [`GetVersion()`](#getversion) | The manifest version string. |
-| [`GetApiVersion()`](#getapiversion) | The manifest major version as an integer. |
-| [`RegisterResource(requiredApiVersion)`](#registerresourcerequiredapiversion) | Declares API compatibility for the calling resource. |
-| [`GetPlayer(source)`](#getplayersource) | The connected account record for a server id. |
-| [`GetPlayerById(playerId)`](#getplayerbyidplayerid) | The connected account record for an account id. |
-| [`GetSourceByPlayerId(playerId)`](#getsourcebyplayeridplayerid) | The server id for a connected account id. |
-
----
-
-### `IsReady()`
-
-**Signature**
+Server. True after the account table is ready. False while the database is still opening, or if that setup failed.
 
 ```lua
----@return boolean
+--- True when other resources can call fw_core.
+---@return boolean ready
 exports.fw_core:IsReady()
 ```
-
-**Parameters** — none.
-
-**Returns**
-
-| Type | Description |
-| --- | --- |
-| `boolean` | `true` once the manifest version parsed and `fw_players` is usable. `false` while starting, after a failed database setup, and immediately after `fw_core` stops. |
-
-**Example**
 
 ```lua
 if not exports.fw_core:IsReady() then
@@ -82,103 +24,60 @@ if not exports.fw_core:IsReady() then
 end
 ```
 
----
+The server can say `fw_core` has started before this returns true. Wait for it, as the example on the [overview](README.md) does.
 
-### `GetVersion()`
+### GetVersion
 
-**Signature**
+Server. The full version string, such as `1.1.0`. This does not check the database. It can return a version while `IsReady` is still false.
 
 ```lua
----@return string|nil
+--- The version string from this resource, or nil if that string is not three numbers.
+---@return string|nil version
 exports.fw_core:GetVersion()
 ```
 
-**Parameters** — none.
-
-**Returns**
-
-| Type | Description |
-| --- | --- |
-| `string` | The manifest version, e.g. `'1.1.0'`. |
-| `nil` | Only when the manifest version string is missing or not shaped `MAJOR.MINOR.PATCH`. A database failure does **not** clear this — `IsReady()` can be `false` while this still returns `'1.1.0'`. |
-
-**Example**
-
 ```lua
-print(exports.fw_core:GetVersion()) --> '1.1.0'
+print(exports.fw_core:GetVersion())
 ```
 
----
+### GetApiVersion
 
-### `GetApiVersion()`
-
-**Signature**
+Server. The API number, such as `1`. Use this instead of splitting the version string yourself.
 
 ```lua
----@return integer|nil
+--- The API number, or nil if the version string is not three numbers.
+---@return integer|nil apiVersion
 exports.fw_core:GetApiVersion()
 ```
 
-**Parameters** — none.
-
-**Returns**
-
-| Type | Description |
-| --- | --- |
-| `integer` | The manifest major version, e.g. `1`. |
-| `nil` | Same condition as `GetVersion()` — an invalid manifest version. |
-
-Prefer this over parsing the string from `GetVersion()` yourself.
-
-**Example**
-
 ```lua
-print(exports.fw_core:GetApiVersion()) --> 1
+print(exports.fw_core:GetApiVersion())
 ```
 
----
+### RegisterResource
 
-### `RegisterResource(requiredApiVersion)`
-
-**Signature**
+Server. Tell `fw_core` that your resource was written for an API number. Call it once, from your own script, after `IsReady` is true.
 
 ```lua
+--- Records that this resource was written for an API number.
+--- False when core is not ready, the call did not come from another resource, or the number does not match.
 ---@param requiredApiVersion integer
----@return boolean success
+---@return boolean ok
 ---@return string|nil err
 exports.fw_core:RegisterResource(requiredApiVersion)
 ```
 
-Records that the calling resource was written for `requiredApiVersion`. Call it once from that resource's own startup, after core is ready. The caller is read via `GetInvokingResource()` — there is no resource-name argument, and calling this from `fw_core` itself always fails.
+`requiredApiVersion` must be the running API number. `1` and `1.0` both work. `1.5`, `0`, and text do not. There is no range. Asking for `2` while the server is on `1` fails, and the error names both numbers.
 
-**Parameters**
-
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `requiredApiVersion` | `integer` | yes | The API major this resource was written for. Must be a positive whole number; floats with no fraction (`1.0`) are accepted. |
-
-**Returns**
-
-| Type | Description |
+| `err` | When |
 | --- | --- |
-| `success: boolean` | `true` when registration succeeded. |
-| `err: string \| nil` | `nil` on success; an error string otherwise (see Errors). |
+| `fw_core is not ready` | The database setup has not finished. |
+| `RegisterResource must be called from another resource` | The call came from `fw_core` itself. |
+| `<resource>: required API version must be a positive integer` | The number was missing or not a whole number above 0. |
+| `fw_core API 1 is incompatible with required API 2; <resource> needs a newer core` | You asked for a newer API than this server has. |
+| `fw_core API 1 is incompatible with required API <n>; update <resource> for API 1` | You asked for an older API. |
 
-**Errors**
-
-| `err` value | Condition |
-| --- | --- |
-| `'fw_core is not ready'` | Core has not finished startup. |
-| `'RegisterResource must be called from another resource'` | The caller was `fw_core` itself, or `GetInvokingResource()` was empty. |
-| `'<resource>: required API version must be a positive integer'` | The argument was missing, fractional, zero, negative, or not a number. |
-| `'fw_core API 1 is incompatible with required API 2; <resource> needs a newer core'` | The required integer is higher than the running API. |
-| `'fw_core API 1 is incompatible with required API <n>; update <resource> for API 1'` | The required integer is lower than the running API. |
-
-Every failure is also printed as `[fw_core][error]` by `fw_core` itself — the caller doesn't need to log it again, just decide whether to `error()` or continue.
-
-Calling this again from the same resource replaces the stored requirement and logs `updated registration`. Stopping the resource removes the registration automatically; there is no unregister export.
-
-**Example**
+`fw_core` also prints the error. You only need to stop your resource or keep going.
 
 ```lua
 local ok, err = exports.fw_core:RegisterResource(1)
@@ -188,208 +87,137 @@ if not ok then
 end
 ```
 
----
+Calling it again from the same resource replaces the stored number. Stopping your resource removes the registration. There is no separate unregister call.
 
-### `GetPlayer(source)`
+### GetPlayer
 
-**Signature**
+Server. A copy of the account for a player who has finished joining. Nil during the connection check, and nil if that server id is not in the game.
 
 ```lua
+--- The connected account, or nil when that player has not finished joining.
 ---@param source integer
 ---@return table|nil player
 exports.fw_core:GetPlayer(source)
 ```
 
-Returns a copy of the connected account for that server id, read from memory — this never queries the database and never loads a row by license.
-
-**Parameters**
-
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `source` | `integer` | yes | Server id of the connected player. |
-
-**Returns**
-
-| Type | Description |
-| --- | --- |
-| `table` | A copy of the [player record](#player-record). |
-| `nil` | `source` is not attached — this includes the entire `playerConnecting` deferral. The record exists from `playerJoining` onward (same moment `fw_core:playerLoaded` fires). |
-
-**Example**
+`source` is the player's server id. The table is a copy. Changing it does not save. The fields are in [Account record](#account-record).
 
 ```lua
 local player = exports.fw_core:GetPlayer(source)
-if player then
-    print(('source %d is account %d'):format(source, player.id))
+if player == nil then
+    return
 end
+print(('source %d is account %d'):format(source, player.id))
 ```
 
----
+### GetPlayerById
 
-### `GetPlayerById(playerId)`
-
-**Signature**
+Server. The same account, looked up by account id instead of server id. Nil when that account is offline. This does not read the database.
 
 ```lua
+--- The connected account for an account id, or nil when that account is offline.
 ---@param playerId integer
 ---@return table|nil player
 exports.fw_core:GetPlayerById(playerId)
 ```
 
-Same record and copy semantics as `GetPlayer`, looked up by `fw_players.id` instead of server id.
-
-**Parameters**
-
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `playerId` | `integer` | yes | `fw_players.id` of the account. |
-
-**Returns**
-
-| Type | Description |
-| --- | --- |
-| `table` | A copy of the [player record](#player-record). |
-| `nil` | That account is offline. This is an online-players lookup, not a database read — an id that exists in the table but is offline still returns `nil`. |
-
-**Example**
+`playerId` is `fw_players.id`.
 
 ```lua
 local player = exports.fw_core:GetPlayerById(1)
+if player == nil then
+    return
+end
 ```
 
----
+### GetSourceByPlayerId
 
-### `GetSourceByPlayerId(playerId)`
-
-**Signature**
+Server. The server id for an account that is online. Nil when that account is offline. Use this when you stored an account id and need to send that player a client event.
 
 ```lua
+--- The server id for an online account, or nil when that account is offline.
 ---@param playerId integer
 ---@return integer|nil source
 exports.fw_core:GetSourceByPlayerId(playerId)
 ```
 
-**Parameters**
-
-| Name | Type | Required | Description |
-| --- | --- | --- | --- |
-| `playerId` | `integer` | yes | `fw_players.id` of the account. |
-
-**Returns**
-
-| Type | Description |
-| --- | --- |
-| `integer` | The connected server id for that account. |
-| `nil` | That account is offline. |
-
-**Example**
-
 ```lua
 local target = exports.fw_core:GetSourceByPlayerId(playerId)
-if target then
-    TriggerClientEvent('my_resource:notify', target)
+if target == nil then
+    return
 end
+TriggerClientEvent('my_resource:notify', target)
 ```
 
----
+## Account record
 
-## Player record
+`GetPlayer`, `GetPlayerById`, `fw_core:playerLoaded`, and `fw_core:playerDropped` all use this shape. It is a copy.
 
-`GetPlayer`, `GetPlayerById`, `fw_core:playerLoaded`, and `fw_core:playerDropped` all pass this same shape. It is always a **copy** — changing the returned table does not change the cache or the database.
-
-| Field | Type | Meaning |
-| --- | --- | --- |
-| `id` | `integer` | `fw_players.id`. Other tables should store this. |
-| `source` | `integer` | Current server id. Changes across reconnects. |
-| `license` | `string` | `license:` or `license2:` value, prefix included. Max 64 bytes. |
-| `steam` | `string \| nil` | `steam:` identifier when present and at most 40 bytes. |
-| `discord` | `string \| nil` | `discord:` identifier when present and at most 40 bytes. |
-| `name` | `string` | Player name: control characters removed, trimmed, clipped to 64 UTF-8 characters. Empty becomes `'unknown'`. |
-| `role` | `string` | Account role. New rows use `'user'`. Max 16 characters. |
-| `characterSlots` | `integer` | How many characters `fw_characters` may create. Column default is 5. |
-| `warnings` | `integer` | Stored count. `fw_core` does not act on it. |
-| `banned` | `boolean` | Always `false` on a connected player — a banned license never finishes connect. |
-| `bannedUntil` | `integer` | Always `0` on a connected player. |
-
-`role`, `warnings`, `character_slots`, and the ban columns are not writable through any export — change them directly in the table. `role`, `warnings`, and a ban are re-read on the account's *next connection*. `fw_characters` re-reads `character_slots` at the moment a character is created, so a slot change applies to the next create without requiring a reconnect.
-
-## Connect, join, drop lifecycle
-
-Identity comes from `GetPlayerIdentifierByType(source, 'license')`, falling back to `license2` if that's missing. One license cannot hold two server slots — the later connection is dropped with `This account is already connected.`
-
-`playerConnecting` answers the deferral with one of:
-
-| Message | Condition |
+| Field | Meaning |
 | --- | --- |
-| `The server database is not available.` | Schema setup failed. |
-| `The server is still starting. Try again in a moment.` | Schema setup has not finished. |
-| `Rockstar license was not found. Restart RedM and try again.` | No usable license, or the license is longer than 64 bytes. |
-| `You are banned from this server.` | `banned` is set and `banned_until` is `0` (no expiry). |
-| `You are banned until YYYY-MM-DD HH:MM UTC.` | `banned` is set and `banned_until` is still in the future. |
-| `Could not load your player.` | The admit query threw. |
+| `id` | Account id. Store this when a row belongs to the account, not one character. |
+| `source` | Server id. It changes when they reconnect. |
+| `license` | Rockstar license, including the `license:` prefix. |
+| `steam` | Steam id, or nil. |
+| `discord` | Discord id, or nil. |
+| `name` | The name they joined with. |
+| `role` | Account label. New accounts are `user`. This is not an admin check. Use [fw_admin](fw-admin.md). |
+| `characterSlots` | How many characters this account may create. |
+| `warnings` | A stored count. `fw_core` does not act on it. |
+| `banned` | Always false here. A banned license never finishes connecting. |
+| `bannedUntil` | Always 0 here. |
 
-An expired ban (`banned_until` > 0 and ≤ `os.time()`) is cleared on that connection and the player is admitted.
+There is no export to change role, warnings, slots, or a ban. Change those in the `fw_players` table. Role, warnings, and a ban are read again the next time that license connects. The character slot count is read again the next time a character is created.
 
-`playerJoining` attaches the cache, sets the state bag, and fires `fw_core:playerLoaded`. A failure here drops the player with the same class of message. `playerDropped` fires `fw_core:playerDropped` with the copy (before the cache entry is cleared), drops the cache, and updates `last_seen`.
+A player is refused while connecting when the database is down, the server is still starting, RedM did not send a license, the license is banned, or the same license is already in the server.
 
-There is no export to ban, warn, or change role from Lua. Those columns exist for an admin tool to update directly.
+## Events
 
-## Local events
+These are local server events. Listen with `AddEventHandler`. They are not saved. Your script must already be running, except where a note says to call an export instead.
 
-Server events — not network events.
+### fw_core:ready
+
+Fires once, after the account table is ready. A resource started later has missed it. Call `IsReady`.
 
 ```lua
+--- version is a string such as '1.1.0'. apiVersion is the API number, such as 1.
+---@param version string
+---@param apiVersion integer
 AddEventHandler('fw_core:ready', function(version, apiVersion)
-    -- version: string, e.g. '1.1.0'
-    -- apiVersion: integer, e.g. 1
-end)
-
-AddEventHandler('fw_core:playerLoaded', function(source, player)
-    -- player: copy of the player record
-end)
-
-AddEventHandler('fw_core:playerDropped', function(source, player)
-    -- player: copy captured before the cache entry was removed
 end)
 ```
 
-## State bag
+### fw_core:playerLoaded
 
-`Player(source).state.fwPlayerId` is the account id. It replicates to the client:
+Fires when a player has finished joining. `player` is a copy of the account. Call `GetPlayer` again when you need a fresh one.
+
+```lua
+---@param source integer
+---@param player table
+AddEventHandler('fw_core:playerLoaded', function(source, player)
+    print(player.id)
+end)
+```
+
+### fw_core:playerDropped
+
+Fires when that player leaves. `player` is a copy taken before the account is dropped from memory.
+
+```lua
+---@param source integer
+---@param player table
+AddEventHandler('fw_core:playerDropped', function(source, player)
+end)
+```
+
+## Value on the player
+
+`Player(source).state.fwPlayerId` is the account id. The client can read it:
 
 ```lua
 local playerId = LocalPlayer.state.fwPlayerId
 ```
 
-A failed write retries on a generation counter; a newer attach or drop cancels any retry that belonged to the previous value, so a stale retry can never overwrite a current id.
-
 ## Console command
 
-```
-fw_health
-```
-
-Restricted to the server console (`source == 0`); a player who runs it gets no output.
-
-```
-[fw_core] fw_health
-  ready: true
-  version: 1.1.0
-  api: 1
-  debug: true
-  players: 1
-    id=1 source=4 Player name
-  registrations: 1
-    fw_characters api=1
-```
-
-`debug` reflects the convar at the moment the command runs. `players` is the in-memory connected count. Each registration line is the resource name and the API major it required.
-
-## Files
-
-| File | Purpose |
-| --- | --- |
-| `fxmanifest.lua` | Version `1.1.0`, dependency `oxmysql`, server scripts only. |
-| `sql/players.sql` | `CREATE TABLE IF NOT EXISTS fw_players`. |
-| `server/players.lua` | Connect, cache, state bag, schema. |
-| `server/main.lua` | Version, registration, health command, exports. |
+`fw_health` prints whether core is ready, the version, the API number, how many players are connected, and which resources registered. It does nothing when a player types it.
