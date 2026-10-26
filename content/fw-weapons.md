@@ -217,19 +217,19 @@ Swaps the two revolvers when both slots already hold a gun. Moving the right rev
 
 ## Ammo
 
-The pile in the satchel is the reserve. The weapon wheel shows the rounds in the gun, then the rounds still in that pile. With 50 revolver rounds, reloading two revolvers puts 6 in each and leaves 38 in the satchel. The wheel shows 6/38. Shooting empties those 6. The next reload takes the replacement rounds from the 38.
+The pile in the satchel is the reserve. Right now those rounds stay in the satchel. Adding them does not fill the gun belt on the weapon wheel. The gun belt is the extra ammo the wheel shows behind the rounds already in the gun.
+
+A reload that fills a gun still takes the rounds from the satchel. The client console (F8) prints a line when ammo is added, when a reload starts and ends, and when the weapon wheel changes ammo kind. A kind change does not start a reload by itself.
 
 The bag screen updates when a gun is filled. The database write waits and goes out with the other waiting satchel writes, about every five seconds, and also when the player leaves. A crash inside that wait can put those reloaded rounds back.
 
 `stack` on the ammo item is the most of that kind the satchel can hold. A shop gives the pile with `AddItem`, on the [inventory](fw-inventory.md) page. Revolver rounds, rifle rounds, arrows, and the rest each have their own pile.
 
-If the player carries more than one kind for the same guns, the weapon wheel lists each kind. Regular and Express can both be there. Switching kinds unloads the gun first. That reload puts the rounds that were in the gun back into the old pile and leaves the gun empty. When that reload finishes, a second reload loads the new kind, up to what the gun holds. The switch takes two reloads.
+If the player carries more than one kind for the same guns, the weapon wheel can list each kind. Regular and Express can both be there. Switching kinds is only printed in the client console for now. It does not unload the gun or start a reload.
 
-Two revolvers that switch together share the new pile. The first gun fills, then the second gun takes what is left. With 10 Express rounds and two revolvers that hold 6, the switch puts 6 in one gun and 4 in the other, and the Express pile is empty. The old rounds are back in their own pile.
+Dropping a pile takes that kind off the wheel. Rounds already in the gun stay there until they are fired.
 
-Dropping a pile takes that kind off the wheel. Rounds already in the gun stay there until they are fired or you switch kinds. The number after the slash is the pile in the satchel.
-
-Two guns that take the same rounds, such as two Cattlemen, share that reserve. Each one shows its own loaded rounds in front of the same satchel count.
+Two guns that take the same rounds, such as two Cattlemen, share that satchel pile.
 
 ### fw_weapons:load
 
