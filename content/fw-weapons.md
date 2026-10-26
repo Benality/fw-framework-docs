@@ -4,9 +4,9 @@ Runs on the server and in the player's game. This is the weapon kit: the guns an
 
 The bag still holds the item. Equipping takes it out of the bag and puts it on a slot. Unequipping puts it back.
 
-The slots are `revolver_1`, `revolver_2`, `longarm`, `bow`, `lasso`, `knife`, `lantern`, and `binoculars`.
+The slots are `revolver_1` (right revolver), `revolver_2` (left revolver), `longarm`, `bow`, `lasso`, `knife`, `lantern`, and `binoculars`.
 
-A sidearm needs a gunbelt. The second sidearm needs an offhand holster. `fw_weapons` reads those from [fw_clothing](fw-clothing.md). If the belt comes off, the guns in those slots go back to the bag. If the bag is full, the player sees `Make room in the satchel first.`
+A sidearm needs a gunbelt. The left revolver also needs the offhand holster, and the right revolver has to be filled first. Dragging a gun onto the empty left slot shows `Equip the right revolver first.` Taking the right revolver off while the left one is still there shows `Take the left revolver off first.` `fw_weapons` reads the belt and holster from [fw_clothing](fw-clothing.md). If the belt comes off, the guns in those slots go back to the bag. If the bag is full, the player sees `Make room in the satchel first.`
 
 `source` on this page is the player's number for this visit. Nothing is written as `nil`.
 
@@ -108,7 +108,7 @@ TriggerServerEvent('fw_weapons:wear', belt, offhand)
 
 Sent from the player's game to the server. The satchel sends this when the player drops a bag item onto a loadout slot.
 
-`placementId` is the `id` from [GetItems](fw-inventory.md). `slotId` is one of the slot names above. The item's `kit` field has to match that slot. A revolver goes on `revolver_1` or `revolver_2`. A rifle goes on `longarm`.
+`placementId` is the `id` from [GetItems](fw-inventory.md). `slotId` is one of the slot names above. The item's `kit` field has to match that slot. A revolver goes on `revolver_1` (the right hip) or `revolver_2` (the left hip). The right slot has to already hold a gun before the left slot will take one. A rifle goes on `longarm`.
 
 If it fails, the player's game gets `fw_weapons:rejected`. Common reasons:
 
@@ -119,6 +119,8 @@ If it fails, the player's game gets `fw_weapons:rejected`. Common reasons:
 | `That does not fit there.` | That item's kit does not match the slot. |
 | `Put on a gunbelt first.` | A sidearm slot was used with no gunbelt. |
 | `Put on another holster first.` | `revolver_2` was used with no offhand holster. |
+| `Equip the right revolver first.` | The left slot was used while `revolver_1` is empty. |
+| `Take the left revolver off first.` | The right slot was cleared while `revolver_2` still holds a gun. |
 | `The kit is busy.` | Another equip is still finishing. |
 
 A camp script can put the cattleman already in the bag onto the hip:
@@ -156,6 +158,8 @@ TriggerServerEvent('fw_weapons:unequip', 'knife', 0, 0, false)
 ### fw_weapons:move
 
 Sent from the player's game to the server. Swaps two slots. Both names have to be real slots, and each item has to be allowed on the slot it is moving to.
+
+Swaps the two revolvers when both slots already hold a gun. Moving the right revolver onto an empty left slot is refused with `Equip the right revolver first.`
 
 ```lua
 TriggerServerEvent('fw_weapons:move', 'revolver_1', 'revolver_2')
