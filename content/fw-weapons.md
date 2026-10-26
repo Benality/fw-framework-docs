@@ -58,7 +58,7 @@ end
 
 Runs in the player's game. Draws the gun in that loadout slot and plays the inspect hold. The bag closes first, so the player can see it. You get no when that slot is empty, when the thing in it is not a gun, or when an inspect is already playing.
 
-A knife, lasso, lantern, binoculars, bow, or fishing pole cannot be inspected this way. Clean is on the same right-click menu, and it does nothing yet. Unload puts the rounds back in the bag. That is described under `fw_weapons:unload`.
+A knife, lasso, lantern, binoculars, bow, or fishing pole cannot be inspected this way. Clean is on the same right-click menu, and it does nothing yet.
 
 ```lua
 --- Draws the gun in this loadout slot and plays the inspect hold.
@@ -117,7 +117,7 @@ RegisterNetEvent('fw_weapons:rejected', function(reason)
 end)
 ```
 
-This is sent whenever `fw_weapons:wear`, `fw_weapons:equip`, `fw_weapons:unequip`, `fw_weapons:move`, `fw_weapons:load`, or `fw_weapons:unload` (described below) could not be done. The possible lines are:
+This is sent whenever `fw_weapons:wear`, `fw_weapons:equip`, `fw_weapons:unequip`, or `fw_weapons:move` (described below) could not be done. The possible lines are:
 
 | Reason | When |
 | --- | --- |
@@ -133,11 +133,6 @@ This is sent whenever `fw_weapons:wear`, `fw_weapons:equip`, `fw_weapons:unequip
 | `Make room in the satchel first.` | The bag has no space for the item that needs to go back into it. |
 | `The kit is busy.` | Another equip, unequip, or move for this player has not finished yet. Try again shortly. |
 | `Could not save the kit.` | The database could not store the change. Rare. The action did not happen. |
-| `Unload it first.` | The gun already holds a different kind of ammo. |
-| `That is already full.` | The gun is at its own round limit. |
-| `That is empty.` | Unload was used on a gun with no rounds in it. |
-| `You cannot carry any more of those.` | Unload would put the satchel over that ammo's stack. |
-| `Those have to use the same rounds.` | The other gun of the same name already holds a different kind. |
 
 ### fw_weapons:wear
 
@@ -217,7 +212,7 @@ Swaps the two revolvers when both slots already hold a gun. Moving the right rev
 
 ## Ammo
 
-The pile in the satchel is the gun belt. Draw the gun and press reload. That reload fills the gun from the pile, up to what the gun holds, and takes those rounds out of the satchel. The right gun fills first. The left gun gets what is left.
+The pile in the satchel is the gun belt. There is no separate step to load a gun — draw it and press reload. That reload fills the gun from the matching pile, up to what the gun holds, and takes those rounds out of the satchel. The right gun fills first. The left gun gets what is left. Nothing on this page stores an exact round count for a gun; the game itself tracks what's in the clip, the same way it does without this framework.
 
 The client console (F8) prints a line when ammo is added, when reload starts, and when the weapon wheel changes ammo kind. A kind change does not start a reload by itself. If the gun does not report a kind, reload uses the plain pile, such as regular revolver rounds.
 
@@ -225,34 +220,13 @@ The bag screen updates when a gun is filled. The database write waits and goes o
 
 `stack` on the ammo item is the most of that kind the satchel can hold. A shop gives the pile with `AddItem`, on the [inventory](fw-inventory.md) page. Revolver rounds, rifle rounds, arrows, and the rest each have their own pile.
 
-If the player carries more than one kind for the same guns, the weapon wheel can list each kind. Regular and Express can both be there. Switching kinds is only printed in the client console for now. It does not unload the gun or start a reload.
+If the player carries more than one kind for the same guns, the weapon wheel can list each kind. Regular and Express can both be there. Switching kinds on the wheel is only printed in the client console for now. It does not start a reload by itself — the gun keeps whatever is already in the clip until the player reloads, and that reload is what pulls from the newly selected kind.
 
 Dropping a pile takes that kind off the wheel. Rounds already in the gun stay there until they are fired.
 
 Two guns that take the same rounds, such as two Cattlemen, share that satchel pile.
 
-### fw_weapons:load
-
-Networked event, sent from the player's game to the server with `TriggerServerEvent` and heard there with `RegisterNetEvent`. Moves rounds from one satchel pile into the saved count on a loadout gun. The satchel does not send this. Reloading uses the pile in the bag, described above. Call this only when you want rounds stored on the gun itself.
-
-`placementId` is the pile's id. `slotId` is the loadout slot, and it has to already hold a matching gun. The gun only accepts up to its own hold: a Cattleman 6, a Winchester 14, a Springfield 1, a bow 20. A different kind already stored on the gun is refused with `Unload it first.`
-
-```lua
----@param placementId string
----@param slotId string
-TriggerServerEvent('fw_weapons:load', placementId, 'revolver_1')
-```
-
-### fw_weapons:unload
-
-Networked event, sent from the player's game to the server with `TriggerServerEvent` and heard there with `RegisterNetEvent`. Takes every round out of that loadout gun and puts them back in the bag, so a different kind can be loaded.
-
-`slotId` is the loadout slot. The right-click menu on a filled loadout slot calls this for Unload. An empty gun answers `That is empty.` If the bag is already holding that ammo's full stack, nothing comes out, and the reason is `You cannot carry any more of those.`
-
-```lua
----@param slotId string
-TriggerServerEvent('fw_weapons:unload', 'revolver_1')
-```
+There is no call or message on this page for loading or unloading a gun by hand — that's not how ammo moves. Give the player the pile with `AddItem` and let them reload in the world.
 
 ## State bags
 
