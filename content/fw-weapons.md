@@ -58,7 +58,7 @@ end
 
 Runs in the player's game. Draws the gun in that loadout slot and plays the inspect hold. The bag closes first, so the player can see it. You get no when that slot is empty, when the thing in it is not a gun, or when an inspect is already playing.
 
-A knife, lasso, lantern, binoculars, or bow cannot be inspected this way. Clean and Unload are on the same right-click menu in the loadout, and they do nothing yet.
+A knife, lasso, lantern, binoculars, or bow cannot be inspected this way. Clean is on the same right-click menu, and it does nothing yet. Unload puts the rounds back in the bag. That is described under `fw_weapons:unload`.
 
 ```lua
 --- Draws the gun in this loadout slot and plays the inspect hold.
@@ -117,7 +117,7 @@ RegisterNetEvent('fw_weapons:rejected', function(reason)
 end)
 ```
 
-This is sent whenever `fw_weapons:wear`, `fw_weapons:equip`, `fw_weapons:unequip`, or `fw_weapons:move` (described below) could not be done. The possible lines are:
+This is sent whenever `fw_weapons:wear`, `fw_weapons:equip`, `fw_weapons:unequip`, `fw_weapons:move`, `fw_weapons:load`, or `fw_weapons:unload` (described below) could not be done. The possible lines are:
 
 | Reason | When |
 | --- | --- |
@@ -133,6 +133,11 @@ This is sent whenever `fw_weapons:wear`, `fw_weapons:equip`, `fw_weapons:unequip
 | `Make room in the satchel first.` | The bag has no space for the item that needs to go back into it. |
 | `The kit is busy.` | Another equip, unequip, or move for this player has not finished yet. Try again shortly. |
 | `Could not save the kit.` | The database could not store the change. Rare. The action did not happen. |
+| `Unload it first.` | The gun already holds a different kind of ammo. |
+| `That is already full.` | The gun is at its own round limit. |
+| `That is empty.` | Unload was used on a gun with no rounds in it. |
+| `You cannot carry any more of those.` | Unload would put the satchel over that ammo's stack. |
+| `Those have to use the same rounds.` | The other gun of the same name already holds a different kind. |
 
 ### fw_weapons:wear
 
@@ -209,6 +214,37 @@ TriggerServerEvent('fw_weapons:move', 'revolver_1', 'revolver_2')
 ```
 
 Swaps the two revolvers when both slots already hold a gun. Moving the right revolver onto an empty left slot is refused with `Equip the right revolver first.`
+
+### fw_weapons:load
+
+Networked event, sent from the player's game to the server with `TriggerServerEvent` and heard there with `RegisterNetEvent`. Moves loose rounds from one pile in the bag into the gun in that loadout slot.
+
+`placementId` is the pile's id from the bag. `slotId` is the loadout slot, and that slot has to already hold a gun. The rounds have to match that gun. Revolver rounds go in a revolver. Rifle rounds go in a rifle. The elephant rifle and the varmint rifle each take their own rounds. A bow takes arrows.
+
+The gun only holds so many. A Cattleman holds 6. A Winchester holds 14. A Springfield holds 1. A bow holds 20. Dragging a pile loads up to that number and leaves the rest in the bag. Dragging the same kind again fills whatever room is left. Dragging a different kind, such as Express while Normal is still in the gun, is refused with `Unload it first.`
+
+Two copies of the same gun, such as two Cattlemen, share one ammo count. They have to be loaded with the same rounds. Shots come out of the right-hand gun's count first.
+
+The loaded count is stored on the gun. It stays there when the gun is put back in the bag. `GetKit` shows it on that slot's `metadata`: `ammo` is the item name, `ammoLabel` is the words the player sees, `rounds` is how many are in the gun.
+
+```lua
+---@param placementId string
+---@param slotId string
+TriggerServerEvent('fw_weapons:load', placementId, 'revolver_1')
+```
+
+A shop does not send this. A shop gives the pile with `AddItem`. The player loads the gun by dragging that pile onto the loadout slot.
+
+### fw_weapons:unload
+
+Networked event, sent from the player's game to the server with `TriggerServerEvent` and heard there with `RegisterNetEvent`. Takes every round out of that loadout gun and puts them back in the bag, so a different kind can be loaded.
+
+`slotId` is the loadout slot. The right-click menu on a filled loadout slot calls this for Unload. An empty gun answers `That is empty.` If the bag is already holding that ammo's full stack, nothing comes out, and the reason is `You cannot carry any more of those.`
+
+```lua
+---@param slotId string
+TriggerServerEvent('fw_weapons:unload', 'revolver_1')
+```
 
 ## State bags
 

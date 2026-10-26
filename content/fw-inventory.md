@@ -218,7 +218,7 @@ Runs on the server. A snapshot of one kind of item, or nothing when that name is
 exports.fw_inventory:GetDefinition(name)
 ```
 
-The copy can include `name`, `label`, `description`, `width`, `height`, `stack`, `weapon`, `group`, `rotate`, `kit`, `hash`, and `container`.
+The copy can include `name`, `label`, `description`, `width`, `height`, `stack`, `weapon`, `group`, `rotate`, `kit`, `hash`, `container`, `chamber`, `rounds`, and `ammo`. `chamber` is which rounds a gun takes, such as `revolver` or `rifle`. `rounds` is how many that gun holds. `ammo` is set on a loose-rounds item, with `key` (the game ammo name, such as `AMMO_REVOLVER`) and `fits` (the same word as the gun's `chamber`).
 
 ```lua
 local def = exports.fw_inventory:GetDefinition('herb_pouch')
@@ -244,6 +244,18 @@ exports.fw_inventory:AddItem(source, name, count, metadata)
 ```
 
 `count` defaults to 1. The maximum for one call is 500. Stacks that already match the name and metadata are filled first. A weapon never stacks on another weapon. A container item receives its own `metadata.containerId` on each new placement.
+
+Ammo is loose rounds. `stack` on an ammo item is one bought pile, and it is also the most of that kind the satchel can hold. Giving more than that fails with `You cannot carry any more of those.` Rounds that are already in a gun do not count toward that limit. A shop sells one pile:
+
+```lua
+local ok, err = exports.fw_inventory:AddItem(source, 'ammo_revolver', 50)
+if not ok then
+    print(err)
+    return
+end
+```
+
+The player loads a gun by dragging that pile onto it. That is on the [weapons](fw-weapons.md) page.
 
 ```lua
 local ok, err = exports.fw_inventory:AddItem(source, 'rope', 1)
@@ -582,6 +594,11 @@ return {
 | `kit` | none | Which weapon slot can hold it: `revolver`, `pistol`, `longarm`, `bow`, `lasso`, `melee`, `lantern`, or `binoculars`. |
 | `hash` | none | Weapon name, such as `WEAPON_REVOLVER_CATTLEMAN`. Required when `kit` is set. |
 | `container` | none | Opens a second grid when the item is used from the satchel. Stack is forced to 1. |
+| `ammo` | none | Loose rounds. `key` is the game ammo name, such as `AMMO_REVOLVER`. `fits` is which guns take it: `revolver`, `pistol`, `repeater`, `rifle`, `elephant`, `shotgun`, `arrow`, or `varmint`. `stack` is one bought pile and the most of that kind the satchel can hold. |
+| `chamber` | filled in for shipped guns | Which `fits` value this gun accepts. Set it yourself on a new gun. |
+| `rounds` | filled in for shipped guns | How many rounds that gun holds. A Cattleman is 6. A bow is 20. From 1 to 100. |
+
+Shipped guns already have `chamber` and `rounds`. You only set those two when you add a gun the list does not know. Shipped ammo is in `items/ammo.lua`. A stack of revolver rounds is 50. Explosive piles are 10. Arrows are 40, and the special arrows are 10. Elephant rounds are 20.
 
 If the item's name, or the `hash` you set, matches a known RDR3 weapon such as `weapon_revolver_cattleman` or `WEAPON_BOW`, you can leave `kit`, `hash`, `width`, `height`, and `rotate` out entirely — they are worked out for you from that name. The shipped `items/weapons.lua` sets them by hand anyway, so the shape is easy to see and change.
 

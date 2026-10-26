@@ -6,7 +6,9 @@ It has no exports, no events of its own, and no state bag. Give an item, open a 
 
 The player opens the bag with `B`, or by typing `/satchel`. Escape or Tab closes it. Closing the bag also closes an open chest or pouch.
 
-Right-click a filled loadout slot for Inspect, Clean, and Unload. That menu is only on the loadout, not on an item sitting in the bag. Inspect draws the gun and plays the inspect hold, then the bag closes. A knife, lasso, lantern, binoculars, or bow cannot be inspected. Clean and Unload are listed, and they do nothing yet. Another script plays the same inspect with `Inspect` on [fw_weapons](fw-weapons.md).
+Right-click a filled loadout slot for Inspect, Clean, and Unload. That menu is only on the loadout, not on an item sitting in the bag. Inspect draws the gun and plays the inspect hold, then the bag closes. A knife, lasso, lantern, binoculars, or bow cannot be inspected. Clean does nothing yet. Unload puts that gun's rounds back in the bag.
+
+Ammo is loose rounds. Drag a pile from the bag onto the gun you want to load. The slot turns green when those rounds match that gun. The gun takes only what it can hold, and the rest stays in the bag. A full gun shows the number of rounds in the slot. Another script loads and unloads with `fw_weapons:load` and `fw_weapons:unload` on [fw_weapons](fw-weapons.md). Inspect uses `Inspect` on that same page.
 
 `fwInventoryBusy` on [fw_menu](fw-menu.md) is how another menu asks this screen to stay closed.
 
@@ -61,6 +63,8 @@ Sent with `TriggerServerEvent`. The bag screen is the thing that sends these, in
 | `fw_weapons:equip` | Puts a bag item onto a weapon slot. | See [fw_weapons](fw-weapons.md) |
 | `fw_weapons:unequip` | Puts a weapon slot back in the bag. | See [fw_weapons](fw-weapons.md) |
 | `fw_weapons:move` | Swaps two weapon slots. | See [fw_weapons](fw-weapons.md) |
+| `fw_weapons:load` | Puts loose rounds into the gun in that slot. | See [fw_weapons](fw-weapons.md) |
+| `fw_weapons:unload` | Puts that gun's rounds back in the bag. | See [fw_weapons](fw-weapons.md) |
 
 A shop that hands the player a rope does this. It does not send `fw_inventory:move`, and it does not open the bag:
 
