@@ -217,17 +217,17 @@ Swaps the two revolvers when both slots already hold a gun. Moving the right rev
 
 ## Ammo
 
-The pile in the satchel is every round that gun can still fire. You do not drag it onto the gun. Equip the gun and reload. A Springfield holds one shot in the gun, then the next reload takes another round from the pile. When the pile is gone, the gun is empty.
+The pile in the satchel is the reserve. The weapon wheel shows the rounds in the gun, then the rounds still in that pile. With 50 revolver rounds, reloading two revolvers puts 6 in each and leaves 38 in the satchel. The wheel shows 6/38. Shooting empties those 6. The next reload takes the replacement rounds from the 38.
 
-The bag screen updates on the shot. The database write waits and goes out with the other waiting satchel writes, about every five seconds, and also when the player leaves. A crash inside that wait can put those shots back.
+The bag screen updates when a gun is filled. The database write waits and goes out with the other waiting satchel writes, about every five seconds, and also when the player leaves. A crash inside that wait can put those reloaded rounds back.
 
 `stack` on the ammo item is the most of that kind the satchel can hold. A shop gives the pile with `AddItem`, on the [inventory](fw-inventory.md) page. Revolver rounds, rifle rounds, arrows, and the rest each have their own pile.
 
-If the player carries more than one kind for the same guns, the weapon wheel lists each kind and the amount still in that pile. Regular and Express can both be there. Switching kinds is done on the weapon wheel. A shot spends the kind the wheel is on.
+If the player carries more than one kind for the same guns, the weapon wheel lists each kind. Regular and Express can both be there. Switching kinds is done on the weapon wheel. A reload fills the gun from the kind the wheel is on, up to what that gun holds.
 
-Dropping a pile, or giving the last of it away, takes that kind off the wheel. The number on the wheel is the pile in the satchel.
+Dropping a pile takes that kind off the wheel. Rounds already in the gun stay there until they are fired. The number after the slash is the pile in the satchel.
 
-Two guns that take the same rounds, such as two Cattlemen, share those piles. The weapon wheel shows how many of each kind are left.
+Two guns that take the same rounds, such as two Cattlemen, share that reserve. Each one shows its own loaded rounds in front of the same satchel count.
 
 ### fw_weapons:load
 

@@ -273,7 +273,7 @@ if not ok then
 end
 ```
 
-The player reloads the gun in the world, and those shots come out of this pile. Every kind in the satchel shows on the weapon wheel. Dropping a pile takes that kind off the wheel. That is on the [weapons](fw-weapons.md) page.
+The player reloads the gun in the world. That fill comes out of this pile, up to what the gun holds. Shots already in the gun stay there. Every kind in the satchel shows on the weapon wheel. Dropping a pile takes that kind off the wheel. That is on the [weapons](fw-weapons.md) page.
 
 ```lua
 local ok, err = exports.fw_inventory:AddItem(source, 'rope', 1)
@@ -310,7 +310,7 @@ end
 
 ### RemoveItemDeferred
 
-Runs on the server. Takes that many of the name out of the satchel, the same way `RemoveItem` does, and the bag screen updates right away. The database write waits. Spent rounds use this, so a shot does not write the satchel by itself.
+Runs on the server. Takes that many of the name out of the satchel, the same way `RemoveItem` does, and the bag screen updates right away. The database write waits. Filling a gun from a pile uses this, so a reload does not write the satchel by itself.
 
 The waiting writes go out together about every five seconds. The satchel is also written when the player leaves, when the character is cleared, and when `fw_inventory` stops. A crash inside that wait can put the spent rounds back.
 
