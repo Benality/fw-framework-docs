@@ -4,7 +4,7 @@ Do not read or write these tables from your script. Use the call on the matching
 
 The database name in `server.cfg` is `TerritoryFRP`. If it does not exist yet, oxmysql creates it and connects again. The name can only contain letters, numbers, and underscores. Replacing oxmysql with an untouched copy removes that auto-create. The framework still creates the tables below when each resource starts.
 
-If a table already exists and is missing the column that resource expects, the resource logs the mismatch and does not change the table. `fw_items` is the exception: missing `weapon` and `item_group` columns are added.
+If a table already exists and is missing the column that resource expects, the resource logs the mismatch and does not change the table. `fw_items` is the exception: missing `weapon`, `item_group`, `kit`, and `hash` columns are added, and a leftover `image` column from an older version is dropped.
 
 Do not put money or jobs on these tables. A later resource adds its own table and stores a character id or an account id. See [A table of your own](#a-table-of-your-own).
 
@@ -175,7 +175,8 @@ CREATE TABLE IF NOT EXISTS `fw_items` (
   `weapon` tinyint(1) NOT NULL DEFAULT 0,
   `item_group` varchar(16) NOT NULL DEFAULT '',
   `rotate` tinyint(1) NOT NULL DEFAULT 0,
-  `image` varchar(128) DEFAULT NULL,
+  `kit` varchar(16) NOT NULL DEFAULT '',
+  `hash` varchar(48) NOT NULL DEFAULT '',
   PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
@@ -190,9 +191,10 @@ CREATE TABLE IF NOT EXISTS `fw_items` (
 | `weapon` | `1` when the item never stacks. A weapon is always one placement. |
 | `item_group` | Filter and sort group. `ammo`, `animals`, `documents`, `food`, `herbs`, `horse`, `medical`, `tools`, `valuables`, `weapons`, or `materials`. |
 | `rotate` | `1` when the player can turn it. |
-| `image` | Removed on start when the column is still there. The picture is `fw_inventory/images/<name>.png`. |
+| `kit` | Set only on a weapon item. Which equip slot it fills: `lasso`, `binoculars`, `lantern`, `bow`, `revolver`, `pistol`, `longarm`, or `melee`. Empty string on a non-weapon item. |
+| `hash` | Set only on a weapon item. The game's weapon name, such as `WEAPON_REVOLVER_CATTLEMAN`. Empty string on a non-weapon item. |
 
-Files in `items/` are written into this table on start and on `fw_items_reload`. A row inserted for an admin tool stays until it is deleted. The field list and the insert example are in [fw_inventory](fw-inventory.md). The `container` block on a pouch is not a column. It stays on the item file and is merged back onto the catalog when the files load.
+An older version of this table had an `image` column instead of `kit` and `hash`. That column is dropped on start if it is still there — the picture is `fw_inventory/images/<name>.png`, named after the item, not stored in a column. Files in `items/` are written into this table on start and on `fw_items_reload`. A row inserted for an admin tool stays until it is deleted. The field list and the insert example are in [fw_inventory](fw-inventory.md). The `container` block on a pouch is not a column. It stays on the item file and is merged back onto the catalog when the files load.
 
 ## `fw_storage`
 

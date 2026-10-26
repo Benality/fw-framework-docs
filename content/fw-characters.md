@@ -451,7 +451,7 @@ This is the only state bag on this resource.
 
 ## Where the character is standing
 
-The character script sends these from the player's game while they play. Another script should save a position with `SaveState`. Do not send these yourself. A bad position is ignored.
+These are networked events: `RegisterNetEvent` on the server, sent from the player's game with `TriggerServerEvent`. `fw_characters`'s own client script sends them while the player plays. Another script should save a position with `SaveState` instead. Do not send these yourself, and do not listen for them. A bad position is ignored.
 
 | Message | What it does |
 | --- | --- |

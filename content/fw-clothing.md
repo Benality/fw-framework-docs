@@ -1,8 +1,8 @@
 # fw_clothing
 
-Some calls run on the server. One runs in the player's game. Read the clothes a character is wearing, or replace them. The saved clothes live on the character. This resource writes them with `SetClothing` from [fw_characters](fw-characters.md).
+Some calls run on the server. Most run in the player's game. Read the clothes a character is wearing, replace them, or toggle a piece on their body. The saved clothes live on the character. This resource writes them with `SetClothing` from [fw_characters](fw-characters.md).
 
-The shop still uses the old `murphy_clothing` names. A new script should use the calls on this page.
+The shop still uses the old `murphy_clothing` and `murphy_clothes` event names. A new script should use the calls on this page.
 
 There is no money resource yet. The shop shows prices and the purchase succeeds, but nothing is taken. Job-locked categories stay hidden because there is no job.
 
@@ -29,7 +29,7 @@ A write only works while that player is online and has this character selected.
 
 ### IsBandanaEquipped
 
-Runs on the server. Yes when the worn clothes include a mask with a model number above 0.
+Runs on the server. Yes when the worn clothes include a mask (`masks`) or a large mask (`masks_large`) with a model number above 0.
 
 ```lua
 --- True when this player is wearing a mask or a large mask.
@@ -55,11 +55,14 @@ Runs on the server. The worn clothes, turned into the numbers the game uses to d
 exports.fw_clothing:GetPlayerClothes(source)
 ```
 
-Each category looks like `{ hash, drawable, albedo, normal, material, palette, tint0, tint1, tint2 }`.
+Most pieces come back as `{ hash, tint0, tint1, tint2 }`. A piece that is drawn from a story-mode model instead of a regular multiplayer item also carries `drawable`, `albedo`, `normal`, `material`, and `palette`, so check for those keys rather than assuming every category has them.
 
 ```lua
 local clothes = exports.fw_clothing:GetPlayerClothes(source)
 local hat = clothes.hats
+if hat ~= nil then
+    print(hat.hash)
+end
 ```
 
 ### GetPlayerTemperatureProtection
@@ -68,7 +71,6 @@ Runs on the server. How many warm pieces and cold pieces are worn, and the prote
 
 ```lua
 --- Warm and cold clothing counts for the active character.
----@param source integer
 ---@return table protection
 exports.fw_clothing:GetPlayerTemperatureProtection(source)
 ```
@@ -131,7 +133,7 @@ A category is one clothing slot. The names you will use most are `hats`, `shirts
 
 ### AreClothesStillApplied
 
-Runs in the player's game. Yes when the clothes this resource last put on them are still there. No if clothes were never loaded this visit, or one slot is missing. The character menu uses this after it applies a body, to see if the clothes were wiped off.
+Runs in the player's game. Yes when the clothes this resource last put on them are still there. No if clothes were never loaded this visit, or one slot is missing. The check skips `bodies_upper` and `bodies_lower` (those are the body, not clothes), and treats `neckwear` and `neckerchiefs` as the same slot, since the game stores either name under the other. The character menu uses this after it applies a body, to see if the clothes were wiped off.
 
 ```lua
 --- True when the last clothes this resource applied are still on the ped.
@@ -313,7 +315,7 @@ end
 
 ### ToggleClothingCategory
 
-Runs in the player's game. Takes that saved piece off, or puts it back on. You get yes when it is on afterwards. You get no when the outfit has no such piece.
+Runs in the player's game. Takes that saved piece off, or puts it back on. Works for any category the outfit owns, not only the ones listed under `ToggleClothingComponent` below. You get yes when it is on afterwards. You get no when the outfit has no such piece.
 
 ```lua
 --- Toggles one saved category. False when the outfit has none.
@@ -334,7 +336,7 @@ TriggerEvent('murphy_clothes:Equip-UnequipCategory', 'hats')
 
 ### ToggleClothingComponent
 
-Runs in the player's game. The wheel uses this to take a piece off or put it back, including pieces that are only a single player item. You get no when the name is not a string or the player is not wearing it.
+Runs in the player's game. The wheel uses this to take a piece off or put it back, with a short matching animation (reaching for the hat, adjusting the belt, and so on). Only a fixed list of categories can be toggled this way: `hats`, `masks`, `eyewear`, `headwear`, `hat_accessories`, `neckwear`, `neckerchiefs`, `neckties`, `shirts_full`, `vests`, `suspenders`, `coats`, `coats_closed`, `coats_heavy`, `cloaks`, `ponchos`, `capes`, `gloves`, `gauntlets`, `gunbelts`, `gunbelt_accs`, `pants`, `chaps`, `spats`, `boots`, `boot_accessories`, `accessories`, `satchels`, `badges`, and `aprons`. Anything outside that list, or a category name that is not a string, is refused. You also get no while another toggle's animation is still playing, or while the player is dead. Otherwise you get yes — the toggle has started, even if that slot turns out to already be empty.
 
 ```lua
 --- Toggles the piece in this category on the player's body.
@@ -355,7 +357,7 @@ TriggerEvent('murphy_clothing:toggleComponent', 'hats')
 
 ### GetWornClothingCategories
 
-Runs in the player's game. The category names the player can toggle. A piece they hid with a toggle is still in the list, because the outfit still owns it.
+Runs in the player's game. The category names from the list above that the player's outfit actually owns — the ones `ToggleClothingComponent` can act on. A piece they hid with a toggle is still in the list, because the outfit still owns it.
 
 ```lua
 --- Category names the player can take off and put back on.
@@ -422,7 +424,7 @@ end
 
 ### ToggleSleeve
 
-Runs in the player's game. Rolls or unrolls the shirt sleeves. You get no when the shirt cannot do that.
+Runs in the player's game. Rolls or unrolls the shirt sleeves. You get no when the shirt cannot do that, or nothing is worn in `shirts_full`.
 
 ```lua
 --- Rolls or unrolls the sleeves.
@@ -450,7 +452,7 @@ exports.fw_clothing:ToggleCollar()
 
 ### ToggleNeckwearUp
 
-Runs in the player's game. Pulls a neckerchief up over the face, or back down. A robbery script can pull it up when the player starts a holdup.
+Runs in the player's game. Pulls a neckerchief up over the face, or back down. A robbery script can pull it up when the player starts a holdup. You get no when nothing is worn in `neckwear` or `neckerchiefs`, or that piece does not support being pulled up.
 
 ```lua
 --- Pulls the neckerchief up or down.
@@ -509,10 +511,10 @@ exports.fw_clothing:ToggleVestUnder()
 
 ### ToggleLoadoutSide
 
-Runs in the player's game. Swaps the gunbelt to the other hip.
+Runs in the player's game. Moves the shoulder holster (the `loadouts` piece) to the other side.
 
 ```lua
---- Moves the gunbelt to the other hip.
+--- Moves the shoulder holster to the other side.
 ---@return boolean ok
 exports.fw_clothing:ToggleLoadoutSide()
 ```
@@ -577,7 +579,7 @@ exports.fw_clothing:CycleWearableVariation({ 'shirts_full' })
 
 Runs in the player's game. Puts several pieces on at once. This changes what they are wearing right now. Saving that outfit for later is `SetClothesForChar` on the server.
 
-`clothesData` is `{ hats = { model = 1, texture = 0 } }`. `tint0`, `tint1`, and `tint2` are optional. Leave `ped` out to use the player's character. You get no when `clothesData` is not a table.
+`clothesData` is `{ hats = { model = 1, texture = 0 } }`. `tint0`, `tint1`, and `tint2` are optional. Leave `ped` out to use the player's character. You get no when `clothesData` is not a table. A category or model that does not exist in the catalog is skipped quietly — `ok` only reports whether `clothesData` itself was a table, not whether every piece in it was understood, so check the result with `GetEquippedCategories` afterwards if you need to be sure something was actually applied.
 
 ```lua
 --- Puts several pieces on a character in this player's game.
@@ -622,7 +624,7 @@ end
 
 ## Messages
 
-A message on the server is heard with `AddEventHandler`. A message in the player's game is heard with `AddEventHandler` when it stays there, or `RegisterNetEvent` when the server sends it. Your script hears one only if it is already running. Put the listener at the top of your script.
+A message on the server is heard with `AddEventHandler`. A message in the player's game is heard with `AddEventHandler` when it stays there, or `RegisterNetEvent` when the server can send it. Your script hears one only if it is already running. Put the listener at the top of your script.
 
 ### murphy_clothing:clothesUpdated
 
@@ -661,7 +663,7 @@ end)
 
 ### fw_clothing:sleeveChanged
 
-Stays in the player's game. Sent after the sleeve, collar, or a shirt look changes. It has no extra information. Read `IsSleeveRolled` if you need the new state.
+Stays in the player's game. Sent after the sleeve or collar changes. It has no extra information. Read `IsSleeveRolled` if you need the new state.
 
 ```lua
 AddEventHandler('fw_clothing:sleeveChanged', function()
@@ -679,7 +681,7 @@ These stay in the player's game. The calls above are the easier way. The message
 | `murphy_clothes:ToggleBandana` | `state` true means the bandana is up. Also sends `syn_robbery:bandana`. | Prefer `ToggleNeckwearUp`. |
 | `murphy_clothes:GetTemperatureProtection` | Then sends `murphy_clothes:TemperatureProtectionData`. | Prefer `GetTemperatureProtection`. |
 | `murphy_clothes:TemperatureProtectionData` | The protection table. | Listen if you sent the ask above. |
-| `murphy_clothes:TemperatureUpdate` | The protection table, sent after clothes change. | Listen to follow warmth as they dress. |
+| `murphy_clothes:TemperatureUpdate` | The protection table, sent about half a second after clothes change. | Listen to follow warmth as they dress. |
 
 ```lua
 AddEventHandler('murphy_clothes:TemperatureUpdate', function(protection)
@@ -707,21 +709,21 @@ A new script should use the calls above. These are listed so you can find the na
 | --- | --- | --- |
 | `murphy_clothes:clotheitem` | Player's game | Applies a whole outfit table. |
 | `murphy_clothes:outfitchanged` | Player's game | The outfit finished loading. Toggles start over. |
-| `murphy_clothes:applyWearable` | Player's game | Applies wearable state data. |
-| `murphy_clothes:ApplyClothesToCharid` | Player's game | Loads clothes for a character id onto that character. |
-| `murphy:clothing:RemoveAllClothes` | Player's game | Clears the pieces on a ped. |
-| `murphy_clothes:LoadBasSkin` | Player's game | Loads the base body. |
-| `murphy_clothes:Loadlowerbody` | Player's game | Loads the lower body. |
-| `murphy_clothes:Loadupperbody` | Player's game | Loads the upper body. |
+| `murphy_clothes:applyWearable` | Player's game | Applies wearable state data (body shape, sleeve, collar, ...). |
+| `murphy_clothes:ApplyClothesToCharid` | Player's game | Loads clothes for a character id onto a given ped, for preview/dev use. |
+| `murphy:clothing:RemoveAllClothes` | Player's game | Clears the pieces on a ped, except the essential body categories. |
+| `murphy_clothes:LoadBasSkin` | Player's game | Captures the current base body as the saved skin to re-dress onto. |
+| `murphy_clothes:Loadlowerbody` | Player's game | Sets the saved lower body hash directly. |
+| `murphy_clothes:Loadupperbody` | Player's game | Sets the saved upper body hash directly. |
 | `murphy_clothing:ResetClothesMenuCreator` | Player's game | Resets the creator clothes step. |
 | `murphy_clothing:OpenClothesMenuCreator` | Player's game | Opens clothes during character creation. |
 | `murphy_clothing:SaveClothesCreator` | Player's game | Saves the creator clothes step. |
 | `murphy_clothing:enterInstance` | Player's game to server | The shop asks for a private room. |
 | `murphy_clothing:leaveInstance` | Player's game to server | The shop leaves that room. |
-| `murphy_clothing:admin:requestOutfitMenu` | Player's game to server | Asks to open the admin outfit menu. |
-| `murphy_clothing:admin:openOutfitMenu` | Server to player's game | Opens it, after the role check. |
-| `murphy_clothing:admin:requestWearableMenu` | Player's game to server | Asks to open the wearable menu. |
-| `murphy_clothing:admin:openWearableMenu` | Server to player's game | Opens it, after the role check. |
+| `murphy_clothing:admin:requestOutfitMenu` | Player's game to server | Asks to open the outfit menu through the admin-only chat command. |
+| `murphy_clothing:admin:openOutfitMenu` | Server to player's game | Opens it, after fw_admin confirms the player is an admin. |
+| `murphy_clothing:admin:requestWearableMenu` | Player's game to server | Asks to open the wearable management menu. |
+| `murphy_clothing:admin:openWearableMenu` | Server to player's game | Opens it, after fw_admin confirms the player is an admin. |
 | `murphy_clothing:triggerCallback` | Server to player's game | The shop's private question. A new script does not send this. |
 | `murphy_clothing:responseCallback` | Player's game to server | The answer to that question. A new script does not send this. |
 
@@ -734,4 +736,9 @@ This resource does not set one. The character id is `fwCharacterId` on [fw_chara
 | Command | Who | What it does |
 | --- | --- | --- |
 | `/loadclothes` | The player | Puts the saved clothes back on. |
-| `/ClothesManagement` | An account whose role is `admin` or `superadmin` | Opens the clothes management menu. |
+| `/undress` | The player | Takes off every clothing piece except the body itself (hair, beard, skin, and so on stay). |
+| `/getnaked` | The player | Same switch as `ToggleNaked(true)` — strips to the base body, or puts the saved clothes back, with a small notice either way. An optional keybind does the same thing if the server sets `Config.ClothesManagement.GetNakedKeybind`. |
+| `/toggleclothing <category>` | The player | Same toggle as `ToggleClothingComponent`. |
+| `/ClothesManagement` | A player who has `fw.admin` (see [fw_admin](fw-admin.md)) | Opens the wearable/body management menu. The name comes from `Config.ClothesManagement.Command`; an optional keybind (`Config.ClothesManagement.Keybind`) opens the same menu. |
+| Whatever name the server sets in `Config.MenuCommand` | A player who has `fw.admin` | Opens the outfit shop list. There is no command here unless the server sets this config value — it is nil by default. |
+| `/temptest` | The player | Prints the ambient temperature and this player's warm/cold item counts and protection levels to F8. A debug command, not part of the normal flow. |

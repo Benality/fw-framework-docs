@@ -1,10 +1,10 @@
 # fw_creator
 
-The character menu. Players use it to make a character and to play one. Another script should not call into this menu. Create and read characters with [fw_characters](fw-characters.md).
+The character menu. Players use it to make a character and to play one. Create and read characters with [fw_characters](fw-characters.md) — that is the page to build on. This page exists for two reasons: to show where the menu stores things on the character, and to document the handful of calls and messages this menu genuinely exposes for another script to use (pausing appearance updates while a player is shapeshifted, sharing a face with nearby players, and a couple of admin commands).
 
 `Config.framework` in `shared/config.lua` must stay `fw`. Anything else and character select never answers.
 
-The number of characters an account can create is `characterSlots` on the account, not `Config.Slots` in this menu.
+The number of characters an account can create is `characterSlots` on the account, not `Config.Slots` in this menu. The menu sends `Config.Slots` to the player's game only as a fallback, for the moment before the server has answered.
 
 ## Where the menu saves things
 
@@ -14,7 +14,7 @@ The number of characters an account can create is `characterSlots` on the accoun
 | Gender | `male` or `female` |
 | Birthday | `birthDate` as `YYYY-MM-DD` |
 | Lore | `description` |
-| Chosen spawn | `SaveState`, right after the character is selected |
+| Chosen spawn | `SaveState`, right after a new character is created |
 | Body and face | `appearance` |
 | Hair and makeup | `barber` |
 | Clothes | [fw_clothing](fw-clothing.md), not this menu |
@@ -31,7 +31,10 @@ The number of characters an account can create is `characterSlots` on the accoun
 | `skintone` | Skin tone index. |
 | `pedmodel.model` | Model name, such as `mp_male`. |
 | `pedmodel.outfit` | Outfit preset on that model. |
-| `head`, `upperbody`, `lowerbody` | Body indexes. |
+| `head`, `upperbody`, `lowerbody`, `body`, `waist` | Body indexes. |
+| `teeth`, `eyes` | Face component indexes. |
+| `height` | A scale, `1.0` is the model default. |
+| `expressions` | The face sliders. Keyed by slider name. See [GetCachedExpressions](#getcachedexpressions). |
 
 Replace the document by sending the whole table. Do not write one key by itself and expect the rest to remain unless you read the current document first and send it back with your change.
 
@@ -75,18 +78,18 @@ That message is `murphy_creator:HealthFromCore`. The server sends it to the play
 
 ## Messages the menu uses
 
-These keep the old `murphy_creator` names so the screen did not have to be renamed. A new script should listen to the messages on [fw_characters](fw-characters.md) instead.
+These keep the old `murphy_creator` names so the screen did not have to be renamed. A new script should listen to the messages on [fw_characters](fw-characters.md) instead of most of these.
 
-These go between the player's game and the server. Your script hears one only if it is already running.
+A networked message only reaches a listener that is already running when the message is sent. If your script starts later, you missed it; use the matching call instead, where one is listed.
 
 | Event | Direction | What it does |
 | --- | --- | --- |
-| `murphy_creator:getCharacters` | Client to server | Asks for the character list. |
-| `murphy_creator:LaunchCharSelect` | Server to client | Opens the list. |
-| `murphy_creator:CharSelectFailed` | Server to client | A reason string. The client prints it and tries once more. |
-| `fw_creator:selectCharacter` | Client to server | Selects that character id, then sends health. |
-| `murphy_creator:deleteCharacter` | Client to server | The argument is the index in the list last sent to this player, not a character id. |
-| `murphy_creator:HealthFromCore` | Server to client | The health table above. |
+| `murphy_creator:getCharacters` | Networked, player's game to server | Asks for the character list. |
+| `murphy_creator:LaunchCharSelect` | Networked, server to player's game | Opens the list. |
+| `murphy_creator:CharSelectFailed` | Networked, server to player's game | A reason string. The client prints it and tries once more. |
+| `fw_creator:selectCharacter` | Networked, player's game to server | Selects that character id, then sends health. |
+| `murphy_creator:deleteCharacter` | Networked, player's game to server | The argument is the index in the list last sent to this player, not a character id. |
+| `murphy_creator:HealthFromCore` | Networked, server to player's game | The health table above. |
 
 `fw_characters:selected` is the event to use when your resource needs to know a character was chosen. A spawn script listens there, not on `fw_creator:selectCharacter`:
 
@@ -96,7 +99,7 @@ AddEventHandler('fw_characters:selected', function(source, character)
 end)
 ```
 
-`murphy_creator:HealthFromCore` is the health table above. The server sends it to the player's game. Listen only if you are drawing your own health bar from that menu:
+`murphy_creator:HealthFromCore` is the health table above, sent by the server to the player's game. It is networked — your script only hears it if it is already running when the server sends it. Listen only if you are drawing your own health bar from that menu:
 
 ```lua
 RegisterNetEvent('murphy_creator:HealthFromCore', function(health)
@@ -104,39 +107,56 @@ RegisterNetEvent('murphy_creator:HealthFromCore', function(health)
 end)
 ```
 
-The menu also uses these. A new script should keep using [fw_characters](fw-characters.md). They are listed so an older script can be matched to a name.
+The menu also uses these messages. A new script should keep using [fw_characters](fw-characters.md). They are listed so an older script can be matched to a name.
 
 | Message | Direction | What it does |
 | --- | --- | --- |
-| `murphy_creator:GetHealthValues` | Player's game to server | Asks for the health table. The answer is `murphy_creator:HealthFromCore`. |
-| `murphy_creator:OpenCharSelect` | Either way | Opens the character list again. |
-| `murphy_creator:LaunchCreator` | Player's game | Opens the body editor for a new character. |
-| `murphy_creator:deleteCharacterClient` | Server to player's game | The list index that was just deleted. |
-| `murphy_creator:SecondChance` | Server to player's game | Opens the body editor again. `/secondchance` sends this. |
-| `fw_creator:characterSelected` | Player's game | The menu's own note that a character was picked. Then it loads the body. Prefer `fw_characters:selected`. |
-| `murphy_creator:loadskin` | Player's game | Puts the saved body back on. `/mc` does this. |
-| `murphy_creator:loadskinvorp` | Player's game | The same reload, used after the model is already the right one. |
-| `murphy_creator:localExpressionsReady` | Player's game | The face sliders are ready to share. The menu publishes them. |
-| `murphy_creator:client:skinApplied` | Player's game | The body finished applying. The argument is the character in the game. |
-| `murphy_creator:client:characterCreated` | Player's game | The new character was just saved by the menu. |
-| `murphy_barber_creator:loadbarberoverlay` | Player's game | Puts the saved hair and makeup back on. |
-| `murphy_barber_creator:loadbarberoverlayOnCharacter` | Player's game | Same, for a character id you pass. |
-| `murphy_barber_creator:updatehairstyle` | Player's game to server | The barber saves hair. A new script uses `SetBarber` on fw_characters. |
-| `murphy_barber_creator:clotheitem` | Player's game | The barber applies one hair piece. |
-| `murphy_creator:triggerCallback` | Server to player's game | The menu's private question. A new script does not send this. |
-| `murphy_creator:responseCallback` | Player's game to server | The answer to that question. A new script does not send this. |
+| `murphy_creator:GetHealthValues` | Networked, player's game to server | Asks for the health table. The answer is `murphy_creator:HealthFromCore`. |
+| `murphy_creator:OpenCharSelect` | Local, either way | Opens the character list again. |
+| `murphy_creator:LaunchCreator` | Local, player's game | Opens the body editor for a new character. |
+| `murphy_creator:deleteCharacterClient` | Networked, server to player's game | The list index that was just deleted. |
+| `murphy_creator:SecondChance` | Networked, server to player's game | Opens the body editor again. `/secondchance` sends this. |
+| `fw_creator:characterSelected` | Networked, player's game | The menu's own note that a character was picked. Then it loads the body. Prefer `fw_characters:selected`. |
+| `murphy_creator:loadskin` | Networked, player's game | Puts the saved body back on. The reload command sends this. |
+| `murphy_creator:loadskinvorp` | Networked, player's game | The same reload, used after the model is already the right one. |
+| `murphy_creator:localExpressionsReady` | Networked, player's game | The face sliders and eyes/teeth are ready to share. The menu publishes them. |
+| `murphy_creator:client:skinApplied` | Local, player's game | The body finished applying. See [below](#a-hook-for-your-own-clothing-script). |
+| `murphy_creator:client:characterCreated` | Local, player's game | The new character was just saved by the menu. No arguments. |
+| `murphy_creator:applystarteroutfit` | Networked, server to player's game | Dresses the character in the configured starter outfit again. See [below](#applying-the-starter-outfit-again). |
+| `murphy_barber_creator:loadbarberoverlay` | Networked, player's game | Puts the saved hair and makeup back on. |
+| `murphy_barber_creator:loadbarberoverlayOnCharacter` | Networked, player's game | Same, for a character id you pass. |
+| `murphy_barber_creator:updatehairstyle` | Networked, player's game to server | The barber saves hair. A new script uses `SetBarber` on fw_characters. |
+| `murphy_barber_creator:clotheitem` | Networked, player's game | The barber applies the saved hair and makeup to a ped. |
+| `murphy_creator:triggerCallback` | Networked, server to player's game | The menu's private question. A new script does not send this. |
+| `murphy_creator:responseCallback` | Networked, player's game to server | The answer to that question. A new script does not send this. |
 
-A script that needs to know the body is on them listens for the apply message:
+### A hook for your own clothing script
+
+`murphy_creator:client:skinApplied` is a local event, fired on the player's own game right after the menu finishes putting a saved body back on. It exists so a clothing script that is not `fw_clothing` can know the body just got rebuilt (the rebuild strips worn clothes) and re-dress the player without waiting for them to type a reload command.
 
 ```lua
-AddEventHandler('murphy_creator:client:skinApplied', function()
+--- ped is the entity handle for the player's own character in this game.
+---@param ped integer
+AddEventHandler('murphy_creator:client:skinApplied', function(ped)
     exports.fw_creator:ReassertLocalExpressions()
 end)
 ```
 
+If your clothing script's own reload event is listed in `Config.ExternalClothingEvents` in `shared/config.lua`, the menu fires that event too at the same moment, and you do not need to add a listener for `murphy_creator:client:skinApplied` at all.
+
+### Applying the starter outfit again
+
+`murphy_creator:applystarteroutfit` is networked, server to player's game. A server script can send it to a player to make the menu dress their character in the configured starter outfit again — the same clothes a brand-new character spawns in before they own anything of their own.
+
+```lua
+TriggerClientEvent('murphy_creator:applystarteroutfit', source)
+```
+
+This only does something while `Config.CreatorClothing.starterOutfit.enabled` is true in `shared/config.lua`. With it off, or with no preset configured for that character's gender, the player's game quietly does nothing.
+
 ## Calls in the player's game
 
-Another script should still create and read characters with [fw_characters](fw-characters.md). These calls are for a script that changes the body the player is looking at, such as an animal form.
+Create and read characters with [fw_characters](fw-characters.md). These calls are for a script that changes the body the player is looking at, such as an animal form, or that needs to keep a shared face in sync.
 
 ### SetAppearancePaused
 
@@ -205,7 +225,7 @@ end
 
 ### PublishLocalExpressions
 
-Runs in the player's game. Copies the current face sliders into `murphy_expressions` so other players' games can draw the same face. The menu already does this. Call it after your script changes those sliders.
+Runs in the player's game. Copies the current face sliders into the `murphy_expressions` state bag so other players' games can draw the same face on this player. The menu already does this on its own, about every two seconds. Call it yourself only if your script changed the sliders and cannot wait for that next tick.
 
 ```lua
 --- Shares the local face sliders with other players.
@@ -231,7 +251,7 @@ exports.fw_creator:ClearLocalExpressions()
 
 ### PublishLocalFaceComps
 
-Runs in the player's game. Shares the eyes and teeth so a player who walks up later still sees them. The menu already does this.
+Runs in the player's game. Shares the eyes and teeth so a player who walks up later still sees them. The menu already does this alongside `PublishLocalExpressions`.
 
 ```lua
 --- Shares eyes and teeth with other players.
@@ -244,7 +264,7 @@ exports.fw_creator:PublishLocalFaceComps()
 
 ### ReassertLocalExpressions
 
-Runs in the player's game. Draws the saved face sliders on the local character again. Call it right after your script rebuilds that character. You get no while appearance is paused, while there are no sliders, or while the character is missing.
+Runs in the player's game. Draws the saved face sliders on the local character again. Call it right after your script rebuilds that character, such as in the hook in [A hook for your own clothing script](#a-hook-for-your-own-clothing-script). You get no while appearance is paused, while there are no sliders, or while the character is missing or dead.
 
 ```lua
 --- Draws the saved face sliders again. False when there is nothing to draw.
@@ -258,7 +278,7 @@ exports.fw_creator:ReassertLocalExpressions()
 
 ### GetMurphyAssets
 
-Runs in the player's game. The clothing and barber picture list. A normal script does not need it. Read worn clothes with [fw_clothing](fw-clothing.md).
+Runs in the player's game. The full clothing and barber picture catalog this menu knows about — every hair, makeup and clothing option, grouped by gender and category. A normal script does not need it. Read worn clothes with [fw_clothing](fw-clothing.md).
 
 ```lua
 --- The clothing and barber picture list.
@@ -298,10 +318,12 @@ end
 
 ## Commands
 
+There are two separate places that decide who may delete a character: one for the menu's own delete button, one for the `/deletechar` admin command. They are not the same setting.
+
 | Command | Who | What it does |
 | --- | --- | --- |
-| `/mc` | The player | Reloads their body on the client. |
-| `/deletechar [characterId]` | An admin, or a role or identifier listed in config | Deletes the caller's character. The server console cannot delete, because delete needs the owning player. Someone else's id returns `character not found`. |
-| `/secondchance [serverId]` | The same people. The console may run it. | Opens the body menu again for that player. |
+| `/mc` | The player | Reloads their body on the client. The name comes from `Config.LoadSkinCommand` in `shared/config.lua`; a server can rename it. |
+| `/deletechar [characterId]` | Someone fw_admin says is an admin, or a role or identifier listed under `Config.Commands.deleteCharacter` | Deletes the caller's own character by id. The server console passes the permission check but the command still refuses to run for it, because the delete needs the owning player's account. Someone else's character id fails with an error from fw_characters. |
+| `/secondchance [serverId]` | The same kind of check, under `Config.Commands.secondChance`. The console may run this one. | Opens the body menu again for that player. |
 
-Who may delete is `Config.CharacterDeletion` in `shared/config.lua`. When `restrictToRoles` is false, every player may delete.
+The delete button inside the menu itself (`murphy_creator:deleteCharacter` above) is governed separately, by `Config.CharacterDeletion` in `shared/config.lua`. When `Config.CharacterDeletion.restrictToRoles` is false, every player may delete their own character from the menu, regardless of the `/deletechar` command's role list. Set `Config.CharacterDeletion.enabled` to false to turn that button off entirely.

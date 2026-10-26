@@ -2,6 +2,8 @@
 
 Runs in the player's game. Open a menu on their screen. This does not know about accounts, characters, or items.
 
+There is no code on the server. Every call on this page is an export from a client script, so call it from your own client script — not from the server.
+
 ## Get the menu
 
 ### GetMenuData
@@ -13,6 +15,8 @@ Runs in the player's game. This is the menu. Ask for it once, in the script that
 ---@return table MenuData
 local MenuData = exports.fw_menu:GetMenuData()
 ```
+
+This is the same table `fw_menu` uses for itself, not a copy. Stick to the calls on this page. Other fields you might see on it are for `fw_menu`'s own bookkeeping and can change without notice.
 
 The same menu is also available from the message `fw_menu:getData`. That message stays in the player's game. Your script sends it, and passes a function. The menu calls that function with the menu table. `GetMenuData` is the easier way. Use the message only if you cannot call the export yet.
 
@@ -41,7 +45,7 @@ Opens a list on the player's screen. You get back a handle. The functions you pa
 ---@param namespace string your script or feature name
 ---@param name string menu name inside that name
 ---@param data table title, rows, and options
----@param submit function|nil runs with (data, menu) when the player confirms
+---@param submit function|nil runs with (data, menu) when the player confirms a row, or steps a slider
 ---@param cancel function|nil runs with (data, menu) when the player backs out
 ---@param change function|nil runs with (data, menu) when the highlight or a slider moves
 ---@param close function|nil runs with no arguments after the menu has closed
@@ -50,6 +54,8 @@ MenuData.Open(menuType, namespace, name, data, submit, cancel, change, close)
 ```
 
 `menuType` is `default`. That is the only built-in kind. Use `namespace` and `name` together so two menus do not get mixed up.
+
+If the player closed this exact menu (same `menuType`, `namespace`, and `name`) before, the row they had highlighted stays highlighted the next time it opens. That memory is kept by `fw_menu` itself and is forgotten when `fw_menu` restarts, not when your own script restarts.
 
 `data`:
 
@@ -74,6 +80,8 @@ A row:
 | `options` | Labels for a slider that is not a number range. `value` is the index, starting at 0. |
 | `image` | Icon name when `isGrid` is true. |
 
+The menu screen loads a grid icon from a fixed web path built from `image`, and that path points at a resource named `ip-inventory` (`nui://ip-inventory/web/images/items/<image>.png`). It is not `fw_menu`'s own path. Grid icons only show up if something on this server is actually serving files at that address. If nothing is, the row still works — the player just sees no icon.
+
 ```lua
 local MenuData = exports.fw_menu:GetMenuData()
 
@@ -93,6 +101,34 @@ end, function(data, menu)
 end)
 ```
 
+A slider row is different from the other rows: moving it with Left or Right also calls your `submit` function right away, once per step, with `data.current` set to that slider row. It does not wait for the player to press Enter. If your `submit` function only expects a confirm value such as `'confirm'`, check `data.current.value` before acting on it, the same way the example above only closes the menu — a plain row's submit and a slider's submit both go through the same function.
+
+## What submit, cancel, and change receive
+
+The `data` your `submit` and `change` functions receive is not the `data` you gave `Open`. It is a small table about the one row involved:
+
+| Field | Meaning |
+| --- | --- |
+| `data.current` | The row that was confirmed or just changed — the same fields you gave it (`label`, `value`, `desc`, and so on), with the slider's `value` up to date if it is a slider. |
+| `data.elements` | All of this menu's rows, as currently shown. Most scripts only need `data.current`. |
+
+`cancel` receives a `data` with neither of those — there is nothing useful to read from it. You already know which menu was cancelled, because `cancel` is the function you gave that menu's `Open` call.
+
+```lua
+MenuData.Open('default', 'myshop', 'main', shopData,
+    function(data, menu) -- submit
+        print('picked', data.current.value)
+        menu.close()
+    end,
+    function(data, menu) -- cancel
+        menu.close()
+    end,
+    function(data, menu) -- change
+        print('highlighted', data.current.value)
+    end
+)
+```
+
 ## Menu handle
 
 The functions you passed to `Open` receive `menu`. `GetOpened` gives you the same kind of handle.
@@ -110,20 +146,26 @@ The functions you passed to `Open` receive `menu`. `GetOpened` gives you the sam
 | `menu.removeElementByValue(value, stop)` | Removes rows with that `value`. `stop` true removes only the first. |
 | `menu.removeElementByIndex(index)` | Removes that row. `index` starts at 1. |
 
+`menu.data` is also there to read, not just a parameter you handed in — it is the live row list `fw_menu` is drawing from. After a slider's `change` fires, its updated number is already in `menu.data.elements[index].value`, which is how the quantity example above could read it back. `menu.type`, `menu.namespace`, and `menu.name` are on the handle too, which is useful when you pulled a handle out of `GetOpenedMenus()` and need to tell which menu it is.
+
 ## Other calls
 
 | Call | Returns |
 | --- | --- |
 | `MenuData.IsOpen(menuType, namespace, name)` | True when that menu is open. |
-| `MenuData.GetOpened(menuType, namespace, name)` | The open menu, or nil. |
+| `MenuData.GetOpened(menuType, namespace, name)` | The open menu, or nothing. |
 | `MenuData.GetOpenedMenus()` | A list of open menus. |
 | `MenuData.Close(menuType, namespace, name)` | Closes that menu. |
 | `MenuData.CloseAll()` | Closes every open menu. |
 | `MenuData.ReOpen(menu)` | Opens a menu that was closed, using a table from `GetOpenedMenus`. |
 
+`fw_menu` calls `ReOpen` on its own: if the player opens RedM's pause menu while your menu is open, `fw_menu` closes it, then reopens it once they leave the pause menu. You will not normally call `ReOpen` yourself — it is here for the rare case where you saved a handle from `GetOpenedMenus()` and want to bring that exact menu back.
+
 ## When the player closes the menu
 
-`fw_menu:closed` stays in the player's game. Your script hears it only if it is already running. It has no extra information. It is sent when the menu screen closes.
+`fw_menu:closed` stays in the player's game. Your script hears it only if it is already running. It has no extra information.
+
+It is sent at the moment the player presses Backspace to back out of the menu screen — the same moment the `cancel` function you gave that menu runs. It is not sent when your own script closes a menu by calling `menu.close()`, `MenuData.Close()`, or `MenuData.CloseAll()`. Use it for something like restoring the player's cursor or HUD in general, not as a per-menu close notice — for that, use the `cancel` or `close` function you gave `Open`.
 
 ```lua
 AddEventHandler('fw_menu:closed', function()
@@ -132,10 +174,10 @@ end)
 
 ## SetScale
 
-Runs in the player's game. Changes how large the menu is drawn. `1` is the normal size. A larger number draws it bigger. This does not open a menu.
+Runs in the player's game. Exists to change how large the menu is drawn, with `1` meant as the normal size. In the current menu screen nothing is listening for this message yet, so calling it does not change anything the player sees today. It is safe to call — it will not error.
 
 ```lua
---- Sets the menu size. 1 is normal.
+--- Sends a resize message to the menu screen. Has no visible effect until the menu screen listens for it.
 ---@param scale number
 exports.fw_menu:SetScale(scale)
 ```
@@ -148,7 +190,7 @@ exports.fw_menu:SetScale(1)
 
 ## State bags
 
-`fwInventoryBusy` is the only one. It is yes while a menu that used `lockInventory` is open. The bag screen should stay closed while it is yes. Only this player's game is meant to read it. Set it by opening a menu with `lockInventory = true`. Do not set it yourself, or the bag and the menu will disagree when the menu closes.
+`fwInventoryBusy` is the only one. It is yes while a menu that used `lockInventory` is open. The bag screen should stay closed while it is yes. It is set with replication on, so the server can technically read it too, but it exists for the player's own game to check — read it client-side unless you have a specific reason not to. Set it by opening a menu with `lockInventory = true`. Do not set it yourself, or the bag and the menu will disagree when the menu closes.
 
 ```lua
 if LocalPlayer.state.fwInventoryBusy then
@@ -158,4 +200,4 @@ end
 
 ## Keys
 
-Enter confirms the highlighted row. Backspace cancels. Up and Down move the highlight. Left and Right change a slider.
+Enter confirms the highlighted row. Backspace cancels. Up and Down move the highlight. Left and Right change a slider — and, unlike Up and Down, each press also runs that slider row through `submit`, not just `change`.

@@ -31,8 +31,8 @@ end
 Call that from your own script at the moment the player opens the chest. This page does not watch the world for you. A wagon and a horse are the same call, with their own names, such as `wagon:1` or `horse:12`.
 
 - The name is how the chest is remembered. `chest:valentine_1` is one chest. `chest:valentine_2` is a different chest. Use the same name every time you want the same items.
-- Use lowercase letters, digits, underscore, colon, and hyphen. Start with a letter or a digit. No spaces. Keep it under 64 characters. `Chest 1` is rejected with `Invalid storage.`
-- Start the name with `chest:`, `wagon:`, or `horse:`. Names that start with `item:` belong to pouches. Leave those alone.
+- Use lowercase letters, digits, underscore, colon, and hyphen. Start with a letter or a digit. No spaces. Keep it to 64 characters or fewer. `Chest 1` is rejected with `Invalid storage.`
+- `chest:`, `wagon:`, and `horse:` are not enforced by this resource — nothing stops you from naming it something else — but using them keeps your own script's names easy to tell apart. Do not start a name with `item:`. That prefix is used internally for the storage inside a pouch, and a name you pick by hand could collide with one.
 - `width` and `height` are how many squares, from 1 to 24. The example is 8 across and 6 down.
 - `label` is the title the player sees. Leave it out and the title is `Storage`.
 - The bag opens at the same time, with the chest beside it. The player drags items between them.
@@ -40,7 +40,7 @@ Call that from your own script at the moment the player opens the chest. This pa
 
 One person can have a chest open at a time. The next person gets `Someone is using that.` One player can have one of these open. Opening a second one closes the first.
 
-`CloseStorage` hides the chest and leaves the bag open. Closing the bag also closes the chest.
+`CloseStorage` hides the chest and leaves the bag open. Closing the bag on the player's screen also closes the chest — that happens on the player's screen, not on this page.
 
 To make a chest larger later, call `OpenStorage` again with the same name and a bigger width or height. The items stay. Making it smaller, while an item sits on a square that would disappear, comes back as `Make room in there first.` Nothing is moved.
 
@@ -52,6 +52,7 @@ Every item has a group. The groups are `ammo`, `animals`, `documents`, `food`, `
 - Pass a list, and only those groups can be dragged in. Herbs and tools: `groups = { 'herbs', 'tools' }`.
 - An empty list, `groups = {}`, takes nothing.
 - A name that is not in the list above comes back as `unknown group`.
+- Something other than a list of strings, such as a number or a single string, comes back as `Invalid storage groups.`
 
 When the player drags the wrong kind of item, they see `That does not go in there.` The bag itself takes every group.
 
@@ -72,15 +73,15 @@ You add the pouch the same way you add any other item: a file in `items/`, or `R
 
 ```lua
 local ok, err = exports.fw_inventory:RegisterItem({
-    name = 'herb_pouch',
-    label = 'Herb Pouch',
+    name = 'seed_pouch',
+    label = 'Seed Pouch',
     group = 'tools',
     width = 2,
     height = 2,
     stack = 1,
-    description = 'A pouch for herbs.',
+    description = 'A small pouch for seeds.',
     container = {
-        label = 'Herb pouch',
+        label = 'Seed pouch',
         width = 4,
         height = 4,
         groups = { 'herbs' },
@@ -92,7 +93,9 @@ if not ok then
 end
 ```
 
-The same fields work in an item file. The name is the key, so you leave `name` out of the file. The [item file](#item-file) section shows that shape. `herb_pouch` is already in the sample file, so you can give that one without registering it again.
+The same fields work in an item file. The name is the key, so you leave `name` out of the file. The [item file](#item-file) section shows that shape.
+
+`items/default.lua` already ships with a pouch named `herb_pouch`, 2 by 2 in the bag with a 6-by-10 grid inside that only takes herbs. You can give that one to a player without registering anything, the same way you'd give any other item that ships in that folder.
 
 What you pass:
 
@@ -102,7 +105,7 @@ What you pass:
 - `container.groups` follows the same rules as a chest. Leave it out and the pouch takes anything. `{ 'herbs' }` takes herbs only.
 - A pouch always holds a count of 1. Two pouches cannot share one square, because each one has its own contents.
 
-A picture named `herb_pouch.png` goes in `fw_inventory/images/`. A new picture shows up after `ensure fw_inventory`.
+A picture named `seed_pouch.png` goes in `fw_inventory/images/`. A new picture shows up after `ensure fw_inventory`.
 
 Give it to the player with `AddItem`:
 
@@ -114,11 +117,11 @@ if not ok then
 end
 ```
 
-Each pouch gets its own contents the first time it is created. Two pouches are two different storages. Moving a pouch around the bag keeps the same contents.
+Each pouch gets its own contents the first time it is used. Two pouches are two different storages. Moving a pouch around the bag keeps the same contents.
 
 The player opens the bag with B or `/satchel`, then double-clicks the pouch, or right-clicks it and chooses Use. The pouch grid appears beside the bag. They drag items in. Close on that panel hides the pouch and leaves the bag open.
 
-A use function from `RegisterUsable` is not called for a pouch. Using it opens the pouch.
+A use function from `RegisterUsable` is not called for a pouch. Using it opens the pouch instead.
 
 Using a pouch while it is sitting inside another open chest or pouch is refused. The player sees `Take it out first.` Put it back in the bag, then use it.
 
@@ -144,7 +147,7 @@ end
 
 ### RegisterItem
 
-Runs on the server. Adds an item type. The same fields as an item file, plus `name`. Connected players get the new definition without a restart.
+Runs on the server. Adds an item type, or replaces one that already exists. The same fields as an item file, plus `name`. Connected players get the new definition without a restart.
 
 ```lua
 --- Adds or replaces an item type.
@@ -157,13 +160,13 @@ exports.fw_inventory:RegisterItem(def)
 
 ```lua
 local ok, err = exports.fw_inventory:RegisterItem({
-    name = 'bread',
-    label = 'Bread',
+    name = 'dried_meat',
+    label = 'Dried Meat',
     group = 'food',
     width = 1,
     height = 1,
-    stack = 10,
-    description = 'A loaf of bread.',
+    stack = 20,
+    description = 'Smoked and dried. Keeps for a long time.',
 })
 if not ok then
     print(err)
@@ -171,7 +174,9 @@ if not ok then
 end
 ```
 
-A later reload from `items/` updates a name that also has a file. A name that exists only from this call is left in place.
+A later reload from `items/` updates a name that also has a file. A name that exists only from this call is left in place, because it was already written to the database the first time you registered it.
+
+If the name you register, or the `hash` you give it, looks like a known RDR3 weapon such as `WEAPON_REVOLVER_SCHOFIELD`, you can leave `kit`, `hash`, `width`, `height`, and `rotate` out. They are filled in for you.
 
 ### RegisterUsable
 
@@ -192,13 +197,15 @@ exports.fw_inventory:RegisterUsable(name, callback)
 If your resource stops, its use callbacks are removed. Start it again and register them again.
 
 ```lua
-exports.fw_inventory:RegisterUsable('bread', function(source, item)
-    local ok, err = exports.fw_inventory:RemoveItem(source, 'bread', 1)
+exports.fw_inventory:RegisterUsable('dried_meat', function(source, item)
+    local ok, err = exports.fw_inventory:RemoveItem(source, 'dried_meat', 1)
     if not ok then
         print(err)
     end
 end)
 ```
+
+A pouch, or any item with a `container`, never reaches this callback. Using it opens the pouch instead, as described in [A pouch](#a-pouch-or-any-item-that-holds-other-items).
 
 ### GetDefinition
 
@@ -246,6 +253,8 @@ if not ok then
 end
 ```
 
+If `name` is not a registered item, but it looks like a known RDR3 weapon, such as `weapon_revolver_cattleman`, this resource creates that item type for you on the spot and then gives it. Any other unknown name fails with `Unknown item.` — register it first with `RegisterItem` or a file in `items/`.
+
 ### RemoveItem
 
 Runs on the server. Takes that many of the name out of the satchel. If the player does not hold that many, nothing is removed. Removing a whole container placement deletes the storage that belongs to it.
@@ -262,7 +271,7 @@ exports.fw_inventory:RemoveItem(source, name, count)
 ```
 
 ```lua
-local ok, err = exports.fw_inventory:RemoveItem(source, 'bread', 2)
+local ok, err = exports.fw_inventory:RemoveItem(source, 'dried_meat', 2)
 if not ok then
     print(err)
     return
@@ -316,7 +325,7 @@ end
 
 ### PlaceAt
 
-Runs on the server. Puts one new placement on an exact cell. It does not look for another spot.
+Runs on the server. Puts one new placement on an exact cell. It does not look for another spot, and it does not combine with a stack that is already sitting there.
 
 ```lua
 --- Places one stack on an exact cell.
@@ -349,7 +358,7 @@ Runs on the server. Adds columns or rows to the satchel under a name you choose,
 
 ```lua
 --- Adds or replaces a named size bonus on the satchel.
---- False and a reason when shrinking would cut off an item.
+--- False and a reason when the key or sizes are invalid, the total would pass 24, or shrinking would cut off an item.
 ---@param source integer
 ---@param key string
 ---@param extraWidth integer
@@ -361,7 +370,11 @@ exports.fw_inventory:SetGridBonus(source, key, extraWidth, extraHeight)
 
 `key` is lowercase letters, digits, and underscores, up to 32 characters. `0, 0` removes that bonus.
 
-Shrinking is refused while an item sits in a cell that would disappear. The reason is `Make room in the satchel first.` Nothing is moved.
+| `err` | When |
+| --- | --- |
+| `Invalid bonus.` | `key` has characters outside lowercase letters, digits, and underscore, is longer than 32 characters, or `extraWidth`/`extraHeight` is not a whole number from 0 to 24. |
+| `The satchel cannot grow any further.` | Adding this bonus on top of the base size and every other named bonus would ask for more than 24 columns or 24 rows, even though the satchel itself is capped at 24. Use a smaller bonus. |
+| `Make room in the satchel first.` | Shrinking or removing a bonus would leave an item sitting partly off the grid. Nothing is moved. |
 
 ```lua
 local ok, err = exports.fw_inventory:SetGridBonus(source, 'backpack', 0, 5)
@@ -373,7 +386,7 @@ end
 
 ### ClearGridBonus
 
-Runs on the server. Removes one named bonus. Same refusal as shrinking with `SetGridBonus`.
+Runs on the server. Removes one named bonus. The same `Invalid bonus.` and `Make room in the satchel first.` reasons from `SetGridBonus` apply here.
 
 ```lua
 --- Removes a named size bonus.
@@ -416,6 +429,7 @@ exports.fw_inventory:OpenStorage(source, id, params)
 | `Invalid storage.` | The name has a space, a capital letter, or some other character that is not allowed. Or `params` was left out. |
 | `Invalid storage size.` | Width or height is outside 1–24. |
 | `unknown group` | A group name is not in the list in the chest section. |
+| `Invalid storage groups.` | `params.groups` was something other than a list of group names. |
 | `Make room in there first.` | A later open tried to make the grid smaller while an item sits on a square that would disappear. |
 | `Someone is using that.` | Another player already has this one open. |
 
@@ -472,40 +486,68 @@ A message on the server is heard with `AddEventHandler`. A message from the serv
 
 ### fw_inventory:ready
 
-Stays on the server. Sent once, after the item list has loaded. If your script starts later, you missed it. Ask `IsReady`.
+Local, on the server. Sent once, after the item list has loaded. If your script starts later, you missed it. Ask `IsReady`.
 
 ```lua
 AddEventHandler('fw_inventory:ready', function()
-    exports.fw_inventory:RegisterUsable('bread', function(source, item)
-        exports.fw_inventory:RemoveItem(source, 'bread', 1)
+    exports.fw_inventory:RegisterUsable('dried_meat', function(source, item)
+        exports.fw_inventory:RemoveItem(source, 'dried_meat', 1)
     end)
 end)
 ```
 
 `fw_characters:selected` loads or creates that character's bag. `fw_characters:cleared` saves it and forgets it. Both are messages on the server, described on [fw_characters](fw-characters.md).
 
-### What the server sends the bag screen
+### What the bag screen sends the server
 
-The screen in [fw_satchel](fw-satchel.md) listens for these. A script with its own bag screen can listen too. Giving an item is still `AddItem`.
+These are networked (`RegisterNetEvent` on the server, sent from the player's game with `TriggerServerEvent`). `fw_satchel` sends these when the player drags, uses, sorts, or drops. A script with its own bag screen could send them too, but for giving or taking items from your own script, use the calls above instead — `AddItem`, `RemoveItem`, and so on, not these.
 
-| Message | What it carries |
-| --- | --- |
-| `fw_inventory:opened` | The bag, and the chest or pouch when one is open. |
-| `fw_inventory:updated` | The bag after a change, and the open chest when there is one. |
-| `fw_inventory:definitions` | Every item type, and the group names. |
-| `fw_inventory:rejected` | A short reason, such as `That does not go in there.` |
-| `fw_inventory:close` | Hide the bag. |
-| `fw_inventory:storageClosed` | Hide the chest or pouch. The bag stays. |
+`token` is a value you make up and send with the request. It comes back unchanged on `fw_inventory:updated` or `fw_inventory:rejected`, so a screen that fires several requests at once can tell which response answers which request. Leave it out, or pass anything, if you don't need that.
+
+| Event | Parameters | What it does |
+| --- | --- | --- |
+| `fw_inventory:open` | none | Opens the bag for the sender. Answered with `fw_inventory:opened`, or `fw_inventory:rejected` when the item list is not ready or the player has no character. |
+| `fw_inventory:move` | `id, x, y, rotated, token` | Moves a placement already in the bag to a new cell, or turns it. `id` is the placement id. `rotated` is `true`, `false`, or left out to keep its current facing. |
+| `fw_inventory:sort` | `token` | Rearranges the whole bag by item group, then size. |
+| `fw_inventory:discard` | `id, count, token` | Drops up to `count` of that placement from the bag. `count` defaults to 1. Dropping the last one removes the placement, and the container it owns, if it had one. |
+| `fw_inventory:split` | `id, count, token` | Splits `count` off a stackable placement into a new stack. `count` must be less than what's already there, and the item must be able to stack. |
+| `fw_inventory:use` | `id, token, side` | Uses that placement. `side` is `'storage'` when the placement is sitting in an open chest or pouch rather than the bag — that is refused with `Take it out first.` Opens a pouch's storage, or runs its `RegisterUsable` callback, or rejects with `This cannot be used.` |
+| `fw_inventory:storageClose` | none | Closes whatever chest or pouch the sender has open, if any. Answered with `fw_inventory:storageClosed`. |
+| `fw_inventory:storageMove` | `id, x, y, rotated, token` | Moves a placement inside the open chest or pouch, not the bag. |
+| `fw_inventory:transfer` | `fromSide, id, x, y, rotated, token` | Moves a placement between the bag and the open chest or pouch. `fromSide` is `'satchel'` or `'storage'` — which side the item is coming from. `x, y, rotated` describe where it lands on the other side. |
 
 ```lua
-RegisterNetEvent('fw_inventory:rejected', function(reason)
+RegisterNetEvent('fw_inventory:use', function(id, token, side)
+    -- fw_satchel already does this. Shown so a custom screen knows the shape.
+end)
+```
+
+### What the server sends the bag screen
+
+These are networked (`RegisterNetEvent` on the player's game, sent from the server with `TriggerClientEvent`). The screen in [fw_satchel](fw-satchel.md) listens for these. A script with its own bag screen can listen too. Giving an item from your own script is still `AddItem`, not one of these.
+
+| Event | Parameters | What it carries |
+| --- | --- | --- |
+| `fw_inventory:opened` | `payload` | `payload.grid` is the bag. `payload.definitions` and `payload.groups` are every item type and the group names. `payload.storage` is the chest or pouch, when one was opened at the same time, or nothing. |
+| `fw_inventory:updated` | `grid, token, storage` | The bag after a change, the `token` from the request that caused it (or nothing, when this page's own calls caused the change), and the open chest or pouch, when there is one. |
+| `fw_inventory:definitions` | `definitions, groups` | Sent to everyone. Every item type and the group names, after `RegisterItem`, a reload, or a new weapon type being created automatically. |
+| `fw_inventory:rejected` | `reason, token` | A short reason, such as `That does not go in there.`, and the `token` from the request that failed. |
+| `fw_inventory:close` | none | Hide the bag. Sent when the character is deselected, the player leaves, or this resource stops. |
+| `fw_inventory:storageClosed` | none | Hide the chest or pouch. The bag stays. |
+
+```lua
+RegisterNetEvent('fw_inventory:rejected', function(reason, token)
     print(reason)
 end)
 ```
 
-### What the bag screen sends the server
+## Console commands
 
-The screen sends these when the player drags, uses, or drops. The checks and the saved result live in the calls on this page. A shop script uses `AddItem`. A chest script uses `OpenStorage`. The full list, and the call to use instead, is on [fw_satchel](fw-satchel.md).
+| Command | Where | What it does |
+| --- | --- | --- |
+| `fw_items_reload` | Server console, or `/fw_items_reload` by an in-game admin | Reads `items/` again and re-saves every item. A player who is not an admin and types `/fw_items_reload` gets `You are not an admin.` in chat. |
+| `fw_giveitem <serverId> <name> [count]` | Server console only | Calls `AddItem` for that player. Typing it as a player, or in chat, does nothing — the console check happens before anything else runs. |
+| `fw_gridbonus <serverId> <key> <extraWidth> <extraHeight>` | Server console only | Calls `SetGridBonus` for that player. Same console-only behavior as `fw_giveitem`. |
 
 ## State bags
 
@@ -517,13 +559,13 @@ Put a Lua file in `resources/[framework]/fw_inventory/items/`. The file returns 
 
 ```lua
 return {
-    bread = {
-        label = 'Bread',
+    dried_meat = {
+        label = 'Dried Meat',
         group = 'food',
         width = 1,
         height = 1,
-        stack = 10,
-        description = 'A loaf of bread.',
+        stack = 20,
+        description = 'Smoked and dried. Keeps for a long time.',
     },
 }
 ```
@@ -537,19 +579,19 @@ return {
 | `stack` | 1 | How many copies share one footprint. Maximum 1000. |
 | `weapon` | false | When true, the item never stacks. |
 | `rotate` | false | The player can turn it. |
-| `kit` | none | Which weapon slot can hold it: `revolver`, `pistol`, `longarm`, `bow`, `lasso`, `melee`, or `lantern`. |
+| `kit` | none | Which weapon slot can hold it: `revolver`, `pistol`, `longarm`, `bow`, `lasso`, `melee`, `lantern`, or `binoculars`. |
 | `hash` | none | Weapon name, such as `WEAPON_REVOLVER_CATTLEMAN`. Required when `kit` is set. |
 | `container` | none | Opens a second grid when the item is used from the satchel. Stack is forced to 1. |
 
+If the item's name, or the `hash` you set, matches a known RDR3 weapon such as `weapon_revolver_cattleman` or `WEAPON_BOW`, you can leave `kit`, `hash`, `width`, `height`, and `rotate` out entirely — they are worked out for you from that name. The shipped `items/weapons.lua` sets them by hand anyway, so the shape is easy to see and change.
+
 The picture is `fw_inventory/images/<name>.png`. A new picture is not served until `ensure fw_inventory`.
 
-`fw_items_reload` reads `items/` again. The server console can run it. An admin in the game can run `/fw_items_reload`.
-
-`fw_giveitem <serverId> <name> [count]` is a server console command. It calls `AddItem`.
+`fw_items_reload` reads `items/` again, as described in [Console commands](#console-commands). This resource always loads `default.lua` and `weapons.lua`, plus any other `.lua` file it finds in that folder, in alphabetical order. If two files define the same name, the one that sorts later wins.
 
 ## Container items
 
-The walkthrough is [A pouch](#a-pouch-or-any-item-that-holds-other-items). This is the same item as a file in `items/`. The name is the key, so `name` is not repeated inside.
+The walkthrough is [A pouch](#a-pouch-or-any-item-that-holds-other-items). This is the item that ships in `items/default.lua`. The name is the key, so `name` is not repeated inside.
 
 ```lua
 herb_pouch = {
@@ -561,8 +603,8 @@ herb_pouch = {
     description = 'A pouch for herbs.',
     container = {
         label = 'Herb pouch',
-        width = 4,
-        height = 4,
+        width = 6,
+        height = 10,
         groups = { 'herbs' },
     },
 }

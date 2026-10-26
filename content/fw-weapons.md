@@ -6,7 +6,7 @@ The bag still holds the item. Equipping takes it out of the bag and puts it on a
 
 The slots are `revolver_1` (right revolver), `revolver_2` (left revolver), `longarm`, `bow`, `lasso`, `knife`, `lantern`, and `binoculars`.
 
-A sidearm needs a gunbelt. The left revolver also needs the offhand holster, and the right revolver has to be filled first. Dragging a gun onto the empty left slot shows `Equip the right revolver first.` Taking the right revolver off while the left one is still there shows `Take the left revolver off first.` `fw_weapons` reads the belt and holster from [fw_clothing](fw-clothing.md). If the belt comes off, the guns in those slots go back to the bag. If the bag is full, the player sees `Make room in the satchel first.`
+A sidearm needs a gunbelt, and so does the knife. The left revolver also needs the offhand holster, and the right revolver has to be filled first. Dragging a gun onto the empty left slot shows `Equip the right revolver first.` Taking the right revolver off while the left one is still there shows `Take the left revolver off first.` `fw_weapons` reads the belt and holster from [fw_clothing](fw-clothing.md). If the gunbelt comes off, the right revolver, the left revolver, and the knife all go back to the bag. If just the offhand holster comes off, only the left revolver goes back. If the bag is full, the player sees `Make room in the satchel first.`
 
 `source` on this page is the player's number for this visit. Nothing is written as `nil`.
 
@@ -14,7 +14,7 @@ A sidearm needs a gunbelt. The left revolver also needs the offhand holster, and
 
 ### GetKit
 
-Runs on the server. A snapshot of the kit for the character this player is playing. You get nothing when they have no character selected, or the kit is still loading. Changing the snapshot does not save.
+Runs on the server. A snapshot of the kit for the character this player is playing. You get nothing when this player has not selected a character yet, when the kit is still loading right after they did, or when `fw_weapons` itself has not started yet. Changing the snapshot does not save.
 
 ```lua
 --- The equipped slots, or nothing when this player has no kit yet.
@@ -37,7 +37,7 @@ print(kit.revolver_1.name)
 
 ### GetKit
 
-Runs in the player's game. The same snapshot, for the local player. It can be empty until the server has sent the kit.
+Runs in the player's game. The same snapshot, for the local player.
 
 ```lua
 --- The equipped slots on this player's game.
@@ -45,9 +45,11 @@ Runs in the player's game. The same snapshot, for the local player. It can be em
 exports.fw_weapons:GetKit()
 ```
 
+Before the server has sent a kit, this can be an empty table with no slot keys at all yet, not a table where every slot is `false`. Check with `type(...) == 'table'` rather than only `~= false`, so you don't try to read a field off nothing:
+
 ```lua
 local kit = exports.fw_weapons:GetKit()
-if kit.longarm ~= false then
+if type(kit.longarm) == 'table' then
     print(kit.longarm.name)
 end
 ```
@@ -58,7 +60,7 @@ A message on the server is heard with `AddEventHandler`. A message from the serv
 
 ### fw_weapons:updated
 
-Stays in the player's game. Sent after the kit on this computer changes. `kit` is a snapshot. Ask `GetKit` when you need a fresh one.
+Local event in the player's game, raised with `TriggerEvent` and heard with `AddEventHandler`. Sent after the kit on this computer changes, including the first time it arrives from the server. `kit` is a snapshot. Ask `GetKit` when you need a fresh one.
 
 A holster script can watch for a rifle being put on the back:
 
@@ -73,7 +75,7 @@ end)
 
 ### fw_weapons:kit
 
-Sent from the server to the player's game. This is the kit they should show. `fw_weapons` already applies it and then sends `fw_weapons:updated`. Listen here only if you are drawing your own loadout.
+Networked event, sent from the server to the player's game with `TriggerClientEvent` and heard there with `RegisterNetEvent`. This is the kit they should show. `fw_weapons` already applies it and then sends `fw_weapons:updated`. Listen here only if you are drawing your own loadout.
 
 ```lua
 ---@param kit table
@@ -83,7 +85,7 @@ end)
 
 ### fw_weapons:rejected
 
-Sent from the server to the player's game. `reason` is a short line, such as `That does not fit there.` or `Put on a gunbelt first.` The satchel shows it. Listen here if your own screen should show that line.
+Networked event, sent from the server to the player's game with `TriggerClientEvent` and heard there with `RegisterNetEvent`. `reason` is a short line. The satchel shows it. Listen here if your own screen should show that line.
 
 ```lua
 ---@param reason string
@@ -92,9 +94,26 @@ RegisterNetEvent('fw_weapons:rejected', function(reason)
 end)
 ```
 
+This is sent whenever `fw_weapons:wear`, `fw_weapons:equip`, `fw_weapons:unequip`, or `fw_weapons:move` (described below) could not be done. The possible lines are:
+
+| Reason | When |
+| --- | --- |
+| `Select a character first.` | This player is not playing a character. |
+| `The kit is still loading.` | A character was just selected and the saved kit has not finished loading yet. Try again shortly. |
+| `That item is not in the satchel.` | The placement id passed to `fw_weapons:equip` is not in the bag. |
+| `That does not fit there.` | The slot name is not one of the eight listed above, or the item's `kit` does not match the slot it was aimed at. |
+| `That slot is empty.` | `fw_weapons:unequip` or `fw_weapons:move` named a slot that has nothing on it. |
+| `Put on a gunbelt first.` | `revolver_1`, `revolver_2`, or `knife` was used with no gunbelt worn. |
+| `Put on another holster first.` | `revolver_2` was used with no offhand holster worn. |
+| `Equip the right revolver first.` | The left slot would end up holding a gun while the right slot stays empty. |
+| `Take the left revolver off first.` | The right slot would be cleared while the left slot still holds a gun. |
+| `Make room in the satchel first.` | The bag has no space for the item that needs to go back into it. |
+| `The kit is busy.` | Another equip, unequip, or move for this player has not finished yet. Try again shortly. |
+| `Could not save the kit.` | The database could not store the change. Rare. The action did not happen. |
+
 ### fw_weapons:wear
 
-Sent from the player's game to the server. `fw_weapons` sends it when the gunbelt or the offhand holster changes. `belt` and `offhand` are yes or no.
+Networked event, sent from the player's game to the server with `TriggerServerEvent` and heard there with `RegisterNetEvent`. `fw_weapons` sends it itself when the gunbelt or the offhand holster changes. `belt` and `offhand` are yes or no.
 
 Another script should not send this. Change the clothes with [fw_clothing](fw-clothing.md). The kit follows.
 
@@ -106,22 +125,17 @@ TriggerServerEvent('fw_weapons:wear', belt, offhand)
 
 ### fw_weapons:equip
 
-Sent from the player's game to the server. The satchel sends this when the player drops a bag item onto a loadout slot.
+Networked event, sent from the player's game to the server with `TriggerServerEvent` and heard there with `RegisterNetEvent`. The satchel sends this when the player drops a bag item onto a loadout slot.
 
-`placementId` is the `id` from [GetItems](fw-inventory.md). `slotId` is one of the slot names above. The item's `kit` field has to match that slot. A revolver goes on `revolver_1` (the right hip) or `revolver_2` (the left hip). The right slot has to already hold a gun before the left slot will take one. A rifle goes on `longarm`.
+`placementId` is the `id` from [GetItems](fw-inventory.md). `slotId` is one of the slot names above. The item's `kit` field has to match that slot. A revolver goes on `revolver_1` (the right hip) or `revolver_2` (the left hip). The right slot has to already hold a gun before the left slot will take one. `revolver_1`, `revolver_2`, and `knife` all need a gunbelt worn first, and `revolver_2` also needs the offhand holster. A rifle goes on `longarm`.
 
-If it fails, the player's game gets `fw_weapons:rejected`. Common reasons:
+If it fails, the player's game gets `fw_weapons:rejected` with one of the reasons listed above.
 
-| Reason | When |
-| --- | --- |
-| `Select a character first.` | This player is not playing a character. |
-| `That item is not in the satchel.` | That placement id is not in the bag. |
-| `That does not fit there.` | That item's kit does not match the slot. |
-| `Put on a gunbelt first.` | A sidearm slot was used with no gunbelt. |
-| `Put on another holster first.` | `revolver_2` was used with no offhand holster. |
-| `Equip the right revolver first.` | The left slot was used while `revolver_1` is empty. |
-| `Take the left revolver off first.` | The right slot was cleared while `revolver_2` still holds a gun. |
-| `The kit is busy.` | Another equip is still finishing. |
+```lua
+---@param placementId integer
+---@param slotId string
+TriggerServerEvent('fw_weapons:equip', placementId, slotId)
+```
 
 A camp script can put the cattleman already in the bag onto the hip:
 
@@ -147,23 +161,31 @@ Giving a weapon the player does not already hold is `AddItem` on [fw_inventory](
 
 ### fw_weapons:unequip
 
-Sent from the player's game to the server. Puts that slot back into the bag.
+Networked event, sent from the player's game to the server with `TriggerServerEvent` and heard there with `RegisterNetEvent`. Puts that slot back into the bag.
 
-`slotId` is the slot name. `x` and `y` are the bag square to aim for, with `0, 0` at the top left. `rotated` turns the item if that item can turn. If that square does not fit, the item is placed anywhere that does. If the bag cannot take it, nothing moves, and the reason is `Make room in the satchel first.`
+`slotId` is the slot name. It has to already hold something, and taking the right revolver off while the left one is still in place is refused with `Take the left revolver off first.` `x` and `y` are the bag square to aim for, with `0, 0` at the top left. `rotated` turns the item if that item can turn. If that square does not fit, the item is placed anywhere that does. If the bag cannot take it, nothing moves, and the reason is `Make room in the satchel first.`
 
 ```lua
+---@param slotId string
+---@param x integer
+---@param y integer
+---@param rotated boolean
 TriggerServerEvent('fw_weapons:unequip', 'knife', 0, 0, false)
 ```
 
 ### fw_weapons:move
 
-Sent from the player's game to the server. Swaps two slots. Both names have to be real slots, and each item has to be allowed on the slot it is moving to.
+Networked event, sent from the player's game to the server with `TriggerServerEvent` and heard there with `RegisterNetEvent`. Swaps two slots.
 
-Swaps the two revolvers when both slots already hold a gun. Moving the right revolver onto an empty left slot is refused with `Equip the right revolver first.`
+`fromId` and `toId` both have to be real slots, and each cannot be empty. The item leaving `fromId` has to be allowed on `toId`, and if `toId` already holds something, that item has to be allowed back on `fromId` too — a swap only goes through when both items fit both ways. Moving into `revolver_1`, `revolver_2`, or `knife` needs the same gunbelt (and, for `revolver_2`, offhand holster) as equipping does.
 
 ```lua
+---@param fromId string
+---@param toId string
 TriggerServerEvent('fw_weapons:move', 'revolver_1', 'revolver_2')
 ```
+
+Swaps the two revolvers when both slots already hold a gun. Moving the right revolver onto an empty left slot is refused with `Equip the right revolver first.`
 
 ## State bags
 
