@@ -1,20 +1,20 @@
 # fw_menu
 
-Client. Open a menu on the player's screen. This resource does not know about accounts, characters, or items.
+Runs in the player's game. Open a menu on their screen. This does not know about accounts, characters, or items.
 
-## Client export
+## Get the menu
 
 ### GetMenuData
 
-Client. The menu API. Call it once from the resource that opens menus.
+Runs in the player's game. This is the menu. Ask for it once, in the script that opens menus.
 
 ```lua
---- The menu API for this client.
+--- The menu for this player's game.
 ---@return table MenuData
 local MenuData = exports.fw_menu:GetMenuData()
 ```
 
-The same table is passed to the local client event `fw_menu:getData`. Listen with `AddEventHandler`. It is not saved. Your script must already be running when the event fires.
+The same menu is also handed to the message `fw_menu:getData`. That message stays in the player's game. Your script hears it only if it is already running. Put the listener at the top of your script.
 
 ```lua
 AddEventHandler('fw_menu:getData', function(MenuData)
@@ -23,21 +23,23 @@ end)
 
 ## Open a menu
 
+Opens a list on the player's screen. You get back a handle. The functions you pass in receive that same handle as `menu`.
+
 ```lua
---- Opens a menu and returns the menu handle passed into the callbacks.
+--- Opens a menu. You get back the handle the functions below receive as menu.
 ---@param menuType string use 'default'
----@param namespace string your resource or feature name
----@param name string menu name inside that namespace
----@param data table title, elements, and options
----@param submit function|nil called with (data, menu) when the player confirms
----@param cancel function|nil called with (data, menu) when the player backs out
----@param change function|nil called with (data, menu) when the highlight or a slider moves
----@param close function|nil called with no arguments after the menu has closed
+---@param namespace string your script or feature name
+---@param name string menu name inside that name
+---@param data table title, rows, and options
+---@param submit function|nil runs with (data, menu) when the player confirms
+---@param cancel function|nil runs with (data, menu) when the player backs out
+---@param change function|nil runs with (data, menu) when the highlight or a slider moves
+---@param close function|nil runs with no arguments after the menu has closed
 ---@return table menu
 MenuData.Open(menuType, namespace, name, data, submit, cancel, change, close)
 ```
 
-`menuType` is `default`. That is the only built-in type. Pair `namespace` and `name` so two menus do not collide.
+`menuType` is `default`. That is the only built-in kind. Use `namespace` and `name` together so two menus do not get mixed up.
 
 `data`:
 
@@ -48,7 +50,7 @@ MenuData.Open(menuType, namespace, name, data, submit, cancel, change, close)
 | `elements` | Rows, in order. |
 | `isGrid` | Icon grid instead of a list. |
 | `disableMovement` | The player cannot walk while this menu is open. Nested menus share one freeze and release it when the last one closes. |
-| `lockInventory` | Sets `LocalPlayer.state.fwInventoryBusy` to true while this menu is open, and back to false when the last locked menu closes. `fw_satchel` should refuse to open while that is true. |
+| `lockInventory` | While this menu is open, the satchel should stay closed. It sets `LocalPlayer.state.fwInventoryBusy` to true, and back to false when the last menu that asked for this has closed. |
 
 A row:
 
@@ -83,11 +85,11 @@ end)
 
 ## Menu handle
 
-The callbacks receive `menu`. `GetOpened` returns the same kind of table.
+The functions you passed to `Open` receive `menu`. `GetOpened` gives you the same kind of handle.
 
 | Call | What it does |
 | --- | --- |
-| `menu.close()` | Closes this menu and runs its close callback. |
+| `menu.close()` | Closes this menu and runs the close function you gave `Open`. |
 | `menu.refresh()` | Sends the current rows to the screen again. |
 | `menu.setElement(index, key, value)` | Changes one field. `index` starts at 1. |
 | `menu.setElements(elements)` | Replaces the row list. |
@@ -109,9 +111,9 @@ The callbacks receive `menu`. `GetOpened` returns the same kind of table.
 | `MenuData.CloseAll()` | Closes every open menu. |
 | `MenuData.ReOpen(menu)` | Opens a menu that was closed, using a table from `GetOpenedMenus`. |
 
-## Events
+## When the player closes the menu
 
-`fw_menu:closed` is a local client event. Listen with `AddEventHandler`. It fires when the player closes the screen with the back control. It has no arguments. It is not saved. Your script must already be running.
+`fw_menu:closed` stays in the player's game. Your script hears it only if it is already running. It has no extra information. It is sent when the player backs out of the screen.
 
 ## Keys
 

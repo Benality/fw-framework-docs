@@ -1,6 +1,6 @@
 # Database
 
-Do not read or write these tables from your resource. Call the export. This page is which id to store on a table you own, and what the columns mean when an export gives you a copy.
+Do not read or write these tables from your script. Use the call on the matching page. This page tells you which id to save on a table you own, and what the columns mean when a call gives you a snapshot.
 
 The database name in `server.cfg` is `TerritoryFRP`. If it does not exist yet, oxmysql creates it and connects again. The name can only contain letters, numbers, and underscores. Replacing oxmysql with an untouched copy removes that auto-create. The framework still creates the tables below when each resource starts.
 
@@ -10,7 +10,7 @@ Do not put money or jobs on these tables. A later resource adds its own table an
 
 ## `fw_players`
 
-Created by `fw_core` from `resources/[framework]/fw_core/sql/players.sql`. One row per Rockstar license. `fw_core` is the writer for connect-time columns — there is no Lua export yet for role, warnings, slots, or bans; change those directly in the table.
+Created by `fw_core`. One row per Rockstar license. There is no call yet to change role, warnings, slots, or bans. Change those in the table. They are read the next time that person joins.
 
 **Schema**
 
@@ -54,11 +54,11 @@ CREATE TABLE IF NOT EXISTS `fw_players` (
 
 **Relationships**: `ON DELETE CASCADE` from `fw_characters.player_id` — deleting an account deletes its characters.
 
-**Calls**: [`fw_core`](fw-core.md). The fields you get back are the [account record](fw-core.md#account-record).
+**Calls**: [`fw_core`](fw-core.md). The fields you get back are the [account](fw-core.md#account).
 
 ## `fw_characters`
 
-Created by `fw_characters` from `resources/[framework]/fw_characters/sql/characters.sql`. One row per character. Do not `UPDATE` this table from another resource — use the exports.
+Created by `fw_characters`. One row per character. Do not change this table from another script. Use the calls on [fw_characters](fw-characters.md).
 
 **Schema**
 

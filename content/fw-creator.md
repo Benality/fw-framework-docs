@@ -1,6 +1,6 @@
 # fw_creator
 
-The character menu. Players use it to make a character and to play one. Another resource should not call into this menu. Create and read characters with [fw_characters](fw-characters.md).
+The character menu. Players use it to make a character and to play one. Another script should not call into this menu. Create and read characters with [fw_characters](fw-characters.md).
 
 `Config.framework` in `shared/config.lua` must stay `fw`. Anything else and character select never answers.
 
@@ -71,13 +71,13 @@ When a character is selected, the client receives:
 }
 ```
 
-That client event is `murphy_creator:HealthFromCore`. It is networked: the server sends it with `TriggerClientEvent`. This menu does not save health when the player disconnects. Call `SaveState` for that.
+That message is `murphy_creator:HealthFromCore`. The server sends it to the player's game. This menu does not save health when the player leaves. Use `SaveState` on [fw_characters](fw-characters.md) for that.
 
-## Events the menu uses
+## Messages the menu uses
 
-These keep the old `murphy_creator` names so the screen did not have to be renamed. A new resource should listen to [fw_characters](fw-characters.md) events instead.
+These keep the old `murphy_creator` names so the screen did not have to be renamed. A new script should listen to the messages on [fw_characters](fw-characters.md) instead.
 
-Networked events use `RegisterNetEvent` on the receiving side. They are not saved. The listener must already be running.
+These go between the player's game and the server. Your script hears one only if it is already running.
 
 | Event | Direction | What it does |
 | --- | --- | --- |

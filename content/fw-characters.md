@@ -1,20 +1,20 @@
 # fw_characters
 
-Server. This is how you create a character, read one, and save position or a document on it. Do not write the `fw_characters` table yourself.
+Runs on the server. This is how you create a character, read one, and save where they are standing or a saved document on them. Do not write the `fw_characters` table yourself.
 
-It does not open a menu or move the player. The character menu does that and then calls these exports. Your resource should call them too.
+This does not open the character menu, and it does not move the player. The character menu does those things, then uses the calls on this page. Your script should use these calls too.
 
-Wait until `IsReady` is true. If it is not, every call below returns `nil` and the reason `fw_characters is not ready`.
+Ask `IsReady` first. If it says no, every other call on this page comes back empty, and the reason is `fw_characters is not ready`. `nil` on this page means nothing came back.
 
 A call that takes a character id checks that this player owns that character. A missing character and someone else's character both come back as `character not found`.
 
-The table you get back is a copy. Changing it does not save. Call `UpdateCharacter`, `SetAppearance`, `SetClothing`, `SetBarber`, or `SaveState`.
+What you get back is a snapshot. Changing it does not save. Use `UpdateCharacter`, `SetAppearance`, `SetClothing`, `SetBarber`, or `SaveState`.
 
-## Server exports
+## Calls
 
 ### IsReady
 
-Server. True after startup finished.
+Runs on the server. Yes after startup has finished.
 
 ```lua
 --- True when character calls can be used.
@@ -24,7 +24,7 @@ exports.fw_characters:IsReady()
 
 ### GetCharacters
 
-Server. Every character on this player's account, oldest slot first. The body, clothes, and hair documents are left out. `hasAppearance`, `hasClothing`, and `hasBarber` say whether each one exists.
+Runs on the server. Every character on this player's account, lowest slot first. The body, clothes, and hair are left out. `hasAppearance`, `hasClothing`, and `hasBarber` say whether each one was saved.
 
 ```lua
 --- The character list for this player, or nil when the player is not in the server.
@@ -34,7 +34,7 @@ Server. Every character on this player's account, oldest slot first. The body, c
 exports.fw_characters:GetCharacters(source)
 ```
 
-`player is not loaded` means that server id has not finished joining.
+`source` is the player's number for this visit. `player is not loaded` means that player has not finished joining.
 
 ```lua
 local list, err = exports.fw_characters:GetCharacters(source)
@@ -51,7 +51,7 @@ end
 
 ### GetCharacter
 
-Server. One full character, including body, clothes, and hair, when this player owns it.
+Runs on the server. One full character, including body, clothes, and hair, when this player owns it.
 
 ```lua
 --- One character owned by this player, or nil and a reason.
@@ -64,7 +64,7 @@ exports.fw_characters:GetCharacter(source, characterId)
 
 | `err` | When |
 | --- | --- |
-| `player is not loaded` | That server id has not finished joining. |
+| `player is not loaded` | That player has not finished joining. |
 | `character id must be a positive integer` | The id is missing or below 1. |
 | `character not found` | No character with that id on this account. |
 
@@ -78,7 +78,7 @@ end
 
 ### GetActiveCharacter
 
-Server. The character this player is playing right now. Nil with no reason when nobody is selected. Nil with a reason when the resource is not ready.
+Runs on the server. The character this player is playing right now. You get nothing, and no reason, when nobody is selected. You get nothing and a reason when this resource is not ready yet.
 
 ```lua
 --- The character selected for this player.
@@ -97,11 +97,11 @@ if character == nil then
 end
 ```
 
-Call this again when you need a fresh copy. Do not keep the table.
+Ask this again when you need a fresh copy. Do not keep the old one and treat it as live.
 
 ### CreateCharacter
 
-Server. Inserts a character and returns the new id. It does not select that character. Call `SelectCharacter` if the player should play it now.
+Runs on the server. Creates a character and gives you the new id. It does not make that character the one they are playing. Use `SelectCharacter` for that.
 
 Position and health on the new row come from the character config, not from `data`. The menu saves the spawn the player picked with `SaveState` right after.
 
@@ -128,7 +128,7 @@ exports.fw_characters:CreateCharacter(source, data)
 
 | `err` | When |
 | --- | --- |
-| `player is not loaded` | That server id has not finished joining. |
+| `player is not loaded` | That player has not finished joining. |
 | `character data must be a table` | `data` is not a table. |
 | `first name must be text` | The name is not text. The same shape is used for the last name, nickname, and description. |
 | `first name contains unsupported characters` | The name has a control character. |
@@ -165,7 +165,7 @@ After a successful insert, the local event `fw_characters:created` fires with th
 
 ### UpdateCharacter
 
-Server. Changes name, gender, nickname, birth date, or description. Fields you leave out stay as they are. This does not change body, clothes, hair, position, or health.
+Runs on the server. Changes name, gender, nickname, birth date, or description. Fields you leave out stay as they are. This does not change body, clothes, hair, position, or health.
 
 ```lua
 --- Updates identity fields that are present in data.
@@ -186,7 +186,7 @@ The local event `fw_characters:updated` fires with the source and the character 
 
 ### SelectCharacter
 
-Server. Makes this character the one the player is playing. It does not move the ped. Your script does that, using `x`, `y`, `z`, and `heading` from the character you get back.
+Runs on the server. Makes this character the one the player is playing. It does not move them. Your script does that, using `x`, `y`, `z`, and `heading` from the character you get back.
 
 ```lua
 --- Selects an owned character for this player.
@@ -201,7 +201,7 @@ exports.fw_characters:SelectCharacter(source, characterId)
 
 ### ClearCharacter
 
-Server. The player is no longer playing a character. True when it cleared one, and true when none was selected. `player is not loaded` when `source` is not a player id.
+Runs on the server. The player is no longer playing a character. True when it cleared one, and true when none was selected. `player is not loaded` when `source` is not a player id.
 
 ```lua
 --- Clears the character selected for this player.
@@ -215,7 +215,7 @@ exports.fw_characters:ClearCharacter(source)
 
 ### SetAppearance, SetClothing, SetBarber
 
-Server. Replaces one document on a character this player owns. Pass nil to clear it. The same rules apply to all three calls.
+Runs on the server. Replaces one saved block on a character this player owns. Pass nothing (`nil`) to clear it. The same rules apply to all three calls.
 
 ```lua
 --- Replaces the body document. Nil clears it.
@@ -266,7 +266,7 @@ end
 
 ### SaveState
 
-Server. Saves position and health for the character this player is playing. It does not change name or documents, and it does not fire `fw_characters:updated`.
+Runs on the server. Saves where they are standing, and their health, for the character this player is playing. It does not change the name or the saved body, clothes, or hair. It does not send the `fw_characters:updated` message.
 
 ```lua
 --- Saves position and health for the active character.
@@ -290,7 +290,7 @@ Every field is optional, but position is all or nothing. If you send any of `x`,
 | `err` | When |
 | --- | --- |
 | `state must be a table` | `state` is not a table. |
-| `player is not loaded` | That server id is not a player. |
+| `player is not loaded` | That number is not a player in the game. |
 | `no active character` | No character is selected. |
 | `position requires x, y, z, and heading` | Only part of the position was sent. |
 | `health must be an integer from 0 to 65535` | Health is out of range. |
@@ -318,7 +318,7 @@ The game also reports where the ped is standing. Those reports update the coordi
 
 ### DeleteCharacter
 
-Server. Deletes a character this player owns. Body, clothes, and hair go with it. If it was selected, it is cleared first.
+Runs on the server. Deletes a character this player owns. Body, clothes, and hair go with it. If it was selected, it is cleared first.
 
 ```lua
 --- Deletes an owned character.
@@ -357,11 +357,11 @@ exports.fw_characters:DeleteCharacter(source, characterId)
 
 A new character is placed at the default spawn in `server/config.lua` until something calls `SaveState`. Birth years must fall between `minBirthYear` and `maxBirthYear` in that file. Today that is 1800 through 1899.
 
-## Events
+## Messages
 
-Local server events. Listen with `AddEventHandler`. They are not saved. Your script must already be running. `fw_characters:ready` is the exception: if you start later, call `IsReady`.
+These stay on the server. They are not sent to the player's game. Your script hears one only if it is already running. Put the listener at the top of your script. If your script starts after `fw_characters:ready` was sent, you missed it. Ask `IsReady` instead.
 
-Listeners for `created`, `selected`, `cleared`, `updated`, and `deleted` run before the export returns.
+The listeners for created, selected, cleared, updated, and deleted run before the call that caused them finishes. The snapshot in the message can be old a moment later. Ask `GetCharacter` when you need a fresh one.
 
 ### fw_characters:ready
 
@@ -386,7 +386,7 @@ end)
 
 ### fw_characters:selected
 
-A copy of the character that just became active. Call `GetCharacter` when you need a fresh one.
+A snapshot of the character that just became the one they are playing. Ask `GetCharacter` when you need a fresh one.
 
 ```lua
 ---@param source integer
@@ -397,7 +397,7 @@ end)
 
 ### fw_characters:cleared
 
-The player is no longer on that character. Also fires when they disconnect, if one was selected. It does not fire when this resource stops.
+The player is no longer on that character. It is also sent when they leave, if one was selected. It is not sent when this resource stops.
 
 ```lua
 ---@param source integer
@@ -428,17 +428,17 @@ AddEventHandler('fw_characters:deleted', function(source, characterId)
 end)
 ```
 
-## Value on the player
+## A value the player's game can read
 
-`Player(source).state.fwCharacterId` is the selected character id, or nil when none is selected. The client can read it. The account id is still `fwPlayerId` from [fw_core](fw-core.md).
+`Player(source).state.fwCharacterId` is the selected character id, or nothing when none is selected. The player's game can read it. The account id is still `fwPlayerId` from [fw_core](fw-core.md).
 
 ```lua
 local characterId = Player(source).state.fwCharacterId
 ```
 
-## Console commands
+## Server window
 
-These do nothing when a player types them.
+These do nothing when a player types them in chat.
 
 | Command | What it does |
 | --- | --- |
@@ -448,4 +448,4 @@ These do nothing when a player types them.
 | `fw_char_select <serverId> <characterId>` | Selects that character. |
 | `fw_char_delete <serverId> <characterId>` | Deletes that character. |
 
-`serverId` is the live server id from `fw_health`.
+`serverId` is the player number printed by `fw_health`.

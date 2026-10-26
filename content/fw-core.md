@@ -1,19 +1,23 @@
 # fw_core
 
-Server. This is the account for a player who has joined. Your resource reads that account here, and tells the server which API number it was written for.
+Runs on the server. This is the account for a player who has joined. Your script reads that account here.
 
-There is no client script.
+There is no code on the player's game.
 
-The version is `1.1.0`. The first number, `1`, is the API number. Pass that number to `RegisterResource`. A later `1.2.0` can add calls and your resource still works. A future `2.0.0` is a different API, and your resource must be updated.
+The version is `1.1.0`. The first number is `1`. Pass `1` to `RegisterResource`. A later `1.2.0` can add new calls, and a script written for `1` still works. A future `2.0.0` is a different set of calls, and the script must be updated.
 
-## Server exports
+## Calls
 
 ### IsReady
 
-Server. True after the account table is ready. False while the database is still opening, or if that setup failed.
+Runs on the server. Ask this before you use anything else on this page.
+
+It stays no until two things are done. `fw_core` has a normal version, such as `1.1.0`, and the player list has been created in the database. If the version is wrong, or the player list cannot be created, the server window shows an error. `IsReady` stays no. People trying to join are turned away.
+
+The server can say `fw_core` has started a moment before this is true. Checking once is too early. Keep checking for about two minutes. The example on the [first page](README.md) does that.
 
 ```lua
---- True when other resources can call fw_core.
+--- True when other scripts can use fw_core.
 ---@return boolean ready
 exports.fw_core:IsReady()
 ```
@@ -24,14 +28,12 @@ if not exports.fw_core:IsReady() then
 end
 ```
 
-The server can say `fw_core` has started before this returns true. Wait for it, as the example on the [overview](README.md) does.
-
 ### GetVersion
 
-Server. The full version string, such as `1.1.0`. This does not check the database. It can return a version while `IsReady` is still false.
+Runs on the server. Gives the full version, such as `1.1.0`. It does not check the database. It can give you a version while `IsReady` is still no.
 
 ```lua
---- The version string from this resource, or nil if that string is not three numbers.
+--- The version, such as '1.1.0', or nothing if the version is not three numbers.
 ---@return string|nil version
 exports.fw_core:GetVersion()
 ```
@@ -42,10 +44,10 @@ print(exports.fw_core:GetVersion())
 
 ### GetApiVersion
 
-Server. The API number, such as `1`. Use this instead of splitting the version string yourself.
+Runs on the server. Gives the first number of the version, such as `1`. Use this instead of cutting the version text apart yourself.
 
 ```lua
---- The API number, or nil if the version string is not three numbers.
+--- The first number of the version, or nothing if the version is not three numbers.
 ---@return integer|nil apiVersion
 exports.fw_core:GetApiVersion()
 ```
@@ -56,28 +58,28 @@ print(exports.fw_core:GetApiVersion())
 
 ### RegisterResource
 
-Server. Tell `fw_core` that your resource was written for an API number. Call it once, from your own script, after `IsReady` is true.
+Runs on the server. Tell `fw_core` that your script was written for version 1. Call it once, from your own script, after `IsReady` says yes.
 
 ```lua
---- Records that this resource was written for an API number.
---- False when core is not ready, the call did not come from another resource, or the number does not match.
+--- Records that this script was written for a version number.
+--- False when fw_core is not ready, the call did not come from another script, or the number does not match.
 ---@param requiredApiVersion integer
 ---@return boolean ok
 ---@return string|nil err
 exports.fw_core:RegisterResource(requiredApiVersion)
 ```
 
-`requiredApiVersion` must be the running API number. `1` and `1.0` both work. `1.5`, `0`, and text do not. There is no range. Asking for `2` while the server is on `1` fails, and the error names both numbers.
+Pass `1`. `1.0` also works. `1.5`, `0`, and words do not. There is no "1 or higher". Asking for `2` while the server is on `1` fails, and the error names both numbers.
 
-| `err` | When |
+| What you get back | When |
 | --- | --- |
-| `fw_core is not ready` | The database setup has not finished. |
+| `fw_core is not ready` | The player list is not ready yet. |
 | `RegisterResource must be called from another resource` | The call came from `fw_core` itself. |
-| `<resource>: required API version must be a positive integer` | The number was missing or not a whole number above 0. |
-| `fw_core API 1 is incompatible with required API 2; <resource> needs a newer core` | You asked for a newer API than this server has. |
-| `fw_core API 1 is incompatible with required API <n>; update <resource> for API 1` | You asked for an older API. |
+| `<resource>: required API version must be a positive integer` | You did not pass a whole number above 0. |
+| `fw_core API 1 is incompatible with required API 2; <resource> needs a newer core` | You asked for a newer version than this server has. |
+| `fw_core API 1 is incompatible with required API <n>; update <resource> for API 1` | You asked for an older version. |
 
-`fw_core` also prints the error. You only need to stop your resource or keep going.
+`fw_core` also prints the error in the server window. You only need to stop your script or keep going.
 
 ```lua
 local ok, err = exports.fw_core:RegisterResource(1)
@@ -87,20 +89,20 @@ if not ok then
 end
 ```
 
-Calling it again from the same resource replaces the stored number. Stopping your resource removes the registration. There is no separate unregister call.
+Calling it again from the same script replaces the stored number. Stopping your script removes it. There is no separate "unregister" call.
 
 ### GetPlayer
 
-Server. A copy of the account for a player who has finished joining. Nil during the connection check, and nil if that server id is not in the game.
+Runs on the server. Gives a snapshot of the account for a player who has finished joining. You get nothing while they are still connecting, and nothing if that player number is not in the game. Changing the snapshot does not save.
 
 ```lua
---- The connected account, or nil when that player has not finished joining.
+--- The connected account, or nothing when that player has not finished joining.
 ---@param source integer
 ---@return table|nil player
 exports.fw_core:GetPlayer(source)
 ```
 
-`source` is the player's server id. The table is a copy. Changing it does not save. The fields are in [Account record](#account-record).
+`source` is the player's number for this visit. The fields are in [Account](#account).
 
 ```lua
 local player = exports.fw_core:GetPlayer(source)
@@ -112,16 +114,16 @@ print(('source %d is account %d'):format(source, player.id))
 
 ### GetPlayerById
 
-Server. The same account, looked up by account id instead of server id. Nil when that account is offline. This does not read the database.
+Runs on the server. The same account, found by account id instead of player number. You get nothing when that person is offline. This does not look in the database for someone who is not in the game.
 
 ```lua
---- The connected account for an account id, or nil when that account is offline.
+--- The connected account for an account id, or nothing when that person is offline.
 ---@param playerId integer
 ---@return table|nil player
 exports.fw_core:GetPlayerById(playerId)
 ```
 
-`playerId` is `fw_players.id`.
+`playerId` is the account id, `fw_players.id`.
 
 ```lua
 local player = exports.fw_core:GetPlayerById(1)
@@ -132,10 +134,10 @@ end
 
 ### GetSourceByPlayerId
 
-Server. The server id for an account that is online. Nil when that account is offline. Use this when you stored an account id and need to send that player a client event.
+Runs on the server. The player number for an account that is online. You get nothing when that person is offline. Use this when you saved an account id and need to send that person a message in their game.
 
 ```lua
---- The server id for an online account, or nil when that account is offline.
+--- The player number for an online account, or nothing when that person is offline.
 ---@param playerId integer
 ---@return integer|nil source
 exports.fw_core:GetSourceByPlayerId(playerId)
@@ -149,38 +151,38 @@ end
 TriggerClientEvent('my_resource:notify', target)
 ```
 
-## Account record
+## Account
 
-`GetPlayer`, `GetPlayerById`, `fw_core:playerLoaded`, and `fw_core:playerDropped` all use this shape. It is a copy.
+`GetPlayer`, `GetPlayerById`, `fw_core:playerLoaded`, and `fw_core:playerDropped` all give you this. It is a snapshot. Changing it does not save.
 
 | Field | Meaning |
 | --- | --- |
-| `id` | Account id. Store this when a row belongs to the account, not one character. |
-| `source` | Server id. It changes when they reconnect. |
-| `license` | Rockstar license, including the `license:` prefix. |
-| `steam` | Steam id, or nil. |
-| `discord` | Discord id, or nil. |
+| `id` | Account id. Save this when something belongs to the person, not to one character. |
+| `source` | Player number for this visit. It changes when they join again. |
+| `license` | Their Rockstar license, including `license:` at the front. |
+| `steam` | Steam id, or nothing. |
+| `discord` | Discord id, or nothing. |
 | `name` | The name they joined with. |
-| `role` | Account label. New accounts are `user`. This is not an admin check. Use [fw_admin](fw-admin.md). |
+| `role` | A label on the account. New accounts are `user`. This does not make them an admin. Use [fw_admin](fw-admin.md). |
 | `characterSlots` | How many characters this account may create. |
-| `warnings` | A stored count. `fw_core` does not act on it. |
-| `banned` | Always false here. A banned license never finishes connecting. |
+| `warnings` | A stored count. Nothing happens because of it. |
+| `banned` | Always false here. A banned license never finishes joining. |
 | `bannedUntil` | Always 0 here. |
 
-There is no export to change role, warnings, slots, or a ban. Change those in the `fw_players` table. Role, warnings, and a ban are read again the next time that license connects. The character slot count is read again the next time a character is created.
+There is no call to change role, warnings, character slots, or a ban. Change those in the `fw_players` table. Role, warnings, and a ban are read again the next time that person joins. The character slot count is read again the next time a character is created.
 
-A player is refused while connecting when the database is down, the server is still starting, RedM did not send a license, the license is banned, or the same license is already in the server.
+A person is turned away while joining when the database is down, the server is still starting, RedM did not send a license, the license is banned, or that same license is already in the server.
 
-## Events
+## Messages
 
-These are local server events. Listen with `AddEventHandler`. They are not saved. Your script must already be running, except where a note says to call an export instead.
+These stay on the server. They are not sent to the player's game. Your script hears one only if it is already running. Put the listener at the top of your script. If your script starts later, you missed the message. Ask the matching call instead, where one is listed.
 
 ### fw_core:ready
 
-Fires once, after the account table is ready. A resource started later has missed it. Call `IsReady`.
+Sent once, when the player list is ready. A script that starts later missed it. Ask `IsReady`.
 
 ```lua
---- version is a string such as '1.1.0'. apiVersion is the API number, such as 1.
+--- version is text such as '1.1.0'. apiVersion is the first number, such as 1.
 ---@param version string
 ---@param apiVersion integer
 AddEventHandler('fw_core:ready', function(version, apiVersion)
@@ -189,7 +191,7 @@ end)
 
 ### fw_core:playerLoaded
 
-Fires when a player has finished joining. `player` is a copy of the account. Call `GetPlayer` again when you need a fresh one.
+Sent when a player has finished joining. `player` is a snapshot of the account. Ask `GetPlayer` again when you need a fresh one.
 
 ```lua
 ---@param source integer
@@ -201,7 +203,7 @@ end)
 
 ### fw_core:playerDropped
 
-Fires when that player leaves. `player` is a copy taken before the account is dropped from memory.
+Sent when that player leaves. `player` is a snapshot taken before the account is forgotten.
 
 ```lua
 ---@param source integer
@@ -210,14 +212,14 @@ AddEventHandler('fw_core:playerDropped', function(source, player)
 end)
 ```
 
-## Value on the player
+## A value the player's game can read
 
-`Player(source).state.fwPlayerId` is the account id. The client can read it:
+`Player(source).state.fwPlayerId` is the account id. In the player's game:
 
 ```lua
 local playerId = LocalPlayer.state.fwPlayerId
 ```
 
-## Console command
+## Server window
 
-`fw_health` prints whether core is ready, the version, the API number, how many players are connected, and which resources registered. It does nothing when a player types it.
+Type `fw_health` in the server window. It prints whether `fw_core` is ready, the version, how many players are connected, and which scripts registered. Nothing happens if a player types it in chat.

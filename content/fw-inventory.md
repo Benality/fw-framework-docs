@@ -1,16 +1,16 @@
 # fw_inventory
 
-Server. Give a player an item, take one away, define an item, or open a second grid such as a chest or a pouch.
+Runs on the server. Give a player an item, take one away, add a new kind of item, or open a second grid such as a chest or a pouch.
 
-`fw_satchel` is the screen. It draws the player's grid and, when one is open, the second grid. Your resource does not open that screen itself except by calling `OpenStorage`, which opens both.
+`fw_satchel` is the screen the player sees. It draws their bag and, when one is open, the chest or pouch beside it. Your script does not open that screen itself, except with `OpenStorage`, which opens both.
 
-Call these from the server, after `IsReady` is true. If you listen for `fw_inventory:ready` and your resource starts later, you have missed that event. Call `IsReady`.
+Ask `IsReady` first. If you also listen for `fw_inventory:ready` and your script starts later, you missed that message. Ask `IsReady` instead.
 
-## Server exports
+## Calls
 
 ### IsReady
 
-Server. True after the item list has loaded.
+Runs on the server. Yes after the item list has loaded.
 
 ```lua
 --- True when inventory calls can be used.
@@ -26,7 +26,7 @@ end
 
 ### RegisterItem
 
-Server. Adds an item type. The same fields as an item file, plus `name`. Connected players get the new definition without a restart.
+Runs on the server. Adds an item type. The same fields as an item file, plus `name`. Connected players get the new definition without a restart.
 
 ```lua
 --- Adds or replaces an item type.
@@ -57,7 +57,7 @@ A later reload from `items/` updates a name that also has a file. A name that ex
 
 ### RegisterUsable
 
-Server. Runs your function when the player uses that item from the satchel. The item is not removed unless you call `RemoveItem`.
+Runs on the server. Runs your function when the player uses that item from the satchel. The item is not removed unless you call `RemoveItem`.
 
 ```lua
 --- Registers a use callback for an item that already exists.
@@ -84,7 +84,7 @@ end)
 
 ### GetDefinition
 
-Server. A copy of one item type, or nil when that name is not in the catalog. Changing the table does not change the catalog.
+Runs on the server. A snapshot of one kind of item, or nothing when that name is not in the list. Changing what you got back does not change the list.
 
 ```lua
 --- One item type, or nil when the name is unknown.
@@ -104,7 +104,7 @@ end
 
 ### AddItem
 
-Server. Puts items into the satchel of the character this player is playing. It finds room first. If the whole count does not fit, nothing is added.
+Runs on the server. Puts items into the satchel of the character this player is playing. It finds room first. If the whole count does not fit, nothing is added.
 
 ```lua
 --- Adds items to the active character's satchel.
@@ -130,7 +130,7 @@ end
 
 ### RemoveItem
 
-Server. Takes that many of the name out of the satchel. If the player does not hold that many, nothing is removed. Removing a whole container placement deletes the storage that belongs to it.
+Runs on the server. Takes that many of the name out of the satchel. If the player does not hold that many, nothing is removed. Removing a whole container placement deletes the storage that belongs to it.
 
 ```lua
 --- Removes items from the active character's satchel.
@@ -153,7 +153,7 @@ end
 
 ### GetItems
 
-Server. A copy of the placements in the satchel. Nil and a reason when the player has no character loaded.
+Runs on the server. A snapshot of what is in the bag. You get nothing, and a reason, when the player has no character selected.
 
 ```lua
 --- The placements in the active character's satchel.
@@ -175,7 +175,7 @@ end
 
 ### CanFit
 
-Server. True when `AddItem` would succeed for that name and count. It does not change the satchel.
+Runs on the server. True when `AddItem` would succeed for that name and count. It does not change the satchel.
 
 ```lua
 --- True when that many of the item would fit.
@@ -198,7 +198,7 @@ end
 
 ### PlaceAt
 
-Server. Puts one new placement on an exact cell. It does not look for another spot.
+Runs on the server. Puts one new placement on an exact cell. It does not look for another spot.
 
 ```lua
 --- Places one stack on an exact cell.
@@ -227,7 +227,7 @@ end
 
 ### SetGridBonus
 
-Server. Adds columns or rows to the satchel under a name you choose, such as `backpack`. The same name replaces that bonus. It does not stack on itself. Two different names both apply. The grid cannot pass 24 by 24.
+Runs on the server. Adds columns or rows to the satchel under a name you choose, such as `backpack`. The same name replaces that bonus. It does not stack on itself. Two different names both apply. The grid cannot pass 24 by 24.
 
 ```lua
 --- Adds or replaces a named size bonus on the satchel.
@@ -255,7 +255,7 @@ end
 
 ### ClearGridBonus
 
-Server. Removes one named bonus. Same refusal as shrinking with `SetGridBonus`.
+Runs on the server. Removes one named bonus. Same refusal as shrinking with `SetGridBonus`.
 
 ```lua
 --- Removes a named size bonus.
@@ -275,7 +275,7 @@ end
 
 ### OpenStorage
 
-Server. Opens a second grid beside the satchel. The first call creates it. A later call can make it larger. The player must be playing a character.
+Runs on the server. Opens a second grid beside the satchel. The first call creates it. A later call can make it larger. The player must be playing a character.
 
 ```lua
 --- Opens a storage grid for this player.
@@ -319,7 +319,7 @@ end
 
 ### CloseStorage
 
-Server. Closes the second grid and leaves the satchel open. True when this player had one open. False when they did not.
+Runs on the server. Closes the second grid and leaves the satchel open. True when this player had one open. False when they did not.
 
 ```lua
 --- Closes the storage this player has open.
@@ -334,7 +334,7 @@ exports.fw_inventory:CloseStorage(source)
 
 ### PullForKit
 
-Server. `fw_weapons` calls this when a player equips a weapon. Other resources should use `RemoveItem`.
+Runs on the server. `fw_weapons` uses this when a player equips a weapon. Other scripts should use `RemoveItem`.
 
 ```lua
 --- Takes one placement out of the satchel for a weapon slot.
@@ -349,20 +349,20 @@ exports.fw_inventory:PullForKit(source, id, displaced)
 
 `id` is the placement id from `GetItems`. `displaced` is the item leaving that weapon slot, with `name`, `count`, `metadata`, and `rotated`. It is put back on the cell that was freed. If that cell does not fit, it is placed anywhere that does. If neither works, nothing is taken and the reason is `Make room in the satchel first.`
 
-## Events
+## Messages
 
-`fw_inventory:ready` is a local server event. Listen with `AddEventHandler`. It fires once, after the item list has loaded. It is not saved. A script that starts later calls `IsReady`.
+`fw_inventory:ready` stays on the server. It is sent once, after the item list has loaded. Your script hears it only if it is already running. If your script starts later, you missed it. Ask `IsReady`.
 
 ```lua
 AddEventHandler('fw_inventory:ready', function()
 end)
 ```
 
-`fw_characters:selected` loads or creates that character's satchel. `fw_characters:cleared` saves it and drops it from memory. Both are local server events from [fw_characters](fw-characters.md).
+`fw_characters:selected` loads or creates that character's bag. `fw_characters:cleared` saves it and forgets it. Both are messages on the server, described on [fw_characters](fw-characters.md). Your script hears them only if it is already running.
 
-The screen talks to the server with its own networked events (`fw_inventory:open`, `move`, `use`, `discard`, `split`, `sort`, `storageClose`, `storageMove`, `transfer`). Do not trigger those from another resource. Use the exports.
+The satchel screen talks to the server with its own messages (`fw_inventory:open`, `move`, `use`, `discard`, `split`, `sort`, `storageClose`, `storageMove`, `transfer`). Do not send those from your script. Use the calls on this page.
 
-`fw_inventory:storageClosed` is networked, server to client. It tells the satchel screen to hide the second grid. Listen with `RegisterNetEvent` only if you are drawing that screen.
+`fw_inventory:storageClosed` is sent from the server to the player's game. It tells the satchel screen to hide the chest or pouch. Listen for it only if you are drawing that screen yourself.
 
 ## Item file
 

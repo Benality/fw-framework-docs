@@ -1,8 +1,8 @@
 # fw_clothing
 
-Server and client. Read the clothes a character is wearing, or replace them. The saved document lives on the character. This resource writes it with `SetClothing` from [fw_characters](fw-characters.md).
+Some calls run on the server. One runs in the player's game. Read the clothes a character is wearing, or replace them. The saved clothes live on the character. This resource writes them with `SetClothing` from [fw_characters](fw-characters.md).
 
-The shop still uses the old `murphy_clothing` names. A new resource should use the exports on this page.
+The shop still uses the old `murphy_clothing` names. A new script should use the calls on this page.
 
 There is no money resource yet. The shop shows prices and the purchase succeeds, but nothing is taken. Job-locked categories stay hidden because there is no job.
 
@@ -25,11 +25,11 @@ There is no money resource yet. The shop shows prices and the purchase succeeds,
 
 A write only works while that player is online and has this character selected.
 
-## Server exports
+## Calls on the server
 
 ### IsBandanaEquipped
 
-Server. True when the worn clothes include a mask with a model above 0.
+Runs on the server. Yes when the worn clothes include a mask with a model number above 0.
 
 ```lua
 --- True when this player is wearing a mask or a large mask.
@@ -46,7 +46,7 @@ end
 
 ### GetPlayerClothes
 
-Server. The worn clothes, turned into asset hashes. An empty table when nothing is saved, or when a category has no matching asset.
+Runs on the server. The worn clothes, turned into the numbers the game uses to draw them. You get an empty result when nothing is saved, or when a clothing slot has no matching picture in the catalog.
 
 ```lua
 --- Worn clothes as asset hashes, keyed by category.
@@ -64,7 +64,7 @@ local hat = clothes.hats
 
 ### GetPlayerTemperatureProtection
 
-Server. How many warm and cold pieces are worn, and the protection numbers from config.
+Runs on the server. How many warm pieces and cold pieces are worn, and the protection numbers from the clothing settings.
 
 ```lua
 --- Warm and cold clothing counts for the active character.
@@ -89,7 +89,7 @@ print(protection.coldProtection)
 
 ### SetClothesForChar
 
-Server. Saves clothes for the character that is selected right now, then puts them on that player's ped. This is the call a job or uniform script should use.
+Runs on the server. Saves clothes for the character that is selected right now, then puts them on that player. This is the call a job or uniform script should use.
 
 ```lua
 --- Saves worn clothes for the online player who has this character selected.
@@ -123,11 +123,11 @@ if not ok then
 end
 ```
 
-## Client export
+## A call in the player's game
 
 ### AreClothesStillApplied
 
-Client. True when the clothes this resource last put on the ped are still there. False if clothes were never loaded this session, or a category is missing. The character menu uses this after it applies a body, to see if the clothes were wiped.
+Runs in the player's game. Yes when the clothes this resource last put on them are still there. No if clothes were never loaded this visit, or one slot is missing. The character menu uses this after it applies a body, to see if the clothes were wiped off.
 
 ```lua
 --- True when the last clothes this resource applied are still on the ped.
@@ -141,9 +141,9 @@ if not exports.fw_clothing:AreClothesStillApplied() then
 end
 ```
 
-## Events
+## Messages
 
-`murphy_clothing:clothesUpdated` is a local server event. Listen with `AddEventHandler`. It fires after a successful clothes save, from the shop or from `SetClothesForChar`. It is not saved. Your script must already be running.
+`murphy_clothing:clothesUpdated` stays on the server. It is sent after clothes are saved, from the shop or from `SetClothesForChar`. Your script hears it only if it is already running. Put the listener at the top of your script.
 
 ```lua
 ---@param source integer
@@ -153,9 +153,9 @@ AddEventHandler('murphy_clothing:clothesUpdated', function(source, charid, cloth
 end)
 ```
 
-`murphy_clothing:loadclothes` is networked, server to client. The client dresses the ped from the saved document. The character menu fires it after a body is applied. Listen with `RegisterNetEvent`. It is not saved.
+`murphy_clothing:loadclothes` is sent from the server to the player's game. Their game puts the saved clothes back on. The character menu sends it after a body is applied. Your script hears it only if it is already running.
 
-The shop's other `murphy_clothing` and `murphy_clothes` events are the menu talking to itself. Use the exports above from a new resource.
+The shop's other `murphy_clothing` and `murphy_clothes` messages are the menu talking to itself. Use the calls above from a new script.
 
 ## Commands
 

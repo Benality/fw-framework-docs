@@ -1,8 +1,17 @@
 # Project Territory
 
-These pages are the calls another resource can use. Each one says which side it runs on, what you pass, what you get back, and shows a short example.
+These pages are the actions your script can use. Each one says where it runs, what you give it, what you get back, and shows a short example.
 
-Install notes stay in each resource's `README.md`. Do not read another resource's database tables. Call the export.
+How to install a resource stays in that resource's `README.md`. Do not open another resource's database tables yourself. Use the action on its page.
+
+## Words used here
+
+- **Server** — the computer running the game. Players do not see this code.
+- **Player's game** — RedM on their computer. Some actions only work there.
+- **Call** — an action another script can use. It looks like `exports.fw_core:IsReady()`.
+- **Player number** — written as `source`. The server gives each connected player a number. That number changes every time they join.
+- **Nothing** — written as `nil`. The call did not find what you asked for.
+- **Message** — written as an event. Your script hears it only if it is already running. If your script starts later, you missed it.
 
 ## Start order
 
@@ -37,11 +46,11 @@ The folder `resources/[framework]/` is only a category. The resource name is the
 
 Money and jobs do not exist yet. When they do, store `fw_characters.id` for something that belongs to one character, and `fw_players.id` for something that belongs to the account.
 
-A table you get back from an export is a copy. Changing it does not save. Call the export that writes that field.
+What you get back is a snapshot. Changing it does not save. Use the call that writes that field.
 
-## Write a resource
+## Write a script
 
-Wait until `fw_core` is ready, then register. The server can mark `fw_core` as started while it is still opening the database, so poll for up to two minutes.
+Wait until `fw_core` is ready, then tell it your script was written for version 1. The server can say `fw_core` has started while it is still creating the player list. If you ask once and stop, you asked too soon. Keep asking for about two minutes.
 
 ```lua
 CreateThread(function()
@@ -66,9 +75,9 @@ AddEventHandler('fw_core:playerLoaded', function(source, player)
 end)
 ```
 
-`RegisterResource` must run from your resource's own script. You do not pass the resource name.
+Put `RegisterResource` in your own script. You do not type your script's name. The server already knows who called.
 
-`fw_core:playerLoaded` is a local server event. Use `AddEventHandler`. It is not saved for a script that starts later. If your resource starts after the player is already in, call `GetPlayer`.
+`fw_core:playerLoaded` is a message on the server. It is not sent to the player's game. Your script hears it only if it is already running. If the player joined before your script started, ask `GetPlayer` instead.
 
 ## A good start looks like this
 
