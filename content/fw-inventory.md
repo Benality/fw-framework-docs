@@ -308,6 +308,31 @@ if not ok then
 end
 ```
 
+### RemoveItemDeferred
+
+Runs on the server. Takes that many of the name out of the satchel, the same way `RemoveItem` does, and the bag screen updates right away. The database write waits. Spent rounds use this, so a shot does not write the satchel by itself.
+
+The waiting writes go out together about every five seconds. The satchel is also written when the player leaves, when the character is cleared, and when `fw_inventory` stops. A crash inside that wait can put the spent rounds back.
+
+```lua
+--- Removes items now and writes the satchel on the next flush.
+--- False and a reason when the player does not hold that many.
+---@param source integer
+---@param name string
+---@param count integer
+---@return boolean ok
+---@return string|nil err
+exports.fw_inventory:RemoveItemDeferred(source, name, count)
+```
+
+```lua
+local ok, err = exports.fw_inventory:RemoveItemDeferred(source, 'ammo_rifle', 1)
+if not ok then
+    print(err)
+    return
+end
+```
+
 ### GetItems
 
 Runs on the server. A snapshot of what is in the bag. You get nothing, and a reason, when the player has no character selected.

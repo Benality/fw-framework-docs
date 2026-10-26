@@ -219,6 +219,8 @@ Swaps the two revolvers when both slots already hold a gun. Moving the right rev
 
 The pile in the satchel is every round that gun can still fire. You do not drag it onto the gun. Equip the gun and reload. A Springfield holds one shot in the gun, then the next reload takes another round from the pile. When the pile is gone, the gun is empty.
 
+The bag screen updates on the shot. The database write waits and goes out with the other waiting satchel writes, about every five seconds, and also when the player leaves. A crash inside that wait can put those shots back.
+
 `stack` on the ammo item is the most of that kind the satchel can hold. A shop gives the pile with `AddItem`, on the [inventory](fw-inventory.md) page. Revolver rounds, rifle rounds, arrows, and the rest each have their own pile.
 
 If the player carries more than one kind for the same guns, plain rounds are used. Using the other pile, such as Express, from the satchel switches the gun to that kind. Using it does not spend a round. The next reload spends that pile instead.
