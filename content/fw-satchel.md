@@ -6,7 +6,7 @@ It has no exports, no events of its own, and no state bag. Give an item, open a 
 
 The player opens the bag with `B`, or by typing `/satchel`. Escape or Tab closes it. Closing the bag also closes an open chest or pouch.
 
-Right-click a filled loadout slot for Inspect, Clean, and Unload. That menu is only on the loadout, not on an item sitting in the bag. Inspect draws the gun and plays the inspect hold, then the bag closes. A knife, lasso, lantern, binoculars, bow, or fishing pole cannot be inspected. Clean does nothing yet. Unload puts rounds that were stored on that gun back in the bag.
+Right-click a filled loadout slot for Inspect and Clean. That menu is only on the loadout, not on an item sitting in the bag. Inspect draws the gun and plays the inspect hold, then the bag closes. A knife, lasso, lantern, binoculars, bow, or fishing pole cannot be inspected. Clean does nothing yet.
 
 Ammo stays in the bag until you draw the gun and press reload. That reload fills the gun from the pile and takes those rounds out of the bag. Switching kinds is printed in the client console and does not start a reload. Dropping a pile takes that kind off the wheel. That is on [fw_weapons](fw-weapons.md). Inspect uses `Inspect` on that same page.
 
@@ -63,8 +63,6 @@ Sent with `TriggerServerEvent`. The bag screen is the thing that sends these, in
 | `fw_weapons:equip` | Puts a bag item onto a weapon slot. | See [fw_weapons](fw-weapons.md) |
 | `fw_weapons:unequip` | Puts a weapon slot back in the bag. | See [fw_weapons](fw-weapons.md) |
 | `fw_weapons:move` | Swaps two weapon slots. | See [fw_weapons](fw-weapons.md) |
-| `fw_weapons:load` | Puts loose rounds into the saved count on that gun. The screen does not send this. Reload spends the pile in the bag. | See [fw_weapons](fw-weapons.md) |
-| `fw_weapons:unload` | Puts that gun's rounds back in the bag. | See [fw_weapons](fw-weapons.md) |
 
 A shop that hands the player a rope does this. It does not send `fw_inventory:move`, and it does not open the bag:
 
