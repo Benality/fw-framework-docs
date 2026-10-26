@@ -223,9 +223,11 @@ The bag screen updates when a gun is filled. The database write waits and goes o
 
 `stack` on the ammo item is the most of that kind the satchel can hold. A shop gives the pile with `AddItem`, on the [inventory](fw-inventory.md) page. Revolver rounds, rifle rounds, arrows, and the rest each have their own pile.
 
-If the player carries more than one kind for the same guns, the weapon wheel lists each kind. Regular and Express can both be there. Switching kinds is done on the weapon wheel. A reload fills the gun from the kind the wheel is on, up to what that gun holds.
+If the player carries more than one kind for the same guns, the weapon wheel lists each kind. Regular and Express can both be there. Switching kinds on the weapon wheel unloads the rounds in the gun back into the old pile, then loads the new kind up to what that gun holds.
 
-Dropping a pile takes that kind off the wheel. Rounds already in the gun stay there until they are fired. The number after the slash is the pile in the satchel.
+Two revolvers that switch together share the new pile. The first gun fills, then the second gun takes what is left. With 10 Express rounds and two revolvers that hold 6, the switch puts 6 in one gun and 4 in the other, and the Express pile is empty. The old rounds are back in their own pile.
+
+Dropping a pile takes that kind off the wheel. Rounds already in the gun stay there until they are fired or you switch kinds. The number after the slash is the pile in the satchel.
 
 Two guns that take the same rounds, such as two Cattlemen, share that reserve. Each one shows its own loaded rounds in front of the same satchel count.
 

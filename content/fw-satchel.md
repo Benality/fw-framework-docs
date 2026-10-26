@@ -8,7 +8,7 @@ The player opens the bag with `B`, or by typing `/satchel`. Escape or Tab closes
 
 Right-click a filled loadout slot for Inspect, Clean, and Unload. That menu is only on the loadout, not on an item sitting in the bag. Inspect draws the gun and plays the inspect hold, then the bag closes. A knife, lasso, lantern, binoculars, bow, or fishing pole cannot be inspected. Clean does nothing yet. Unload puts rounds that were stored on that gun back in the bag.
 
-Ammo stays in the bag until you reload. The weapon wheel shows the rounds in the gun and the rounds left in the bag. Dropping a pile takes that kind off the wheel. That is on [fw_weapons](fw-weapons.md). Inspect uses `Inspect` on that same page.
+Ammo stays in the bag until you reload. Switching kinds on the weapon wheel unloads the gun back into the old pile and loads the new kind. Dropping a pile takes that kind off the wheel. That is on [fw_weapons](fw-weapons.md). Inspect uses `Inspect` on that same page.
 
 `fwInventoryBusy` on [fw_menu](fw-menu.md) is how another menu asks this screen to stay closed.
 
