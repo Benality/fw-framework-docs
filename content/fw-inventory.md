@@ -227,6 +227,24 @@ if def == nil then
 end
 ```
 
+### GetCatalog
+
+Runs on the server. A copy of every item type, keyed by name. Same fields as `GetDefinition`. Changing the copy does not change the list.
+
+```lua
+--- Every item type, keyed by name.
+---@return table catalog
+exports.fw_inventory:GetCatalog()
+```
+
+```lua
+local catalog = exports.fw_inventory:GetCatalog()
+local rounds = catalog.ammo_revolver
+if rounds == nil then
+    return
+end
+```
+
 ### AddItem
 
 Runs on the server. Puts items into the satchel of the character this player is playing. It finds room first. If the whole count does not fit, nothing is added.
@@ -245,7 +263,7 @@ exports.fw_inventory:AddItem(source, name, count, metadata)
 
 `count` defaults to 1. The maximum for one call is 500. Stacks that already match the name and metadata are filled first. A weapon never stacks on another weapon. A container item receives its own `metadata.containerId` on each new placement.
 
-Ammo is loose rounds. `stack` on an ammo item is one bought pile, and it is also the most of that kind the satchel can hold. Giving more than that fails with `You cannot carry any more of those.` Rounds that are already in a gun do not count toward that limit. A shop sells one pile:
+Ammo is loose rounds. `stack` on an ammo item is one bought pile, and it is also the most of that kind the satchel can hold. Giving more than that fails with `You cannot carry any more of those.` That pile is what a matching gun reloads from. A shop sells one pile:
 
 ```lua
 local ok, err = exports.fw_inventory:AddItem(source, 'ammo_revolver', 50)
@@ -255,7 +273,7 @@ if not ok then
 end
 ```
 
-The player loads a gun by dragging that pile onto it. That is on the [weapons](fw-weapons.md) page.
+The player reloads the gun in the world, and those shots come out of this pile. Choosing a kind, such as Express, is on the [weapons](fw-weapons.md) page.
 
 ```lua
 local ok, err = exports.fw_inventory:AddItem(source, 'rope', 1)
@@ -510,6 +528,17 @@ end)
 
 `fw_characters:selected` loads or creates that character's bag. `fw_characters:cleared` saves it and forgets it. Both are messages on the server, described on [fw_characters](fw-characters.md).
 
+### fw_inventory:changed
+
+Local, on the server. Sent after the satchel is saved, with the player's number for this visit (`source` on other pages). `fw_weapons` listens so a gun's reload pile stays in step with the bag. Hear it if your own script needs that same moment.
+
+```lua
+---@param source integer
+AddEventHandler('fw_inventory:changed', function(source)
+    local items = exports.fw_inventory:GetItems(source)
+end)
+```
+
 ### What the bag screen sends the server
 
 These are networked (`RegisterNetEvent` on the server, sent from the player's game with `TriggerServerEvent`). `fw_satchel` sends these when the player drags, uses, sorts, or drops. A script with its own bag screen could send them too, but for giving or taking items from your own script, use the calls above instead — `AddItem`, `RemoveItem`, and so on, not these.
@@ -594,7 +623,7 @@ return {
 | `kit` | none | Which weapon slot can hold it: `revolver`, `pistol`, `longarm`, `bow`, `lasso`, `melee`, `lantern`, `binoculars`, or `fishingrod`. |
 | `hash` | none | Weapon name, such as `WEAPON_REVOLVER_CATTLEMAN`. Required when `kit` is set. |
 | `container` | none | Opens a second grid when the item is used from the satchel. Stack is forced to 1. |
-| `ammo` | none | Loose rounds. `key` is the game ammo name, such as `AMMO_REVOLVER`. `fits` is which guns take it: `revolver`, `pistol`, `repeater`, `rifle`, `elephant`, `shotgun`, `arrow`, or `varmint`. `stack` is one bought pile and the most of that kind the satchel can hold. |
+| `ammo` | none | Loose rounds. `key` is the game ammo name, such as `AMMO_REVOLVER`. `fits` is which guns reload with it: `revolver`, `pistol`, `repeater`, `rifle`, `elephant`, `shotgun`, `arrow`, or `varmint`. `stack` is one bought pile and the most of that kind the satchel can hold. Reloading spends this pile. |
 | `chamber` | filled in for shipped guns | Which `fits` value this gun accepts. Set it yourself on a new gun. |
 | `rounds` | filled in for shipped guns | How many rounds that gun holds. A Cattleman is 6. A bow is 20. From 1 to 100. |
 

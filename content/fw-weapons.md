@@ -215,25 +215,27 @@ TriggerServerEvent('fw_weapons:move', 'revolver_1', 'revolver_2')
 
 Swaps the two revolvers when both slots already hold a gun. Moving the right revolver onto an empty left slot is refused with `Equip the right revolver first.`
 
+## Ammo
+
+The pile in the satchel is every round that gun can still fire. You do not drag it onto the gun. Equip the gun and reload. A Springfield holds one shot in the gun, then the next reload takes another round from the pile. When the pile is gone, the gun is empty.
+
+`stack` on the ammo item is the most of that kind the satchel can hold. A shop gives the pile with `AddItem`, on the [inventory](fw-inventory.md) page. Revolver rounds, rifle rounds, arrows, and the rest each have their own pile.
+
+If the player carries more than one kind for the same guns, plain rounds are used. Using the other pile, such as Express, from the satchel switches the gun to that kind. Using it does not spend a round. The next reload spends that pile instead.
+
+Two guns that take the same rounds, such as two Cattlemen, share that one pile. The weapon wheel shows how many are left in the pile.
+
 ### fw_weapons:load
 
-Networked event, sent from the player's game to the server with `TriggerServerEvent` and heard there with `RegisterNetEvent`. Moves loose rounds from one pile in the bag into the gun in that loadout slot.
+Networked event, sent from the player's game to the server with `TriggerServerEvent` and heard there with `RegisterNetEvent`. Moves rounds from one satchel pile into the saved count on a loadout gun. The satchel does not send this. Reloading uses the pile in the bag, described above. Call this only when you want rounds stored on the gun itself.
 
-`placementId` is the pile's id from the bag. `slotId` is the loadout slot, and that slot has to already hold a gun. The rounds have to match that gun. Revolver rounds go in a revolver. Rifle rounds go in a rifle. The elephant rifle and the varmint rifle each take their own rounds. A bow takes arrows.
-
-The gun only holds so many. A Cattleman holds 6. A Winchester holds 14. A Springfield holds 1. A bow holds 20. Dragging a pile loads up to that number and leaves the rest in the bag. Dragging the same kind again fills whatever room is left. Dragging a different kind, such as Express while Normal is still in the gun, is refused with `Unload it first.`
-
-Two copies of the same gun, such as two Cattlemen, share one ammo count. Loading 6 into each one makes 12 on the weapon wheel, on both icons, because the wheel is showing that one shared count. It is not 12 in each gun. They have to be loaded with the same rounds. Unload lowers that shared count. Shots come out of the right-hand gun's count first.
-
-The loaded count is stored on the gun. It stays there when the gun is put back in the bag. `GetKit` shows it on that slot's `metadata`: `ammo` is the item name, `ammoLabel` is the words the player sees, `rounds` is how many are in the gun.
+`placementId` is the pile's id. `slotId` is the loadout slot, and it has to already hold a matching gun. The gun only accepts up to its own hold: a Cattleman 6, a Winchester 14, a Springfield 1, a bow 20. A different kind already stored on the gun is refused with `Unload it first.`
 
 ```lua
 ---@param placementId string
 ---@param slotId string
 TriggerServerEvent('fw_weapons:load', placementId, 'revolver_1')
 ```
-
-A shop does not send this. A shop gives the pile with `AddItem`. The player loads the gun by dragging that pile onto the loadout slot.
 
 ### fw_weapons:unload
 
