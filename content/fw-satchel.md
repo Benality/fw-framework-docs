@@ -6,6 +6,8 @@ It has no exports, no events of its own, and no state bag. Give an item, open a 
 
 The player opens the bag with `B`, or by typing `/satchel`. Escape or Tab closes it. Closing the bag also closes an open chest or pouch.
 
+Right-click a filled loadout slot for Inspect, Clean, and Unload. That menu is only on the loadout, not on an item sitting in the bag. Inspect draws the gun and plays the inspect hold, then the bag closes. A knife, lasso, lantern, binoculars, or bow cannot be inspected. Clean and Unload are listed, and they do nothing yet. Another script plays the same inspect with `Inspect` on [fw_weapons](fw-weapons.md).
+
 `fwInventoryBusy` on [fw_menu](fw-menu.md) is how another menu asks this screen to stay closed.
 
 ## The command

@@ -54,6 +54,29 @@ if type(kit.longarm) == 'table' then
 end
 ```
 
+### Inspect
+
+Runs in the player's game. Draws the gun in that loadout slot and plays the inspect hold. The bag closes first, so the player can see it. You get no when that slot is empty, when the thing in it is not a gun, or when an inspect is already playing.
+
+A knife, lasso, lantern, binoculars, or bow cannot be inspected this way. Clean and Unload are on the same right-click menu in the loadout, and they do nothing yet.
+
+```lua
+--- Draws the gun in this loadout slot and plays the inspect hold.
+--- False when the slot is empty, the weapon is not a gun, or an inspect is already playing.
+---@param slotId string
+---@return boolean started
+exports.fw_weapons:Inspect(slotId)
+```
+
+`slotId` is a loadout slot name, such as `revolver_1` or `longarm`. The right-click menu on a filled loadout slot calls this for Inspect.
+
+```lua
+local started = exports.fw_weapons:Inspect('revolver_1')
+if not started then
+    return
+end
+```
+
 ## Messages
 
 A message on the server is heard with `AddEventHandler`. A message from the server to the player's game is heard with `RegisterNetEvent`. A message from the player's game to the server is sent with `TriggerServerEvent`. Your script hears one only if it is already running. Put the listener at the top of your script.
