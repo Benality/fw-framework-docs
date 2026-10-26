@@ -214,3 +214,25 @@ CREATE TABLE IF NOT EXISTS `fw_storage` (
 | `grid` | Same document shape as a satchel: `width`, `height`, `baseWidth`, `baseHeight`, and `items`. At most 262144 bytes. |
 | `groups` | JSON list of item groups this row accepts. `NULL` accepts every group. |
 | `updated_at` | Set by the database when the row is written. |
+
+## `fw_weapons`
+
+Created by `fw_weapons` from `resources/[framework]/fw_weapons/sql/weapons.sql`. One row per character. Do not write this table from your script. Read and change the kit with [fw_weapons](fw-weapons.md).
+
+```sql
+CREATE TABLE IF NOT EXISTS `fw_weapons` (
+  `character_id` int unsigned NOT NULL,
+  `kit` json NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`character_id`),
+  CONSTRAINT `fk_fw_weapons_character`
+    FOREIGN KEY (`character_id`) REFERENCES `fw_characters` (`id`)
+    ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+```
+
+| Column | Meaning |
+| --- | --- |
+| `character_id` | `fw_characters.id`. Deleting the character deletes the row. |
+| `kit` | The equipped slots. Read them with `GetKit`. |
+| `updated_at` | Set by the database when the row is written. |

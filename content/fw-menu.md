@@ -14,10 +14,20 @@ Runs in the player's game. This is the menu. Ask for it once, in the script that
 local MenuData = exports.fw_menu:GetMenuData()
 ```
 
-The same menu is also handed to the message `fw_menu:getData`. That message stays in the player's game. Your script hears it only if it is already running. Put the listener at the top of your script.
+The same menu is also available from the message `fw_menu:getData`. That message stays in the player's game. Your script sends it, and passes a function. The menu calls that function with the menu table. `GetMenuData` is the easier way. Use the message only if you cannot call the export yet.
 
 ```lua
-AddEventHandler('fw_menu:getData', function(MenuData)
+TriggerEvent('fw_menu:getData', function(MenuData)
+    MenuData.Open('default', 'myshop', 'main', {
+        title = 'Shop',
+        elements = {
+            { label = 'Bread', value = 'bread' },
+        },
+    }, function(data, menu)
+        menu.close()
+    end, function(data, menu)
+        menu.close()
+    end)
 end)
 ```
 
@@ -113,7 +123,38 @@ The functions you passed to `Open` receive `menu`. `GetOpened` gives you the sam
 
 ## When the player closes the menu
 
-`fw_menu:closed` stays in the player's game. Your script hears it only if it is already running. It has no extra information. It is sent when the player backs out of the screen.
+`fw_menu:closed` stays in the player's game. Your script hears it only if it is already running. It has no extra information. It is sent when the menu screen closes.
+
+```lua
+AddEventHandler('fw_menu:closed', function()
+end)
+```
+
+## SetScale
+
+Runs in the player's game. Changes how large the menu is drawn. `1` is the normal size. A larger number draws it bigger. This does not open a menu.
+
+```lua
+--- Sets the menu size. 1 is normal.
+---@param scale number
+exports.fw_menu:SetScale(scale)
+```
+
+```lua
+exports.fw_menu:SetScale(1)
+```
+
+`MenuData.SetScale(1)` is the same call after you have the menu table from `GetMenuData`.
+
+## State bags
+
+`fwInventoryBusy` is the only one. It is yes while a menu that used `lockInventory` is open. The bag screen should stay closed while it is yes. Only this player's game is meant to read it. Set it by opening a menu with `lockInventory = true`. Do not set it yourself, or the bag and the menu will disagree when the menu closes.
+
+```lua
+if LocalPlayer.state.fwInventoryBusy then
+    return
+end
+```
 
 ## Keys
 

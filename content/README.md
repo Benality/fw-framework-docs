@@ -24,6 +24,7 @@ ensure fw_characters
 ensure fw_creator
 ensure fw_clothing
 ensure fw_inventory
+ensure fw_weapons
 ensure fw_satchel
 ```
 
@@ -38,11 +39,13 @@ The folder `resources/[framework]/` is only a category. The resource name is the
 | [fw_admin](fw-admin.md) | Check that a player is an in-game admin. |
 | [fw_characters](fw-characters.md) | Create, read, select, and save a character. |
 | [fw_creator](fw-creator.md) | See how the character menu stores a body and hair. Other resources should call `fw_characters`. |
-| [fw_clothing](fw-clothing.md) | Read or replace the clothes the character is wearing. |
+| [fw_clothing](fw-clothing.md) | Read or replace the clothes the character is wearing, and toggle a piece on their body. |
 | [fw_inventory](fw-inventory.md) | Give items, open a chest or pouch, and define item types. |
+| [fw_weapons](fw-weapons.md) | Read the equipped guns and tools, or move one between the bag and a slot. |
+| [fw_satchel](fw-satchel.md) | The bag screen. It has no calls of its own. |
 | [Database](database.md) | See which id to store on your own table. |
 
-`fw_core` creates the account when a player connects. `fw_characters` creates the character when something calls `CreateCharacter`. The character menu does that for players. `fw_clothing` saves worn clothes on that character. `fw_inventory` saves the satchel. `fw_satchel` is the screen.
+`fw_core` creates the account when a player connects. `fw_characters` creates the character when something calls `CreateCharacter`. The character menu does that for players. `fw_clothing` saves worn clothes on that character. `fw_inventory` saves the satchel. `fw_weapons` saves the equipped kit. `fw_satchel` is the screen.
 
 Money and jobs do not exist yet. When they do, store `fw_characters.id` for something that belongs to one character, and `fw_players.id` for something that belongs to the account.
 

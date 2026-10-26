@@ -468,18 +468,48 @@ exports.fw_inventory:PullForKit(source, id, displaced)
 
 ## Messages
 
-`fw_inventory:ready` stays on the server. It is sent once, after the item list has loaded. Your script hears it only if it is already running. If your script starts later, you missed it. Ask `IsReady`.
+A message on the server is heard with `AddEventHandler`. A message from the server to the player's game is heard with `RegisterNetEvent`. A message from the player's game to the server is sent with `TriggerServerEvent`. Your script hears one only if it is already running. Put the listener at the top of your script.
+
+### fw_inventory:ready
+
+Stays on the server. Sent once, after the item list has loaded. If your script starts later, you missed it. Ask `IsReady`.
 
 ```lua
 AddEventHandler('fw_inventory:ready', function()
+    exports.fw_inventory:RegisterUsable('bread', function(source, item)
+        exports.fw_inventory:RemoveItem(source, 'bread', 1)
+    end)
 end)
 ```
 
-`fw_characters:selected` loads or creates that character's bag. `fw_characters:cleared` saves it and forgets it. Both are messages on the server, described on [fw_characters](fw-characters.md). Your script hears them only if it is already running.
+`fw_characters:selected` loads or creates that character's bag. `fw_characters:cleared` saves it and forgets it. Both are messages on the server, described on [fw_characters](fw-characters.md).
 
-The satchel screen talks to the server with its own messages (`fw_inventory:open`, `move`, `use`, `discard`, `split`, `sort`, `storageClose`, `storageMove`, `transfer`). Do not send those from your script. Use the calls on this page.
+### What the server sends the bag screen
 
-`fw_inventory:storageClosed` is sent from the server to the player's game. It tells the satchel screen to hide the chest or pouch. Listen for it only if you are drawing that screen yourself.
+The screen in [fw_satchel](fw-satchel.md) listens for these. A script with its own bag screen can listen too. Giving an item is still `AddItem`.
+
+| Message | What it carries |
+| --- | --- |
+| `fw_inventory:opened` | The bag, and the chest or pouch when one is open. |
+| `fw_inventory:updated` | The bag after a change, and the open chest when there is one. |
+| `fw_inventory:definitions` | Every item type, and the group names. |
+| `fw_inventory:rejected` | A short reason, such as `That does not go in there.` |
+| `fw_inventory:close` | Hide the bag. |
+| `fw_inventory:storageClosed` | Hide the chest or pouch. The bag stays. |
+
+```lua
+RegisterNetEvent('fw_inventory:rejected', function(reason)
+    print(reason)
+end)
+```
+
+### What the bag screen sends the server
+
+The screen sends these when the player drags, uses, or drops. The checks and the saved result live in the calls on this page. A shop script uses `AddItem`. A chest script uses `OpenStorage`. The full list, and the call to use instead, is on [fw_satchel](fw-satchel.md).
+
+## State bags
+
+This resource does not set one. The bag screen reads `fwInventoryBusy` from [fw_menu](fw-menu.md) when a menu wants the bag kept closed.
 
 ## Item file
 

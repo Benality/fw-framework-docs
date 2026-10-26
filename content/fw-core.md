@@ -231,11 +231,16 @@ end)
 
 ## A value the player's game can read
 
-`Player(source).state.fwPlayerId` is the account id. In the player's game:
+`Player(source).state.fwPlayerId` is the account id. This is the only state bag on this resource. In the player's game:
 
 ```lua
 local playerId = LocalPlayer.state.fwPlayerId
+if playerId == nil then
+    return
+end
 ```
+
+On the server, the same value is `player.id` from `GetPlayer`. Prefer that call when you are already on the server. The state bag is there so the player's game can see the account id without asking.
 
 ## Server window
 

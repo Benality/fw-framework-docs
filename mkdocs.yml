@@ -39,5 +39,7 @@ nav:
   - fw_creator: fw-creator.md
   - fw_clothing: fw-clothing.md
   - fw_inventory: fw-inventory.md
+  - fw_weapons: fw-weapons.md
+  - fw_satchel: fw-satchel.md
   - Database: database.md
 

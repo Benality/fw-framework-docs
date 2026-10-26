@@ -76,3 +76,26 @@ end
 | `fw_admin <serverId>` | Server window | Prints whether that player is an admin, and their ids. |
 
 `/admin` opens a menu from [fw_menu](fw-menu.md). The first entry is Developer Tools, then Teleports, then TP to Waypoint. The server checks `IsAdmin` again before it moves the player.
+
+## Messages
+
+These are how `/admin` opens the menu and moves the player. A new admin tool should check `IsAdmin` or `HasPermission` first, then do its own work. You can still open this same menu from the server:
+
+```lua
+if not exports.fw_admin:IsAdmin(source) then
+    return
+end
+TriggerClientEvent('fw_admin:openMenu', source)
+```
+
+| Message | Direction | What it does |
+| --- | --- | --- |
+| `fw_admin:openMenu` | Server to the player's game | Opens the admin menu. The player's game shows "The menu is not running." if `fw_menu` is stopped. |
+| `fw_admin:teleportWaypoint` | Player's game to the server | Asks to teleport to the waypoint. The server ignores it unless `IsAdmin` is yes. |
+| `fw_admin:doTeleportWaypoint` | Server to the player's game | Moves them to their map waypoint. |
+
+The menu sends `fw_admin:teleportWaypoint` itself. Another script does not need to.
+
+## State bags
+
+This resource does not set one.

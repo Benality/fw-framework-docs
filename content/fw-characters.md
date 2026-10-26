@@ -432,8 +432,50 @@ end)
 
 `Player(source).state.fwCharacterId` is the selected character id, or nothing when none is selected. The player's game can read it. The account id is still `fwPlayerId` from [fw_core](fw-core.md).
 
+On the server:
+
 ```lua
 local characterId = Player(source).state.fwCharacterId
+if characterId == nil then
+    return
+end
+```
+
+In the player's game:
+
+```lua
+local characterId = LocalPlayer.state.fwCharacterId
+```
+
+This is the only state bag on this resource.
+
+## Where the character is standing
+
+The character script sends these from the player's game while they play. Another script should save a position with `SaveState`. Do not send these yourself. A bad position is ignored.
+
+| Message | What it does |
+| --- | --- |
+| `fw_characters:reportPosition` | The player's game tells the server `x`, `y`, `z`, and `heading` on a timer. |
+| `fw_characters:commitPosition` | The player's game tells the server to store that position now, including when they are leaving. |
+
+A jail script can store where they were standing before it moves them:
+
+```lua
+local character, err = exports.fw_characters:GetActiveCharacter(source)
+if character == nil then
+    print(err)
+    return
+end
+
+local ok, saveErr = exports.fw_characters:SaveState(source, {
+    x = character.x,
+    y = character.y,
+    z = character.z,
+    heading = character.heading,
+})
+if not ok then
+    print(saveErr)
+end
 ```
 
 ## Server window
