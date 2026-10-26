@@ -217,9 +217,9 @@ Swaps the two revolvers when both slots already hold a gun. Moving the right rev
 
 ## Ammo
 
-The pile in the satchel is the reserve. That count is copied onto the gun belt, which is the extra ammo the weapon wheel shows behind the rounds already in the gun. Each kind in the satchel is listed on the wheel, so a reload can fill the gun from it.
+The pile in the satchel is the gun belt. Draw the gun and press reload. That reload fills the gun from the pile, up to what the gun holds, and takes those rounds out of the satchel. The right gun fills first. The left gun gets what is left.
 
-A reload that fills a gun takes those rounds from the satchel. The client console (F8) prints a line when ammo is added, when a reload starts and ends, and when the weapon wheel changes ammo kind. A kind change does not start a reload by itself.
+The client console (F8) prints a line when ammo is added, when reload starts, and when the weapon wheel changes ammo kind. A kind change does not start a reload by itself. If the gun does not report a kind, reload uses the plain pile, such as regular revolver rounds.
 
 The bag screen updates when a gun is filled. The database write waits and goes out with the other waiting satchel writes, about every five seconds, and also when the player leaves. A crash inside that wait can put those reloaded rounds back.
 
