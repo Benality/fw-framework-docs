@@ -587,6 +587,23 @@ If the item's name, or the `hash` you set, matches a known RDR3 weapon such as `
 
 The picture is `fw_inventory/images/<name>.png`. A new picture is not served until `ensure fw_inventory`.
 
+### Picture size
+
+`fw_satchel` draws the picture inside a box sized to the item's `width` and `height` in cells, and shrinks or grows the picture to fit that box without stretching it — so a picture of roughly the right shape always looks right, even if its pixels don't match the table below exactly.
+
+For a crisp picture at the satchel's normal size, one cell is 48 pixels, with a 2-pixel gap between cells. A footprint of `n` cells in one direction comes out to `n * 48 + (n - 1) * 2` pixels in that direction:
+
+| width \ height | 1 | 2 | 3 | 4 |
+| --- | --- | --- | --- | --- |
+| **1** | 48x48 | 48x98 | 48x148 | 48x198 |
+| **2** | 98x48 | 98x98 | 98x148 | 98x198 |
+| **3** | 148x48 | 148x98 | 148x148 | 148x198 |
+| **4** | 198x48 | 198x98 | 198x148 | 198x198 |
+
+A `rope`, 3 wide and 1 tall, is `148x48`. A `herb_pouch`, 2 by 2, is `98x98`.
+
+The satchel's cell can grow up to 88 pixels on a tall window, so a picture made at double the table above holds up better on a bigger screen. There's no setting for this — it's just a size to draw at.
+
 `fw_items_reload` reads `items/` again, as described in [Console commands](#console-commands). This resource always loads `default.lua` and `weapons.lua`, plus any other `.lua` file it finds in that folder, in alphabetical order. If two files define the same name, the one that sorts later wins.
 
 ## Container items
