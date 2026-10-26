@@ -4,7 +4,22 @@ Runs on the server. This is the account for a player who has joined. Your script
 
 There is no code on the player's game.
 
-The version is `1.1.0`. The first number is `1`. Pass `1` to `RegisterResource`. A later `1.2.0` can add new calls, and a script written for `1` still works. A future `2.0.0` is a different set of calls, and the script must be updated.
+## Why you check in
+
+`fw_core` has a version written as three numbers, such as `1.1.0`.
+
+Your script only cares about the first number. Right now that number is `1`. It means "these are the calls on this page." The other two numbers can go up when something is added that an old script can ignore. You never pass those two numbers.
+
+`RegisterResource(1)` is a check-in. You are saying "I was written while the first number was 1." You do not pass your script's name. The server already knows who called.
+
+The check-in does two jobs:
+
+- While this server is still on `1`, the call succeeds. Typing `fw_health` in the server window lists your script.
+- If a later update changes the calls so a script written for `1` would break, the first number becomes `2`. Your script then gets a clear line in the server window, telling you to update it, instead of failing in the middle of someone's visit.
+
+The other calls on this page still work if you skip the check-in. Do it anyway, once, after `IsReady` says yes. The example on the [first page](README.md) already does this. Copy that.
+
+`GetVersion` and `GetApiVersion` are for looking. A normal script does not call them.
 
 ## Calls
 
@@ -30,7 +45,7 @@ end
 
 ### GetVersion
 
-Runs on the server. Gives the full version, such as `1.1.0`. It does not check the database. It can give you a version while `IsReady` is still no.
+Runs on the server. Gives the full version, such as `1.1.0`. A normal script does not need this. It does not check the database. It can give you a version while `IsReady` is still no.
 
 ```lua
 --- The version, such as '1.1.0', or nothing if the version is not three numbers.
@@ -44,7 +59,7 @@ print(exports.fw_core:GetVersion())
 
 ### GetApiVersion
 
-Runs on the server. Gives the first number of the version, such as `1`. Use this instead of cutting the version text apart yourself.
+Runs on the server. Gives the first number of the version, such as `1`. A normal script does not need this. `RegisterResource` already compares that number for you.
 
 ```lua
 --- The first number of the version, or nothing if the version is not three numbers.
@@ -58,10 +73,10 @@ print(exports.fw_core:GetApiVersion())
 
 ### RegisterResource
 
-Runs on the server. Tell `fw_core` that your script was written for version 1. Call it once, from your own script, after `IsReady` says yes.
+Runs on the server. Check in, as described in [Why you check in](#why-you-check-in). Call it once, from your own script, after `IsReady` says yes.
 
 ```lua
---- Records that this script was written for a version number.
+--- Checks this script in for a set of calls.
 --- False when fw_core is not ready, the call did not come from another script, or the number does not match.
 ---@param requiredApiVersion integer
 ---@return boolean ok
@@ -69,17 +84,19 @@ Runs on the server. Tell `fw_core` that your script was written for version 1. C
 exports.fw_core:RegisterResource(requiredApiVersion)
 ```
 
-Pass `1`. `1.0` also works. `1.5`, `0`, and words do not. There is no "1 or higher". Asking for `2` while the server is on `1` fails, and the error names both numbers.
+Pass `1`. That is the first number of the version. `1.0` also works. `1.5`, `0`, and words do not. Pass the number this server is on. Passing `2` while the server is on `1` fails, and the reason names both numbers.
+
+In the lines below, `your-script` stands in for your script's folder name.
 
 | What you get back | When |
 | --- | --- |
-| `fw_core is not ready` | The player list is not ready yet. |
-| `RegisterResource must be called from another resource` | The call came from `fw_core` itself. |
-| `<resource>: required API version must be a positive integer` | You did not pass a whole number above 0. |
-| `fw_core API 1 is incompatible with required API 2; <resource> needs a newer core` | You asked for a newer version than this server has. |
-| `fw_core API 1 is incompatible with required API <n>; update <resource> for API 1` | You asked for an older version. |
+| `fw_core is not ready` | The player list is not ready yet. Keep checking, as on the [first page](README.md). |
+| `RegisterResource must be called from another resource` | The call came from `fw_core` itself. Put it in your own script. |
+| `your-script: required API version must be a positive integer` | You did not pass a whole number above 0. Pass `1`. |
+| `fw_core API 1 is incompatible with required API 2; your-script needs a newer core` | You asked for `2`, and this server is still on `1`. |
+| `fw_core API 2 is incompatible with required API 1; update your-script for API 2` | A later server is on `2`, and your script still passes `1`. Update the script, then pass `2`. |
 
-`fw_core` also prints the error in the server window. You only need to stop your script or keep going.
+The same line is printed in the server window. If it fails, stop there and read the line. The example below does that.
 
 ```lua
 local ok, err = exports.fw_core:RegisterResource(1)
@@ -89,7 +106,7 @@ if not ok then
 end
 ```
 
-Calling it again from the same script replaces the stored number. Stopping your script removes it. There is no separate "unregister" call.
+Calling it again from the same script replaces the stored number. Stopping your script removes the check-in. There is no separate call to undo it.
 
 ### GetPlayer
 

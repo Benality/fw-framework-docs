@@ -6,6 +6,124 @@ Runs on the server. Give a player an item, take one away, add a new kind of item
 
 Ask `IsReady` first. If you also listen for `fw_inventory:ready` and your script starts later, you missed that message. Ask `IsReady` instead.
 
+A second grid is the same kind of squares as the player's bag. There are two ways to open one. A chest, wagon, or horse is a place your script opens by name. A pouch is an item the player uses. Those are different jobs. Both are below.
+
+## A chest, a wagon, or a horse
+
+You do not register a chest. You pick a name for it, and you call `OpenStorage` with that same name every time the player should see it. The first open creates it, empty, at the size you pass. Later opens with that same name show the same items.
+
+`source` is the player's number for this visit.
+
+```lua
+local function openValentineChest(source)
+    local ok, err = exports.fw_inventory:OpenStorage(source, 'chest:valentine_1', {
+        label = 'Chest',
+        width = 8,
+        height = 6,
+    })
+    if not ok then
+        print(err)
+        return
+    end
+end
+```
+
+Call that from your own script at the moment the player opens the chest. This page does not watch the world for you. A wagon and a horse are the same call, with their own names, such as `wagon:1` or `horse:12`.
+
+- The name is how the chest is remembered. `chest:valentine_1` is one chest. `chest:valentine_2` is a different chest. Use the same name every time you want the same items.
+- Use lowercase letters, digits, underscore, colon, and hyphen. Start with a letter or a digit. No spaces. Keep it under 64 characters. `Chest 1` is rejected with `Invalid storage.`
+- Start the name with `chest:`, `wagon:`, or `horse:`. Names that start with `item:` belong to pouches. Leave those alone.
+- `width` and `height` are how many squares, from 1 to 24. The example is 8 across and 6 down.
+- `label` is the title the player sees. Leave it out and the title is `Storage`.
+- The bag opens at the same time, with the chest beside it. The player drags items between them.
+- The player must already be playing a character. Otherwise you get `Select a character first.`
+
+One person can have a chest open at a time. The next person gets `Someone is using that.` One player can have one of these open. Opening a second one closes the first.
+
+`CloseStorage` hides the chest and leaves the bag open. Closing the bag also closes the chest.
+
+To make a chest larger later, call `OpenStorage` again with the same name and a bigger width or height. The items stay. Making it smaller, while an item sits on a square that would disappear, comes back as `Make room in there first.` Nothing is moved.
+
+### Which items can go in
+
+Every item has a group. The groups are `ammo`, `animals`, `documents`, `food`, `herbs`, `horse`, `medical`, `tools`, `valuables`, `weapons`, and `materials`.
+
+- Leave `groups` out, and the chest takes any item.
+- Pass a list, and only those groups can be dragged in. Herbs and tools: `groups = { 'herbs', 'tools' }`.
+- An empty list, `groups = {}`, takes nothing.
+- A name that is not in the list above comes back as `unknown group`.
+
+When the player drags the wrong kind of item, they see `That does not go in there.` The bag itself takes every group.
+
+```lua
+exports.fw_inventory:OpenStorage(source, 'wagon:1', {
+    label = 'Wagon',
+    width = 10,
+    height = 8,
+    groups = { 'materials', 'tools' },
+})
+```
+
+## A pouch, or any item that holds other items
+
+A pouch is an item in the bag. When the player uses it, a second grid opens, the same kind of grid as a chest. You do not call `OpenStorage` for a pouch. The item does that.
+
+You add the pouch the same way you add any other item: a file in `items/`, or `RegisterItem`. The extra part is `container`.
+
+```lua
+local ok, err = exports.fw_inventory:RegisterItem({
+    name = 'herb_pouch',
+    label = 'Herb Pouch',
+    group = 'tools',
+    width = 2,
+    height = 2,
+    stack = 1,
+    description = 'A pouch for herbs.',
+    container = {
+        label = 'Herb pouch',
+        width = 4,
+        height = 4,
+        groups = { 'herbs' },
+    },
+})
+if not ok then
+    print(err)
+    return
+end
+```
+
+The same fields work in an item file. The name is the key, so you leave `name` out of the file. The [item file](#item-file) section shows that shape. `herb_pouch` is already in the sample file, so you can give that one without registering it again.
+
+What you pass:
+
+- `width` and `height` on the item are how many squares the pouch takes in the bag. Here that is 2 by 2.
+- `container.width` and `container.height` are how many squares are inside the pouch, from 1 to 24. Here that is 4 by 4.
+- `container.label` is the title of that second grid.
+- `container.groups` follows the same rules as a chest. Leave it out and the pouch takes anything. `{ 'herbs' }` takes herbs only.
+- A pouch always holds a count of 1. Two pouches cannot share one square, because each one has its own contents.
+
+A picture named `herb_pouch.png` goes in `fw_inventory/images/`. A new picture shows up after `ensure fw_inventory`.
+
+Give it to the player with `AddItem`:
+
+```lua
+local ok, err = exports.fw_inventory:AddItem(source, 'herb_pouch', 1)
+if not ok then
+    print(err)
+    return
+end
+```
+
+Each pouch gets its own contents the first time it is created. Two pouches are two different storages. Moving a pouch around the bag keeps the same contents.
+
+The player opens the bag with B or `/satchel`, then double-clicks the pouch, or right-clicks it and chooses Use. The pouch grid appears beside the bag. They drag items in. Close on that panel hides the pouch and leaves the bag open.
+
+A use function from `RegisterUsable` is not called for a pouch. Using it opens the pouch.
+
+Using a pouch while it is sitting inside another open chest or pouch is refused. The player sees `Take it out first.` Put it back in the bag, then use it.
+
+Dropping the pouch, or removing the whole pouch with `RemoveItem`, deletes what was inside it. Moving it does not.
+
 ## Calls
 
 ### IsReady
@@ -275,7 +393,7 @@ end
 
 ### OpenStorage
 
-Runs on the server. Opens a second grid beside the satchel. The first call creates it. A later call can make it larger. The player must be playing a character.
+Runs on the server. Opens a chest, wagon, or horse, as described in [A chest, a wagon, or a horse](#a-chest-a-wagon-or-a-horse). The first call creates it. A later call with the same name opens the same items, and can make the grid larger. The player must be playing a character.
 
 ```lua
 --- Opens a storage grid for this player.
@@ -288,21 +406,20 @@ Runs on the server. Opens a second grid beside the satchel. The first call creat
 exports.fw_inventory:OpenStorage(source, id, params)
 ```
 
-`id` is 1–64 characters. It starts with a letter or digit. After that, letters, digits, underscore, colon, and hyphen are allowed. A chest uses a stable id such as `chest:valentine_1`. A pouch uses `item:` plus the placement's `metadata.containerId`.
-
-`params.width` and `params.height` are the grid, from 1 to 24. `params.label` is the title. Leave it out and the title is `Storage`. `params.groups` is a list of item groups. Leave it out and the storage accepts anything. An empty list accepts nothing. An unknown group returns `unknown group`.
+`id` is the name from the chest section. `params.width` and `params.height` are the squares, from 1 to 24. `params.label` is the title. `params.groups` is the list of groups, or leave it out.
 
 | `err` | When |
 | --- | --- |
-| `Invalid storage.` | The id or the parameter table is not usable. |
+| `fw_inventory is not ready` | The item list has not loaded yet. Ask `IsReady` first. |
+| `Select a character first.` | This player is not playing a character. |
+| `player is not loaded` | `source` is not a player who is in the server. |
+| `Invalid storage.` | The name has a space, a capital letter, or some other character that is not allowed. Or `params` was left out. |
 | `Invalid storage size.` | Width or height is outside 1–24. |
-| `unknown group` | A group name is not in the item catalog. |
-| `Make room in there first.` | A later open tried to shrink the grid while an item sits in a cell that would disappear. |
-| `Someone is using that.` | Another player already has this storage open. |
+| `unknown group` | A group name is not in the list in the chest section. |
+| `Make room in there first.` | A later open tried to make the grid smaller while an item sits on a square that would disappear. |
+| `Someone is using that.` | Another player already has this one open. |
 
-One player holds a storage at a time. Opening a different one closes the one this player already has. Dropping, clearing the character, stopping the resource, and closing the satchel all release it.
-
-Dragging an item into a storage that lists groups refuses anything outside that list. The player sees `That does not go in there.` The satchel itself accepts every group. The pouch that owns the open storage cannot be placed into it.
+The pouch that owns the open storage cannot be placed into it.
 
 ```lua
 local ok, err = exports.fw_inventory:OpenStorage(source, 'chest:valentine_1', {
@@ -402,7 +519,7 @@ The picture is `fw_inventory/images/<name>.png`. A new picture is not served unt
 
 ## Container items
 
-A pouch is an item that owns a storage row. The first time that placement is created it gets `metadata.containerId`. Moving the pouch keeps that id, so the contents stay with it. Dropping it, or removing the whole placement, deletes the row `item:<containerId>`.
+The walkthrough is [A pouch](#a-pouch-or-any-item-that-holds-other-items). This is the same item as a file in `items/`. The name is the key, so `name` is not repeated inside.
 
 ```lua
 herb_pouch = {
@@ -421,11 +538,7 @@ herb_pouch = {
 }
 ```
 
-`container.label` is the title of the second grid. `width` and `height` are 1–24. `groups` is optional. Leave it out and the pouch accepts anything.
-
-Using the pouch in the satchel opens that storage. Using it while it is sitting inside the open storage is refused with `Take it out first.`
-
-`container` is not a database column. It lives in the item file. A reload copies it back onto the catalog.
+`container` lives in the item file, or in the `RegisterItem` call. It is not a column you fill in by hand. A reload of the item files puts it back.
 
 ## Satchel screen
 

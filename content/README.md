@@ -33,7 +33,7 @@ The folder `resources/[framework]/` is only a category. The resource name is the
 
 | Resource | You use it to |
 | --- | --- |
-| [fw_core](fw-core.md) | Read the connected account, and tell the server your resource was written for API 1. |
+| [fw_core](fw-core.md) | Read the connected account, and check in that your script was written for the current set of calls. |
 | [fw_menu](fw-menu.md) | Open a menu on the player's screen. |
 | [fw_admin](fw-admin.md) | Check that a player is an in-game admin. |
 | [fw_characters](fw-characters.md) | Create, read, select, and save a character. |
@@ -50,7 +50,11 @@ What you get back is a snapshot. Changing it does not save. Use the call that wr
 
 ## Write a script
 
-Wait until `fw_core` is ready, then tell it your script was written for version 1. The server can say `fw_core` has started while it is still creating the player list. If you ask once and stop, you asked too soon. Keep asking for about two minutes.
+Wait until `fw_core` is ready, then check in with `RegisterResource(1)`.
+
+The check-in is how your script says "I was written for the current set of calls." Right now that set is number `1`. You do not pick a version, and you do not pass your script's name. If a later update changes the calls so an old script would break, the server window tells you to update yours, instead of failing in the middle of someone's visit. [fw_core](fw-core.md) explains this in full. The other calls still work if you skip it. Do it anyway.
+
+The server can say `fw_core` has started while it is still creating the player list. If you ask once and stop, you asked too soon. Keep asking for about two minutes.
 
 ```lua
 CreateThread(function()
