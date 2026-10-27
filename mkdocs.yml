@@ -28,6 +28,7 @@ markdown_extensions:
 
 nav:
   - Overview: README.md
+  - Tutorial: tutorial-crafting.md
   - fw_core: fw-core.md
   - fw_menu: fw-menu.md
   - fw_guide: fw-guide.md
