@@ -41,6 +41,7 @@ nav:
       - fw_money: fw-money.md
       - fw_weapons: fw-weapons.md
       - fw_satchel: fw-satchel.md
+      - fw_stores: fw-stores.md
       - fw_trade: fw-trade.md
       - vorp_lib: vorp-lib.md
       - Database: database.md
