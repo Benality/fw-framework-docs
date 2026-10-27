@@ -1,6 +1,6 @@
 # vorp_lib
 
-Runs in the player's game. This page is the loading prompt, the revolver cylinder at the bottom right. The game has one of these. Starting it again only changes the words.
+Runs in the player's game. This page is the loading prompt, the revolver cylinder at the bottom right, and a map blip. The game has one of these prompts. Starting it again only changes the words.
 
 `vorp_lib` has to be started before the script that calls it.
 
@@ -37,3 +37,49 @@ exports.vorp_lib:SpinnerStop()
 ```
 
 Call this when the wait is over, including when the player cancels it. Stopping when nothing is showing is safe.
+
+## Blips
+
+A blip is a mark on the map. You create it from the player's game, in the resource that owns the place. `Import` loads the blip module from `vorp_lib`. `vorp_lib` has to be started first.
+
+`Options.card` is the card that opens when the player hovers that blip on the map. Selecting the blip keeps the card open and writes `footer` on the line that usually names the town. Hovering does not change that line. A blip with no `card` is the same mark as before.
+
+`Options.range` is how close the player must be, in metres, before a coords blip exists. Inside that distance the mark is created. It stays up until the player is 20 metres past it, so it does not flicker on the edge, and then it is removed. Walk back inside the range and it is created again, card included. Leave `range` out and the mark stays on the map. Range applies to a coords blip. An entity, area, or radius blip ignores it.
+
+```lua
+--- Puts a mark on the map. Options.card opens when the player hovers that mark.
+--- The blip is what you keep. Call :Remove() on it when the place is gone.
+---@param blipType string coords, entity, area, or radius
+---@param params table the style, the place, and Options
+---@return table blip
+Blips:Create(blipType, params)
+```
+
+```lua
+local module = Import({ 'blips' })
+local Blips = module.Blips
+
+Blips:Create('coords', {
+    Blip = joaat('BLIP_STYLE_SHOP'),
+    Pos = vector3(-324.16, 803.62, 117.88),
+    Options = {
+        name = 'General Store',
+        sprite = joaat('blip_shop_store'),
+        color = 'yellow',
+        range = 120,
+        card = {
+            type = 'map_card_mission',
+            title = 'General Store',
+            subtitle = 'Valentine',
+            description = 'Goods, bandages, and ammunition.',
+            footer = 'Valentine, The Heartlands, NH',
+            txd = 'map_card_val_generalstore',
+            txn = 'image',
+        },
+    },
+})
+```
+
+`type` has to be `map_card_mission`. Any other word is skipped, the blip still appears, and the player's console (F8) shows a warning. `title` is the large line. Leave it out and that line is empty. `subtitle` is the smaller line under the title. `description` is the body. `~n~` starts a new line in that body. `footer` is the region line after the player selects the blip. `txd` is the picture's texture dictionary, such as `map_card_val_generalstore`. Leave `txd` out and the card has no picture. `txn` is the texture name inside that dictionary. The store sample uses `image`.
+
+Removing the blip closes its card. Restarting the resource does the same.

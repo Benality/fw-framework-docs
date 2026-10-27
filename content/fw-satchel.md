@@ -18,6 +18,16 @@ Right-click a placement in the bag for Use, Give, Drop, or Split. Give hides the
 | `fw_satchel:tradeNotice` | Shows a short reason under the grid. The trade stays open. |
 | `fw_satchel:tradeEnd` | Closes the bag. |
 | `fw_satchel:shopToggle` | Opens the sample counter beside the bag, or closes the bag if that counter is already open. The argument is the clerk's goods. `fw_stores` sends it from `/shop`. The bag is the one the player is carrying. |
+| `fw_satchel:shopVisible` | The screen sends this. `true` means the counter is on screen. `false` means it just closed. Listen with `AddEventHandler`. It is not queued. Do not send it yourself. |
+
+```lua
+--- The counter is on screen when visible is true, and gone when it is false.
+---@param visible boolean
+---@return nil
+AddEventHandler('fw_satchel:shopVisible', function(visible)
+    -- Hide a prompt while the counter is up.
+end)
+```
 
 Right-click a filled loadout slot for Inspect and Clean. That menu is only on the loadout, not on an item sitting in the bag. Inspect draws the gun and plays the inspect hold, then the bag closes. A knife, lasso, lantern, binoculars, bow, or fishing pole cannot be inspected. Clean does nothing yet.
 

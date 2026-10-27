@@ -39,10 +39,10 @@ The folder `resources/[framework]/` is only a category. The resource name is the
 
 | Resource | You use it to |
 | --- | --- |
-| [vorp_lib](vorp-lib.md) | Show the loading prompt, the revolver cylinder at the bottom right. |
+| [vorp_lib](vorp-lib.md) | Show the loading prompt, the revolver cylinder at the bottom right. Put a blip on the map, and a card on that blip. |
 | [fw_core](fw-core.md) | Read the connected account, and check in that your script was written for the current set of calls. |
 | [fw_menu](fw-menu.md) | Open a menu on the player's screen. |
-| [fw_admin](fw-admin.md) | Check that a player is an in-game admin. |
+| [fw_admin](fw-admin.md) | Check that a player is an in-game admin, and open the admin menu. |
 | [fw_characters](fw-characters.md) | Create, read, select, and save a character. |
 | [fw_creator](fw-creator.md) | See how the character menu stores a body and hair. Other resources should call `fw_characters`. |
 | [fw_clothing](fw-clothing.md) | Read or replace the clothes the character is wearing, and toggle a piece on their body. |

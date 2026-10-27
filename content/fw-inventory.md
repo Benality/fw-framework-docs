@@ -321,6 +321,58 @@ if not ok then
 end
 ```
 
+### TakeCurrency
+
+Runs on the server. Takes dollars off one stack. `itemId` is that stack's id. `storageId` is the pouch when the stack is inside one you are still carrying, such as `item:` followed by the pouch id. Leave `storageId` empty when the stack is loose in the satchel. The count comes off that stack, and the character's dollar total drops by the same amount. If either change cannot be saved, neither one is kept.
+
+A pouch on the ground, or a chest, is refused. So is a stack that is not dollars, and a stack that is sitting in a trade.
+
+```lua
+--- Takes dollars off one stack.
+--- False and a reason when that stack cannot pay the count.
+---@param source integer
+---@param itemId string
+---@param count integer
+---@param storageId string|nil pouch id, or nothing when the stack is loose
+---@return boolean ok
+---@return string|nil err
+exports.fw_inventory:TakeCurrency(source, itemId, count, storageId)
+```
+
+```lua
+local ok, err = exports.fw_inventory:TakeCurrency(source, pileId, 9, 'item:' .. pouchId)
+if not ok then
+    print(err)
+    return
+end
+```
+
+### TakePlacement
+
+Runs on the server. Takes a count off one stack that is not dollars. `itemId` is that stack's id. `storageId` is the pouch when the stack is inside one you are still carrying. Leave `storageId` empty when the stack is loose in the satchel. Dollars are refused. Use `TakeCurrency` for those, because the dollar total has to drop with the stack.
+
+A pouch on the ground, or a chest, is refused. So is a stack that is sitting in a trade. If the stack does not hold that many, nothing is taken.
+
+```lua
+--- Takes a count off one stack that is not dollars.
+--- False and a reason when that stack cannot give the count.
+---@param source integer
+---@param itemId string
+---@param count integer
+---@param storageId string|nil pouch id, or nothing when the stack is loose
+---@return boolean ok
+---@return string|nil err
+exports.fw_inventory:TakePlacement(source, itemId, count, storageId)
+```
+
+```lua
+local ok, err = exports.fw_inventory:TakePlacement(source, pileId, 2, 'item:' .. pouchId)
+if not ok then
+    print(err)
+    return
+end
+```
+
 ### RemoveItemDeferred
 
 Runs on the server. Takes that many of the name out of the satchel, the same way `RemoveItem` does, and the bag screen updates right away. The database write waits.

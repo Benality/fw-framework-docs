@@ -169,6 +169,44 @@ end
 TriggerClientEvent('my_resource:notify', target)
 ```
 
+### SetBan
+
+Runs on the server. Saves a ban on a license, or lifts one. This writes the player list. It does not remove anyone from the server. If they are online, drop them yourself after a ban you want to start now. If you do not, the ban starts the next time they try to join.
+
+`license` is their Rockstar license, including `license:` at the front. You can read it from `GetPlayer` while they are online, or from `fw_admin` in the server window.
+
+`untilTime` is a whole number of seconds since 1970, the usual unix time. `0` is a ban that does not expire. Pass nothing (`nil`) to lift the ban. A time that is already past is refused.
+
+You get `false` and a reason when the player list is not ready, the license is missing or not in the list, or the time is not `0` or a future time. Nothing is written in those cases.
+
+```lua
+--- Saves a ban, or lifts one when untilTime is nothing.
+--- False and a reason when the license or the time is refused, or the save fails.
+---@param license string
+---@param untilTime integer|nil 0 does not expire, nil lifts the ban
+---@return boolean ok
+---@return string|nil err
+exports.fw_core:SetBan(license, untilTime)
+```
+
+```lua
+local Logger = Import('logger').Logger
+local player = exports.fw_core:GetPlayer(source)
+if player == nil then
+    return
+end
+
+local ok, err = exports.fw_core:SetBan(player.license, 0)
+if not ok then
+    Logger:Warn(err, { prefix = 'your-script' })
+    return
+end
+
+DropPlayer(source, 'You are banned from this server.')
+```
+
+A ban of one day is `os.time() + (24 * 3600)`. Lift it with `SetBan(license, nil)`.
+
 ## Account
 
 `GetPlayer`, `GetPlayerById`, `fw_core:playerLoaded`, and `fw_core:playerDropped` all give you this. It is a snapshot. Changing it does not save.
@@ -187,7 +225,7 @@ TriggerClientEvent('my_resource:notify', target)
 | `banned` | Always false here. A banned license never finishes joining. |
 | `bannedUntil` | Always 0 here. |
 
-There is no call to change role, warnings, character slots, or a ban. Change those in the `fw_players` table. Role, warnings, and a ban are read again the next time that person joins. The character slot count is read again the next time a character is created.
+There is no call to change role, warnings, or character slots. `SetBan` changes a ban. Role and warnings are read again the next time that person joins. A ban is read again the next time they try to join. The character slot count is read again the next time a character is created.
 
 A person is turned away while joining when the database is down, the server is still starting, RedM did not send a license, the license is banned, or that same license is already in the server.
 
