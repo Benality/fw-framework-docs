@@ -306,7 +306,7 @@ exports.fw_inventory:AddItem(source, name, count, metadata)
 
 `count` defaults to 1. The maximum for one call is 500. Stacks that already match the name and metadata are filled first. A weapon never stacks on another weapon. A container item receives its own `metadata.containerId` on each new placement.
 
-Ammo is a box, or a bundle of arrows. `stack` is the most of that item the satchel can hold. Giving more than that fails with `You cannot carry any more of those.` Using the item from the satchel puts `refill` rounds on the character, up to `max`. A box takes about two seconds. The bag stays open while the revolver-cylinder loading prompt shows at the bottom right. Backspace cancels it and keeps the box. Arrows apply right away. The box is not used up when the character is already at `max`. A shop sells one box:
+Ammo is a box, or a bundle of arrows. `stack` is the most of that item the satchel can hold. Giving more than that fails with `You cannot carry any more of those.` Using the item from the satchel puts `refill` rounds on the character, up to `max`. A box takes about two seconds. The bag stays open while the revolver-cylinder loading prompt shows at the bottom right. Backspace closes the bag. A box that is still opening is cancelled, and the box stays in the bag. Arrows apply right away. The box is not used up when the character is already at `max`. A shop sells one box:
 
 ```lua
 local ok, err = exports.fw_inventory:AddItem(source, 'ammo_revolver', 1)
@@ -961,7 +961,7 @@ herb_pouch = {
 
 ## Satchel screen
 
-`fw_satchel` opens with B or `/satchel`. Escape or Tab closes it and releases any open storage. A trade uses that same screen. Escape declines the trade. That is on [fw_trade](fw-trade.md).
+`fw_satchel` opens with B or `/satchel`. `B`, Escape, Backspace, or Tab closes it and releases any open storage. The gunbelt closes with the bag. A trade uses that same screen. Those same keys decline the trade. That is on [fw_trade](fw-trade.md).
 
 Drag a placement. The cells under it turn green when it fits and red when it does not. R turns it when `rotate` is true. Dropping a stack on the same item, with the same metadata and room left in `stack`, combines them. A weapon never combines.
 

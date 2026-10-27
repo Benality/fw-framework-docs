@@ -235,7 +235,7 @@ Swaps the two revolvers when both slots already hold a gun. Moving the right rev
 
 ## Ammo
 
-Ammo in the satchel is a box, or a bundle of arrows. It is not the clothing gunbelt. Using it from the satchel puts rounds on the character. A box takes about two seconds. The bag stays open, and the revolver-cylinder loading prompt shows at the bottom right. Backspace cancels it and keeps the box. Arrows apply right away. If that kind is already at its limit, the item is not used, and the player sees `You cannot carry any more of that ammunition.`
+Ammo in the satchel is a box, or a bundle of arrows. It is not the clothing gunbelt. Using it from the satchel puts rounds on the character. A box takes about two seconds. The bag stays open, and the revolver-cylinder loading prompt shows at the bottom right. Backspace closes the bag. A box that is still opening is cancelled, and the box stays in the bag. Arrows apply right away. If that kind is already at its limit, the item is not used, and the player sees `You cannot carry any more of that ammunition.`
 
 Those rounds stay on the character. Firing and reloading spend them. The satchel is not charged again. Two guns that take the same rounds, such as two Cattlemen, share that pool. The count is saved on the character and put back the next time that character is selected. The bag shows the kinds above zero on the gunbelt, next to the loadout. Read that list with `GetBelt`.
 

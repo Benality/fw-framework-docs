@@ -4,7 +4,7 @@ Runs on the player's game. There is no code on the server. This is the bag scree
 
 It has no exports and no state bag. Give an item, open a chest, or define an item with the calls on the inventory page. Read the equipped weapons with `GetKit` on the weapons page. This page exists so you know which messages the screen is already listening for, and which call to use instead of sending your own.
 
-The player opens the bag with `B`, or by typing `/satchel`. Escape or Tab closes it. Closing the bag also closes an open chest or pouch. During a trade, Escape or Tab declines the trade instead, and the bag closes when the trade ends. That flow is on [fw_trade](fw-trade.md).
+The player opens the bag with `B`, or by typing `/satchel`. `B`, Escape, Backspace, or Tab closes it. Closing the bag also closes the gunbelt, and an open chest or pouch. During a trade, those same keys decline the trade instead, and the bag closes when the trade ends. That flow is on [fw_trade](fw-trade.md).
 
 Right-click a placement in the bag for Use, Give, Drop, or Split. Give hides the bag, shows markers on nearby players, and hands that whole stack to the one they click. The bag comes back after. Split is only there when the stack is more than one. Give is not on the menu during a trade.
 
@@ -31,11 +31,11 @@ end)
 
 Right-click a filled loadout slot for Inspect and Clean. That menu is only on the loadout, not on an item sitting in the bag. Inspect draws the gun and plays the inspect hold, then the bag closes. A knife, lasso, lantern, binoculars, bow, or fishing pole cannot be inspected. Clean does nothing yet.
 
-The gunbelt sits on the left of those slots. Each kind on the character is an icon the size of one satchel cell, with the count in the corner. Hover an icon to read the name. A kind at zero is left off. Nothing on the belt shows `Nothing on the belt.` Drag a box or a bundle of arrows from the bag onto the gunbelt to load one. The gunbelt stays closed until you press its button. The Kit filter on the left keeps weapons and ammo visible together.
+The gunbelt sits on the left of those slots. Each kind on the character is an icon the size of one satchel cell, with the count in the corner. Hover an icon to read the name. A kind at zero is left off. Nothing on the belt shows `Nothing on the belt.` Drag a box or a bundle of arrows from the bag onto the gunbelt to load one. The gunbelt stays closed until you press its button. Closing the bag closes the gunbelt. The Kit filter on the left keeps weapons and ammo visible together.
 
 Drag a gunbelt icon onto the satchel, or right-click it and choose Unload, to put one full box back in the bag. Those rounds come off that kind only. The bag stays open. If fewer than a full box are left, the menu says Empty. Empty clears the leftover and does not give an item. Dragging a short stack onto the satchel shows `Not a full box.` and leaves the rounds in place. If the bag cannot hold the box, nothing changes and the player sees `You cannot carry any more of those.`
 
-Use an ammo box or a bundle of arrows from the bag. That puts rounds on the character. The bag stays open. A box shows the revolver-cylinder loading prompt at the bottom right for about two seconds. Backspace cancels it and keeps the box. Draw the gun and press reload. Firing spends those rounds. The bag is not charged again. That is on [fw_weapons](fw-weapons.md). Inspect uses `Inspect` on that same page. Read the belt with `GetBelt` on that page.
+Use an ammo box or a bundle of arrows from the bag. That puts rounds on the character. The bag stays open. A box shows the revolver-cylinder loading prompt at the bottom right for about two seconds. Backspace closes the bag. A box that is still opening is cancelled, and the box stays in the bag. Draw the gun and press reload. Firing spends those rounds. The bag is not charged again. That is on [fw_weapons](fw-weapons.md). Inspect uses `Inspect` on that same page. Read the belt with `GetBelt` on that page.
 
 `fwInventoryBusy` on [fw_menu](fw-menu.md) is how another menu asks this screen to stay closed.
 

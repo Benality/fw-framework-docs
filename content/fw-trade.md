@@ -25,7 +25,7 @@ Both players see the same bag screen.
 - The right side is their own satchel.
 - **Your offer** is the top grid on the left. It is 10 cells across and 5 down. Drag a whole placement up from the satchel. Drag it back to take it out of the offer. The placement stays in the satchel until the trade is accepted, and it still takes up its old space there.
 - **Their offer** is the bottom grid. It stays empty, with `They have not locked an offer.`, until the other player locks.
-- **Decline trade** is there for both players the whole time. Escape or Tab does the same thing. Both screens close and nothing moves.
+- **Decline trade** is there for both players the whole time. `B`, Escape, Backspace, or Tab does the same thing. Both screens close and nothing moves.
 - **Accept trade** is only on the screen of the player who offered the trade.
 
 `Lock offer` shows your grid to the other player and stops you from dragging. `Unlock offer` hides it again and turns Accept off. You cannot drag while you are locked. Unlock first, then change the offer.
