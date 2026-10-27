@@ -2,7 +2,9 @@
 
 Runs on the server. Read how many dollars a player is carrying, give them dollars, or take dollars away.
 
-The dollars are a real stack in the satchel. The number you spend is the balance stored for that character. `GetCash` is that balance. It is the dollars in the satchel. Dollars inside a money bag, a chest, or any other storage stay there until someone takes them out. They are not part of `GetCash`.
+The dollars are a real stack in the satchel. The number you spend is the balance stored for that character. `GetCash` is that balance. It counts every dollar pile in the satchel, and every dollar pile inside a pouch that is still in the satchel. Putting dollars into a pouch you are carrying does not change `GetCash`.
+
+A bag on the ground keeps its own balance. A chest does too. Those dollars are not part of `GetCash` until someone takes them out.
 
 One pile holds at most 500 dollars. A larger amount is several piles. `AddCash` fills a pile up to 500, then starts another pile. Each new pile needs an empty cell. 1,200 dollars is two piles of 500 and one of 200.
 
@@ -32,12 +34,13 @@ end
 
 ### GetCash
 
-Runs on the server. The dollars in the satchel. The first time you ask, the balance is created at 0.
+Runs on the server. The dollars this character can spend. A pouch still in the satchel counts. A bag on the ground, or a chest, does not. The first time you ask, the balance is created at 0.
 
 Nothing when no character is selected, or the balance cannot be read.
 
 ```lua
---- The dollars in this player's satchel.
+--- The dollars this character can spend.
+--- A pouch still in the satchel counts. A bag on the ground, or a chest, does not.
 --- Nothing when no character is selected.
 ---@param source integer
 ---@return integer|nil amount
@@ -79,13 +82,13 @@ end
 
 ### RemoveCash
 
-Runs on the server. Takes dollars out of the satchel piles and lowers the balance by the same amount.
+Runs on the server. Takes dollars out of the piles and lowers the balance by the same amount. Loose piles in the satchel go first. When those are not enough, it takes piles inside pouches the character is still carrying.
 
-False, and nothing changes, when the satchel does not hold that much. Dollars sitting in a money bag are not taken. The player has to move them into the satchel first. Dollars set aside in an open trade stay there, and the reason is `That item is in a trade.`
+False, and nothing changes, when those piles and the balance are not both large enough. A bag on the ground and a chest are left alone. Dollars set aside in an open trade stay there, and the reason is `That item is in a trade.`
 
 ```lua
---- Takes dollars out of the satchel.
---- False, and nothing changes, when the satchel does not hold that much.
+--- Takes dollars this character can spend. Loose piles go first, then a carried pouch.
+--- False, and nothing changes, when the piles and the balance are not both large enough.
 ---@param source integer
 ---@param amount integer
 ---@return boolean ok
@@ -106,7 +109,7 @@ end
 Runs on the server. The same as `GetCash` for a named currency. `cash` is the one that exists now. A later currency is another item with category `currency` and its own name.
 
 ```lua
---- The satchel balance for one currency.
+--- The spendable balance for one currency. Same rules as `GetCash`.
 --- Nothing when no character is selected, or the name is not a currency.
 ---@param source integer
 ---@param name string
@@ -143,8 +146,8 @@ local added, err = exports.fw_money:AddCurrency(source, 'cash', 50)
 Runs on the server. The same as `RemoveCash` for a named currency.
 
 ```lua
---- Takes a currency out of the satchel.
---- False, and nothing changes, when the satchel does not hold that much.
+--- Takes a currency this character can spend. Loose piles go first, then a carried pouch.
+--- False, and nothing changes, when the piles and the balance are not both large enough.
 ---@param source integer
 ---@param name string
 ---@param amount integer
@@ -159,13 +162,13 @@ local paid, err = exports.fw_money:RemoveCurrency(source, 'cash', 50)
 
 ## What the player can do
 
-The player can split a pile, give that pile, offer it in a trade, or drag it into a pouch whose categories include `currency`. The money bag item accepts `currency`. A herb pouch does not.
+The player can split a pile, give that pile, offer it in a trade, or drag it into a pouch whose categories include `currency`. The money bag item accepts `currency`. A herb pouch does not. Dragging dollars into a pouch you are carrying leaves `GetCash` the same. Those dollars still spend.
 
-Drop is refused on the dollars themselves. The player puts them in a money bag, then drops the bag. The dollars stay inside that bag.
+Drop is refused on the dollars themselves. The player puts them in a money bag, then drops the bag. The dollars stay inside that bag, and they leave `GetCash`. Picking the bag up puts them back.
 
 Discard is refused on the dollars. Discard is also refused on a bag that still holds dollars. The reason is `Empty the bag first.` Take the dollars out, or drop the bag.
 
-`AddItem` and `RemoveItem` on the item `cash` change the same balance. A shop should still call `AddCash` and `RemoveCash`, so it does not have to know the item name.
+`AddItem` and `RemoveItem` on the item `cash` change the same balance. A counter takes the cash pile the player puts on Sell. A charge with no grid, such as the tailor, calls `RemoveCash`.
 
 ## Reasons you can get back
 
@@ -175,7 +178,7 @@ Discard is refused on the dollars. Discard is also refused on a bag that still h
 | `Unknown currency.` | No item is marked with that currency name. |
 | `Invalid amount.` | The amount was not a whole number from 1 to 100000. |
 | `Not enough room.` | The satchel has no empty cell for a new pile. |
-| `You do not have that much.` | The satchel balance is smaller than the amount. |
+| `You do not have that much.` | The dollars you can spend are fewer than the amount. |
 | `That item is in a trade.` | Those dollars are sitting in an open trade. |
 | `Money is not ready.` | `fw_money` is not started. |
 | `fw_money is not ready` | The tables are not ready yet. Ask `IsReady`. |
@@ -187,14 +190,16 @@ Discard is refused on the dollars. Discard is also refused on a bag that still h
 | Command | Where | What it does |
 | --- | --- | --- |
 | `fw_givemoney <serverId> <amount>` | Server window, or `/fw_givemoney` by an in-game admin | Calls `AddCash` for that player. `serverId` is their number for this visit. `amount` is whole dollars, from 1 to 100000. A player who is not an admin gets `You are not an admin.` The server window, and that admin's console, get an INFO line when the dollars are given. |
+| `fw_cash <serverId>` | Server window, or `/fw_cash` by an in-game admin | Prints the dollars that player can spend. That is loose piles, plus piles in a pouch they are still carrying. A bag on the ground is not included. A player who is not an admin gets `You are not an admin.` The line names the character when one is selected. |
 
 ```
 fw_givemoney 1 200
+fw_cash 1
 ```
 
 ## Calls the satchel uses
 
-A shop uses the calls above. The satchel uses these when a pile moves between a character and a storage. Do not call them from a shop. The amount is the new balance, including 0.
+A counter does not call these. It takes the cash pile on Sell. The satchel uses these when a pile moves between a character and a storage. The amount is the new balance, including 0.
 
 `source` is not used here. `characterId` is `fw_characters.id`. `storageId` is the storage id from [fw_inventory](fw-inventory.md), such as `item:` plus a container id, or a chest id.
 

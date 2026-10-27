@@ -237,11 +237,11 @@ CREATE TABLE IF NOT EXISTS `fw_currency` (
 | --- | --- |
 | `character_id` | `fw_characters.id`. Deleting the character deletes the row. |
 | `name` | Currency name. `cash` is dollars. |
-| `amount` | Whole dollars in the satchel. Several piles can add up to this number. Each pile holds at most 500. |
+| `amount` | Whole dollars this character can spend. That is loose piles in the satchel, plus piles inside a pouch still in the satchel. Each pile holds at most 500. |
 
 ## `fw_storage_currency`
 
-Created by `fw_money` from `resources/[framework]/fw_money/sql/storage_currency.sql`. One row per storage id and currency name. This is the dollars inside a pouch or a chest. The row is removed when the amount returns to 0, and when that storage is deleted. Do not write this table from your script.
+Created by `fw_money` from `resources/[framework]/fw_money/sql/storage_currency.sql`. One row per storage id and currency name. This is the dollars inside a chest, or inside a pouch that is on the ground. A pouch still in the satchel does not keep a row. Those dollars stay on `fw_currency`. The row is removed when the amount returns to 0, and when that storage is deleted. Do not write this table from your script.
 
 ```sql
 CREATE TABLE IF NOT EXISTS `fw_storage_currency` (

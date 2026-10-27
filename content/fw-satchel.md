@@ -17,6 +17,7 @@ Right-click a placement in the bag for Use, Give, Drop, or Split. Give hides the
 | `fw_satchel:tradeBegin` | Opens the bag, or switches the open bag, to the trade layout. The argument is the current trade view. |
 | `fw_satchel:tradeNotice` | Shows a short reason under the grid. The trade stays open. |
 | `fw_satchel:tradeEnd` | Closes the bag. |
+| `fw_satchel:shopToggle` | Opens the sample counter beside the bag, or closes the bag if that counter is already open. The argument is the clerk's goods. `fw_stores` sends it from `/shop`. The bag is the one the player is carrying. |
 
 Right-click a filled loadout slot for Inspect and Clean. That menu is only on the loadout, not on an item sitting in the bag. Inspect draws the gun and plays the inspect hold, then the bag closes. A knife, lasso, lantern, binoculars, bow, or fishing pole cannot be inspected. Clean does nothing yet.
 

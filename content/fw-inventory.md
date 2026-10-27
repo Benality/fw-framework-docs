@@ -136,6 +136,8 @@ Using a pouch while it is sitting inside another open chest or pouch is refused.
 
 Discard throws the pouch away and deletes what was inside it. `RemoveItem` does the same. Moving it does not. A pouch that still holds dollars refuses with `Empty the bag first.` Take the dollars out first, or drop the bag. Dollars themselves refuse Discard with `You cannot throw money away.`
 
+Dollars in a pouch you are carrying still count on `GetCash`. Dropping that pouch moves those dollars onto the pouch. They count again when someone picks the pouch up.
+
 Drop sets the pouch on the ground in front of the player. The contents stay, and the pouch keeps the same size and the same categories. Hold Open at the bag to look inside. Hold Pick up to put it back in a satchel that has room. Anyone nearby can do either. A restart leaves the pouch where it was. Bread, ammo, and guns have Discard only. They do not get Drop. Dollars do not get Drop either. The player puts them in a money bag, then drops that bag. The reason on the dollars themselves is `Put that in a bag first.`
 
 ## Calls
