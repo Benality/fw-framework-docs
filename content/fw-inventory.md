@@ -126,11 +126,11 @@ end
 
 Each pouch gets its own contents the first time it is used. Two pouches are two different storages. Moving a pouch around the bag keeps the same contents.
 
-The player opens the bag with B or `/satchel`, then double-clicks the pouch, or right-clicks it and chooses Use. The pouch grid appears beside the bag. They drag items in. Close on that panel hides the pouch and leaves the bag open.
+The player opens the bag with B or `/satchel`, then right-clicks the pouch and chooses Open. The pouch grid appears beside the bag. They drag items in. Close on that panel hides the pouch and leaves the bag open.
 
 Drag a pile onto the pouch picture in the bag to put the whole pile inside while the pouch stays closed. The pile fills an open pile of the same item, then the first empty square. Split it first when you want to put in less. A pouch that does not take that kind of item says `That does not go in there.` Another pouch says `A container cannot go in there.` A full pouch says `Not enough room.` A pile set aside for a trade stays in the bag, and the reason is `That item is in a trade.` Opening the pouch and dragging into its panel still works. If that pouch is already the one open beside the bag, the panel shows the pile. Any other open chest stays as it was.
 
-A use function from `RegisterUsable` is not called for a pouch. Using it opens the pouch instead.
+A use function from `RegisterUsable` is skipped for a pouch. The pouch menu shows Open, and Open shows the pouch.
 
 Using a pouch while it is sitting inside another open chest or pouch is refused. The player sees `Take it out first.` Put it back in the bag, then use it.
 
@@ -189,6 +189,34 @@ end
 
 A later reload from `items/` updates a name that also has a file. A name that exists only from this call is left in place, because it was already written to the database the first time you registered it.
 
+`usable` is `true` or left out. Left out means the item is not usable, so the right-click menu leaves Use off. Set `usable = true` when the player should see Use. `RegisterUsable` turns Use on as well, for as long as that callback stays registered.
+
+`context` is a list of extra right-click rows. Each entry is `{ id = 'sharpen', label = 'Sharpen' }`, or a short id string such as `'sharpen'`. The id is lowercase letters, digits, and underscores, up to 32 characters, and it starts with a letter. `use`, `open`, `give`, `drop`, `discard`, and `split` are already taken. The label is the words on the row, clipped to 32 characters. Leave `label` out and the id is shown.
+
+```lua
+local ok, err = exports.fw_inventory:RegisterItem({
+    name = 'knife',
+    label = 'Knife',
+    category = 'tools',
+    width = 1,
+    height = 2,
+    usable = true,
+    context = {
+        { id = 'sharpen', label = 'Sharpen' },
+    },
+})
+```
+
+When the player picks Sharpen, the server sends `fw_inventory:contextOption`. That message is local. Hear it with `AddEventHandler`. It is not queued, so the listener has to be running already. `source` is the player's number for this visit. `item` is a copy. `option` is the id, here `sharpen`.
+
+```lua
+AddEventHandler('fw_inventory:contextOption', function(source, item, option)
+    if item.name ~= 'knife' or option ~= 'sharpen' then
+        return
+    end
+end)
+```
+
 If the name you register, or the `hash` you give it, looks like a known RDR3 weapon such as `WEAPON_REVOLVER_SCHOFIELD`, you can leave `kit`, `hash`, `width`, `height`, and `rotate` out. They are filled in for you.
 
 ### RegisterUsable
@@ -207,7 +235,9 @@ exports.fw_inventory:RegisterUsable(name, callback)
 
 `item` is a copy: `id`, `name`, `label`, `description`, `count`, `x`, `y`, `rotated`, `metadata`. Changing it does not change the satchel.
 
-If your resource stops, its use callbacks are removed. Start it again and register them again.
+If your resource stops, its use callbacks are removed, and Use leaves the menu for those items unless the item itself has `usable = true`. Start it again and register them again.
+
+Use is on the menu when `usable` is true, or when this callback is registered. Double-click uses that item too. A pouch shows Open instead, and double-click leaves the pouch closed.
 
 ```lua
 exports.fw_inventory:RegisterUsable('dried_meat', function(source, item)
@@ -795,7 +825,8 @@ These are networked (`RegisterNetEvent` on the server, sent from the player's ga
 | `fw_inventory:discard` | `id, count, token` | Throws away up to `count` of that placement. `count` defaults to 1. The last one removes the placement, and deletes the container it owns, if it had one. |
 | `fw_inventory:drop` | `id, token` | Sets a pouch on the ground. `id` is the placement. Only an item with a `container` block can be dropped. The contents stay. `That cannot be dropped.` is anything else. `That item is in a trade.` is a placement set aside for a trade. |
 | `fw_inventory:split` | `id, count, token` | Cuts `count` off a stackable placement onto an empty cell of its own. `count` is a whole number from 1 up to one less than what is already there, and the item must be able to stack. `Not enough room.` means the bag has no free cell of that size. |
-| `fw_inventory:use` | `id, token, side` | Uses that placement. `side` is `'storage'` when the placement is sitting in an open chest or pouch rather than the bag — that is refused with `Take it out first.` Opens a pouch's storage, or runs its `RegisterUsable` callback, or rejects with `This cannot be used.` Three pouches can be open at once. A fourth is refused with `Close a pouch first.` |
+| `fw_inventory:use` | `id, token, side` | Uses that placement, or opens a pouch. The bag sends this for Use, and for Open on a pouch. `side` is `'storage'` when the placement is sitting in an open chest or pouch rather than the bag — that is refused with `Take it out first.` Opens a pouch's storage, or runs its `RegisterUsable` callback, or rejects with `This cannot be used.` Three pouches can be open at once. A fourth is refused with `Close a pouch first.` |
+| `fw_inventory:context` | `id, option, token` | The player picked a custom right-click row. `id` is the placement. `option` is the id from `context` on the item. `That action is not on this item.` means that id was not registered. `That item is in a trade.` means the pile is set aside. On success the server sends the local message `fw_inventory:contextOption`. |
 | `fw_inventory:storageClose` | `id` | Closes one pouch when `id` is that pouch. Leave `id` out to close every pouch the sender has open. Answered with `fw_inventory:storageClosed`. |
 | `fw_inventory:storageMove` | `storageId, id, x, y, rotated, token` | Moves a placement inside the pouch named by `storageId`, not the bag. `id` is the placement. |
 | `fw_inventory:transfer` | `fromSide, id, x, y, rotated, token, storageId, toStorageId` | Moves a placement between the bag and one open pouch, or from one open pouch to another. `fromSide` is `'satchel'` or `'storage'`. `storageId` is the pouch. When the pile moves from one open pouch onto another, `storageId` is the pouch it leaves and `toStorageId` is the pouch it lands in. |
@@ -873,7 +904,9 @@ return {
 | `rotate` | false | The player can turn it. |
 | `kit` | none | Which weapon slot can hold it: `revolver`, `pistol`, `longarm`, `bow`, `lasso`, `melee`, `lantern`, `binoculars`, or `fishingrod`. |
 | `hash` | none | Weapon name, such as `WEAPON_REVOLVER_CATTLEMAN`. Required when `kit` is set. |
-| `container` | none | Opens a second grid when the item is used from the satchel. Stack is forced to 1. |
+| `container` | none | Opens a second grid when the player right-clicks the item and chooses Open. Stack is forced to 1. |
+| `usable` | false | `true` puts Use on the right-click menu. Left out, or `false`, leaves Use off unless `RegisterUsable` has a callback for this name. A pouch still shows Open. |
+| `context` | none | Extra right-click rows. A list of `{ id = 'sharpen', label = 'Sharpen' }`, or id strings. The player’s choice arrives as `fw_inventory:contextOption`. |
 | `ammo` | none | A box or a bundle of arrows. `key` is the game ammo name, such as `AMMO_REVOLVER`. `fits` is which guns take it: `revolver`, `pistol`, `repeater`, `rifle`, `elephant`, `shotgun`, `arrow`, or `varmint`. `max` is the most of that kind on the character, from 1 to 999. `refill` is how many one use adds, and it cannot be higher than `max`. `instant` skips the open wait. Arrows set it. `stack` is how many of the item the satchel can hold. |
 | `chamber` | filled in for shipped guns | Which `fits` value this gun accepts. Set it yourself on a new gun. |
 | `rounds` | filled in for shipped guns | How many rounds that gun holds. A Cattleman is 6. A bow is 20. From 1 to 100. |
