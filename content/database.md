@@ -189,12 +189,12 @@ CREATE TABLE IF NOT EXISTS `fw_items` (
 | `width`, `height` | Cell footprint before turning. |
 | `stack` | Copies that share one footprint. `1` means each copy is placed on its own. |
 | `weapon` | `1` when the item never stacks. A weapon is always one placement. |
-| `item_group` | Filter and sort group. `ammo`, `animals`, `documents`, `food`, `herbs`, `horse`, `medical`, `tools`, `valuables`, `weapons`, or `materials`. |
+| `item_group` | Filter and sort group. `ammo`, `animals`, `documents`, `food`, `herbs`, `horse`, `medical`, `tools`, `valuables`, `currency`, `weapons`, `materials`, or `container`. |
 | `rotate` | `1` when the player can turn it. |
 | `kit` | Set only on a weapon item. Which equip slot it fills: `lasso`, `binoculars`, `lantern`, `bow`, `revolver`, `pistol`, `longarm`, `melee`, or `fishingrod`. Empty string on a non-weapon item. |
 | `hash` | Set only on a weapon item. The game's weapon name, such as `WEAPON_REVOLVER_CATTLEMAN`. Empty string on a non-weapon item. |
 
-An older version of this table had an `image` column instead of `kit` and `hash`. That column is dropped on start if it is still there — the picture is `fw_inventory/images/<name>.png`, named after the item, not stored in a column. Files in `items/` are written into this table on start and on `fw_items_reload`. A row inserted for an admin tool stays until it is deleted. The field list and the insert example are in [fw_inventory](fw-inventory.md). The `container` block on a pouch is not a column. It stays on the item file and is merged back onto the catalog when the files load.
+An older version of this table had an `image` column instead of `kit` and `hash`. That column is dropped on start if it is still there. The picture is `fw_inventory/images/<name>.png`. An item file can set `image` to another name in that folder, such as `bill_stack_single` for dollars. That name stays on the item file. It is not a column. Files in `items/` are written into this table on start and on `fw_items_reload`. A row inserted for an admin tool stays until it is deleted. The field list and the insert example are in [fw_inventory](fw-inventory.md). The `container` block on a pouch is not a column. It stays on the item file and is merged back onto the catalog when the files load.
 
 ## `fw_storage`
 
@@ -217,6 +217,47 @@ CREATE TABLE IF NOT EXISTS `fw_storage` (
 | `groups` | JSON list of item groups this row accepts. `NULL` accepts every group. |
 | `updated_at` | Set by the database when the row is written. |
 
+## `fw_currency`
+
+Created by `fw_money` from `resources/[framework]/fw_money/sql/currency.sql`. One row per character and currency name. This is the dollars that character is carrying in the satchel. Do not write this table from your script. Use [fw_money](fw-money.md).
+
+```sql
+CREATE TABLE IF NOT EXISTS `fw_currency` (
+  `character_id` int unsigned NOT NULL,
+  `name` varchar(16) NOT NULL,
+  `amount` int unsigned NOT NULL DEFAULT 0,
+  PRIMARY KEY (`character_id`, `name`),
+  CONSTRAINT `fk_fw_currency_character`
+    FOREIGN KEY (`character_id`) REFERENCES `fw_characters` (`id`)
+    ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
+| Column | Meaning |
+| --- | --- |
+| `character_id` | `fw_characters.id`. Deleting the character deletes the row. |
+| `name` | Currency name. `cash` is dollars. |
+| `amount` | Whole dollars in the satchel. Several piles can add up to this number. Each pile holds at most 500. |
+
+## `fw_storage_currency`
+
+Created by `fw_money` from `resources/[framework]/fw_money/sql/storage_currency.sql`. One row per storage id and currency name. This is the dollars inside a pouch or a chest. The row is removed when the amount returns to 0, and when that storage is deleted. Do not write this table from your script.
+
+```sql
+CREATE TABLE IF NOT EXISTS `fw_storage_currency` (
+  `storage_id` varchar(64) NOT NULL,
+  `name` varchar(16) NOT NULL,
+  `amount` int unsigned NOT NULL DEFAULT 0,
+  PRIMARY KEY (`storage_id`, `name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
+| Column | Meaning |
+| --- | --- |
+| `storage_id` | The storage id from `fw_storage`, such as `item:` plus a container id, or a chest id. |
+| `name` | Currency name. `cash` is dollars. |
+| `amount` | Whole dollars in that storage. |
+
 ## `fw_weapons`
 
 Created by `fw_weapons` from `resources/[framework]/fw_weapons/sql/weapons.sql`. One row per character. Do not write this table from your script. Read and change the kit with [fw_weapons](fw-weapons.md).
@@ -225,6 +266,7 @@ Created by `fw_weapons` from `resources/[framework]/fw_weapons/sql/weapons.sql`.
 CREATE TABLE IF NOT EXISTS `fw_weapons` (
   `character_id` int unsigned NOT NULL,
   `kit` json NOT NULL,
+  `ammo` json NULL,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`character_id`),
   CONSTRAINT `fk_fw_weapons_character`
@@ -237,4 +279,5 @@ CREATE TABLE IF NOT EXISTS `fw_weapons` (
 | --- | --- |
 | `character_id` | `fw_characters.id`. Deleting the character deletes the row. |
 | `kit` | The equipped slots. Read them with `GetKit`. |
+| `ammo` | How many rounds of each kind are on the character. `fw_weapons` writes this when the player uses a box or fires. |
 | `updated_at` | Set by the database when the row is written. |

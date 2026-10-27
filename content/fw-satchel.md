@@ -2,13 +2,29 @@
 
 Runs on the player's game. There is no code on the server. This is the bag screen. It draws the grid from [fw_inventory](fw-inventory.md) and the loadout from [fw_weapons](fw-weapons.md).
 
-It has no exports, no events of its own, and no state bag. Give an item, open a chest, or define an item with the calls on the inventory page. Read the equipped weapons with `GetKit` on the weapons page. This page exists so you know which messages the screen is already listening for, and which call to use instead of sending your own.
+It has no exports and no state bag. Give an item, open a chest, or define an item with the calls on the inventory page. Read the equipped weapons with `GetKit` on the weapons page. This page exists so you know which messages the screen is already listening for, and which call to use instead of sending your own.
 
-The player opens the bag with `B`, or by typing `/satchel`. Escape or Tab closes it. Closing the bag also closes an open chest or pouch.
+The player opens the bag with `B`, or by typing `/satchel`. Escape or Tab closes it. Closing the bag also closes an open chest or pouch. During a trade, Escape or Tab declines the trade instead, and the bag closes when the trade ends. That flow is on [fw_trade](fw-trade.md).
+
+Right-click a placement in the bag for Use, Give, Drop, or Split. Give hides the bag, shows markers on nearby players, and hands that whole stack to the one they click. The bag comes back after. Split is only there when the stack is more than one. Give is not on the menu during a trade.
+
+## Trade screen
+
+`fw_trade` asks this screen to show the bag with two offer grids beside it. The messages stay in the player's game. Your script should not send them. Start a trade with the prompt or `/trade`, described on [fw_trade](fw-trade.md). `/tradeui` opens the same screen with nobody else in it, so you can look at the layout. Escape closes that preview.
+
+| Message | What the screen does with it |
+| --- | --- |
+| `fw_satchel:tradeBegin` | Opens the bag, or switches the open bag, to the trade layout. The argument is the current trade view. |
+| `fw_satchel:tradeNotice` | Shows a short reason under the grid. The trade stays open. |
+| `fw_satchel:tradeEnd` | Closes the bag. |
 
 Right-click a filled loadout slot for Inspect and Clean. That menu is only on the loadout, not on an item sitting in the bag. Inspect draws the gun and plays the inspect hold, then the bag closes. A knife, lasso, lantern, binoculars, bow, or fishing pole cannot be inspected. Clean does nothing yet.
 
-Ammo stays in the bag until you draw the gun and press reload. That reload fills the gun from the pile and takes those rounds out of the bag. Switching kinds is printed in the client console and does not start a reload. Dropping a pile takes that kind off the wheel. That is on [fw_weapons](fw-weapons.md). Inspect uses `Inspect` on that same page.
+The gunbelt sits on the left of those slots. Each kind on the character is an icon the size of one satchel cell, with the count in the corner. Hover an icon to read the name. A kind at zero is left off. Nothing on the belt shows `Nothing on the belt.` Drag a box or a bundle of arrows from the bag onto the gunbelt to load one. The gunbelt stays closed until you press its button. The Kit filter on the left keeps weapons and ammo visible together.
+
+Drag a gunbelt icon onto the satchel, or right-click it and choose Unload, to put one full box back in the bag. Those rounds come off that kind only. The bag stays open. If fewer than a full box are left, the menu says Empty. Empty clears the leftover and does not give an item. Dragging a short stack onto the satchel shows `Not a full box.` and leaves the rounds in place. If the bag cannot hold the box, nothing changes and the player sees `You cannot carry any more of those.`
+
+Use an ammo box or a bundle of arrows from the bag. That puts rounds on the character. The bag stays open. A box shows the revolver-cylinder loading prompt at the bottom right for about two seconds. Backspace cancels it and keeps the box. Draw the gun and press reload. Firing spends those rounds. The bag is not charged again. That is on [fw_weapons](fw-weapons.md). Inspect uses `Inspect` on that same page. Read the belt with `GetBelt` on that page.
 
 `fwInventoryBusy` on [fw_menu](fw-menu.md) is how another menu asks this screen to stay closed.
 
@@ -33,15 +49,15 @@ Heard with `RegisterNetEvent`. These are sent by [fw_inventory](fw-inventory.md)
 | `fw_inventory:definitions` | Learns item names, sizes, and pictures. | `RegisterItem`, `GetDefinition` |
 | `fw_inventory:rejected` | Shows the reason under the grid. | Read the reason your call returned |
 | `fw_inventory:close` | Hides the bag. | Let the player close it |
-| `fw_inventory:storageClosed` | Hides the chest or pouch and leaves the bag up. | `CloseStorage` |
+| `fw_inventory:storageClosed` | Hides one pouch when the message includes its id, or every open pouch when it does not. The bag stays up. | `CloseStorage` |
 | `fw_weapons:updated` | Redraws the loadout. | `GetKit` |
 | `fw_weapons:rejected` | Shows why an equip failed. | Read `fw_weapons:rejected` on the weapons page |
 
 `fw_inventory:storageClosed` is the one a script that draws its own chest panel would listen for:
 
 ```lua
-RegisterNetEvent('fw_inventory:storageClosed', function()
-    -- Hide your chest panel. The bag screen already does this.
+RegisterNetEvent('fw_inventory:storageClosed', function(id)
+    -- id is one pouch. Nothing means every open pouch closed. The bag screen already hides them.
 end)
 ```
 
@@ -53,13 +69,14 @@ Sent with `TriggerServerEvent`. The bag screen is the thing that sends these, in
 | --- | --- | --- |
 | `fw_inventory:open` | Asks the server for the bag. | The player presses `B` or types `/satchel` |
 | `fw_inventory:move` | Moves an item inside the bag. | The player drags it |
-| `fw_inventory:storageMove` | Moves an item inside the open chest or pouch. | The player drags it |
-| `fw_inventory:transfer` | Moves an item from the bag to the chest, or the other way. | The player drags it across |
+| `fw_inventory:storageMove` | Moves an item inside one open pouch. The first value is that pouch's id. | The player drags it |
+| `fw_inventory:transfer` | Moves an item between the bag and a pouch, or from one open pouch to another. | The player drags it across |
+| `fw_inventory:deposit` | Puts a whole pile into a pouch in the bag. The pouch can stay closed. The pile needs a free square inside, or room on an open pile of the same item. | The player drags the pile onto the pouch picture |
 | `fw_inventory:use` | Uses the item. A pouch opens. Anything else runs `RegisterUsable`. | `RegisterUsable`, or the pouch's `container` block |
 | `fw_inventory:discard` | Drops part or all of a stack. | `RemoveItem` |
-| `fw_inventory:split` | Splits a stack into two squares. | The player chooses Split |
+| `fw_inventory:split` | Cuts some off a pile onto an empty square of its own. | The player chooses Split in half, or Split amount |
 | `fw_inventory:sort` | Packs the bag. | The player chooses sort |
-| `fw_inventory:storageClose` | Closes the chest and leaves the bag open. | `CloseStorage` |
+| `fw_inventory:storageClose` | Closes one pouch when an id is sent, or every open pouch when it is not. The bag stays open. | `CloseStorage` |
 | `fw_weapons:equip` | Puts a bag item onto a weapon slot. | See [fw_weapons](fw-weapons.md) |
 | `fw_weapons:unequip` | Puts a weapon slot back in the bag. | See [fw_weapons](fw-weapons.md) |
 | `fw_weapons:move` | Swaps two weapon slots. | See [fw_weapons](fw-weapons.md) |

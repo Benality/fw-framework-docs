@@ -34,12 +34,16 @@ nav:
   - Overview: README.md
   - fw_core: fw-core.md
   - fw_menu: fw-menu.md
+  - fw_guide: fw-guide.md
   - fw_admin: fw-admin.md
   - fw_characters: fw-characters.md
   - fw_creator: fw-creator.md
   - fw_clothing: fw-clothing.md
   - fw_inventory: fw-inventory.md
+  - fw_money: fw-money.md
   - fw_weapons: fw-weapons.md
   - fw_satchel: fw-satchel.md
+  - fw_trade: fw-trade.md
+  - vorp_lib: vorp-lib.md
   - Database: database.md
 

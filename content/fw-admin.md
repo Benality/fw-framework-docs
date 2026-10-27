@@ -13,7 +13,7 @@ add_principal identifier.license:YOUR_LICENSE group.admin
 
 `fw.admin` passes every admin check, including a smaller one such as `fw.admin.kick`. A helper who should only kick gets that smaller permission, and does not get `fw.admin`.
 
-Type `fw_admin` and a player number in the server window. It prints that player's ids so you can copy the `license:` line.
+Type `fw_admin` and a player number in the server window. It writes INFO lines with that player's ids so you can copy the `license:` line.
 
 ## Calls
 

@@ -54,6 +54,25 @@ if type(kit.longarm) == 'table' then
 end
 ```
 
+### GetBelt
+
+Runs in the player's game. The rounds on this character. One row for each kind above zero. `count` includes rounds already in a gun. `max` is the most of that kind the character can hold. `refill` is how many rounds make one full box. An empty list means the belt is empty. The list is only the kinds above zero, so a kind you have used up is not in it.
+
+The bag draws this on the gunbelt next to the loadout.
+
+```lua
+--- Rounds on this character. One row for each kind above zero.
+---@return table rows
+exports.fw_weapons:GetBelt()
+```
+
+```lua
+local belt = exports.fw_weapons:GetBelt()
+for index = 1, #belt do
+    print(belt[index].key, belt[index].count, belt[index].max, belt[index].refill)
+end
+```
+
 ### Inspect
 
 Runs in the player's game. Draws the gun in that loadout slot and plays the inspect hold. The bag closes first, so the player can see it. You get no when that slot is empty, when the thing in it is not a gun, or when an inspect is already playing.
@@ -117,7 +136,7 @@ RegisterNetEvent('fw_weapons:rejected', function(reason)
 end)
 ```
 
-This is sent whenever `fw_weapons:wear`, `fw_weapons:equip`, `fw_weapons:unequip`, or `fw_weapons:move` (described below) could not be done. The possible lines are:
+This is sent whenever `fw_weapons:wear`, `fw_weapons:equip`, `fw_weapons:unequip`, or `fw_weapons:move` (described below) could not be done, when an ammo box or a bundle of arrows could not be used, and when rounds could not be taken off the gunbelt. The possible lines are:
 
 | Reason | When |
 | --- | --- |
@@ -133,6 +152,10 @@ This is sent whenever `fw_weapons:wear`, `fw_weapons:equip`, `fw_weapons:unequip
 | `Make room in the satchel first.` | The bag has no space for the item that needs to go back into it. |
 | `The kit is busy.` | Another equip, unequip, or move for this player has not finished yet. Try again shortly. |
 | `Could not save the kit.` | The database could not store the change. Rare. The action did not happen. |
+| `You cannot carry any more of that ammunition.` | Using an ammo box or arrows would go past the carry limit for that kind. The item stays in the satchel. |
+| `That box is gone.` | The ammo item was no longer in the satchel when the use finished. |
+| `You cannot carry any more of those.` | Unloading a full box would not fit in the satchel. The rounds stay on the character. |
+| `Not a full box.` | A short remainder was dragged back onto the satchel. The rounds stay. Choose Empty on the icon to clear them. |
 
 ### fw_weapons:wear
 
@@ -212,21 +235,29 @@ Swaps the two revolvers when both slots already hold a gun. Moving the right rev
 
 ## Ammo
 
-The pile in the satchel is the gun belt. There is no separate step to load a gun — draw it and press reload. That reload fills the gun from the matching pile, up to what the gun holds, and takes those rounds out of the satchel. The right gun fills first. The left gun gets what is left. Nothing on this page stores an exact round count for a gun; the game itself tracks what's in the clip, the same way it does without this framework.
+Ammo in the satchel is a box, or a bundle of arrows. It is not the clothing gunbelt. Using it from the satchel puts rounds on the character. A box takes about two seconds. The bag stays open, and the revolver-cylinder loading prompt shows at the bottom right. Backspace cancels it and keeps the box. Arrows apply right away. If that kind is already at its limit, the item is not used, and the player sees `You cannot carry any more of that ammunition.`
 
-The client console (F8) prints a line when ammo is added, when reload starts, and when the weapon wheel changes ammo kind. A kind change does not start a reload by itself. If the gun does not report a kind, reload uses the plain pile, such as regular revolver rounds.
+Those rounds stay on the character. Firing and reloading spend them. The satchel is not charged again. Two guns that take the same rounds, such as two Cattlemen, share that pool. The count is saved on the character and put back the next time that character is selected. The bag shows the kinds above zero on the gunbelt, next to the loadout. Read that list with `GetBelt`.
 
-The bag screen updates when a gun is filled. The database write waits and goes out with the other waiting satchel writes, about every five seconds, and also when the player leaves. A crash inside that wait can put those reloaded rounds back.
+To take rounds off, drag that kind's icon from the gunbelt onto the satchel, or right-click it and choose Unload. One full box goes back into the bag, and those rounds come off. The box comes back right away, and the bag stays open. If the bag cannot hold that box, nothing changes, and the player sees `You cannot carry any more of those.`
 
-`stack` on the ammo item is the most of that kind the satchel can hold. A shop gives the pile with `AddItem`, on the [inventory](fw-inventory.md) page. Revolver rounds, rifle rounds, arrows, and the rest each have their own pile.
+Each kind has its own limit. Taking express revolver rounds off frees room for more express rounds. It does not raise the limit on regular revolver rounds. When a kind hits zero it drops off the weapon wheel and off the gunbelt.
 
-If the player carries more than one kind for the same guns, the weapon wheel can list each kind. Regular and Express can both be there. Switching kinds on the wheel is only printed in the client console for now. It does not start a reload by itself — the gun keeps whatever is already in the clip until the player reloads, and that reload is what pulls from the newly selected kind.
+If fewer than a full box are left, the menu says Empty. Empty clears the leftover and does not give an item, so a half-used box cannot be turned back into a full one. Dragging a short stack onto the satchel shows `Not a full box.` and leaves the rounds in place. Right-click Empty is how that kind is cleared.
 
-Dropping a pile takes that kind off the wheel. Rounds already in the gun stay there until they are fired.
+The satchel sends the ammo type, not a count. Leave this call to the bag screen.
 
-Two guns that take the same rounds, such as two Cattlemen, share that satchel pile.
+```lua
+---@param ammoType string
+---@param empty boolean
+TriggerServerEvent('fw_weapons:unload', 'AMMO_REVOLVER', false)
+```
 
-There is no call or message on this page for loading or unloading a gun by hand — that's not how ammo moves. Give the player the pile with `AddItem` and let them reload in the world.
+`ammoType` is the game ammo name, such as `AMMO_REVOLVER`. `empty` is yes only for the Empty choice. A drag sends no. A box comes back when a full box of that kind is on the character and the bag can hold it. Those rounds then come off. Empty clears a short remainder and gives nothing.
+
+A shop gives a box with `AddItem`, on the [inventory](fw-inventory.md) page. One revolver box adds 12 rounds, up to 200. The player uses the box, draws the gun, and presses reload.
+
+There is no call on this page for loading a gun by hand.
 
 ## State bags
 

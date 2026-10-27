@@ -17,6 +17,7 @@ How to install a resource stays in that resource's `README.md`. Do not open anot
 
 ```
 ensure oxmysql
+ensure vorp_lib
 ensure fw_core
 ensure fw_menu
 ensure fw_admin
@@ -24,8 +25,11 @@ ensure fw_characters
 ensure fw_creator
 ensure fw_clothing
 ensure fw_inventory
+ensure fw_money
 ensure fw_weapons
 ensure fw_satchel
+ensure fw_trade
+ensure fw_guide
 ```
 
 The folder `resources/[framework]/` is only a category. The resource name is the directory name, such as `fw_core`.
@@ -34,6 +38,7 @@ The folder `resources/[framework]/` is only a category. The resource name is the
 
 | Resource | You use it to |
 | --- | --- |
+| [vorp_lib](vorp-lib.md) | Show the loading prompt, the revolver cylinder at the bottom right. |
 | [fw_core](fw-core.md) | Read the connected account, and check in that your script was written for the current set of calls. |
 | [fw_menu](fw-menu.md) | Open a menu on the player's screen. |
 | [fw_admin](fw-admin.md) | Check that a player is an in-game admin. |
@@ -41,13 +46,16 @@ The folder `resources/[framework]/` is only a category. The resource name is the
 | [fw_creator](fw-creator.md) | See how the character menu stores a body and hair. Other resources should call `fw_characters`. |
 | [fw_clothing](fw-clothing.md) | Read or replace the clothes the character is wearing, and toggle a piece on their body. |
 | [fw_inventory](fw-inventory.md) | Give items, open a chest or pouch, and define item types. |
+| [fw_money](fw-money.md) | Read, give, and take the dollars a character is carrying. |
 | [fw_weapons](fw-weapons.md) | Read the equipped guns and tools, or move one between the bag and a slot. |
 | [fw_satchel](fw-satchel.md) | The bag screen. It has no calls of its own. |
+| [fw_trade](fw-trade.md) | Trade with a nearby player, or give them one item. |
+| [fw_guide](fw-guide.md) | Open the help screen. |
 | [Database](database.md) | See which id to store on your own table. |
 
-`fw_core` creates the account when a player connects. `fw_characters` creates the character when something calls `CreateCharacter`. The character menu does that for players. `fw_clothing` saves worn clothes on that character. `fw_inventory` saves the satchel. `fw_weapons` saves the equipped kit. `fw_satchel` is the screen.
+`fw_core` creates the account when a player connects. `fw_characters` creates the character when something calls `CreateCharacter`. The character menu does that for players. `fw_clothing` saves worn clothes on that character. `fw_inventory` saves the satchel. `fw_money` saves the dollars that character is carrying. `fw_weapons` saves the equipped kit. `fw_satchel` is the screen. `fw_trade` is two players trading what is in those satchels. `fw_guide` is the help screen.
 
-Money and jobs do not exist yet. When they do, store `fw_characters.id` for something that belongs to one character, and `fw_players.id` for something that belongs to the account.
+Cash is [fw_money](fw-money.md). A bank and jobs are not here yet. Store `fw_characters.id` for something that belongs to one character, and `fw_players.id` for something that belongs to the account.
 
 What you get back is a snapshot. Changing it does not save. Use the call that writes that field.
 
@@ -93,7 +101,7 @@ Put `RegisterResource` in your own script. You do not type your script's name. T
 [fw_admin] ready
 [fw_characters][info] ready version=1.0.0
 [fw_creator] ready
-[fw_clothing] ready. Purchases are not charged until a money resource exists.
+[fw_clothing] ready. Purchases are not charged yet. Cash is fw_money.
 [fw_inventory] ready. 5 items.
 ```
 

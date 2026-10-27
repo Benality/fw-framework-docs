@@ -4,7 +4,7 @@ Some calls run on the server. Most run in the player's game. Read the clothes a 
 
 The shop still uses the old `murphy_clothing` and `murphy_clothes` event names. A new script should use the calls on this page.
 
-There is no money resource yet. The shop shows prices and the purchase succeeds, but nothing is taken. Job-locked categories stay hidden because there is no job.
+Cash lives on [fw_money](fw-money.md). This shop still does not take any dollars. A later change can call `RemoveCash`. Job-locked categories stay hidden because there is no job.
 
 `fw_creator` must keep `Config.murphy_clothing` true.
 

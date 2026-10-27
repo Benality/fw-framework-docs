@@ -96,12 +96,13 @@ In the lines below, `your-script` stands in for your script's folder name.
 | `fw_core API 1 is incompatible with required API 2; your-script needs a newer core` | You asked for `2`, and this server is still on `1`. |
 | `fw_core API 2 is incompatible with required API 1; update your-script for API 2` | A later server is on `2`, and your script still passes `1`. Update the script, then pass `2`. |
 
-The same line is printed in the server window. If it fails, stop there and read the line. The example below does that.
+The same line is written in the server window log. If it fails, stop there and read the line. The example below does that.
 
 ```lua
+local Logger = Import('logger').Logger
 local ok, err = exports.fw_core:RegisterResource(1)
 if not ok then
-    print(err)
+    Logger:Error(err, { prefix = 'your-script' })
     return
 end
 ```
@@ -244,4 +245,4 @@ On the server, the same value is `player.id` from `GetPlayer`. Prefer that call 
 
 ## Server window
 
-Type `fw_health` in the server window. It prints whether `fw_core` is ready, the version, how many players are connected, and which scripts registered. Nothing happens if a player types it in chat.
+Type `fw_health` in the server window. It writes INFO lines for whether `fw_core` is ready, the version, how many players are connected, and which scripts registered. Nothing happens if a player types it in chat.

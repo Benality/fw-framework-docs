@@ -86,7 +86,7 @@ A networked message only reaches a listener that is already running when the mes
 | --- | --- | --- |
 | `murphy_creator:getCharacters` | Networked, player's game to server | Asks for the character list. |
 | `murphy_creator:LaunchCharSelect` | Networked, server to player's game | Opens the list. |
-| `murphy_creator:CharSelectFailed` | Networked, server to player's game | A reason string. The client prints it and tries once more. |
+| `murphy_creator:CharSelectFailed` | Networked, server to player's game | A reason string. The client writes it to the log and tries once more. |
 | `fw_creator:selectCharacter` | Networked, player's game to server | Selects that character id, then sends health. |
 | `murphy_creator:deleteCharacter` | Networked, player's game to server | The argument is the index in the list last sent to this player, not a character id. |
 | `murphy_creator:HealthFromCore` | Networked, server to player's game | The health table above. |
