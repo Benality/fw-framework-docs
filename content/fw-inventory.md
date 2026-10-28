@@ -261,7 +261,7 @@ Runs on the server. A snapshot of one kind of item, or nothing when that name is
 exports.fw_inventory:GetDefinition(name)
 ```
 
-The copy can include `name`, `label`, `description`, `width`, `height`, `stack`, `weapon`, `category`, `rotate`, `kit`, `hash`, `container`, `currency`, `image`, `chamber`, `rounds`, and `ammo`. `image` is the picture file in `fw_inventory/images`, without `.png`, when it is not the item name. `currency` is set on a pile of money, such as `cash` for dollars. Shops spend that balance through [fw_money](fw-money.md). `category` is the kind of item, such as `food` or `tools`. `chamber` is which rounds a gun takes, such as `revolver` or `rifle`. `rounds` is how many that gun holds. `ammo` is set on a box or a bundle of arrows. `key` is the game ammo name, such as `AMMO_REVOLVER`. `fits` is the same word as the gun's `chamber`. `max` is the most of that kind the character can hold. `refill` is how many one use adds. `instant` is yes for arrows, which apply as soon as they are used.
+The copy can include `name`, `label`, `description`, `width`, `height`, `stack`, `weapon`, `category`, `rotate`, `kit`, `hash`, `container`, `currency`, `image`, `chamber`, `rounds`, `ammo`, `rarity`, and `mission`. `image` is the picture file in `fw_inventory/images`, without `.png`, when it is not the item name. `currency` is set on a pile of money, such as `cash` for dollars. Shops spend that balance through [fw_money](fw-money.md). `category` is the kind of item, such as `food` or `tools`. `chamber` is which rounds a gun takes, such as `revolver` or `rifle`. `rounds` is how many that gun holds. `ammo` is set on a box or a bundle of arrows. `key` is the game ammo name, such as `AMMO_REVOLVER`. `fits` is the same word as the gun's `chamber`. `max` is the most of that kind the character can hold. `refill` is how many one use adds. `instant` is yes for arrows, which apply as soon as they are used. `rarity` is `uncommon`, `rare`, `epic`, or `legendary` when the item has a colored frame. It is left out for an ordinary item. `mission` is yes when that item has to stay in the satchel.
 
 ```lua
 local def = exports.fw_inventory:GetDefinition('herb_pouch')
@@ -910,6 +910,53 @@ return {
 | `ammo` | none | A box or a bundle of arrows. `key` is the game ammo name, such as `AMMO_REVOLVER`. `fits` is which guns take it: `revolver`, `pistol`, `repeater`, `rifle`, `elephant`, `shotgun`, `arrow`, or `varmint`. `max` is the most of that kind on the character, from 1 to 999. `refill` is how many one use adds, and it cannot be higher than `max`. `instant` skips the open wait. Arrows set it. `stack` is how many of the item the satchel can hold. |
 | `chamber` | filled in for shipped guns | Which `fits` value this gun accepts. Set it yourself on a new gun. |
 | `rounds` | filled in for shipped guns | How many rounds that gun holds. A Cattleman is 6. A bow is 20. From 1 to 100. |
+| `rarity` | ordinary | `uncommon`, `rare`, `epic`, or `legendary`. Leave it out for an ordinary item. |
+| `mission` | no | `true` when the item has to stay in the satchel. |
+
+### Rarity
+
+Leave `rarity` out and the satchel draws the plain slot. Set one of these words and the satchel, the shop, and a trade offer draw a colored frame. The same word shows under the name when the player rests on the item.
+
+| Word | Frame |
+| --- | --- |
+| `uncommon` | Green |
+| `rare` | Blue |
+| `epic` | Purple |
+| `legendary` | Gold |
+
+`common` is the same as leaving it out. Any other word is rejected. `RegisterItem` comes back false, and the reason is `unknown rarity`.
+
+The name is the key in the item file, the same as any other item.
+
+```lua
+letter = {
+    label = 'Folded Letter',
+    category = 'documents',
+    width = 1,
+    height = 1,
+    stack = 1,
+    rarity = 'rare',
+    description = 'The seal is still intact.',
+},
+```
+
+`mission = true` is separate from the frame. The player cannot give that item, trade it, sell it, throw it away, drop it, or put it in a pouch or a chest. Leave `rarity` out and the frame is the gold one. Set a rarity as well when you want a different color. The card says Mission item either way.
+
+A pouch that already holds a mission item cannot be dropped or thrown away until that item is taken out.
+
+Another script can still take the item with `RemoveItem`. That is how a job finishes and collects the letter. The player cannot do that from the satchel.
+
+```lua
+warrant = {
+    label = 'Arrest Warrant',
+    category = 'documents',
+    width = 1,
+    height = 1,
+    stack = 1,
+    mission = true,
+    description = 'It carries the court seal.',
+},
+```
 
 Shipped guns already have `chamber` and `rounds`. You only set those two when you add a gun the list does not know. Shipped ammo is in `items/ammo.lua`. A revolver box adds 12, up to 200. An explosive box adds 10, and 10 is the cap. Arrows add 10, up to 40, and they apply as soon as they are used. Fire, poison, and dynamite arrows add fewer. The satchel holds 20 of any one ammo item.
 
