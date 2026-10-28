@@ -46,16 +46,19 @@ StoresConfig.BlackwaterGeneral.goods
 StoresConfig.BlackwaterGeneral.access
 ```
 
-Write `name`, `location`, `model`, and `voice` on the store. `name` is the words on the map mark. Leave `type`, `template`, `hours`, `scenario`, `lines`, `takes`, and `blip` off and the store uses `FwStoresConfig.defaults`. Write one of those fields when that town should differ. A `blip` you write is used as you wrote it.
+A type on `FwStoresConfig.types` is one kind of shop. `general` is the first. A new kind is another entry there: a label, a template name, hours, a scenario, lines, a mark, and who may trade. A store that names that type receives those fields.
 
-`goods` and `buyback` are the shelf. `access` says who may buy, sell, and barter. `pay` is the share of the shelf price. `buy` is the share of the buyback. Leave `access`, `pay`, and `buy` off and the store uses the type. Write them on the store when that town should differ. `StoresConfig.BlackwaterGeneral.access` is the general type's access until Blackwater writes its own.
+Write `type`, `name`, `location`, `model`, and `voice` on the store. `type` is the kind, such as `general`. `name` is the words on the map mark. Leave `template`, `hours`, `scenario`, `lines`, `takes`, `blip`, `access`, `pay`, and `buy` off and the store uses its type. Write one of those fields when this shop should differ. A field you write replaces that field for this shop. A `blip` field you write replaces that one field, and the rest of the mark stays with the type. `template = false` skips the type's shelf and keeps only the `goods` and `buyback` written on this store.
 
-The shared defaults set `template` to `general`, the shelf in `shared/templates.lua`. Then list only what differs. A line whose `item` is already on the template changes only the fields you write. A new `item` is added to that store alone. A `buyback` name you write replaces that price. A new name is added. One town's price does not change the template or another town.
+`goods` and `buyback` are the shelf. `access` says who may buy, sell, and barter. `pay` is the share of the shelf price. `buy` is the share of the buyback. `StoresConfig.BlackwaterGeneral.access` matches the general type until Blackwater writes its own.
+
+The general type sets `template` to `general`, the shelf in `shared/templates.lua`. Then list only what differs. A line whose `item` is already on the template changes only the fields you write. A new `item` is added to that store alone. A `buyback` name you write replaces that price. A new name is added. One town's price does not change the template or another town.
 
 Valentine does that. Canned beans stay on the shelf and become 5 dollars. The four-egg trade stays, because that line does not write `barter`. Bread is not on the template, so Valentine alone sells it, for 2 dollars or two eggs. An egg buyback of 2 replaces the template price of 1.
 
 ```lua
 ValentineGeneral = {
+    type = 'general',
     name = 'General Store',
     location = vector4(-324.16, 803.62, 117.88, 272.93),
     model = 'u_m_m_valgenstoreowner_01',
@@ -70,7 +73,7 @@ ValentineGeneral = {
 }
 ```
 
-The other general stores, in Strawberry, Saint Denis, Armadillo, Rhodes, Blackwater, Tumbleweed, and Wallace Station, keep the template. `/shop` opens `ValentineGeneral`.
+The other general stores, in Strawberry, Saint Denis, Armadillo, Rhodes, Blackwater, Tumbleweed, and Wallace Station, keep the general type's shelf. `/shop` opens `ValentineGeneral`.
 
 `location` is where the clerk stands, a `vector4` with the heading last. `hours` is `{ open, close }` or `false`. The first hour is included and the second is not, so `{ 6, 21 }` is 6:00 through 20:59. When the first hour is later, such as `{ 21, 6 }`, the shop stays open across midnight. `false` means always open. Outside those hours the clerk is gone, the Shop prompt is hidden, and a sale is refused with `The store is closed.` If the time resource is not running, the shop stays open.
 
@@ -78,7 +81,7 @@ The other general stores, in Strawberry, Saint Denis, Armadillo, Rhodes, Blackwa
 
 The clerk appears within `spawnDistance` (50) while the shop is open. The prompt is within `promptDistance` (2.5). Each store's `blip.range` decides when its mark is on the map. `blipRange` (120) is that distance when a store does not set its own.
 
-`blip` is that store's mark. Leave it off and the store uses the shared mark. The `name` on the store is the words on that mark. `style` is the blip style, such as `BLIP_STYLE_DEBUG_YELLOW`. `sprite` is the icon, such as `blip_ambient_npc`. `modifiers` is a list of blip modifiers, such as `BLIP_MODIFIER_MP_COLOR_6`. `color` is a color word, such as `yellow`, when you are not listing modifiers. `range` is how close the player must be, in metres, before the mark exists. The shared mark uses `150`. The mark stays until the player is 20 metres past that, then it leaves the map. Come back inside the range and it returns. Leave `range` off a mark you write yourself and the store uses `blipRange` (120).
+`blip` is that store's mark. Leave it off and the store uses its type's mark. The `name` on the store is the words on that mark. `style` is the blip style, such as `BLIP_STYLE_DEBUG_YELLOW`. `sprite` is the icon, such as `blip_ambient_npc`. `modifiers` is a list of blip modifiers, such as `BLIP_MODIFIER_MP_COLOR_6`. `color` is a color word, such as `yellow`, when you are not listing modifiers. `range` is how close the player must be, in metres, before the mark exists. The general type's mark uses `150`. The mark stays until the player is 20 metres past that, then it leaves the map. Come back inside the range and it returns. Leave `range` off a mark you write yourself and the store uses `blipRange` (120).
 
 `card` set to `false`, or left out, means the mark has no card. A table is the card that opens when the player hovers that mark. Selecting it keeps the card open. `type` has to be `map_card_mission`. `title` is the large line. `subtitle` is the smaller line. `description` is the body, and `~n~` starts a new line. `footer` is the region line after the player selects the mark. Hovering does not change that line. `txd` is the picture's texture dictionary, such as `map_card_val_generalstore`. `txn` is the texture name inside it. The store sample uses `image`.
 
