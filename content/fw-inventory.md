@@ -39,6 +39,7 @@ Hold at that spot opens the chest. A horse bag or a wagon has no `locations`. Yo
 - `characters`, on a shared storage, is the list of character ids allowed to open it. Leave it out, or pass nothing, and any character can open it. A personal storage ignores this list. The character id comes from `fw_characters`.
 - `adminOnly = true` means only a player `fw_admin` counts as an admin can open it. Anyone else gets `You cannot open that.` It still follows `shared`. A shared admin chest is one grid. A personal admin chest is one grid per admin. Leave it out and it is false.
 - `locations` is optional. Each entry is `coords` and `distance`. With no locations, nothing is placed in the world.
+- `contents` is optional. A list of `{ name = 'bread', count = 2 }`. The first time that storage is opened, and it has no saved row yet, those piles are packed in. A later open shows what was left. Taking them out does not pack them again. An empty chest stays empty. A shared chest packs once for everyone. A personal chest (`shared = false`) packs once for each character, because each character has a different saved grid. Dollars in that list stay on the chest until someone takes them out. A bad list comes back from `RegisterStorage` as the reason. Leave `contents` out and the chest starts empty.
 - `width` and `height` are how many squares, from 1 to 24. The example is 8 across and 6 down.
 - `label` is the title the player sees, and the words on the prompt. Leave it out and the title is `Storage`.
 - The bag opens at the same time, with the chest beside it. The player drags items between them.
@@ -110,6 +111,7 @@ What you pass:
 - `container.width` and `container.height` are how many squares are inside the pouch, from 1 to 24. Here that is 4 by 4.
 - `container.label` is the title of that second grid.
 - `container.categories` follows the same rules as a chest. Leave it out and the pouch takes anything. `{ 'herbs' }` takes herbs only. A pouch still cannot hold another pouch. The player sees `A container cannot go in there.`
+- `container.contents` is optional. The same list as a chest: `{ name = 'bread', count = 2 }`. The first time that pouch is opened, those piles are packed in. After that it is a normal pouch. The player can put piles back in. Opening it again does not pack the list a second time. Dollars in that list count on the character who is carrying the pouch, the same way dollars already in a carried pouch do. A name that is not an item, a container, a mission item, the wrong category, or a pile that does not fit makes that pouch refuse to open. The server window shows the reason when the item files load.
 - A pouch always holds a count of 1. Two pouches cannot share one square, because each one has its own contents.
 
 A picture named `seed_pouch.png` goes in `fw_inventory/images/`. A new picture shows up after `ensure fw_inventory`.
@@ -139,6 +141,55 @@ Discard throws the pouch away and deletes what was inside it. `RemoveItem` does 
 Dollars in a pouch you are carrying still count on `GetCash`. Dropping that pouch moves those dollars onto the pouch. They count again when someone picks the pouch up.
 
 Drop sets the pouch on the ground in front of the player. The contents stay, and the pouch keeps the same size and the same categories. Hold Open at the bag to look inside. Hold Pick up to put it back in a satchel that has room. Anyone nearby can do either. A restart leaves the pouch where it was. Bread, ammo, and guns have Discard only. They do not get Drop. Dollars do not get Drop either. The player puts them in a money bag, then drops that bag. The reason on the dollars themselves is `Put that in a bag first.`
+
+## A parcel
+
+A parcel is a pouch the player only takes things out of. It is for a starter package, or anything else you hand over already packed. Give it with `AddItem`, the same way as any other item. This does not hand one out when a character is created. Your script does that when you want it to.
+
+```lua
+starter_parcel = {
+    label = 'Starter parcel',
+    category = 'container',
+    width = 2,
+    height = 2,
+    stack = 1,
+    description = 'A parcel packed for a new arrival.',
+    container = {
+        label = 'Starter parcel',
+        width = 4,
+        height = 4,
+        parcel = true,
+        give = false,
+        contents = {
+            { name = 'bread', count = 2 },
+            { name = 'canned_beans', count = 2 },
+            { name = 'biscuits', count = 1 },
+        },
+    },
+}
+```
+
+`items/container.lua` already has that parcel. A picture named `starter_parcel.png` belongs in `fw_inventory/images/`.
+
+```lua
+local ok, err = exports.fw_inventory:AddItem(source, 'starter_parcel', 1)
+if not ok then
+    print(err)
+    return
+end
+```
+
+What you pass, on top of a pouch:
+
+- `container.parcel = true` makes it a parcel. Leave it out, or set it false, and the item is a normal pouch.
+- `container.give = true` lets the player give that parcel, or put it on a trade offer. Leave it out and the parcel stays with them. Give is ignored on a pouch that is not a parcel. The player sees `That has to stay with you.`
+- `container.contents` is required on a parcel. At least one `{ name, count }`. The same rules as a pouch: a real item, not a container, not a mission item, a category the parcel accepts, and the piles have to fit. A parcel with no list, or a list that cannot be packed, refuses to open. The server window shows the reason when the item files load.
+
+The player right-clicks the parcel and chooses Open. The piles are packed the first time. They drag what they want into the bag. Dragging something from the bag into the parcel is refused with `You can only take things out of that.` Moving piles around inside the parcel still works.
+
+When the last pile leaves, the parcel is removed and the panel closes. Discard throws the parcel away while piles are still inside, and those piles are deleted with it. Dollars still inside are taken off the character. If that balance cannot be saved, the parcel stays. Drop is not on the menu. Sending a drop anyway comes back as `That cannot be dropped.`
+
+A parcel with `give = false` has no Give. One with `give = true` can be handed to a nearby player, or set on a trade offer, while it still has piles. The other player opens the same parcel.
 
 ## Calls
 
@@ -569,7 +620,7 @@ Runs on the server. Opens a chest, wagon, or horse, as described in [A chest, a 
 exports.fw_inventory:OpenStorage(source, id, params)
 ```
 
-`id` is the name from the chest section. `params.width` and `params.height` are the squares, from 1 to 24. `params.label` is the title. `params.categories` is the list of categories, or leave it out. `params.acceptWeapons` defaults to yes on this call. Pass `false` when this open should refuse weapons. A storage you registered should be opened with `OpenRegistered` instead, so the personal name, the character list, and `adminOnly` are applied.
+`id` is the name from the chest section. `params.width` and `params.height` are the squares, from 1 to 24. `params.label` is the title. `params.categories` is the list of categories, or leave it out. `params.acceptWeapons` defaults to yes on this call. Pass `false` when this open should refuse weapons. `params.contents` is the same list as `RegisterStorage`. It is packed only when this id has no saved row yet. A later open of the same id ignores the list. A bad list comes back with the same reasons as `RegisterStorage`. A storage you registered should be opened with `OpenRegistered` instead, so the personal name, the character list, and `adminOnly` are applied.
 
 | `err` | When |
 | --- | --- |
@@ -626,7 +677,7 @@ Runs on the server. Call it when your script starts. The fields are in [A chest,
 exports.fw_inventory:RegisterStorage(params)
 ```
 
-`params.id` follows the name rules in the chest section, and it must not start with `item:`. `params.shared` left out means one shared grid. `params.acceptWeapons` left out means weapons stay out. `params.adminOnly` left out means anyone can open it. `params.characters` left out means any character, on a shared storage. `params.locations` left out means no spot in the world.
+`params.id` follows the name rules in the chest section, and it must not start with `item:`. `params.shared` left out means one shared grid. `params.acceptWeapons` left out means weapons stay out. `params.adminOnly` left out means anyone can open it. `params.characters` left out means any character, on a shared storage. `params.locations` left out means no spot in the world. `params.contents` left out means the chest starts empty. When you pass it, the piles are packed the first time that grid is opened, as described in the chest section.
 
 | `err` | When |
 | --- | --- |
@@ -636,6 +687,13 @@ exports.fw_inventory:RegisterStorage(params)
 | `Invalid storage categories.` | `params.categories` was something other than a list of category names. |
 | `Invalid character list.` | `params.characters` was not a list of character ids. |
 | `Invalid storage locations.` | A spot was missing `coords`. |
+| `Invalid storage contents.` | `contents` was not a list of `{ name, count }`, or a count was outside 1–1000. |
+| `Unknown item.` | A contents name is not an item. |
+| `A container cannot go in there.` | A contents entry is itself a pouch or a parcel. |
+| `That has to stay with you.` | A contents entry is a mission item. |
+| `That does not go in there.` | A contents entry is a category this chest does not take. |
+| `Weapons do not go in there.` | A contents entry is a weapon and `acceptWeapons` is not set. |
+| `Not enough room.` | The piles do not fit the width and height. |
 
 ```lua
 local ok, err = exports.fw_inventory:RegisterStorage({
@@ -822,15 +880,15 @@ These are networked (`RegisterNetEvent` on the server, sent from the player's ga
 | `fw_inventory:open` | none | Opens the bag for the sender. Answered with `fw_inventory:opened`, or `fw_inventory:rejected` when the item list is not ready or the player has no character. |
 | `fw_inventory:move` | `id, x, y, rotated, token` | Moves a placement already in the bag to a new cell, or turns it. `id` is the placement id. `rotated` is `true`, `false`, or left out to keep its current facing. |
 | `fw_inventory:sort` | `token` | Rearranges the whole bag by item category, then size. |
-| `fw_inventory:discard` | `id, count, token` | Throws away up to `count` of that placement. `count` defaults to 1. The last one removes the placement, and deletes the container it owns, if it had one. |
-| `fw_inventory:drop` | `id, token` | Sets a pouch on the ground. `id` is the placement. Only an item with a `container` block can be dropped. The contents stay. `That cannot be dropped.` is anything else. `That item is in a trade.` is a placement set aside for a trade. |
+| `fw_inventory:discard` | `id, count, token` | Throws away up to `count` of that placement. `count` defaults to 1. The last one removes the placement, and deletes the container it owns, if it had one. A pouch that still holds dollars refuses with `Empty the bag first.` A parcel does not. Its remaining piles, including dollars, are deleted with it. |
+| `fw_inventory:drop` | `id, token` | Sets a pouch on the ground. `id` is the placement. Only an item with a `container` block can be dropped. A parcel cannot. The player sees `That cannot be dropped.` The contents of a pouch stay. `That item is in a trade.` is a placement set aside for a trade. |
 | `fw_inventory:split` | `id, count, token` | Cuts `count` off a stackable placement onto an empty cell of its own. `count` is a whole number from 1 up to one less than what is already there, and the item must be able to stack. `Not enough room.` means the bag has no free cell of that size. |
 | `fw_inventory:use` | `id, token, side` | Uses that placement, or opens a pouch. The bag sends this for Use, and for Open on a pouch. `side` is `'storage'` when the placement is sitting in an open chest or pouch rather than the bag — that is refused with `Take it out first.` Opens a pouch's storage, or runs its `RegisterUsable` callback, or rejects with `This cannot be used.` Three pouches can be open at once. A fourth is refused with `Close a pouch first.` |
 | `fw_inventory:context` | `id, option, token` | The player picked a custom right-click row. `id` is the placement. `option` is the id from `context` on the item. `That action is not on this item.` means that id was not registered. `That item is in a trade.` means the pile is set aside. On success the server sends the local message `fw_inventory:contextOption`. |
 | `fw_inventory:storageClose` | `id` | Closes one pouch when `id` is that pouch. Leave `id` out to close every pouch the sender has open. Answered with `fw_inventory:storageClosed`. |
 | `fw_inventory:storageMove` | `storageId, id, x, y, rotated, token` | Moves a placement inside the pouch named by `storageId`, not the bag. `id` is the placement. |
 | `fw_inventory:transfer` | `fromSide, id, x, y, rotated, token, storageId, toStorageId` | Moves a placement between the bag and one open pouch, or from one open pouch to another. `fromSide` is `'satchel'` or `'storage'`. `storageId` is the pouch. When the pile moves from one open pouch onto another, `storageId` is the pouch it leaves and `toStorageId` is the pouch it lands in. |
-| `fw_inventory:deposit` | `id, containerId, token` | Puts the whole satchel pile `id` into the pouch placement `containerId`. The pouch can stay closed. The pile fills an open pile of the same item, then the first empty square. `Not enough room.` means the pouch cannot hold it. `That does not go in there.` means the pouch does not take that category. `A container cannot go in there.` means the pile is itself a pouch. `That item is in a trade.` means one of the two placements is set aside. |
+| `fw_inventory:deposit` | `id, containerId, token` | Puts the whole satchel pile `id` into the pouch placement `containerId`. The pouch can stay closed. The pile fills an open pile of the same item, then the first empty square. `Not enough room.` means the pouch cannot hold it. `That does not go in there.` means the pouch does not take that category. `You can only take things out of that.` means it is a parcel. `A container cannot go in there.` means the pile is itself a pouch. `That item is in a trade.` means one of the two placements is set aside. |
 | `fw_inventory:openRegistered` | `id` | Opens a registered storage for the sender. `id` is the name from `RegisterStorage`. Answered with `fw_inventory:opened`, or `fw_inventory:rejected` with `You cannot open that.` and the other reasons from `OpenRegistered`. The world prompt sends this. A horse script can call `OpenRegistered` instead. |
 | `fw_inventory:requestStorageLocations` | none | Asks for the spots that have a prompt. Answered with `fw_inventory:storageLocations` for the sender. |
 | `fw_inventory:requestNearbyDrops` | none | Asks which pouches are within 100 meters of the sender. Answered with `fw_inventory:dropped` only when that set changed. The same set gets no reply. |
@@ -904,7 +962,7 @@ return {
 | `rotate` | false | The player can turn it. |
 | `kit` | none | Which weapon slot can hold it: `revolver`, `pistol`, `longarm`, `bow`, `lasso`, `melee`, `lantern`, `binoculars`, or `fishingrod`. |
 | `hash` | none | Weapon name, such as `WEAPON_REVOLVER_CATTLEMAN`. Required when `kit` is set. |
-| `container` | none | Opens a second grid when the player right-clicks the item and chooses Open. Stack is forced to 1. |
+| `container` | none | Opens a second grid when the player right-clicks the item and chooses Open. Stack is forced to 1. `parcel`, `give`, and `contents` are described in [A parcel](#a-parcel). `contents` on a pouch is described in [A pouch](#a-pouch-or-any-item-that-holds-other-items). |
 | `usable` | false | `true` puts Use on the right-click menu. Left out, or `false`, leaves Use off unless `RegisterUsable` has a callback for this name. A pouch still shows Open. |
 | `context` | none | Extra right-click rows. A list of `{ id = 'sharpen', label = 'Sharpen' }`, or id strings. The player’s choice arrives as `fw_inventory:contextOption`. |
 | `ammo` | none | A box or a bundle of arrows. `key` is the game ammo name, such as `AMMO_REVOLVER`. `fits` is which guns take it: `revolver`, `pistol`, `repeater`, `rifle`, `elephant`, `shotgun`, `arrow`, or `varmint`. `max` is the most of that kind on the character, from 1 to 999. `refill` is how many one use adds, and it cannot be higher than `max`. `instant` skips the open wait. Arrows set it. `stack` is how many of the item the satchel can hold. |
