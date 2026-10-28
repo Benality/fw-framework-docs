@@ -946,6 +946,8 @@ A pouch that already holds a mission item cannot be dropped or thrown away until
 
 Another script can still take the item with `RemoveItem`. That is how a job finishes and collects the letter. The player cannot do that from the satchel.
 
+`rarity` and `mission` are not columns in `fw_items`. They stay on the item file, and they are put back when the files load. Put them in the file when they have to survive a restart. An item that exists only from `RegisterItem` keeps its row, and these two fields on that call last until the next start.
+
 ```lua
 warrant = {
     label = 'Arrest Warrant',
