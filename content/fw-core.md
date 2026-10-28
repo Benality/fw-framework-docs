@@ -2,7 +2,7 @@
 
 Runs on the server. This is the account for a player who has joined. Your script reads that account here.
 
-There is no code on the player's game.
+The player's game only prints a log line. Reading an account stays on the server.
 
 ## Why you check in
 
@@ -173,7 +173,7 @@ TriggerClientEvent('my_resource:notify', target)
 
 Runs on the server. Saves a ban on a license, or lifts one. This writes the player list. It does not remove anyone from the server. If they are online, drop them yourself after a ban you want to start now. If you do not, the ban starts the next time they try to join.
 
-`license` is their Rockstar license, including `license:` at the front. You can read it from `GetPlayer` while they are online, or from `fw_admin` in the server window.
+`license` is their Rockstar license, including `license:` at the front. You can read it from `GetPlayer` while they are online, or from `fw_admin` in the server window. A license longer than 64 characters is refused with the same reason as a license that does not start with `license:`. That is the size of the license column.
 
 `untilTime` is a whole number of seconds since 1970, the usual unix time. `0` is a ban that does not expire. Pass nothing (`nil`) to lift the ban. A time that is already past is refused.
 
@@ -238,9 +238,10 @@ These stay on the server. They are not sent to the player's game. Your script he
 Sent once, when the player list is ready. A script that starts later missed it. Ask `IsReady`.
 
 ```lua
---- version is text such as '1.1.0'. apiVersion is the first number, such as 1.
+--- The player list is ready. version is text such as '1.1.0'. apiVersion is the first number, such as 1.
 ---@param version string
 ---@param apiVersion integer
+---@return nil
 AddEventHandler('fw_core:ready', function(version, apiVersion)
 end)
 ```
@@ -250,8 +251,10 @@ end)
 Sent when a player has finished joining. `player` is a snapshot of the account. Ask `GetPlayer` again when you need a fresh one.
 
 ```lua
----@param source integer
+--- player is a snapshot of the account. Ask GetPlayer again when you need a fresh one.
+---@param source integer player's number for this visit
 ---@param player table
+---@return nil
 AddEventHandler('fw_core:playerLoaded', function(source, player)
     print(player.id)
 end)
@@ -262,8 +265,10 @@ end)
 Sent when that player leaves. `player` is a snapshot taken before the account is forgotten.
 
 ```lua
----@param source integer
+--- player is a snapshot taken before the account is forgotten.
+---@param source integer player's number for this visit
 ---@param player table
+---@return nil
 AddEventHandler('fw_core:playerDropped', function(source, player)
 end)
 ```
@@ -284,3 +289,18 @@ On the server, the same value is `player.id` from `GetPlayer`. Prefer that call 
 ## Server window
 
 Type `fw_health` in the server window. It writes INFO lines for whether `fw_core` is ready, the version, how many players are connected, and which scripts registered. Nothing happens if a player types it in chat.
+
+A line about one player is also written to that player's console, the F8 window. A refusal is a warning. A failure is an error. A result, such as an account connecting, is info. Debug lines stay off until you set `fw_core_debug` to `true`.
+
+### fw_core:log
+
+Sent to one player's game. It copies one server line into that player's console. You do not send this, and you do not need to listen for it.
+
+```lua
+--- Copies one server line into this player's console.
+---@param message string
+---@param level string error, warn, or info
+---@return nil
+RegisterNetEvent('fw_core:log', function(message, level)
+end)
+```
