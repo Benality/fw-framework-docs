@@ -6,7 +6,7 @@ Closing the counter puts the shelf back the way the store lists it. What you set
 
 The clerk's goods are their own panel on the left, in the same journal style as the bag. Want and Offer are two panels between them and the bag. Want is what you are asking the clerk for. Offer is what you are putting up. None of those panels can be dragged. The bag on the right is the one you are carrying. Right-click, drag, split, use, give, and drop work the same way they do when you open the bag on its own. So do the pictures on the left of the bag, the clothes, the kit, and the gunbelt. The clerk keeps one pile of each thing. A pile with a number is a limited stock, and that number goes down when you buy it. A pile with no number is always in stock. Drag a pile into Want and choose how many. Canned beans from tier I can be up to 20 in one purchase. A hatchet is one, and a shovel is one. Those are as many as one pile in the satchel can hold. The rest of a limited pile stays on the counter. Shift-click a pile to move all of it onto Want or Offer. When Want already holds a purchase, Shift-click on dollars moves only the price still owed, and Shift-click on the trade goods moves only how many that purchase still needs. Otherwise Shift-click moves the whole pile. Ctrl-click moves 10. A counter pile that does not run out has no whole pile, so Shift does nothing there and Ctrl still takes 10. Click a pile on Want or Offer to put that whole pile back. Drag a pile from your bag into Offer. A pile the clerk does not buy is grey, in the bag and in an open pouch, and it will not move onto Offer. Dollars still move. So does something the clerk buys, and something that pays for a trade once you are trusted enough. A pile in an open pouch can go there too when the clerk takes it. The pile stays where it was. Drag a pile back out of Want to return it to the counter, or out of Offer to take it back. A counter pile will not sit in Offer, and a bag pile will not sit in Want.
 
-Gold numbers are what you pay. A number with a plus is what the clerk pays you. You pay with a dollars pile on Offer. Drag Dollars from your bag, or from an open pouch, onto Offer. The count is how many dollars you are putting up, and that many leave the stack right then. The amount under Offer is the dollars sitting there. Settle spends the price and puts the rest back in the bag. Drag those dollars off Offer, or close the counter, and they come back too. What you put on Offer that the clerk buys is taken out of the bag. What you put on Want is placed in the bag. If the clerk owes you, those dollars are placed in the bag. A tin of beans is 5 dollars in Valentine and 4 dollars in the other towns. Put dollars on Offer to buy it. A sack of flour is 10 dollars. A hatchet is 80 dollars, and it stays locked until you are established with the clerk. Valentine also sells a loaf of bread for 2 dollars. The clerk buys an egg for 2 dollars in Valentine and 1 dollar in the other towns, once you are recognized. An apple, a potato, or an ear of corn is 1 dollar. A bundle of mint is 2 dollars. A jar of honey, a block of beeswax, a bundle of wool, a rabbit pelt, or a fish is 4 dollars. A deer hide is 8 dollars. On this visit everyone is unknown, so the counter takes dollars and does not buy goods.
+Gold numbers are what you pay. A number with a plus is what the clerk pays you. You pay with a dollars pile on Offer. Drag Dollars from your bag, or from an open pouch, onto Offer. The count is how many dollars you are putting up, and that many leave the stack right then. The amount under Offer is the dollars sitting there. Settle spends the price and puts the rest back in the bag. Drag those dollars off Offer, or close the counter, and they come back too. What you put on Offer that the clerk buys is taken out of the bag. What you put on Want is placed in the bag. If the clerk owes you, those dollars are placed in the bag. A tin of beans is 5 dollars at Worths in Valentine and 4 dollars in the other towns. Put dollars on Offer to buy it. A sack of flour is 10 dollars. A hatchet is 80 dollars, and it stays locked until you are established with the clerk. Worths also sells a loaf of bread for 2 dollars. The clerk buys an egg for 2 dollars at Worths and 1 dollar in the other towns, once you are recognized. An apple, a potato, or an ear of corn is 1 dollar. A bundle of mint is 2 dollars. A jar of honey, a block of beeswax, a bundle of wool, a rabbit pelt, or a fish is 4 dollars. A deer hide is 8 dollars. On this visit everyone is unknown, so the counter takes dollars and does not buy goods.
 
 On the left of the clerk's goods are the same round pictures as the bag. All shows every pile. Kit shows weapons and ammo together. Each other picture shows that one kind, such as food, medical, or containers. A pile that does not match goes grey and stays where it is. Press that picture again, or press All, to show every kind. Want and Offer are not filtered. The bag has its own pictures, the same ones you use when the counter is closed.
 
@@ -48,18 +48,22 @@ StoresConfig.BlackwaterGeneral.access
 
 A type on `FwStoresConfig.types` is one kind of shop. `general` is the first. A new kind is another entry there: a label, a template name, a scenario, lines, a mark, and who may trade. A store that names that type receives those fields.
 
-Write `type`, `name`, `location`, `model`, `voice`, and `hours` on the store. `type` is the kind, such as `general`. `name` is the words on the map mark. `hours` belongs to this shop and is not taken from the type. Leave `template`, `scenario`, `lines`, `takes`, `blip`, `access`, `pay`, and `buy` off and the store uses its type. Write one of those fields when this shop should differ. A field you write replaces that field for this shop. A `blip` field you write replaces that one field, and the rest of the mark stays with the type. `template = false` skips the type's shelf and keeps only the `goods` and `buyback` written on this store.
+Write `type`, `name`, `location`, `model`, `voice`, and `hours` on the store. `type` is the kind, such as `general`. `name` is the words on the map mark. `hours` belongs to this shop and is not taken from the type. Leave `template`, `scenario`, `lines`, `takes`, `blip`, `access`, `pay`, `buy`, and `rows` off and the store uses its type. Write one of those fields when this shop should differ. A field you write replaces that field for this shop. A `blip` field you write replaces that one field, and the rest of the mark stays with the type. `template = false` skips the type's shelf and keeps only the `goods` and `buyback` written on this store.
+
+`rows` on a type is how many rows that counter uses. Leave it off and the counter stays at `counter.rows`, which is 14. The gunsmith sets 20 so a rifle still packs. Raising the shared 14 would add empty rows to the general store. A store can write `rows` when that one shop should differ.
+
+Leave `pay` and `buy` off a type and that shop uses the general rates. Write them on the type when that trade should differ. `access.sell` set to a word that is not a standing, such as `Closed`, means the clerk never buys. The gunsmith is set that way. The butcher, the trapper, and the bait shop set `sell` to `Unknown`, so a first visit can still sell. The doctor and the saloon keep selling at Recognized, the same as the general store. Barter stays closed on these shelves until a type has a real trade.
 
 `goods` and `buyback` are the shelf. `access` says who may buy, sell, and barter. `pay` is the share of the shelf price. `buy` is the share of the buyback. `StoresConfig.BlackwaterGeneral.access` matches the general type until Blackwater writes its own.
 
 The general type sets `template` to `general`, the shelf in `shared/templates.lua`. Then list only what differs. A line whose `item` is already on the template changes only the fields you write. A new `item` is added to that store alone. A `buyback` name you write replaces that price. A new name is added. One town's price does not change the template or another town.
 
-Valentine does that. The tin of beans stays on the shelf and becomes 5 dollars. Bread is not on the template, so Valentine alone sells it, for 2 dollars. An egg buyback of 2 replaces the template price of 1.
+Worths does that. The tin of beans stays on the shelf and becomes 5 dollars. Bread is not on the template, so Worths alone sells it, for 2 dollars. An egg buyback of 2 replaces the template price of 1. Keane's Saloon does the same kind of change for one drink: whiskey there is 8 dollars, and the rest of the saloon shelf stays as written.
 
 ```lua
 ValentineGeneral = {
     type = 'general',
-    name = 'General Store',
+    name = 'Worths General Store',
     location = vector4(-324.16, 803.62, 117.88, 272.93),
     model = 'u_m_m_valgenstoreowner_01',
     voice = '0478_U_M_M_VALGENSTOREOWNER_01',
@@ -264,7 +268,6 @@ The shelf is food the counter keeps, household goods, a short rack of garden see
 | Lamp Oil | 15 |
 | Pepper | 8 |
 | Skillet | 18 |
-| Snake Oil | 15 |
 | Tobacco | 12 |
 
 ### Rank IV, Established
@@ -273,3 +276,150 @@ The shelf is food the counter keeps, household goods, a short rack of garden see
 | --- | --- |
 | Hatchet | 80 |
 | Shovel | 60 |
+
+The other shops use the same standing and the same rates. A firearm on the gunsmith shelf is at least 120 dollars, above the hatchet. Ammunition stays cheap. The gunsmith does not buy anything back. The butcher pays more than the general store for the same hide. The trapper pays more than the butcher. The bait shop pays more than the general store for a fish. With reputation off, rank II and up stay locked. The butcher, the trapper, and the bait shop still buy, because their sell line is Unknown.
+
+### Gunsmith
+
+| Standing | Item | List price |
+| --- | --- | --- |
+| I | Arrows | 2 |
+| I | Pistol Ammo | 2 |
+| I | Revolver Ammo | 2 |
+| I | Varmint Rounds | 2 |
+| I | Repeater Ammo | 3 |
+| I | Rifle Ammo | 3 |
+| I | Shotgun Shells | 3 |
+| I | Hunting Knife | 12 |
+| I | Lasso | 15 |
+| II | Express Revolver, Pistol, Repeater, or Rifle Ammo | 6 |
+| II | Binoculars | 70 |
+| II | Bow | 90 |
+| II | Sawed-Off Shotgun | 120 |
+| II | Cattleman Revolver | 130 |
+| II | Varmint Rifle | 140 |
+| II | Double-Action Revolver | 150 |
+| II | Carbine Repeater | 160 |
+| II | Double-Barrel Shotgun | 170 |
+| III | Throwing Knives | 40 |
+| III | High Velocity or Split Point Ammo | 8 |
+| III | Improved Binoculars | 120 |
+| III | Schofield Revolver | 180 |
+| III | Springfield Rifle | 190 |
+| III | Volcanic Pistol | 200 |
+| III | Pump Shotgun | 200 |
+| III | Lancaster Repeater | 210 |
+| IV | Fire Arrows | 12 |
+| IV | Elephant Rifle Ammo | 12 |
+| IV | Poison Arrows | 15 |
+| IV | Incendiary Shotgun Shells | 18 |
+| IV | Fire Bottle | 20 |
+| IV | Explosive Ammo | 20 |
+| IV | Dynamite Arrows | 25 |
+| IV | Dynamite | 30 |
+| IV | Improved Bow | 250 |
+| IV | LeMat Revolver | 280 |
+| IV | Navy Revolver | 300 |
+| IV | Bolt Action Rifle | 320 |
+| IV | Semi-Auto Pistol | 340 |
+| IV | Repeating Shotgun | 340 |
+| IV | Mauser Pistol | 360 |
+| IV | Semi-Auto Shotgun | 380 |
+| IV | Carcano Rifle | 400 |
+| IV | M1899 Pistol | 420 |
+| IV | Rolling Block Rifle | 450 |
+| IV | Elephant Rifle | 500 |
+
+The same five gunsmiths sell this shelf: Kuo Chao & Co. in Saint Denis, Rhodes, Schultz in Annesburg, Tumbleweed, and Valentine.
+
+### Butcher
+
+The butcher sells raw meat. Cooked cuts stay off the shelf.
+
+| Standing | Item | List price |
+| --- | --- | --- |
+| I | Stringy Meat | 2 |
+| I | Game Meat | 3 |
+| II | Pork | 5 |
+| II | Mutton | 5 |
+| II | Beef | 6 |
+| II | Venison | 6 |
+| II | Plump Bird | 6 |
+| III | Prime Beef | 12 |
+| III | Mature Venison | 12 |
+| III | Big Game | 14 |
+
+Anyone may sell here. The clerk pays 1 dollar for stringy meat or game, 2 for pork, mutton, beef, venison, or a plump bird, 4 for prime beef or mature venison, and 5 for big game. A rabbit pelt is 6 dollars. A deer hide is 12. The general store still pays 4 for a rabbit pelt and 8 for a deer hide.
+
+### Trapper
+
+The hunt kit uses the same prices as the gunsmith, so the two shelves agree.
+
+| Standing | Item | List price |
+| --- | --- | --- |
+| I | Tin of Worms | 2 |
+| I | Hunting Knife | 12 |
+| II | Binoculars | 70 |
+| II | Bow | 90 |
+
+Anyone may sell here. A rabbit pelt is 8 dollars. A deer hide is 16. Legendary parts and sewn clothes wait.
+
+### Bait and tackle
+
+One shop, in Lagras.
+
+| Standing | Item | List price |
+| --- | --- | --- |
+| I | Tin of Worms | 2 |
+| I | Tin of Crickets | 2 |
+| I | Herbivore Bait | 3 |
+| I | Predator Bait | 4 |
+| II | Fishing Rod | 25 |
+| II | Potent Herbivore Bait | 8 |
+| II | Potent Predator Bait | 10 |
+
+Anyone may sell a fish here, for 6 dollars. The general store pays 4.
+
+### Doctor
+
+The general store keeps the bandage and the plain tonic. The stronger medicines are on this shelf. The doctor sells the bandage and the tonic as well.
+
+| Standing | Item | List price |
+| --- | --- | --- |
+| I | Bandage | 3 |
+| I | Box of Bandages | 8 |
+| I | Tonic | 8 |
+| II | Herbal Tonic | 12 |
+| II | Herbal Medicine | 14 |
+| II | Snake Oil | 15 |
+| III | Burn Salve | 16 |
+| III | Juniper Balm | 18 |
+| III | Restorative | 22 |
+| IV | Health Serum | 35 |
+| IV | Antivenom | 40 |
+
+Selling waits for Recognized. A bundle of mint is 4 dollars. A ginseng root is 6. The general store pays 2 for mint. Treatment stays off this shelf.
+
+### Saloon
+
+| Standing | Item | List price |
+| --- | --- | --- |
+| I | Beer | 2 |
+| I | Beef Stew | 4 |
+| II | Whiskey | 6 |
+| II | Venison Stew | 6 |
+| III | Bottle of Whiskey | 14 |
+| III | Bottle of Brandy | 16 |
+
+Keane's in Valentine charges 8 dollars for whiskey. The other saloons charge 6. The clerk does not buy drinks back.
+
+### Barber
+
+| Standing | Item | List price |
+| --- | --- | --- |
+| I | Hair Tonic | 3 |
+| I | Pomade | 4 |
+| II | Shaving Tonic | 5 |
+| II | Beard Pomade | 6 |
+
+The clerk does not buy these back. A haircut is not on the counter.
