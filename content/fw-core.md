@@ -286,6 +286,14 @@ end
 
 On the server, the same value is `player.id` from `GetPlayer`. Prefer that call when you are already on the server. The state bag is there so the player's game can see the account id without asking.
 
+## Map
+
+The minimap switch is in `resources/[framework]/fw_core/shared/config.lua`. It is `FwCoreConfig.map.reveal`.
+
+`true` shows every region. Places the character has never visited are drawn. `false` leaves fog over those places.
+
+This is not a call. Another script does not set it, and there is no export for it. Change the value, then restart `fw_core`.
+
 ## Server window
 
 Type `fw_health` in the server window. It writes INFO lines for whether `fw_core` is ready, the version, how many players are connected, and which scripts registered. Nothing happens if a player types it in chat.
