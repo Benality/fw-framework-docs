@@ -46,9 +46,9 @@ StoresConfig.BlackwaterGeneral.goods
 StoresConfig.BlackwaterGeneral.access
 ```
 
-A type on `FwStoresConfig.types` is one kind of shop. `general` is the first. A new kind is another entry there: a label, a template name, hours, a scenario, lines, a mark, and who may trade. A store that names that type receives those fields.
+A type on `FwStoresConfig.types` is one kind of shop. `general` is the first. A new kind is another entry there: a label, a template name, a scenario, lines, a mark, and who may trade. A store that names that type receives those fields.
 
-Write `type`, `name`, `location`, `model`, and `voice` on the store. `type` is the kind, such as `general`. `name` is the words on the map mark. Leave `template`, `hours`, `scenario`, `lines`, `takes`, `blip`, `access`, `pay`, and `buy` off and the store uses its type. Write one of those fields when this shop should differ. A field you write replaces that field for this shop. A `blip` field you write replaces that one field, and the rest of the mark stays with the type. `template = false` skips the type's shelf and keeps only the `goods` and `buyback` written on this store.
+Write `type`, `name`, `location`, `model`, `voice`, and `hours` on the store. `type` is the kind, such as `general`. `name` is the words on the map mark. `hours` belongs to this shop and is not taken from the type. Leave `template`, `scenario`, `lines`, `takes`, `blip`, `access`, `pay`, and `buy` off and the store uses its type. Write one of those fields when this shop should differ. A field you write replaces that field for this shop. A `blip` field you write replaces that one field, and the rest of the mark stays with the type. `template = false` skips the type's shelf and keeps only the `goods` and `buyback` written on this store.
 
 `goods` and `buyback` are the shelf. `access` says who may buy, sell, and barter. `pay` is the share of the shelf price. `buy` is the share of the buyback. `StoresConfig.BlackwaterGeneral.access` matches the general type until Blackwater writes its own.
 
@@ -63,6 +63,7 @@ ValentineGeneral = {
     location = vector4(-324.16, 803.62, 117.88, 272.93),
     model = 'u_m_m_valgenstoreowner_01',
     voice = '0478_U_M_M_VALGENSTOREOWNER_01',
+    hours = false,
     goods = {
         { item = 'canned_beans', price = 5 },
         { item = 'bread', price = 2, barter = { { item = 'egg', count = 2 } } },
@@ -75,7 +76,7 @@ ValentineGeneral = {
 
 The other general stores, in Strawberry, Saint Denis, Armadillo, Rhodes, Blackwater, Tumbleweed, and Wallace Station, keep the general type's shelf. `/shop` opens `ValentineGeneral`.
 
-`location` is where the clerk stands, a `vector4` with the heading last. `hours` is `{ open, close }` or `false`. The first hour is included and the second is not, so `{ 6, 21 }` is 6:00 through 20:59. When the first hour is later, such as `{ 21, 6 }`, the shop stays open across midnight. `false` means always open. Outside those hours the clerk is gone, the Shop prompt is hidden, and a sale is refused with `The store is closed.` If the time resource is not running, the shop stays open.
+`location` is where the clerk stands, a `vector4` with the heading last. `hours` is written on that store. It is `{ open, close }` or `false`. The first hour is included and the second is not, so `{ 6, 21 }` is 6:00 through 20:59. When the first hour is later, such as `{ 21, 6 }`, the shop stays open across midnight. `false` means always open. The general stores are open all day. Outside the hours you write, the clerk is gone, the Shop prompt is hidden, and a sale is refused with `The store is closed.` If the time resource is not running, the shop stays open.
 
 `model` is the ped. `scenario` is the stance, such as `WORLD_HUMAN_SHOPKEEPER`. `voice` is that ped's voice bank. `lines` names the greet, the browse line when the counter opens, and the sale line when the trade goes through. `takes` is how many recordings a line has. A sale picks one of those and cuts off a line already playing.
 
