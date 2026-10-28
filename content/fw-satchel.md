@@ -6,6 +6,8 @@ It has no exports and no state bag. Give an item, open a chest, or define an ite
 
 The player opens the bag with `B`, or by typing `/satchel`. `B`, Escape, Backspace, or Tab closes it. Closing the bag also closes the gunbelt, and an open chest or pouch. During a trade, those same keys decline the trade instead, and the bag closes when the trade ends. That flow is on [fw_trade](fw-trade.md).
 
+Resting on a pile draws a red tile behind the picture. The switch is `highlightPile` in `resources/[framework]/fw_satchel/shared/config.lua`. `true` draws that tile. `false` leaves it off. Another script does not call this. Change the value, then restart `fw_satchel`.
+
 Right-click a placement in the bag for Use, Give, Drop, or Split. Give hides the bag, shows markers on nearby players, and hands that whole stack to the one they click. The bag comes back after. Split is only there when the stack is more than one. Give is not on the menu during a trade.
 
 ## Trade screen
