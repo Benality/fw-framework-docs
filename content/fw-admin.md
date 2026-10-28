@@ -73,10 +73,12 @@ end
 | Command | Who | What happens |
 | --- | --- | --- |
 | `/admin` | A player in the game | Opens the admin menu when they have `fw.admin`. Anyone else gets a log line saying they are not an admin. |
+| `/tpm` | A player in the game | Moves them to the waypoint on their map when they have `fw.admin`. Anyone else gets a log line saying they are not an admin. Set a waypoint first. If the ground under it cannot be found, the log says so and they stay where they are. |
 | `/fw_admin` | The player who types it | The log says whether they are an admin. It does not print their ids. |
 | `fw_admin` | Server window | Prints whether fw_admin is ready. |
 | `fw_admin <serverId>` | Server window | Prints whether that player is an admin, and their ids, so you can copy the `license:` line into `permissions.cfg`. |
 | `admin` (no slash) | Server window | Prints that `/admin` is for a player in the game. It does nothing else. |
+| `tpm` | Server window | Prints that `/tpm` is for a player in the game. It does nothing else. |
 
 `/admin` opens a menu from [fw_menu](fw-menu.md). It needs `fw.admin`. A smaller permission such as `fw.admin.kick` does not open it.
 
@@ -84,7 +86,7 @@ The first page has three entries.
 
 - **Players.** Who is online. Search filters that list. Unban asks for a license. Choose a person, then go to them, bring them, send them back, watch them, freeze them, fill their health, revive them, give an item, give dollars, kick, or ban.
 - **Self.** God mode, no clip, invisible, infinite ammo, fill health, fill health and stamina, and revive. No clip moves with W and S, up with Q, down with Z. Shift changes the speed. Delete stops it.
-- **Developer tools.** Teleports, then copy coordinates. Teleports are the map waypoint, coordinates you type, Guarma, and the trip back. Copy coordinates puts x y z, a `vector3`, a `vector4`, or the heading on the clipboard. The same line is also written to the F8 log. The clipboard call is `exports.vorp_lib:copyToClipBoard`. If `vorp_lib` is not started, nothing is copied and the log says the clipboard is not available.
+- **Developer tools.** Teleports, then copy coordinates. Teleports are the map waypoint, coordinates you type, Guarma, and the trip back. TP to Waypoint is the same move as `/tpm`. Copy coordinates puts x y z, a `vector3`, a `vector4`, or the heading on the clipboard. The same line is also written to the F8 log. The clipboard call is `exports.vorp_lib:copyToClipBoard`. If `vorp_lib` is not started, nothing is copied and the log says the clipboard is not available.
 
 Go back on a page returns to the page that opened it.
 
@@ -224,7 +226,7 @@ TriggerClientEvent('fw_admin:doMove', source, x, y, z, heading)
 
 ### fw_admin:teleportWaypoint
 
-Networked, player's game to the server. Asks to teleport that player to their own map waypoint. The server ignores it unless `IsAdmin` is yes for whoever sent it. The admin menu sends this itself.
+Networked, player's game to the server. Asks to teleport that player to their own map waypoint. The server ignores it unless `IsAdmin` is yes for whoever sent it. The admin menu sends this itself. `/tpm` checks `fw.admin` and then does the same move.
 
 ```lua
 --- Networked. Sent by the admin menu. The server ignores it unless IsAdmin is yes for the sender.
