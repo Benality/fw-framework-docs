@@ -16,9 +16,9 @@ Goods, Work, and Services switch only the clerk's panel. Want, Offer, and the sa
 
 ## Command
 
-`/shop` is a client command. It takes no arguments. It opens the store named `general` from `shared/config.lua` beside the bag. Pressing Shop at the clerk opens that store the same way, after a short loading prompt of about 400 milliseconds while the visit is built. The Shop prompt hides while that counter is on screen, and comes back when it closes. Start `fw_stores` after `fw_satchel` and `fw_inventory`, because the screen uses their pictures and the bag.
+`/shop` is a client command. It takes no arguments. It opens the store named `ValentineGeneral` from `shared/config.lua` beside the bag. Pressing Shop at the clerk opens that store the same way, after a short loading prompt of about 400 milliseconds while the visit is built. The Shop prompt hides while that counter is on screen, and comes back when it closes. Start `fw_stores` after `fw_satchel` and `fw_inventory`, because the screen uses their pictures and the bag.
 
-Another script on the player's game can open a named store. `storeId` is the key in the store list, such as `general`. Nothing, or an empty word, opens `general`. The counter closes if that event runs again while it is already open.
+Another script on the player's game can open a named store. `storeId` is the store name, such as `ValentineGeneral` or `BlackwaterGeneral`. Nothing, or an empty word, opens `ValentineGeneral`. The counter closes if that event runs again while it is already open.
 
 ```lua
 --- Opens one store's counter beside the bag.
@@ -31,12 +31,38 @@ end)
 ```
 
 ```lua
-TriggerEvent('fw_stores:open', 'general')
+TriggerEvent('fw_stores:open', 'ValentineGeneral')
 ```
 
 ## The store list
 
-Write stores in `resources/[framework]/fw_stores/shared/config.lua`. A type is the kind of shop, such as `general`. A store is one counter of that type. Set `type = 'general'` on the store. Every store of that type shares the type's rates.
+Write stores in `resources/[framework]/fw_stores/shared/config.lua`. A type is the kind of shop, such as `general`. A store is one counter of that type. Set `type = 'general'` on the store.
+
+A store is a named field on `StoresConfig`. That same table is `FwStoresConfig.stores`. The name is how you read one store.
+
+```lua
+StoresConfig.BlackwaterGeneral.blip
+StoresConfig.BlackwaterGeneral.goods
+StoresConfig.BlackwaterGeneral.access
+```
+
+`location`, `blip`, `hours`, `model`, `scenario`, `voice`, `lines`, and `takes` are the place. Write those on the store. `goods` and `buyback` are the shelf. `access` says who may buy, sell, and barter. `pay` is the share of the shelf price. `buy` is the share of the buyback. Leave `access`, `pay`, and `buy` off and the store uses the type. Write them on the store when that town should differ. `StoresConfig.BlackwaterGeneral.access` is the general type's access until Blackwater writes its own.
+
+Set `template = 'general'` to use the shelf in `shared/templates.lua`. Then list only what differs. A line whose `item` is already on the template changes only the fields you write. Canned beans at 5 dollars keep the four-egg trade. A new `item` is added to that store alone. A `buyback` name you write replaces that price. A new name is added. One town's price does not change the template or another town.
+
+```lua
+ValentineGeneral = {
+    type = 'general',
+    template = 'general',
+    -- goods = {
+    --     { item = 'canned_beans', price = 5 },
+    --     { item = 'bread', price = 2 },
+    -- },
+    -- buyback = { egg = 2 },
+}
+```
+
+The general stores in Valentine, Strawberry, Saint Denis, Armadillo, Rhodes, Blackwater, Tumbleweed, and Wallace Station use that shelf. `/shop` opens `ValentineGeneral`.
 
 `location` is where the clerk stands, a `vector4` with the heading last. `hours` is `{ open, close }` or `false`. The first hour is included and the second is not, so `{ 6, 21 }` is 6:00 through 20:59. When the first hour is later, such as `{ 21, 6 }`, the shop stays open across midnight. `false` means always open. Outside those hours the clerk is gone, the Shop prompt is hidden, and a sale is refused with `The store is closed.` If the time resource is not running, the shop stays open.
 
@@ -85,7 +111,7 @@ Each line in `goods` is one pile on the counter.
 egg = { price = 1, Established = 2 }
 ```
 
-Valentine lists a number for each good the clerk buys. An egg, an apple, a potato, or an ear of corn is 1 dollar. Mint is 2. Honey, beeswax, wool, a rabbit pelt, or a fish is 4. A deer hide is 8.
+The general shelf lists a number for each good the clerk buys. An egg, an apple, a potato, or an ear of corn is 1 dollar. Mint is 2. Honey, beeswax, wool, a rabbit pelt, or a fish is 4. A deer hide is 8.
 
 On the type, `pay` is the share of `price` the player pays. `1` is the shelf price. `0.9` is nine tenths of it. `buy` is the share of the buyback the clerk pays. The result is a whole dollar. A shelf price of at least 1 dollar stays at least 1 dollar.
 
