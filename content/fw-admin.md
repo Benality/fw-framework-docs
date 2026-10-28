@@ -84,7 +84,7 @@ The first page has three entries.
 
 - **Players.** Who is online. Search filters that list. Unban asks for a license. Choose a person, then go to them, bring them, send them back, watch them, freeze them, fill their health, revive them, give an item, give dollars, kick, or ban.
 - **Self.** God mode, no clip, invisible, infinite ammo, fill health, fill health and stamina, and revive. No clip moves with W and S, up with Q, down with Z. Shift changes the speed. Delete stops it.
-- **Developer tools.** Teleports, then copy coordinates. Teleports are the map waypoint, coordinates you type, Guarma, and the trip back. Copy coordinates writes x y z, a `vector3`, a `vector4`, or the heading into your F8 log.
+- **Developer tools.** Teleports, then copy coordinates. Teleports are the map waypoint, coordinates you type, Guarma, and the trip back. Copy coordinates puts x y z, a `vector3`, a `vector4`, or the heading on the clipboard. The same line is also written to the F8 log. The clipboard call is `exports.vorp_lib:copyToClipBoard`. If `vorp_lib` is not started, nothing is copied and the log says the clipboard is not available.
 
 Go back on a page returns to the page that opened it.
 

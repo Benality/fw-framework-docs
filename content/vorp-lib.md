@@ -1,6 +1,6 @@
 # vorp_lib
 
-Runs in the player's game. This page is the loading prompt, the revolver cylinder at the bottom right, and a map blip. The game has one of these prompts. Starting it again only changes the words.
+Runs in the player's game. This page is the loading prompt, the revolver cylinder at the bottom right, a map blip, and copying a line to the clipboard. The game has one of these prompts. Starting it again only changes the words.
 
 `vorp_lib` has to be started before the script that calls it.
 
@@ -37,6 +37,22 @@ exports.vorp_lib:SpinnerStop()
 ```
 
 Call this when the wait is over, including when the player cancels it. Stopping when nothing is showing is safe.
+
+## copyToClipBoard
+
+```lua
+--- Copies one line onto the player's clipboard. Nothing comes back.
+--- A value that is not text is ignored.
+---@param text string
+---@return nil
+exports.vorp_lib:copyToClipBoard(text)
+```
+
+```lua
+exports.vorp_lib:copyToClipBoard('vector4(-324.16, 803.62, 117.88, 272.93)')
+```
+
+Call this from the player's game. `text` is the exact line they can paste. The admin menu uses it when an admin copies where they are standing.
 
 ## Blips
 
