@@ -90,25 +90,25 @@ The clerk appears within `spawnDistance` (50) while the shop is open. The prompt
 
 `card` set to `false`, or left out, means the mark has no card. A table is the card that opens when the player hovers that mark. Selecting it keeps the card open. `type` has to be `map_card_mission`. `title` is the large line. `subtitle` is the smaller line. `description` is the body, and `~n~` starts a new line. `footer` is the region line after the player selects the mark. Hovering does not change that line. `txd` is the picture's texture dictionary, such as `map_card_val_generalstore`. `txn` is the texture name inside it. The store sample uses `image`.
 
-A town mark is separate from the shop mark. It uses the town style and stays on the map, because it is created with no range. `FwStoresConfig.towns` names each town. `name` is the words on the mark and the card title. `coords` is where the mark sits. `footer` is the region line. `txd` is the card picture. Leave `txd` off when you have no picture. `txn` defaults to `image` when you set `txd`.
+A town mark is separate from the shop mark. It uses the town style and stays on the map, because it is created with no range. `FwStoresConfig.towns` names each town. `name` is the words on the mark and the card title. `coords` is where the mark sits. `footer` is the region line. `txds` is the list of card pictures. One picture is chosen when the player joins, and that picture stays until they leave and come back. Leave `txds` off when you have no picture. The texture name inside each dictionary is `image`.
 
 On a store, `town` is the key in that table, such as `valentine`. The card lists each shop type once, in this order: General Store, Gunsmith, Doctor, Barber, Butcher, Trapper, Bait and Tackle, Saloon. A type is left off when that town has no store of that type. Two saloons in one town are one Saloon line. A store with no `town`, such as a trapper camp, does not add a line and does not get a town mark. A town with no stores is skipped. A store that names a town missing from `towns` is skipped, and the client log says so.
 
-The picture is one shop from that town. The texture name inside each dictionary is `image`. Saint Denis uses `nbx`, Blackwater uses `blk`, Armadillo uses `amd`, Tumbleweed uses `tbl`, and Van Horn uses `vht`.
+Saint Denis uses `nbx`, Blackwater uses `blk`, Armadillo uses `amd`, Tumbleweed uses `tbl`, and Van Horn uses `vht`. Wallace Station has one picture in the game. Lagras has two. The other towns have three.
 
-| Town | `txd` |
+| Town | `txds` |
 | --- | --- |
-| Valentine | `map_card_val_generalstore` |
-| Strawberry | `map_card_str_generalstore` |
-| Rhodes | `map_card_rho_generalstore` |
-| Saint Denis | `map_card_nbx_generalstore` |
-| Blackwater | `map_card_blk_generalstore` |
-| Armadillo | `map_card_amd_generalstore` |
-| Tumbleweed | `map_card_tbl_generalstore` |
-| Annesburg | `map_card_ann_gunsmith` |
-| Van Horn | `map_card_vht_saloon` |
+| Valentine | `map_card_val_generalstore`, `map_card_val_gunsmith`, `map_card_val_saloon2` |
+| Strawberry | `map_card_str_generalstore`, `map_card_str_butcher`, `map_card_str_depot` |
+| Rhodes | `map_card_rho_generalstore`, `map_card_rho_gunsmith`, `map_card_rho_saloon` |
+| Saint Denis | `map_card_nbx_generalstore`, `map_card_nbx_gunsmith`, `map_card_nbx_nicesaloon` |
+| Blackwater | `map_card_blk_generalstore`, `map_card_blk_saloon`, `map_card_blk_butcher` |
+| Armadillo | `map_card_amd_generalstore`, `map_card_amd_saloon`, `map_card_amd_depot` |
+| Tumbleweed | `map_card_tbl_generalstore`, `map_card_tbl_gunsmith`, `map_card_tbl_saloon` |
+| Annesburg | `map_card_ann_gunsmith`, `map_card_ann_depot`, `map_card_fast_travel_annesburg` |
+| Van Horn | `map_card_vht_saloon`, `map_card_vht_depot`, `map_card_vht_fence` |
 | Wallace Station | `map_card_wal_generalstore` |
-| Lagras | `map_card_lag_baitshop` |
+| Lagras | `map_card_lag_baitshop`, `map_card_fast_travel_lagras` |
 
 ```lua
 towns = {
@@ -116,7 +116,7 @@ towns = {
         name = 'Valentine',
         coords = vector3(-281.0, 807.0, 119.4),
         footer = 'Valentine, The Heartlands, NH',
-        txd = 'map_card_val_generalstore',
+        txds = { 'map_card_val_generalstore', 'map_card_val_gunsmith', 'map_card_val_saloon2' },
     },
 },
 ```
