@@ -16,7 +16,7 @@ Goods, Work, and Services switch only the clerk's panel. Want, Offer, and the sa
 
 ## Command
 
-`/shop` is a client command. It takes no arguments. It opens the store named `ValentineGeneral` from `shared/config.lua` beside the bag. Pressing Shop at the clerk opens that store the same way, after a short loading prompt of about 400 milliseconds while the visit is built. The Shop prompt hides while that counter is on screen, and comes back when it closes. Start `fw_stores` after `fw_satchel` and `fw_inventory`, because the screen uses their pictures and the bag.
+`/shop` is a client command. It takes no arguments. It opens the store named `ValentineGeneral` from `shared/config.lua` beside the bag. Pressing Shop at the clerk opens that store the same way, after a short loading prompt while the visit is built. That pause is `openPauseMs` on `FwStoresConfig`, 400 milliseconds unless you change it. The Shop prompt hides while that counter is on screen, and comes back when it closes. Start `fw_stores` after `fw_satchel` and `fw_inventory`, because the screen uses their pictures and the bag.
 
 Another script on the player's game can open a named store. `storeId` is the store name, such as `ValentineGeneral` or `BlackwaterGeneral`. Nothing, or an empty word, opens `ValentineGeneral`. The counter closes if that event runs again while it is already open.
 
@@ -127,9 +127,9 @@ access = {
 
 A pile's own `standing` still locks that pile. Canned peaches stay Recognized even though buying, as an action, is open to everyone.
 
-`ConfigUseReputation` starts as `false`. Every visit is then Unknown. Everyone can buy an unlocked pile. Selling and barter stay closed, because Unknown is below Recognized and Trusted. The rates and the access lines stay in the file for when you turn it on.
+`FwStoresConfig.useReputation` starts as `false`. Every visit is then Unknown. Everyone can buy an unlocked pile. Selling and barter stay closed, because Unknown is below Recognized and Trusted. The rates and the access lines stay in the file for when you turn it on.
 
-Turn `ConfigUseReputation` on when a resource named `fw_reputation` is running. `fw_stores` asks it for this player's standing at this store type. `source` is the player's number for this visit. `storeType` is the type key, such as `'general'`.
+Turn `useReputation` on when a resource named `fw_reputation` is running. `fw_stores` asks it for this player's standing at this store type. `source` is the player's number for this visit. `storeType` is the type key, such as `'general'`.
 
 ```lua
 ---@param source integer
