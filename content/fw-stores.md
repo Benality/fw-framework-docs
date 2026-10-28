@@ -168,7 +168,7 @@ The number is the list price. An Unknown visit pays that many dollars. Recognize
 
 A later job should sit under these prices. A short chore pays about 1 or 2 dollars. A day of labor pays about 4 to 8 dollars, under a tin of food. A dangerous job can approach a small tool. It should stay well under a hatchet at 80 dollars.
 
-The clerk does not buy these goods back. The buyback list is farm and hunt goods, and those prices stay below the shelf.
+The shelf is food the counter keeps, household goods, a short rack of garden seed, and a few tools. The clerk does not buy these goods back. The buyback list is farm and hunt goods, and those prices stay below the shelf.
 
 ### Rank I, anyone
 
@@ -178,23 +178,15 @@ The clerk does not buy these goods back. The buyback list is farm and hunt goods
 | Bar of Soap | 3 |
 | Beef Jerky | 3 |
 | Biscuits | 3 |
-| Bonbons | 2 |
 | Bread Roll | 1 |
 | Candle | 2 |
-| Candy Stick | 1 |
-| Canteen of Water | 2 |
-| Catalogue | 2 |
 | Chewing Gum | 1 |
 | Cornbread | 2 |
 | Crackers | 2 |
 | Hard Candy | 1 |
-| Honeycomb Candy | 2 |
-| Newspaper | 1 |
 | Oatcakes | 2 |
-| Pemmican | 4 |
 | Raisins | 1 |
 | Roasted Peanuts | 2 |
-| Rock Candy | 1 |
 | Salt | 2 |
 | Sarsaparilla | 2 |
 | Tin of Beans | 4 |
@@ -206,206 +198,78 @@ The clerk does not buy these goods back. The buyback list is farm and hunt goods
 
 | Item | List price |
 | --- | --- |
-| Apple Seed | 3 |
-| Bag of Millet | 6 |
 | Bag of Rice | 8 |
 | Bag of Salt | 4 |
 | Bag of Sugar | 12 |
 | Bandage | 3 |
-| Barley Seed | 2 |
-| Basil Seed | 3 |
 | Bean Seed | 2 |
-| Beetroot Seed | 2 |
-| Bell Pepper Assorted Seed | 3 |
-| Bell Pepper Green Seed | 3 |
-| Bible | 5 |
-| Black Berry Seed | 3 |
-| Black Currant Seed | 3 |
 | Black Tea | 6 |
-| Blueberry Seed | 3 |
 | Box of Bandages | 8 |
 | Box of Biscuits | 5 |
-| Broccoli Seed | 3 |
-| Broomcorn Millet Seed | 2 |
 | Cabbage Seed | 2 |
 | Carrot Seed | 2 |
-| Celery Seed | 3 |
-| Chamomile Seed | 3 |
-| Chamomile Tea | 6 |
-| Cherry Seed | 3 |
-| Chili Peppers Seed | 3 |
 | Cloth | 6 |
-| Coffee Filter | 2 |
 | Coil of Rope | 6 |
 | Corn Seed | 2 |
-| Crabapple Seed | 3 |
-| Creekplum Seed | 3 |
-| Creeping Thyme Seed | 3 |
-| Crows Garlic Seed | 3 |
-| Cucumber Seed | 3 |
-| Currant Seed | 3 |
 | Dill Pickles | 4 |
-| Dill Seed | 3 |
-| Empty Basket | 3 |
-| Empty Bottle | 2 |
 | Empty Bucket | 4 |
-| Empty Canteen | 6 |
 | Empty Jar | 2 |
-| Evergreen Huckleberry Seed | 3 |
-| Golden Currant Seed | 3 |
-| Hay | 4 |
-| Hay Cube | 3 |
-| Hay Seed | 2 |
-| Herbal Bandage | 6 |
-| Horse Apple | 2 |
 | Horse Brush | 6 |
-| Horse Carrot | 2 |
-| Horse Peppermints | 2 |
-| Horse Salt | 5 |
 | Ink | 3 |
 | Jar of Honey | 6 |
 | Kitchen Towel | 3 |
 | Lard | 5 |
-| Lavender Seed | 3 |
 | Lettuce Seed | 2 |
-| Mint Tea | 6 |
 | Nails | 3 |
 | Notebook | 4 |
-| Oat Seed | 2 |
 | Oatmeal | 3 |
 | Oats | 4 |
-| Onion Assorted Seed | 3 |
-| Onion Pickles | 4 |
 | Onion Vidalia Seed | 2 |
-| Oregano Seed | 3 |
 | Paper | 2 |
-| Peach Seed | 3 |
-| Peanut Seed | 2 |
-| Pear Seed | 3 |
 | Pen | 2 |
-| Pepper Pickles | 4 |
-| Pickled Beets | 3 |
-| Pork Skins | 4 |
 | Potato Seed | 2 |
-| Potted Meat | 5 |
 | Pumpkin Seed | 2 |
-| Red Raspberry Seed | 3 |
-| Rice Seed | 2 |
 | Sack of Cornmeal | 8 |
 | Sack of Flour | 10 |
 | Sack of Horse Feed | 8 |
-| Sage Tea | 6 |
-| Salt and Pepper | 6 |
-| Screwdriver | 12 |
-| Spool | 5 |
 | Spool of String | 4 |
-| Squash Seed | 2 |
-| Strawberry Seed | 3 |
 | Sugar Cubes | 3 |
-| Sweet Pickles | 5 |
 | Tea | 4 |
 | Tin of Apricots | 6 |
 | Tin of Carrots | 4 |
-| Tin of Chicken | 6 |
 | Tin of Corn | 4 |
 | Tin of Corned Beef | 7 |
-| Tin of Crickets | 2 |
-| Tin of Fruit | 7 |
 | Tin of Kidney Beans | 5 |
 | Tin of Peaches | 6 |
 | Tin of Pears | 5 |
 | Tin of Peas | 4 |
-| Tin of Pineapple | 8 |
 | Tin of Pork | 6 |
-| Tin of Raspberries | 6 |
 | Tin of Salmon | 8 |
-| Tin of Strawberries | 6 |
 | Tin of Sweet Corn | 4 |
 | Tin of Vegetables | 5 |
-| Tin of Worms | 2 |
 | Tomato Seed | 2 |
 | Tonic | 8 |
-| Vienna Sausage | 5 |
 | Wallet | 10 |
-| Watermelon Seed | 3 |
 | Wheat Seed | 2 |
-| Wild Mint Seed | 3 |
-| Yaupon Tea | 6 |
 | Yeast | 3 |
 
 ### Rank III, Trusted
 
 | Item | List price |
 | --- | --- |
-| Agave Seed | 8 |
-| Antivenom | 30 |
-| Banana Seed | 8 |
-| Bread Pan | 8 |
-| Burn Salve | 10 |
-| Cinnamon | 10 |
-| Cloves | 10 |
-| Cocoa Seed | 12 |
-| Coconut Seed | 8 |
 | Coffee Beans | 15 |
 | Coffee Pot | 28 |
-| Coffee Seed | 12 |
-| Cook Pot | 20 |
-| Cotton Seed | 8 |
-| Document Case | 20 |
-| Ginseng Tea | 12 |
-| Grapes Seed | 6 |
 | Ground Coffee | 18 |
 | Hammer | 25 |
-| Hemp Seed | 8 |
-| Herbal Medicine | 14 |
-| Herbal Tonic | 12 |
-| Hop Seed | 8 |
-| Horse Medicine | 15 |
-| Horseshoe | 10 |
-| Indian Tobacco Seed | 8 |
-| Juniper Balm | 10 |
 | Lamp Oil | 15 |
-| Lemon Seed | 8 |
-| Lemon Tea | 8 |
-| Lime Seed | 8 |
-| Mango Seed | 8 |
-| Orange Seed | 8 |
 | Pepper | 8 |
-| Pie Plate | 6 |
-| Pitchfork | 22 |
-| Rake | 18 |
-| Repair Kit | 25 |
-| Restorative | 22 |
-| Seasoning | 8 |
 | Skillet | 18 |
 | Snake Oil | 15 |
-| Sugar Cane Seed | 8 |
-| Tea Pot | 16 |
-| Tea Seed | 8 |
 | Tobacco | 12 |
-| Tobacco Seed | 10 |
-| Vanilla Seed | 12 |
-| Wood Plane | 30 |
-| Wood Saw | 35 |
 
 ### Rank IV, Established
 
 | Item | List price |
 | --- | --- |
-| Agarita Seed | 12 |
-| Alaskan Ginseng Seed | 12 |
-| Aloe Vera Seed | 12 |
-| American Ginseng Seed | 12 |
-| Burdock Root Seed | 12 |
-| Camp Tent | 80 |
-| Campfire Kit | 40 |
-| Can Sealer | 50 |
-| Echinacea Seed | 12 |
-| Hand Drill | 45 |
 | Hatchet | 80 |
-| Juniper Seed | 12 |
-| Pickaxe | 70 |
 | Shovel | 60 |
-| Wild Feverfew Seed | 12 |
-| Wild Rhubarb Seed | 12 |
-| Yarrow Seed | 12 |
