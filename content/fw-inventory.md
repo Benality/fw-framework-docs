@@ -934,7 +934,7 @@ A `rope`, 3 wide and 1 tall, is `148x48`. A `herb_pouch`, 2 by 2, is `98x98`.
 
 The satchel's cell can grow up to 88 pixels on a tall window, so a picture made at double the table above holds up better on a bigger screen. There's no setting for this — it's just a size to draw at.
 
-`fw_items_reload` reads `items/` again, as described in [Console commands](#console-commands). This resource always loads `ammo.lua`, `container.lua`, `currency.lua`, `food.lua`, `medical.lua`, `tools.lua`, and `weapons.lua`, plus any other `.lua` file it finds in that folder, in alphabetical order. The file name is the list you open. Each item still has its own `category`. If two files define the same name, the one that sorts later wins.
+`fw_items_reload` reads `items/` again, as described in [Console commands](#console-commands). This resource always loads `ammo.lua`, `container.lua`, `currency.lua`, `food.lua`, `materials.lua`, `medical.lua`, `tools.lua`, and `weapons.lua`, plus any other `.lua` file it finds in that folder, in alphabetical order. The file name is the list you open. Each item still has its own `category`. If two files define the same name, the one that sorts later wins.
 
 ## Container items
 
