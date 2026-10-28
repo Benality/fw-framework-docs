@@ -46,19 +46,27 @@ StoresConfig.BlackwaterGeneral.goods
 StoresConfig.BlackwaterGeneral.access
 ```
 
-`location`, `blip`, `hours`, `model`, `scenario`, `voice`, `lines`, and `takes` are the place. Write those on the store. `goods` and `buyback` are the shelf. `access` says who may buy, sell, and barter. `pay` is the share of the shelf price. `buy` is the share of the buyback. Leave `access`, `pay`, and `buy` off and the store uses the type. Write them on the store when that town should differ. `StoresConfig.BlackwaterGeneral.access` is the general type's access until Blackwater writes its own.
+Write `name`, `location`, `model`, and `voice` on the store. `name` is the words on the map mark. Leave `type`, `template`, `hours`, `scenario`, `lines`, `takes`, and `blip` off and the store uses `FwStoresConfig.defaults`. Write one of those fields when that town should differ. A `blip` you write is used as you wrote it.
 
-Set `template = 'general'` to use the shelf in `shared/templates.lua`. Then list only what differs. A line whose `item` is already on the template changes only the fields you write. A new `item` is added to that store alone. A `buyback` name you write replaces that price. A new name is added. One town's price does not change the template or another town.
+`goods` and `buyback` are the shelf. `access` says who may buy, sell, and barter. `pay` is the share of the shelf price. `buy` is the share of the buyback. Leave `access`, `pay`, and `buy` off and the store uses the type. Write them on the store when that town should differ. `StoresConfig.BlackwaterGeneral.access` is the general type's access until Blackwater writes its own.
+
+The shared defaults set `template` to `general`, the shelf in `shared/templates.lua`. Then list only what differs. A line whose `item` is already on the template changes only the fields you write. A new `item` is added to that store alone. A `buyback` name you write replaces that price. A new name is added. One town's price does not change the template or another town.
 
 Valentine does that. Canned beans stay on the shelf and become 5 dollars. The four-egg trade stays, because that line does not write `barter`. Bread is not on the template, so Valentine alone sells it, for 2 dollars or two eggs. An egg buyback of 2 replaces the template price of 1.
 
 ```lua
-StoresConfig.ValentineGeneral.goods = {
-    { item = 'canned_beans', price = 5 },
-    { item = 'bread', price = 2, barter = { { item = 'egg', count = 2 } } },
-}
-StoresConfig.ValentineGeneral.buyback = {
-    egg = 2,
+ValentineGeneral = {
+    name = 'General Store',
+    location = vector4(-324.16, 803.62, 117.88, 272.93),
+    model = 'u_m_m_valgenstoreowner_01',
+    voice = '0478_U_M_M_VALGENSTOREOWNER_01',
+    goods = {
+        { item = 'canned_beans', price = 5 },
+        { item = 'bread', price = 2, barter = { { item = 'egg', count = 2 } } },
+    },
+    buyback = {
+        egg = 2,
+    },
 }
 ```
 
@@ -70,7 +78,7 @@ The other general stores, in Strawberry, Saint Denis, Armadillo, Rhodes, Blackwa
 
 The clerk appears within `spawnDistance` (50) while the shop is open. The prompt is within `promptDistance` (2.5). Each store's `blip.range` decides when its mark is on the map. `blipRange` (120) is that distance when a store does not set its own.
 
-`blip` is that store's mark. Put it on every store. `name` is the words on the mark. `style` is the blip style, such as `BLIP_STYLE_DEBUG_YELLOW`. `sprite` is the icon, such as `blip_ambient_npc`. `modifiers` is a list of blip modifiers, such as `BLIP_MODIFIER_MP_COLOR_6`. `color` is a color word, such as `yellow`, when you are not listing modifiers. `range` is how close the player must be, in metres, before the mark exists. The Valentine store uses `150`. The mark stays until the player is 20 metres past that, then it leaves the map. Come back inside the range and it returns. Leave `range` off and the store uses `blipRange` (120).
+`blip` is that store's mark. Leave it off and the store uses the shared mark. The `name` on the store is the words on that mark. `style` is the blip style, such as `BLIP_STYLE_DEBUG_YELLOW`. `sprite` is the icon, such as `blip_ambient_npc`. `modifiers` is a list of blip modifiers, such as `BLIP_MODIFIER_MP_COLOR_6`. `color` is a color word, such as `yellow`, when you are not listing modifiers. `range` is how close the player must be, in metres, before the mark exists. The shared mark uses `150`. The mark stays until the player is 20 metres past that, then it leaves the map. Come back inside the range and it returns. Leave `range` off a mark you write yourself and the store uses `blipRange` (120).
 
 `card` set to `false`, or left out, means the mark has no card. A table is the card that opens when the player hovers that mark. Selecting it keeps the card open. `type` has to be `map_card_mission`. `title` is the large line. `subtitle` is the smaller line. `description` is the body, and `~n~` starts a new line. `footer` is the region line after the player selects the mark. Hovering does not change that line. `txd` is the picture's texture dictionary, such as `map_card_val_generalstore`. `txn` is the texture name inside it. The store sample uses `image`.
 
