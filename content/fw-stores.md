@@ -90,6 +90,28 @@ The clerk appears within `spawnDistance` (50) while the shop is open. The prompt
 
 `card` set to `false`, or left out, means the mark has no card. A table is the card that opens when the player hovers that mark. Selecting it keeps the card open. `type` has to be `map_card_mission`. `title` is the large line. `subtitle` is the smaller line. `description` is the body, and `~n~` starts a new line. `footer` is the region line after the player selects the mark. Hovering does not change that line. `txd` is the picture's texture dictionary, such as `map_card_val_generalstore`. `txn` is the texture name inside it. The store sample uses `image`.
 
+A town mark is separate from the shop mark. It uses the town style and stays on the map, because it is created with no range. `FwStoresConfig.towns` names each town. `name` is the words on the mark and the card title. `coords` is where the mark sits. `footer` is the region line. `txd` is the card picture. Leave `txd` off when you have no picture. `txn` defaults to `image` when you set `txd`.
+
+On a store, `town` is the key in that table, such as `valentine`. The card lists each shop type once, in this order: General Store, Gunsmith, Doctor, Barber, Butcher, Trapper, Bait and Tackle, Saloon. A type is left off when that town has no store of that type. Two saloons in one town are one Saloon line. A store with no `town`, such as a trapper camp, does not add a line and does not get a town mark. A town with no stores is skipped. A store that names a town missing from `towns` is skipped, and the client log says so.
+
+```lua
+towns = {
+    valentine = {
+        name = 'Valentine',
+        coords = vector3(-281.0, 807.0, 119.4),
+        footer = 'Valentine, The Heartlands, NH',
+        txd = 'map_card_val_generalstore',
+    },
+},
+```
+
+```lua
+ValentineGeneral = {
+    type = 'general',
+    town = 'valentine',
+}
+```
+
 ```lua
 blip = {
     name = 'General Store',
