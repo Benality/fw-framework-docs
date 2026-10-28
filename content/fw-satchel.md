@@ -17,7 +17,7 @@ Right-click a placement in the bag for Use, Give, Drop, or Split. Give hides the
 | `fw_satchel:tradeBegin` | Opens the bag, or switches the open bag, to the trade layout. The argument is the current trade view. |
 | `fw_satchel:tradeNotice` | Shows a short reason under the grid. The trade stays open. |
 | `fw_satchel:tradeEnd` | Closes the bag. |
-| `fw_satchel:shopToggle` | Opens the sample counter beside the bag, or closes the bag if that counter is already open. The argument is the clerk's goods. `fw_stores` sends it from `/shop`. The bag is the one the player is carrying. |
+| `fw_satchel:shopToggle` | Opens the counter beside the bag, or closes the bag if that counter is already open. The argument is the clerk's goods. `fw_stores` sends it when the player presses Shop. The bag is the one the player is carrying. |
 | `fw_satchel:shopVisible` | The screen sends this. `true` means the counter is on screen. `false` means it just closed. Listen with `AddEventHandler`. It is not queued. Do not send it yourself. |
 
 ```lua

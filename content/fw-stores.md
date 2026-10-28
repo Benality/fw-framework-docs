@@ -1,8 +1,8 @@
 # fw_stores
 
-Runs in the player's game. Walk up to the clerk in Valentine during open hours and press G. A short loading prompt plays while the counter is gathered, then the counter opens. Type `/shop` to open the same counter from anywhere. Type `/shop` again, press Escape, or press Close, to leave it.
+Runs in the player's game. Walk up to the clerk during open hours and press G. A short loading prompt plays while the counter is gathered, then the counter opens. Press Escape, or press Close, to leave it. Pressing Shop again closes it too.
 
-The counter stock is a sample. Closing it puts those piles back. Your bag does change when you settle.
+Closing the counter puts the shelf back the way the store lists it. What you settled stays in your bag.
 
 The clerk's goods are their own panel on the left, in the same journal style as the bag. Want and Offer are two panels between them and the bag. Want is what you are asking the clerk for. Offer is what you are putting up. None of those panels can be dragged. The bag on the right is the one you are carrying. Right-click, drag, split, use, give, and drop work the same way they do when you open the bag on its own. So do the pictures on the left of the bag, the clothes, the kit, and the gunbelt. The clerk keeps one pile of each thing. A pile with a number is a limited stock, and that number goes down when you buy it. A pile with no number is always in stock. Drag a pile into Want and choose how many. Canned beans from tier I can be up to 20 in one purchase. A hatchet is one, and a shovel is one. Those are as many as one pile in the satchel can hold. The rest of a limited pile stays on the counter. Shift-click a pile to move all of it onto Want or Offer. When Want already holds a purchase, Shift-click on dollars moves only the price still owed, and Shift-click on the trade goods moves only how many that purchase still needs. Otherwise Shift-click moves the whole pile. Ctrl-click moves 10. A counter pile that does not run out has no whole pile, so Shift does nothing there and Ctrl still takes 10. Click a pile on Want or Offer to put that whole pile back. Drag a pile from your bag into Offer. A pile the clerk does not buy is grey, in the bag and in an open pouch, and it will not move onto Offer. Dollars still move. So does something the clerk buys, and something that pays for a trade once you are trusted enough. A pile in an open pouch can go there too when the clerk takes it. The pile stays where it was. Drag a pile back out of Want to return it to the counter, or out of Offer to take it back. A counter pile will not sit in Offer, and a bag pile will not sit in Want.
 
@@ -10,20 +10,20 @@ Gold numbers are what you pay. A number with a plus is what the clerk pays you. 
 
 On the left of the clerk's goods are the same round pictures as the bag. All shows every pile. Kit shows weapons and ammo together. Each other picture shows that one kind, such as food, medical, or containers. A pile that does not match goes grey and stays where it is. Press that picture again, or press All, to show every kind. Want and Offer are not filtered. The bag has its own pictures, the same ones you use when the counter is closed.
 
-Above the clerk's goods is a mark of four small squares, then I, II, III, and IV. I is Unknown, II is Recognized, III is Trusted, and IV is Established. The four squares show every pile, packed to the top of the counter. A numeral shows only that standing, packed the same way. You can press a numeral up through your own standing. A higher one stays grey. This sample stays Unknown, so I can be pressed, and II, III, and IV stay grey. A pile above your standing is locked on the full counter and cannot be bought. Canned peaches are II.
+Above the clerk's goods is a mark of four small squares, then I, II, III, and IV. I is Unknown, II is Recognized, III is Trusted, and IV is Established. The four squares show every pile, packed to the top of the counter. A numeral shows only that standing, packed the same way. You can press a numeral up through your own standing. A higher one stays grey. With reputation off, every visit is Unknown, so I can be pressed, and II, III, and IV stay grey. A pile above your standing is locked on the full counter and cannot be bought. Canned peaches are II.
 
 Goods, Work, and Services switch only the clerk's panel. Want, Offer, and the satchel stay where they are. Work says the clerk has no errand on this visit. Services says they are not mending or treating anyone on this visit.
 
-## Command
+## Opening the counter
 
-`/shop` is a client command. It takes no arguments. It opens the store named `ValentineGeneral` from `shared/config.lua` beside the bag. Pressing Shop at the clerk opens that store the same way, after a short loading prompt while the visit is built. That pause is `openPauseMs` on `FwStoresConfig`, 400 milliseconds unless you change it. The Shop prompt hides while that counter is on screen, and comes back when it closes. Start `fw_stores` after `fw_satchel` and `fw_inventory`, because the screen uses their pictures and the bag.
+Pressing Shop at the clerk opens that store, after a short loading prompt while the visit is built. That pause is `openPauseMs` on `FwStoresConfig`, 400 milliseconds unless you change it. The Shop prompt hides while that counter is on screen, and comes back when it closes. Start `fw_stores` after `fw_satchel` and `fw_inventory`, because the screen uses their pictures and the bag.
 
-Another script on the player's game can open a named store. `storeId` is the store name, such as `ValentineGeneral` or `BlackwaterGeneral`. Nothing, or an empty word, opens `ValentineGeneral`. The counter closes if that event runs again while it is already open.
+Another script on the player's game can open a named store. `storeId` is the store name, such as `ValentineGeneral` or `BlackwaterGeneral`. A missing name does nothing. The counter closes if that event runs again while it is already open.
 
 ```lua
 --- Opens one store's counter beside the bag.
---- Nothing happens when that store is missing.
----@param storeId string|nil
+--- Nothing happens when that store is missing, or when the name is empty.
+---@param storeId string
 ---@return nil
 AddEventHandler('fw_stores:open', function(storeId)
     -- The bag screen keeps the mouse.
@@ -74,7 +74,7 @@ ValentineGeneral = {
 }
 ```
 
-The other general stores, in Strawberry, Saint Denis, Armadillo, Rhodes, Blackwater, Tumbleweed, and Wallace Station, keep the general type's shelf. `/shop` opens `ValentineGeneral`.
+The other general stores, in Strawberry, Saint Denis, Armadillo, Rhodes, Blackwater, Tumbleweed, and Wallace Station, keep the general type's shelf.
 
 `location` is where the clerk stands, a `vector4` with the heading last. `hours` is written on that store. It is `{ open, close }` or `false`. The first hour is included and the second is not, so `{ 6, 21 }` is 6:00 through 20:59. When the first hour is later, such as `{ 21, 6 }`, the shop stays open across midnight. `false` means always open. The general stores are open all day. Outside the hours you write, the clerk is gone, the Shop prompt is hidden, and a sale is refused with `The store is closed.` If the time resource is not running, the shop stays open.
 
@@ -152,12 +152,12 @@ exports.fw_reputation:GetStanding(source, storeType)
 
 Return `Unknown`, `Recognized`, `Trusted`, or `Established`. If `fw_reputation` is missing, the call fails, or the word is anything else, the visit stays Unknown.
 
-Settle takes Offer out of the bag and places Want in the bag. Dollars leave the stack when you put them on Offer, including dollars in a pouch you are still carrying. Settle puts back whatever the price did not use. Closing the counter puts the sample stock back, and puts those dollars back as well. The bag keeps what the clerk already handed over.
+Settle takes Offer out of the bag and places Want in the bag. Dollars leave the stack when you put them on Offer, including dollars in a pouch you are still carrying. Settle puts back whatever the price did not use. Closing the counter puts the shelf back the way the store lists it, and puts those dollars back as well. The bag keeps what the clerk already handed over.
 
-Another script on the player's game can open the same screen. `visit` is the clerk's goods, in the shape `/shop` builds. `live` is set for you, so the bag on the right is the one the player is carrying.
+Another script on the player's game can open the same screen. `visit` is the clerk's goods for that store. `live` is set for you, so the bag on the right is the one the player is carrying.
 
 ```lua
 TriggerEvent('fw_satchel:shopToggle', visit)
 ```
 
-Running it again closes the bag. Nothing is written to the bag.
+Running it again closes the bag. This event opens the screen. Settle is what changes the bag.

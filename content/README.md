@@ -50,12 +50,12 @@ The folder `resources/[framework]/` is only a category. The resource name is the
 | [fw_money](fw-money.md) | Read, give, and take the dollars a character is carrying. |
 | [fw_weapons](fw-weapons.md) | Read the equipped guns and tools, or move one between the bag and a slot. |
 | [fw_satchel](fw-satchel.md) | The bag screen. It has no calls of its own. |
-| [fw_stores](fw-stores.md) | Open a sample store counter. A purchase there is not saved. |
+| [fw_stores](fw-stores.md) | Open a store counter and settle a purchase into the bag. |
 | [fw_trade](fw-trade.md) | Trade with a nearby player, or give them one item. |
 | [fw_guide](fw-guide.md) | Open the help screen. |
 | [Database](database.md) | See which id to store on your own table. |
 
-`fw_core` creates the account when a player connects. `fw_characters` creates the character when something calls `CreateCharacter`. The character menu does that for players. `fw_clothing` saves worn clothes on that character. `fw_inventory` saves the satchel. `fw_money` saves the dollars that character is carrying. `fw_weapons` saves the equipped kit. `fw_satchel` is the screen. `fw_stores` is a sample counter for trying the shop screen. `fw_trade` is two players trading what is in those satchels. `fw_guide` is the help screen.
+`fw_core` creates the account when a player connects. `fw_characters` creates the character when something calls `CreateCharacter`. The character menu does that for players. `fw_clothing` saves worn clothes on that character. `fw_inventory` saves the satchel. `fw_money` saves the dollars that character is carrying. `fw_weapons` saves the equipped kit. `fw_satchel` is the screen. `fw_stores` is the store counter. `fw_trade` is two players trading what is in those satchels. `fw_guide` is the help screen.
 
 Cash is [fw_money](fw-money.md). A bank and jobs are not here yet. Store `fw_characters.id` for something that belongs to one character, and `fw_players.id` for something that belongs to the account.
 
