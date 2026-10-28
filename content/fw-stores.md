@@ -6,11 +6,11 @@ Closing the counter puts the shelf back the way the store lists it. What you set
 
 The clerk's goods are their own panel on the left, in the same journal style as the bag. Want and Offer are two panels between them and the bag. Want is what you are asking the clerk for. Offer is what you are putting up. None of those panels can be dragged. The bag on the right is the one you are carrying. Right-click, drag, split, use, give, and drop work the same way they do when you open the bag on its own. So do the pictures on the left of the bag, the clothes, the kit, and the gunbelt. The clerk keeps one pile of each thing. A pile with a number is a limited stock, and that number goes down when you buy it. A pile with no number is always in stock. Drag a pile into Want and choose how many. Canned beans from tier I can be up to 20 in one purchase. A hatchet is one, and a shovel is one. Those are as many as one pile in the satchel can hold. The rest of a limited pile stays on the counter. Shift-click a pile to move all of it onto Want or Offer. When Want already holds a purchase, Shift-click on dollars moves only the price still owed, and Shift-click on the trade goods moves only how many that purchase still needs. Otherwise Shift-click moves the whole pile. Ctrl-click moves 10. A counter pile that does not run out has no whole pile, so Shift does nothing there and Ctrl still takes 10. Click a pile on Want or Offer to put that whole pile back. Drag a pile from your bag into Offer. A pile the clerk does not buy is grey, in the bag and in an open pouch, and it will not move onto Offer. Dollars still move. So does something the clerk buys, and something that pays for a trade once you are trusted enough. A pile in an open pouch can go there too when the clerk takes it. The pile stays where it was. Drag a pile back out of Want to return it to the counter, or out of Offer to take it back. A counter pile will not sit in Offer, and a bag pile will not sit in Want.
 
-Gold numbers are what you pay. A number with a plus is what the clerk pays you. You pay with a dollars pile on Offer. Drag Dollars from your bag, or from an open pouch, onto Offer. The count is how many dollars you are putting up, and that many leave the stack right then. The amount under Offer is the dollars sitting there. Settle spends the price and puts the rest back in the bag. Drag those dollars off Offer, or close the counter, and they come back too. What you put on Offer that the clerk buys is taken out of the bag. What you put on Want is placed in the bag. If the clerk owes you, those dollars are placed in the bag. Canned beans are 5 dollars in Valentine and 4 dollars in the other towns. Put dollars on Offer to buy them. Once you are trusted enough to trade, four eggs on Offer pay for them instead, and those dollars come back. Valentine also sells a loaf of bread for 2 dollars, or two eggs. The clerk buys an egg for 2 dollars in Valentine and 1 dollar in the other towns, once you are recognized. An apple, a potato, or an ear of corn is 1 dollar. A bundle of mint is 2 dollars. A jar of honey, a block of beeswax, a bundle of wool, a rabbit pelt, or a fish is 4 dollars. A deer hide is 8 dollars. On this visit everyone is unknown, so the counter takes dollars and does not buy goods.
+Gold numbers are what you pay. A number with a plus is what the clerk pays you. You pay with a dollars pile on Offer. Drag Dollars from your bag, or from an open pouch, onto Offer. The count is how many dollars you are putting up, and that many leave the stack right then. The amount under Offer is the dollars sitting there. Settle spends the price and puts the rest back in the bag. Drag those dollars off Offer, or close the counter, and they come back too. What you put on Offer that the clerk buys is taken out of the bag. What you put on Want is placed in the bag. If the clerk owes you, those dollars are placed in the bag. A tin of beans is 5 dollars in Valentine and 4 dollars in the other towns. Put dollars on Offer to buy it. A sack of flour is 10 dollars. A hatchet is 80 dollars, and it stays locked until you are established with the clerk. Valentine also sells a loaf of bread for 2 dollars. The clerk buys an egg for 2 dollars in Valentine and 1 dollar in the other towns, once you are recognized. An apple, a potato, or an ear of corn is 1 dollar. A bundle of mint is 2 dollars. A jar of honey, a block of beeswax, a bundle of wool, a rabbit pelt, or a fish is 4 dollars. A deer hide is 8 dollars. On this visit everyone is unknown, so the counter takes dollars and does not buy goods.
 
 On the left of the clerk's goods are the same round pictures as the bag. All shows every pile. Kit shows weapons and ammo together. Each other picture shows that one kind, such as food, medical, or containers. A pile that does not match goes grey and stays where it is. Press that picture again, or press All, to show every kind. Want and Offer are not filtered. The bag has its own pictures, the same ones you use when the counter is closed.
 
-Above the clerk's goods is a mark of four small squares, then I, II, III, and IV. I is Unknown, II is Recognized, III is Trusted, and IV is Established. The four squares show every pile, packed to the top of the counter. A numeral shows only that standing, packed the same way. You can press a numeral up through your own standing. A higher one stays grey. With reputation off, every visit is Unknown, so I can be pressed, and II, III, and IV stay grey. A pile above your standing is locked on the full counter and cannot be bought. Canned peaches are II.
+Above the clerk's goods is a mark of four small squares, then I, II, III, and IV. I is Unknown, II is Recognized, III is Trusted, and IV is Established. The four squares show every pile, packed to the top of the counter. A numeral shows only that standing, packed the same way. You can press a numeral up through your own standing. A higher one stays grey. With reputation off, every visit is Unknown, so I can be pressed, and II, III, and IV stay grey. A pile above your standing is locked on the full counter and cannot be bought. A tin of peaches is II. The counter scrolls when the shelf is taller than the page.
 
 Goods, Work, and Services switch only the clerk's panel. Want, Offer, and the satchel stay where they are. Work says the clerk has no errand on this visit. Services says they are not mending or treating anyone on this visit.
 
@@ -54,7 +54,7 @@ Write `type`, `name`, `location`, `model`, `voice`, and `hours` on the store. `t
 
 The general type sets `template` to `general`, the shelf in `shared/templates.lua`. Then list only what differs. A line whose `item` is already on the template changes only the fields you write. A new `item` is added to that store alone. A `buyback` name you write replaces that price. A new name is added. One town's price does not change the template or another town.
 
-Valentine does that. Canned beans stay on the shelf and become 5 dollars. The four-egg trade stays, because that line does not write `barter`. Bread is not on the template, so Valentine alone sells it, for 2 dollars or two eggs. An egg buyback of 2 replaces the template price of 1.
+Valentine does that. The tin of beans stays on the shelf and becomes 5 dollars. Bread is not on the template, so Valentine alone sells it, for 2 dollars. An egg buyback of 2 replaces the template price of 1.
 
 ```lua
 ValentineGeneral = {
@@ -65,8 +65,8 @@ ValentineGeneral = {
     voice = '0478_U_M_M_VALGENSTOREOWNER_01',
     hours = false,
     goods = {
-        { item = 'canned_beans', price = 5 },
-        { item = 'bread', price = 2, barter = { { item = 'egg', count = 2 } } },
+        { item = 'consumable_can_beans', price = 5 },
+        { item = 'consumable_bread', price = 2 },
     },
     buyback = {
         egg = 2,
@@ -109,12 +109,12 @@ takes = { sale = 5 },
 
 Each line in `goods` is one pile on the counter.
 
-- `item` is the item name, such as `canned_beans`. The label, the size, and the category come from that item.
-- `price` is the dollars for one, before a standing changes it.
-- Leave `count` off and the pile stays in stock. One purchase can take up to a full stack. Canned beans are 20. A hatchet is 1. A shovel is 1.
+- `item` is the item name, such as `consumable_can_beans`. The label, the size, and the category come from that item.
+- `price` is the dollars for one, before a standing changes it. The full list is at the end of this page.
+- Leave `count` off and the pile stays in stock. One purchase can take up to a full stack. A tin of beans is 20. A hatchet is 1. A shovel is 1.
 - `count` is a limited pile. That number goes down on this screen when it is bought.
 - `standing` is who may buy it. Leave it off and anyone can. `Recognized` is tier II, `Trusted` is tier III, and `Established` is tier IV. A player below that standing sees the pile locked.
-- `price` and `barter` can sit on the same pile. `price` is the dollars. `barter` is the other way to pay, once this visit may barter. The template lists canned beans at 4 dollars, or four eggs. Valentine writes the price as 5 and leaves the eggs. A standing rate changes the dollars. It leaves the trade alone. Eggs that pay for the beans are not also sold. A short stack does not pay for part of the beans.
+- `price` and `barter` can sit on the same pile. `price` is the dollars. `barter` is the other way to pay, once this visit may barter. The general shelf lists a tin of beans at 4 dollars and does not put a trade on it. Valentine writes the price as 5. A standing rate changes the dollars. It leaves the trade alone. A short stack does not pay for part of a trade.
 - `prices` sets the dollars for one standing and skips the type rate. `prices = { Established = 1 }` means Established pays 1 dollar.
 
 `buyback` is what the clerk pays for one item placed on Offer. A number is the list price. A table uses `price` as the list price, and a standing name when that standing should get a different amount.
@@ -137,7 +137,7 @@ access = {
 }
 ```
 
-A pile's own `standing` still locks that pile. Canned peaches stay Recognized even though buying, as an action, is open to everyone.
+A pile's own `standing` still locks that pile. A tin of peaches stays Recognized even though buying, as an action, is open to everyone.
 
 `FwStoresConfig.useReputation` starts as `false`. Every visit is then Unknown. Everyone can buy an unlocked pile. Selling and barter stay closed, because Unknown is below Recognized and Trusted. The rates and the access lines stay in the file for when you turn it on.
 
@@ -161,3 +161,251 @@ TriggerEvent('fw_satchel:shopToggle', visit)
 ```
 
 Running it again closes the bag. This event opens the screen. Settle is what changes the bag.
+
+## List prices
+
+The number is the list price. An Unknown visit pays that many dollars. Recognized pays 95 percent, Trusted 90 percent, and Established 85 percent, rounded to a whole dollar. A price of at least 1 dollar stays at least 1 dollar.
+
+A later job should sit under these prices. A short chore pays about 1 or 2 dollars. A day of labor pays about 4 to 8 dollars, under a tin of food. A dangerous job can approach a small tool. It should stay well under a hatchet at 80 dollars.
+
+The clerk does not buy these goods back. The buyback list is farm and hunt goods, and those prices stay below the shelf.
+
+### Rank I, anyone
+
+| Item | List price |
+| --- | --- |
+| Bannock | 2 |
+| Bar of Soap | 3 |
+| Beef Jerky | 3 |
+| Biscuits | 3 |
+| Bonbons | 2 |
+| Bread Roll | 1 |
+| Candle | 2 |
+| Candy Stick | 1 |
+| Canteen of Water | 2 |
+| Catalogue | 2 |
+| Chewing Gum | 1 |
+| Cornbread | 2 |
+| Crackers | 2 |
+| Hard Candy | 1 |
+| Honeycomb Candy | 2 |
+| Newspaper | 1 |
+| Oatcakes | 2 |
+| Pemmican | 4 |
+| Raisins | 1 |
+| Roasted Peanuts | 2 |
+| Rock Candy | 1 |
+| Salt | 2 |
+| Sarsaparilla | 2 |
+| Tin of Beans | 4 |
+| Tin of Crackers | 2 |
+| Washcloth | 2 |
+| Wooden Spoon | 1 |
+
+### Rank II, Recognized
+
+| Item | List price |
+| --- | --- |
+| Apple Seed | 3 |
+| Bag of Millet | 6 |
+| Bag of Rice | 8 |
+| Bag of Salt | 4 |
+| Bag of Sugar | 12 |
+| Bandage | 3 |
+| Barley Seed | 2 |
+| Basil Seed | 3 |
+| Bean Seed | 2 |
+| Beetroot Seed | 2 |
+| Bell Pepper Assorted Seed | 3 |
+| Bell Pepper Green Seed | 3 |
+| Bible | 5 |
+| Black Berry Seed | 3 |
+| Black Currant Seed | 3 |
+| Black Tea | 6 |
+| Blueberry Seed | 3 |
+| Box of Bandages | 8 |
+| Box of Biscuits | 5 |
+| Broccoli Seed | 3 |
+| Broomcorn Millet Seed | 2 |
+| Cabbage Seed | 2 |
+| Carrot Seed | 2 |
+| Celery Seed | 3 |
+| Chamomile Seed | 3 |
+| Chamomile Tea | 6 |
+| Cherry Seed | 3 |
+| Chili Peppers Seed | 3 |
+| Cloth | 6 |
+| Coffee Filter | 2 |
+| Coil of Rope | 6 |
+| Corn Seed | 2 |
+| Crabapple Seed | 3 |
+| Creekplum Seed | 3 |
+| Creeping Thyme Seed | 3 |
+| Crows Garlic Seed | 3 |
+| Cucumber Seed | 3 |
+| Currant Seed | 3 |
+| Dill Pickles | 4 |
+| Dill Seed | 3 |
+| Empty Basket | 3 |
+| Empty Bottle | 2 |
+| Empty Bucket | 4 |
+| Empty Canteen | 6 |
+| Empty Jar | 2 |
+| Evergreen Huckleberry Seed | 3 |
+| Golden Currant Seed | 3 |
+| Hay | 4 |
+| Hay Cube | 3 |
+| Hay Seed | 2 |
+| Herbal Bandage | 6 |
+| Horse Apple | 2 |
+| Horse Brush | 6 |
+| Horse Carrot | 2 |
+| Horse Peppermints | 2 |
+| Horse Salt | 5 |
+| Ink | 3 |
+| Jar of Honey | 6 |
+| Kitchen Towel | 3 |
+| Lard | 5 |
+| Lavender Seed | 3 |
+| Lettuce Seed | 2 |
+| Mint Tea | 6 |
+| Nails | 3 |
+| Notebook | 4 |
+| Oat Seed | 2 |
+| Oatmeal | 3 |
+| Oats | 4 |
+| Onion Assorted Seed | 3 |
+| Onion Pickles | 4 |
+| Onion Vidalia Seed | 2 |
+| Oregano Seed | 3 |
+| Paper | 2 |
+| Peach Seed | 3 |
+| Peanut Seed | 2 |
+| Pear Seed | 3 |
+| Pen | 2 |
+| Pepper Pickles | 4 |
+| Pickled Beets | 3 |
+| Pork Skins | 4 |
+| Potato Seed | 2 |
+| Potted Meat | 5 |
+| Pumpkin Seed | 2 |
+| Red Raspberry Seed | 3 |
+| Rice Seed | 2 |
+| Sack of Cornmeal | 8 |
+| Sack of Flour | 10 |
+| Sack of Horse Feed | 8 |
+| Sage Tea | 6 |
+| Salt and Pepper | 6 |
+| Screwdriver | 12 |
+| Spool | 5 |
+| Spool of String | 4 |
+| Squash Seed | 2 |
+| Strawberry Seed | 3 |
+| Sugar Cubes | 3 |
+| Sweet Pickles | 5 |
+| Tea | 4 |
+| Tin of Apricots | 6 |
+| Tin of Carrots | 4 |
+| Tin of Chicken | 6 |
+| Tin of Corn | 4 |
+| Tin of Corned Beef | 7 |
+| Tin of Crickets | 2 |
+| Tin of Fruit | 7 |
+| Tin of Kidney Beans | 5 |
+| Tin of Peaches | 6 |
+| Tin of Pears | 5 |
+| Tin of Peas | 4 |
+| Tin of Pineapple | 8 |
+| Tin of Pork | 6 |
+| Tin of Raspberries | 6 |
+| Tin of Salmon | 8 |
+| Tin of Strawberries | 6 |
+| Tin of Sweet Corn | 4 |
+| Tin of Vegetables | 5 |
+| Tin of Worms | 2 |
+| Tomato Seed | 2 |
+| Tonic | 8 |
+| Vienna Sausage | 5 |
+| Wallet | 10 |
+| Watermelon Seed | 3 |
+| Wheat Seed | 2 |
+| Wild Mint Seed | 3 |
+| Yaupon Tea | 6 |
+| Yeast | 3 |
+
+### Rank III, Trusted
+
+| Item | List price |
+| --- | --- |
+| Agave Seed | 8 |
+| Antivenom | 30 |
+| Banana Seed | 8 |
+| Bread Pan | 8 |
+| Burn Salve | 10 |
+| Cinnamon | 10 |
+| Cloves | 10 |
+| Cocoa Seed | 12 |
+| Coconut Seed | 8 |
+| Coffee Beans | 15 |
+| Coffee Pot | 28 |
+| Coffee Seed | 12 |
+| Cook Pot | 20 |
+| Cotton Seed | 8 |
+| Document Case | 20 |
+| Ginseng Tea | 12 |
+| Grapes Seed | 6 |
+| Ground Coffee | 18 |
+| Hammer | 25 |
+| Hemp Seed | 8 |
+| Herbal Medicine | 14 |
+| Herbal Tonic | 12 |
+| Hop Seed | 8 |
+| Horse Medicine | 15 |
+| Horseshoe | 10 |
+| Indian Tobacco Seed | 8 |
+| Juniper Balm | 10 |
+| Lamp Oil | 15 |
+| Lemon Seed | 8 |
+| Lemon Tea | 8 |
+| Lime Seed | 8 |
+| Mango Seed | 8 |
+| Orange Seed | 8 |
+| Pepper | 8 |
+| Pie Plate | 6 |
+| Pitchfork | 22 |
+| Rake | 18 |
+| Repair Kit | 25 |
+| Restorative | 22 |
+| Seasoning | 8 |
+| Skillet | 18 |
+| Snake Oil | 15 |
+| Sugar Cane Seed | 8 |
+| Tea Pot | 16 |
+| Tea Seed | 8 |
+| Tobacco | 12 |
+| Tobacco Seed | 10 |
+| Vanilla Seed | 12 |
+| Wood Plane | 30 |
+| Wood Saw | 35 |
+
+### Rank IV, Established
+
+| Item | List price |
+| --- | --- |
+| Agarita Seed | 12 |
+| Alaskan Ginseng Seed | 12 |
+| Aloe Vera Seed | 12 |
+| American Ginseng Seed | 12 |
+| Burdock Root Seed | 12 |
+| Camp Tent | 80 |
+| Campfire Kit | 40 |
+| Can Sealer | 50 |
+| Echinacea Seed | 12 |
+| Hand Drill | 45 |
+| Hatchet | 80 |
+| Juniper Seed | 12 |
+| Pickaxe | 70 |
+| Shovel | 60 |
+| Wild Feverfew Seed | 12 |
+| Wild Rhubarb Seed | 12 |
+| Yarrow Seed | 12 |
