@@ -6,7 +6,7 @@ The counter stock is a sample. Closing it puts those piles back. Your bag does c
 
 The clerk's goods are their own panel on the left, in the same journal style as the bag. Want and Offer are two panels between them and the bag. Want is what you are asking the clerk for. Offer is what you are putting up. None of those panels can be dragged. The bag on the right is the one you are carrying. Right-click, drag, split, use, give, and drop work the same way they do when you open the bag on its own. So do the pictures on the left of the bag, the clothes, the kit, and the gunbelt. The clerk keeps one pile of each thing. A pile with a number is a limited stock, and that number goes down when you buy it. A pile with no number is always in stock. Drag a pile into Want and choose how many. Canned beans from tier I can be up to 20 in one purchase. A hatchet is one, and a shovel is one. Those are as many as one pile in the satchel can hold. The rest of a limited pile stays on the counter. Shift-click a pile to move all of it onto Want or Offer. When Want already holds a purchase, Shift-click on dollars moves only the price still owed, and Shift-click on the trade goods moves only how many that purchase still needs. Otherwise Shift-click moves the whole pile. Ctrl-click moves 10. A counter pile that does not run out has no whole pile, so Shift does nothing there and Ctrl still takes 10. Click a pile on Want or Offer to put that whole pile back. Drag a pile from your bag into Offer. A pile the clerk does not buy is grey, in the bag and in an open pouch, and it will not move onto Offer. Dollars still move. So does something the clerk buys, and something that pays for a trade once you are trusted enough. A pile in an open pouch can go there too when the clerk takes it. The pile stays where it was. Drag a pile back out of Want to return it to the counter, or out of Offer to take it back. A counter pile will not sit in Offer, and a bag pile will not sit in Want.
 
-Gold numbers are what you pay. A number with a plus is what the clerk pays you. You pay with a dollars pile on Offer. Drag Dollars from your bag, or from an open pouch, onto Offer. The count is how many dollars you are putting up, and that many leave the stack right then. The amount under Offer is the dollars sitting there. Settle spends the price and puts the rest back in the bag. Drag those dollars off Offer, or close the counter, and they come back too. What you put on Offer that the clerk buys is taken out of the bag. What you put on Want is placed in the bag. If the clerk owes you, those dollars are placed in the bag. Canned beans are 4 dollars. Put dollars on Offer to buy them. Once you are trusted enough to trade, four eggs on Offer pay for them instead, and those dollars come back. The clerk buys an egg, an apple, a potato, or an ear of corn for 1 dollar once you are recognized. A bundle of mint is 2 dollars. A jar of honey, a block of beeswax, a bundle of wool, a rabbit pelt, or a fish is 4 dollars. A deer hide is 8 dollars. On this visit everyone is unknown, so the counter takes dollars and does not buy goods.
+Gold numbers are what you pay. A number with a plus is what the clerk pays you. You pay with a dollars pile on Offer. Drag Dollars from your bag, or from an open pouch, onto Offer. The count is how many dollars you are putting up, and that many leave the stack right then. The amount under Offer is the dollars sitting there. Settle spends the price and puts the rest back in the bag. Drag those dollars off Offer, or close the counter, and they come back too. What you put on Offer that the clerk buys is taken out of the bag. What you put on Want is placed in the bag. If the clerk owes you, those dollars are placed in the bag. Canned beans are 5 dollars in Valentine and 4 dollars in the other towns. Put dollars on Offer to buy them. Once you are trusted enough to trade, four eggs on Offer pay for them instead, and those dollars come back. Valentine also sells a loaf of bread for 2 dollars, or two eggs. The clerk buys an egg for 2 dollars in Valentine and 1 dollar in the other towns, once you are recognized. An apple, a potato, or an ear of corn is 1 dollar. A bundle of mint is 2 dollars. A jar of honey, a block of beeswax, a bundle of wool, a rabbit pelt, or a fish is 4 dollars. A deer hide is 8 dollars. On this visit everyone is unknown, so the counter takes dollars and does not buy goods.
 
 On the left of the clerk's goods are the same round pictures as the bag. All shows every pile. Kit shows weapons and ammo together. Each other picture shows that one kind, such as food, medical, or containers. A pile that does not match goes grey and stays where it is. Press that picture again, or press All, to show every kind. Want and Offer are not filtered. The bag has its own pictures, the same ones you use when the counter is closed.
 
@@ -48,21 +48,21 @@ StoresConfig.BlackwaterGeneral.access
 
 `location`, `blip`, `hours`, `model`, `scenario`, `voice`, `lines`, and `takes` are the place. Write those on the store. `goods` and `buyback` are the shelf. `access` says who may buy, sell, and barter. `pay` is the share of the shelf price. `buy` is the share of the buyback. Leave `access`, `pay`, and `buy` off and the store uses the type. Write them on the store when that town should differ. `StoresConfig.BlackwaterGeneral.access` is the general type's access until Blackwater writes its own.
 
-Set `template = 'general'` to use the shelf in `shared/templates.lua`. Then list only what differs. A line whose `item` is already on the template changes only the fields you write. Canned beans at 5 dollars keep the four-egg trade. A new `item` is added to that store alone. A `buyback` name you write replaces that price. A new name is added. One town's price does not change the template or another town.
+Set `template = 'general'` to use the shelf in `shared/templates.lua`. Then list only what differs. A line whose `item` is already on the template changes only the fields you write. A new `item` is added to that store alone. A `buyback` name you write replaces that price. A new name is added. One town's price does not change the template or another town.
+
+Valentine does that. Canned beans stay on the shelf and become 5 dollars. The four-egg trade stays, because that line does not write `barter`. Bread is not on the template, so Valentine alone sells it, for 2 dollars or two eggs. An egg buyback of 2 replaces the template price of 1.
 
 ```lua
-ValentineGeneral = {
-    type = 'general',
-    template = 'general',
-    -- goods = {
-    --     { item = 'canned_beans', price = 5 },
-    --     { item = 'bread', price = 2 },
-    -- },
-    -- buyback = { egg = 2 },
+StoresConfig.ValentineGeneral.goods = {
+    { item = 'canned_beans', price = 5 },
+    { item = 'bread', price = 2, barter = { { item = 'egg', count = 2 } } },
+}
+StoresConfig.ValentineGeneral.buyback = {
+    egg = 2,
 }
 ```
 
-The general stores in Valentine, Strawberry, Saint Denis, Armadillo, Rhodes, Blackwater, Tumbleweed, and Wallace Station use that shelf. `/shop` opens `ValentineGeneral`.
+The other general stores, in Strawberry, Saint Denis, Armadillo, Rhodes, Blackwater, Tumbleweed, and Wallace Station, keep the template. `/shop` opens `ValentineGeneral`.
 
 `location` is where the clerk stands, a `vector4` with the heading last. `hours` is `{ open, close }` or `false`. The first hour is included and the second is not, so `{ 6, 21 }` is 6:00 through 20:59. When the first hour is later, such as `{ 21, 6 }`, the shop stays open across midnight. `false` means always open. Outside those hours the clerk is gone, the Shop prompt is hidden, and a sale is refused with `The store is closed.` If the time resource is not running, the shop stays open.
 
@@ -102,7 +102,7 @@ Each line in `goods` is one pile on the counter.
 - Leave `count` off and the pile stays in stock. One purchase can take up to a full stack. Canned beans are 20. A hatchet is 1. A shovel is 1.
 - `count` is a limited pile. That number goes down on this screen when it is bought.
 - `standing` is who may buy it. Leave it off and anyone can. `Recognized` is tier II, `Trusted` is tier III, and `Established` is tier IV. A player below that standing sees the pile locked.
-- `price` and `barter` can sit on the same pile. `price` is the dollars. `barter` is the other way to pay, once this visit may barter. Canned beans are 4 dollars, or four eggs. A standing rate changes the dollars. It leaves the trade alone. Eggs that pay for the beans are not also sold. A short stack does not pay for part of the beans.
+- `price` and `barter` can sit on the same pile. `price` is the dollars. `barter` is the other way to pay, once this visit may barter. The template lists canned beans at 4 dollars, or four eggs. Valentine writes the price as 5 and leaves the eggs. A standing rate changes the dollars. It leaves the trade alone. Eggs that pay for the beans are not also sold. A short stack does not pay for part of the beans.
 - `prices` sets the dollars for one standing and skips the type rate. `prices = { Established = 1 }` means Established pays 1 dollar.
 
 `buyback` is what the clerk pays for one item placed on Offer. A number is the list price. A table uses `price` as the list price, and a standing name when that standing should get a different amount.
@@ -111,7 +111,7 @@ Each line in `goods` is one pile on the counter.
 egg = { price = 1, Established = 2 }
 ```
 
-The general shelf lists a number for each good the clerk buys. An egg, an apple, a potato, or an ear of corn is 1 dollar. Mint is 2. Honey, beeswax, wool, a rabbit pelt, or a fish is 4. A deer hide is 8.
+The general shelf lists a number for each good the clerk buys. An egg, an apple, a potato, or an ear of corn is 1 dollar. Valentine pays 2 dollars for an egg. Mint is 2. Honey, beeswax, wool, a rabbit pelt, or a fish is 4. A deer hide is 8.
 
 On the type, `pay` is the share of `price` the player pays. `1` is the shelf price. `0.9` is nine tenths of it. `buy` is the share of the buyback the clerk pays. The result is a whole dollar. A shelf price of at least 1 dollar stays at least 1 dollar.
 
