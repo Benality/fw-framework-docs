@@ -94,6 +94,22 @@ A town mark is separate from the shop mark. It uses the town style and stays on 
 
 On a store, `town` is the key in that table, such as `valentine`. The card lists each shop type once, in this order: General Store, Gunsmith, Doctor, Barber, Butcher, Trapper, Bait and Tackle, Saloon. A type is left off when that town has no store of that type. Two saloons in one town are one Saloon line. A store with no `town`, such as a trapper camp, does not add a line and does not get a town mark. A town with no stores is skipped. A store that names a town missing from `towns` is skipped, and the client log says so.
 
+The picture is one shop from that town. The texture name inside each dictionary is `image`. Saint Denis uses `nbx`, Blackwater uses `blk`, Armadillo uses `amd`, Tumbleweed uses `tbl`, and Van Horn uses `vht`.
+
+| Town | `txd` |
+| --- | --- |
+| Valentine | `map_card_val_generalstore` |
+| Strawberry | `map_card_str_generalstore` |
+| Rhodes | `map_card_rho_generalstore` |
+| Saint Denis | `map_card_nbx_generalstore` |
+| Blackwater | `map_card_blk_generalstore` |
+| Armadillo | `map_card_amd_generalstore` |
+| Tumbleweed | `map_card_tbl_generalstore` |
+| Annesburg | `map_card_ann_gunsmith` |
+| Van Horn | `map_card_vht_saloon` |
+| Wallace Station | `map_card_wal_generalstore` |
+| Lagras | `map_card_lag_baitshop` |
+
 ```lua
 towns = {
     valentine = {
