@@ -170,22 +170,20 @@ Create and read characters with [fw_characters](/fw-characters). These calls are
 
 ### HoldSpawnCover
 
-Runs in the player's game. Streams the spot, runs `applyAppearance`, and waits until the body, the clothes, and the weapon kit have finished. Hair keeps applying after the cover comes down. The cover comes down anyway when a wait runs out. `x`, `y`, and `z` are the spawn, in metres. `applyAppearance` is the function that puts the body back on. It can be left out. Comes back yes when those finished in time.
+Runs in the player's game. Streams the spot, starts the saved skin load, and waits until the body, the clothes, and the weapon kit have finished. Hair keeps applying after the cover comes down. The cover comes down anyway when a wait runs out. `x`, `y`, and `z` are the spawn, in metres. Leave the function argument out. A function passed through this export does not arrive, and the cover then never starts the skin load. Comes back yes when the body, the clothes, and the weapon kit finished in time.
 
 ```lua
 --- Covers the spawn until the body, the clothes, and the weapon kit have finished.
 ---@param x number
 ---@param y number
 ---@param z number
----@param applyAppearance fun()|nil
+---@param applyAppearance fun()|nil ignored when this is called as an export
 ---@return boolean ready
 exports.fw_creator:HoldSpawnCover(x, y, z, applyAppearance)
 ```
 
 ```lua
-local ready = exports.fw_creator:HoldSpawnCover(x, y, z, function()
-    TriggerEvent('murphy_creator:loadskin')
-end)
+local ready = exports.fw_creator:HoldSpawnCover(x, y, z)
 if not ready then
     print('spawned before everything finished')
 end
