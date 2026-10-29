@@ -5,26 +5,26 @@ description: "Covers the screen from the moment someone connects until the chara
 
 Runs in the player's game. Two covers:
 
-- From connect until the character list is on screen.
+- From the moment someone connects until the character list is on screen. That page starts with them. It is not a second card stacked on the game's own screen.
 - After they pick a character, or finish creating one, until the body, clothes, and weapons are on.
 
-Leave `FWConfig.video` empty in `shared/config.lua`. That keeps the game's own loading card. The three lines on that card are `gamemode`, `title`, and `subtitle`.
+Leave `FWConfig.video` empty in `shared/config.lua`. The connect page then shows the server name, their name, and the three lines `gamemode`, `title`, and `subtitle`.
 
-Set `FWConfig.video` to a file in this resource, such as `html/intro.webm`, to play that instead. A missing file is written once in the server window, and the card is used. `minHoldMs` is the shortest the spawn cover stays up, in milliseconds. `maxWaitMs` is how long to wait for the world, the clothes, and the weapons before showing them anyway. `sceneRadius` is how far around the spawn to stream, in metres.
+Set `FWConfig.video` to a file in this resource, such as `html/intro.webm`, to play that file behind those words. A missing file is written once in the server window, and the words stay. `minHoldMs` is the shortest the spawn cover stays up, in milliseconds. `maxWaitMs` is how long to wait for the world, the clothes, and the weapons before showing them anyway. `sceneRadius` is how far around the spawn to stream, in metres.
 
-The connect video plays once this resource has started. To play it from the first moment of connect, uncomment the `loadscreen` lines in `fxmanifest.lua`.
+`fw_core` hands those words over before it lets the player in. The page closes when the character list is ready to be seen: it calls `loadingComplete`, and that call runs `ShutdownLoadingScreenNui`.
 
 `fw_creator` already calls these when a character is chosen. Use them yourself when you move someone a long way and need the same cover.
 
 ## Calls
 
-All of these run in the player's game.
+`Show`, `Hide`, `ReleaseConnectScreen`, `StreamScene`, and `MaxWaitMs` run in the player's game. `Handover` runs on the server.
 
 ### Show
 
 Puts the cover up. `kind` is `connect` or `spawn`. Anything else is treated as `spawn`. Calling it again for the same kind does not restart the timer.
 
-On connect, with no video, the game loading screen is already up, so this call does not stack a second card on it.
+On connect, the loadscreen page is already up. This call does not stack a second card on it.
 
 ```lua
 --- Shows the connect or spawn cover.
@@ -53,16 +53,40 @@ exports.fw_loading:Hide()
 
 ### ReleaseConnectScreen
 
-Drops the connect screen so the character list can fade in. This does not wait. Call it once the list is actually ready to be seen.
+Asks the connect page to close, once the character list is ready to be seen. The page answers `loadingComplete`, which shuts the page down. If that answer does not come within about two seconds, this call shuts the page down itself. It does not wait past that.
 
 ```lua
---- Drops the connect screen.
+--- Closes the connect page so the character list can fade in.
 ---@return nil
 exports.fw_loading:ReleaseConnectScreen()
 ```
 
 ```lua
 exports.fw_loading:ReleaseConnectScreen()
+```
+
+### Handover
+
+Runs on the server, during `playerConnecting`. `deferrals` is the join handshake. `playerId` is the player's number for this visit. Call it before `deferrals.done`, or the connect page never receives the words. `fw_core` already does this on the way in. A script that replaces that check has to call it too.
+
+The page receives the player's name, the server name, `gamemode`, `title`, `subtitle`, and the video file name when one is set.
+
+```lua
+--- Hands the connect page its words. Call this before deferrals.done.
+---@param deferrals table
+---@param playerId integer
+---@param fallbackName string|nil
+---@return nil
+exports.fw_loading:Handover(deferrals, playerId, fallbackName)
+```
+
+```lua
+AddEventHandler('playerConnecting', function(playerName, _setKickReason, deferrals)
+    deferrals.defer()
+    Wait(0)
+    exports.fw_loading:Handover(deferrals, source, playerName)
+    deferrals.done()
+end)
 ```
 
 ### StreamScene
