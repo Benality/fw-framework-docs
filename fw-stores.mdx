@@ -9,13 +9,13 @@ Closing the counter puts the shelf back the way the store lists it. What you set
 
 The clerk's goods are their own panel on the left, in the same journal style as the bag. Want and Offer are two panels between them and the bag. Want is what you are asking the clerk for. Offer is what you are putting up. None of those panels can be dragged. The bag on the right is the one you are carrying. Right-click, drag, split, use, give, and drop work the same way they do when you open the bag on its own. So do the pictures on the left of the bag, the clothes, the kit, and the gunbelt. The clerk keeps one pile of each thing. A pile with a number is a limited stock, and that number goes down when you buy it. A pile with no number is always in stock. Drag a pile into Want and choose how many. Canned beans from tier I can be up to 20 in one purchase. A hatchet is one, and a shovel is one. Those are as many as one pile in the satchel can hold. The rest of a limited pile stays on the counter. Shift-click a pile to move all of it onto Want or Offer. When Want already holds a purchase, Shift-click on dollars moves only the price still owed, and Shift-click on the trade goods moves only how many that purchase still needs. Otherwise Shift-click moves the whole pile. Ctrl-click moves 10. A counter pile that does not run out has no whole pile, so Shift does nothing there and Ctrl still takes 10. Click a pile on Want or Offer to put that whole pile back. Drag a pile from your bag into Offer. A pile the clerk does not buy is grey, in the bag and in an open pouch, and it will not move onto Offer. Dollars still move. So does something the clerk buys, and something that pays for a trade once you are trusted enough. A pile in an open pouch can go there too when the clerk takes it. The pile stays where it was. Drag a pile back out of Want to return it to the counter, or out of Offer to take it back. A counter pile will not sit in Offer, and a bag pile will not sit in Want.
 
-Gold numbers are what you pay. A number with a plus is what the clerk pays you. You pay with a dollars pile on Offer. Drag Dollars from your bag, or from an open pouch, onto Offer. The count is how many dollars you are putting up, and that many leave the stack right then. The amount under Offer is the dollars sitting there. Settle spends the price and puts the rest back in the bag. Drag those dollars off Offer, or close the counter, and they come back too. What you put on Offer that the clerk buys is taken out of the bag. What you put on Want is placed in the bag. If the clerk owes you, those dollars are placed in the bag. A tin of beans is 5 dollars at Worths in Valentine and 4 dollars in the other towns. Put dollars on Offer to buy it. A sack of flour is 10 dollars. A hatchet is 80 dollars, and it stays locked until you are established with the clerk. Worths also sells a loaf of bread for 2 dollars. The clerk buys an egg for 2 dollars at Worths and 1 dollar in the other towns, once you are recognized. An apple, a potato, or an ear of corn is 1 dollar. A bundle of mint is 2 dollars. A jar of honey, a block of beeswax, a bundle of wool, a rabbit pelt, or a fish is 4 dollars. A deer hide is 8 dollars. On this visit everyone is unknown, so the counter takes dollars and does not buy goods.
+Gold numbers are what you pay. A number with a plus is what the clerk pays you. You pay with a dollars pile on Offer. Drag Dollars from your bag, or from an open pouch, onto Offer. The count is how many dollars you are putting up, and that many leave the stack right then. The amount under Offer is the dollars sitting there. Settle spends the price and puts the rest back in the bag. Drag those dollars off Offer, or close the counter, and they come back too. What you put on Offer that the clerk buys is taken out of the bag. What you put on Want is placed in the bag. If the clerk owes you, those dollars are placed in the bag. A tin of beans is 5 dollars at Worths in Valentine and 4 dollars in the other towns. Put dollars on Offer to buy it. A sack of flour is 10 dollars. A hatchet is 80 dollars, and it stays locked until you are established with the clerk. Worths also sells a loaf of bread for 2 dollars. The clerk buys an egg for 2 dollars at Worths and 1 dollar in the other towns, once you are recognized. An apple, a potato, or an ear of corn is 1 dollar. A bundle of mint is 2 dollars. A jar of honey, a block of beeswax, a bundle of wool, a rabbit pelt, or a fish is 4 dollars. A deer hide is 8 dollars. A first visit is Unknown, so the counter takes dollars and does not buy goods until the clerk recognizes you.
 
 On the left of the clerk's goods are the same round pictures as the bag. All shows every pile. Kit shows weapons and ammo together. Each other picture shows that one kind, such as food, medical, or containers. A pile that does not match goes grey and stays where it is. Press that picture again, or press All, to show every kind. Want and Offer are not filtered. The bag has its own pictures, the same ones you use when the counter is closed.
 
-Above the clerk's goods is a mark of four small squares, then I, II, III, and IV. I is Unknown, II is Recognized, III is Trusted, and IV is Established. The four squares show every pile, packed to the top of the counter. A numeral shows only that standing, packed the same way. You can press a numeral up through your own standing. A higher one stays grey. With reputation off, every visit is Unknown, so I can be pressed, and II, III, and IV stay grey. A pile above your standing is locked on the full counter and cannot be bought. A tin of peaches is II. The counter scrolls when the shelf is taller than the page.
+Above the clerk's goods is a mark of four small squares, then I, II, III, and IV. I is Unknown, II is Recognized, III is Trusted, and IV is Established. The four squares show every pile, packed to the top of the counter. A numeral shows only that standing, packed the same way. You can press a numeral up through your own standing. A higher one stays grey. A new character is Unknown, so I can be pressed, and II, III, and IV stay grey until the score reaches them. A pile above your standing is locked on the full counter and cannot be bought. A tin of peaches is II. The counter scrolls when the shelf is taller than the page.
 
-Goods, Work, and Services switch only the clerk's panel. Want, Offer, and the satchel stay where they are. Work says the clerk has no errand on this visit. Services says they are not mending or treating anyone on this visit.
+Goods, Work, and Services switch only the clerk's panel. Want, Offer, and the satchel stay where they are. Work lists the errands this clerk will give. A store with none still says the clerk has nothing to do. How to add an errand is in [fw_missions](/fw-missions). Services says they are not mending or treating anyone on this visit.
 
 ## Opening the counter
 
@@ -184,9 +184,11 @@ access = {
 
 A pile's own `standing` still locks that pile. A tin of peaches stays Recognized even though buying, as an action, is open to everyone.
 
-`FwStoresConfig.useReputation` starts as `false`. Every visit is then Unknown. Everyone can buy an unlocked pile. Selling and barter stay closed, because Unknown is below Recognized and Trusted. The rates and the access lines stay in the file for when you turn it on.
+`FwStoresConfig.useReputation` is `true`. The counter asks fw_reputation for this visit's standing. Set it to `false` and every visit is Unknown again. Everyone can buy an unlocked pile. Selling and barter stay closed while the standing is below the access line. The rates and the access lines stay in the file either way.
 
-`fw_reputation` keeps the score. The switch stays off, so the counter still treats every visit as Unknown. Turn `useReputation` on when the counter should ask `fw_reputation` for this player's standing at this store type. `source` is the player's number for this visit. `storeType` is the type key, such as `'general'`. The class name in `fw_reputation` has to be that same word.
+`purchasePoints` is how many points one purchase adds to that store's class. It is one number for every shop. The count is once for the visit, when the player leaves with at least one good, not once for each item. Dollars handed back do not count. A sale that only hands goods in does not count. `0` turns it off. `1` is the number written now. Recognized is 25, so one purchase does not cross a tier by itself.
+
+`fw_reputation` keeps the score. `source` is the player's number for this visit. `storeType` is the type key, such as `'general'`. The class name in `fw_reputation` has to be that same word.
 
 ```lua
 ---@param source integer
@@ -196,6 +198,46 @@ exports.fw_reputation:GetStanding(source, storeType)
 ```
 
 Return `Unknown`, `Recognized`, `Trusted`, or `Established`. If `fw_reputation` is missing, the call fails, or the word is anything else, the visit stays Unknown.
+
+### GetStore
+
+Runs on the server. The store's id, its type, and the clerk's ground point. Nothing when that store is missing. `spot` is the place you measure a distance from. An errand uses this so it does not copy the clerk's coordinates.
+
+```lua
+--- The store's type and the clerk's ground point.
+--- Nothing when that store is missing.
+---@param storeId string
+---@return table|nil store id, type, and spot
+exports.fw_stores:GetStore(storeId)
+```
+
+```lua
+local store = exports.fw_stores:GetStore('ValentineGeneral')
+if store == nil then
+    return
+end
+```
+
+`store.type` is the class, such as `general`. `store.spot` is a coordinate.
+
+### BuildVisit
+
+Runs on the player's game. The same visit the counter opens, priced for the standing they have now. Nothing when that store is missing. The bag screen uses this when a score changes while the counter is open, so a newly recognized clerk can buy an egg without a second visit.
+
+```lua
+--- The visit the bag screen opens, priced for this player's standing.
+--- Nothing when that store is missing.
+---@param storeId string
+---@return table|nil visit
+exports.fw_stores:BuildVisit(storeId)
+```
+
+```lua
+local visit = exports.fw_stores:BuildVisit('ValentineGeneral')
+if visit == nil then
+    return
+end
+```
 
 Settle takes Offer out of the bag and places Want in the bag. Dollars leave the stack when you put them on Offer, including dollars in a pouch you are still carrying. Settle puts back whatever the price did not use. Closing the counter puts the shelf back the way the store lists it, and puts those dollars back as well. The bag keeps what the clerk already handed over.
 
@@ -318,7 +360,7 @@ The shelf is food the counter keeps, household goods, a short rack of garden see
 | Hatchet | 80 |
 | Shovel | 60 |
 
-The other shops use the same standing and the same rates. A firearm on the gunsmith shelf is at least 120 dollars, above the hatchet. Ammunition stays cheap. The gunsmith does not buy anything back. The butcher pays more than the general store for the same hide. The trapper pays more than the butcher. The bait shop pays more than the general store for a fish. With reputation off, rank II and up stay locked. The butcher, the trapper, and the bait shop still buy, because their sell line is Unknown.
+The other shops use the same standing and the same rates. A firearm on the gunsmith shelf is at least 120 dollars, above the hatchet. Ammunition stays cheap. The gunsmith does not buy anything back. The butcher pays more than the general store for the same hide. The trapper pays more than the butcher. The bait shop pays more than the general store for a fish. A first visit is Unknown, so rank II and up stay locked until the score reaches them. The butcher, the trapper, and the bait shop still buy on that visit, because their sell line is Unknown.
 
 ### Gunsmith
 

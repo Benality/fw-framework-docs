@@ -1,0 +1,144 @@
+---
+title: "fw_missions"
+description: "Offer an errand at a store. Finishing a step raises that store's reputation."
+---
+
+Runs on the server. A player reads the errand on the Work tab of the store counter, next to Goods. The server checks where they are standing, what is in the satchel, and whether that step was already finished. The client's ask does not grant the reward.
+
+`source` is the player's number for this visit. A class is a reputation name from [fw_reputation](/fw-reputation), such as `general`. The standing words that class already uses are Unknown, Recognized, Trusted, and Established. This resource does not keep a second score. It calls `Add` on fw_reputation.
+
+An errand belongs to one store, such as `ValentineGeneral`. The reputation it adds belongs to the class on the errand, which for Worths is `general`. A purchase adds its own point. That amount is `FwStoresConfig.purchasePoints` on [fw_stores](/fw-stores), and it is the same at every shop.
+
+Nothing, written as `nil`, means the call did not do it, and the second value is the reason. `That errand is already registered.` means the id was used once. `An errand needs a step.` means the list of steps was empty. `The errands are not ready` means the table is not ready yet.
+
+Ask `IsReady` first. The server can say `fw_missions` has started a moment before the table is ready. Keep asking for about two minutes. You can also listen for `fw_missions:ready`. That message is not queued. Your script has to be running already, or you missed it.
+
+Start it after `fw_inventory`, `fw_reputation`, and `fw_stores`.
+
+```
+ensure fw_inventory
+ensure fw_reputation
+ensure fw_stores
+ensure fw_missions
+```
+
+## Add an errand
+
+Call `RegisterMission` from your own resource. Do not edit `fw_missions` to add one. The table you pass is copied. Changing it later does not change the errand that was stored.
+
+The id is a plain word: a letter, then letters, numbers, or `_`. It can be up to 64 characters. The class uses the same kind of word, up to 32 characters, and it has to be a class fw_reputation already has or the standing will be refused when the step finishes. `store` is the store name, such as `ValentineGeneral`.
+
+`requires` is another errand id. Leave it out and this one can be accepted on its own. The player does not see this errand until that earlier one is finished.
+
+`enabled` left out, or `true`, means the clerk offers it. `false` keeps it registered and hidden.
+
+Each step has a `kind`:
+
+- `visit` — they hold at a place. No item.
+- `recover` — they hold at a place. The server puts `item` in the satchel if they do not already have `count`. Set `mission = true` on that item in fw_inventory, so they cannot drop it, give it, sell it, or put it in a pouch.
+- `deliver` — they are close, and the satchel has enough of `item`. Bought, found, or traded goods all count. A pouch does not count. The server takes `count`. `atStore = true` means they turn it in on the Work tab at the clerk named in `store`. A place means they hand it over there.
+- `work` — they clean or repair. Their game plays the progress bar. The server accepts it only while they are still at the place.
+
+`coords` is the place. A delivery at the clerk does not need one. `distance` is how close they must be, in metres. Leave it out and the distance in `shared/config.lua` is used, 2.5 unless you change it. `durationMs` is how long a clean or a repair takes, in milliseconds. Leave it out and the config time is used, 4000 unless you change it. `reputation` is the whole number added to the class when that step is saved. Leave it out and the step adds nothing.
+
+`reward.items` is optional. Those items are placed in the satchel when the last step is saved. Dollars are an item too, named `cash`, if you want to pay them.
+
+The bag is checked, the delivery comes out, the reward goes in, the standing goes up, and then the row is saved. If the reward does not fit, the delivery is put back and the step stays open. If the save fails, the standing and the items are put back. If that undo fails, the server window shows an error.
+
+Worths in Valentine already offers The Short Order. The steps add 5, 5, 8, 8, and 4. After the beans, the score is 26, which is Recognized. Trusted stays at 75.
+
+## Calls
+
+### IsReady
+
+Runs on the server. Yes after the mission table exists.
+
+```lua
+--- True when an errand can be saved.
+---@return boolean
+exports.fw_missions:IsReady()
+```
+
+```lua
+while not exports.fw_missions:IsReady() do
+    Wait(100)
+end
+```
+
+### RegisterMission
+
+Runs on the server. Stores one errand. Yes when it was stored.
+
+Nothing when the id is already used, or a field cannot be used. The second value is the reason.
+
+```lua
+--- Stores one errand. False when the id is already registered or a field cannot be used.
+---@param definition table id, class, store, title, text, objectives, and optional requires, enabled, and reward
+---@return boolean ok
+---@return string|nil err
+exports.fw_missions:RegisterMission(definition)
+```
+
+```lua
+local ok, err = exports.fw_missions:RegisterMission({
+    id = 'worths_short_order',
+    class = 'general',
+    store = 'ValentineGeneral',
+    title = 'The Short Order',
+    text = 'Worths is short on tins, and a list for the station never got there.',
+    objectives = {
+        {
+            kind = 'visit',
+            label = 'The platform',
+            text = 'Go to the Valentine station platform.',
+            coords = vector3(-174.39, 633.78, 114.09),
+            reputation = 5,
+        },
+    },
+})
+if not ok then
+    print(err)
+    return
+end
+```
+
+## Messages
+
+### fw_missions:ready
+
+Local. It fires on the server when the table is ready. It is not queued. A listener that starts later has missed it. Use `IsReady` if your script may start second.
+
+```lua
+AddEventHandler('fw_missions:ready', function()
+end)
+```
+
+### fw_missions:list
+
+Networked. The counter sends it. `storeId` is the open store, such as `ValentineGeneral`. The answer comes back on `fw_missions:work` to that player only.
+
+The server does not grant anything for a list.
+
+### fw_missions:accept
+
+Networked. The counter sends it when they press Accept. `storeId` is the open store. `missionId` is the errand id. They have to be at that clerk. The answer is `fw_missions:work`.
+
+### fw_missions:turnIn
+
+Networked. The counter sends it when they press Turn in. Same arguments as accept. It only finishes a delivery whose step says `atStore = true`.
+
+### fw_missions:advance
+
+Networked. The hold prompt sends it. `missionId` is the errand they are on. The server checks the distance. A delivery at the clerk is refused here. Press Turn in on Work for that step.
+
+### fw_missions:request
+
+Networked. The player's game sends it after this resource starts, so a mark can come back without a new character select. No reward.
+
+### fw_missions:work
+
+Sent to that player only. It is the list the Work tab shows: each errand's title, text, current step, and whether Accept or Turn in is available. The reward was already decided on the server. Do not grant items because this list arrived.
+
+### fw_missions:steps
+
+Sent to that player only. It is the places for the steps they are on, so their map can show a mark. A delivery at the clerk is a mark with no hold prompt. Do not grant items because a mark arrived.
