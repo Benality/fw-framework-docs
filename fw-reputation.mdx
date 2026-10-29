@@ -1,0 +1,231 @@
+---
+title: "fw_reputation"
+description: "Keep a reputation score for a character, by class, and read the standing word a store already understands."
+---
+
+Runs on the server. Other scripts raise or lower a score. The score belongs to the character they are playing, and to one class, such as `general`.
+
+`source` is the player's number for this visit. A class is a name from `server/config.lua` in `fw_reputation`. A store passes its type, and the names already in that file match those types. A mission needs its own line in that file before it can change a score. The name has to be one word: a letter, then letters, numbers, or `_`.
+
+The score is a whole number from 0 to 1000. A class with no row yet is 0. These scores are the standing words stores already use:
+
+| Score | Standing |
+| --- | --- |
+| 0 | Unknown |
+| 25 | Recognized |
+| 75 | Trusted |
+| 150 | Established |
+
+A higher line wins. 40 is Recognized. 150 and above is Established. The lines and the 1000 cap are in the config. Change them there.
+
+Nothing, written as `nil`, means the call did not do it, and the second value is the reason. `Select a character first.` means they are not playing a character. `Unknown class.` means that name is not in the config. `fw_reputation is not ready` means the table is not ready yet.
+
+Ask `IsReady` first. The server can say `fw_reputation` has started a moment before the table is ready. Keep asking for about two minutes.
+
+The store counter can read the standing on the player's game. That copy only knows the character they are playing. Use the server call when the answer decides a sale, a payout, or anything else that has to be true.
+
+`FwStoresConfig.useReputation` in [fw_stores](/fw-stores) stays off. Turn it on when the counter should ask for the standing. Until then, a visit stays Unknown even if this score is higher.
+
+An admin sets a score from the player page in [fw_admin](/fw-admin). That uses `Set`.
+
+## Calls
+
+### IsReady
+
+Runs on the server. Yes after the reputation table exists.
+
+```lua
+--- True when a score can be read and changed.
+---@return boolean
+exports.fw_reputation:IsReady()
+```
+
+```lua
+while not exports.fw_reputation:IsReady() do
+    Wait(100)
+end
+```
+
+### GetScore
+
+Runs on the server. The score for one class. A missing row is 0.
+
+Nothing when no character is selected, or the class is not configured.
+
+```lua
+--- The score for this character and class. A missing row is 0.
+--- Nothing when no character is selected, or the class is not configured.
+---@param source integer
+---@param className string
+---@return integer|nil score
+---@return string|nil err
+exports.fw_reputation:GetScore(source, className)
+```
+
+```lua
+local score, err = exports.fw_reputation:GetScore(source, 'general')
+if score == nil then
+    print(err)
+    return
+end
+```
+
+### GetStanding
+
+Runs on the server, and on the player's game.
+
+On the server, this is the standing word for that score: `Unknown`, `Recognized`, `Trusted`, or `Established`. Nothing in the same cases as `GetScore`.
+
+On the player's game, it only knows the character they are playing. Pass their own player number. Nothing until that copy has arrived, or when the class is not one they were sent. A purchase still has to ask the server. The screen can ask here so a locked row shows up before that.
+
+```lua
+--- The standing word for this character and class.
+--- Nothing when no character is selected, or the class is not configured.
+---@param source integer
+---@param className string
+---@return string|nil standing
+---@return string|nil err
+exports.fw_reputation:GetStanding(source, className)
+```
+
+```lua
+local standing, err = exports.fw_reputation:GetStanding(source, 'general')
+if standing == nil then
+    print(err)
+    return
+end
+```
+
+### GetAll
+
+Runs on the server. Every configured class, in the order they are written in the config. Each row has `class`, `label`, `score`, and `standing`. A missing row counts as 0, Unknown.
+
+Nothing when no character is selected.
+
+```lua
+--- Every configured class for this character.
+--- Nothing when no character is selected.
+---@param source integer
+---@return table|nil list
+---@return string|nil err
+exports.fw_reputation:GetAll(source)
+```
+
+```lua
+local list, err = exports.fw_reputation:GetAll(source)
+if list == nil then
+    print(err)
+    return
+end
+```
+
+### Add
+
+Runs on the server. Adds a whole number from 1 to 1000, then stops at 1000 if the result would pass it. The number you get back is the score after that. The first change from 0 creates the row.
+
+Nothing, and the score stays as it was, when no character is selected, the class is not configured, or the amount is not a whole number from 1 to 1000.
+
+If the score does not change, you still get that score back. `fw_reputation:changed` does not run in that case.
+
+```lua
+--- Adds to the score, then clamps it to the configured limits.
+--- Nothing when no character is selected, the class is not configured, or the amount is refused.
+---@param source integer
+---@param className string
+---@param amount integer
+---@return integer|nil score
+---@return string|nil err
+exports.fw_reputation:Add(source, className, amount)
+```
+
+```lua
+local score, err = exports.fw_reputation:Add(source, 'general', 5)
+if score == nil then
+    print(err)
+    return
+end
+```
+
+### Remove
+
+Runs on the server. Subtracts a whole number from 1 to 1000, then stops at 0. The number you get back is the score after that.
+
+Nothing, and the score stays as it was, in the same cases as `Add`. A class that is already 0 stays 0, and no row is created just to hold that 0.
+
+If the score does not change, you still get that score back. `fw_reputation:changed` does not run in that case.
+
+```lua
+--- Lowers the score, then clamps it to the configured limits.
+--- Nothing when no character is selected, the class is not configured, or the amount is refused.
+---@param source integer
+---@param className string
+---@param amount integer
+---@return integer|nil score
+---@return string|nil err
+exports.fw_reputation:Remove(source, className, amount)
+```
+
+```lua
+local score, err = exports.fw_reputation:Remove(source, 'general', 5)
+if score == nil then
+    print(err)
+    return
+end
+```
+
+### Set
+
+Runs on the server. Replaces the score with a whole number from 0 to 1000. This is the call the admin menu uses. The first `Set` creates the row, including a set to 0.
+
+Nothing, and the score stays as it was, when no character is selected, the class is not configured, or the number is outside 0 to 1000.
+
+If the stored score is already that number, you still get it back. `fw_reputation:changed` does not run in that case.
+
+```lua
+--- Replaces the score. 0 is allowed.
+--- Nothing when no character is selected, the class is not configured, or the score is refused.
+---@param source integer
+---@param className string
+---@param score integer
+---@return integer|nil score
+---@return string|nil err
+exports.fw_reputation:Set(source, className, score)
+```
+
+```lua
+local score, err = exports.fw_reputation:Set(source, 'general', 40)
+if score == nil then
+    print(err)
+    return
+end
+```
+
+## Events
+
+### fw_reputation:changed
+
+Runs on the server. Local. Listen with `AddEventHandler`. It is not queued. Your script has to be running already.
+
+It runs after a score is saved. `source` is the player whose character changed. `characterId` is `fw_characters.id`. `className` is the class. `score` is the number now stored. `standing` is the word for that score.
+
+It does not run when the call left the score as it was.
+
+```lua
+--- The score for one class was saved.
+---@param source integer
+---@param characterId integer
+---@param className string
+---@param score integer
+---@param standing string
+AddEventHandler('fw_reputation:changed', function(source, characterId, className, score, standing)
+end)
+```
+
+### fw_reputation:ready
+
+Runs on the server. Local. Fires once, when `IsReady` becomes yes. It is not queued. A script that starts later should call `IsReady` instead of waiting for this.
+
+```lua
+AddEventHandler('fw_reputation:ready', function()
+end)
+```

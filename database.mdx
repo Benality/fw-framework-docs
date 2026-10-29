@@ -284,3 +284,25 @@ CREATE TABLE IF NOT EXISTS `fw_weapons` (
 | `kit` | The equipped slots. Read them with `GetKit`. |
 | `ammo` | How many rounds of each kind are on the character. `fw_weapons` writes this when the player uses a box or fires. |
 | `updated_at` | Set by the database when the row is written. |
+
+## `fw_reputation`
+
+Created by `fw_reputation` from `resources/[framework]/fw_reputation/sql/reputation.sql`. One row per character and class. A class with no row is read as 0. Do not write this table from your script. Use [fw_reputation](/fw-reputation).
+
+```sql
+CREATE TABLE IF NOT EXISTS `fw_reputation` (
+  `character_id` int unsigned NOT NULL,
+  `class` varchar(32) NOT NULL,
+  `score` int unsigned NOT NULL DEFAULT 0,
+  PRIMARY KEY (`character_id`, `class`),
+  CONSTRAINT `fk_fw_reputation_character`
+    FOREIGN KEY (`character_id`) REFERENCES `fw_characters` (`id`)
+    ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
+| Column | Meaning |
+| --- | --- |
+| `character_id` | `fw_characters.id`. Deleting the character deletes the row. |
+| `class` | The class name from `fw_reputation` config, such as `general`. |
+| `score` | The whole number stored for that class. 0 is Unknown. |

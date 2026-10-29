@@ -186,7 +186,7 @@ A pile's own `standing` still locks that pile. A tin of peaches stays Recognized
 
 `FwStoresConfig.useReputation` starts as `false`. Every visit is then Unknown. Everyone can buy an unlocked pile. Selling and barter stay closed, because Unknown is below Recognized and Trusted. The rates and the access lines stay in the file for when you turn it on.
 
-Turn `useReputation` on when a resource named `fw_reputation` is running. `fw_stores` asks it for this player's standing at this store type. `source` is the player's number for this visit. `storeType` is the type key, such as `'general'`.
+`fw_reputation` keeps the score. The switch stays off, so the counter still treats every visit as Unknown. Turn `useReputation` on when the counter should ask `fw_reputation` for this player's standing at this store type. `source` is the player's number for this visit. `storeType` is the type key, such as `'general'`. The class name in `fw_reputation` has to be that same word.
 
 ```lua
 ---@param source integer

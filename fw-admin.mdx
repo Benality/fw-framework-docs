@@ -87,13 +87,15 @@ end
 
 The first page has three entries.
 
-- **Players.** Who is online. Search filters that list. Unban asks for a license. Choose a person, then go to them, bring them, send them back, watch them, freeze them, fill their health, revive them, give an item, give dollars, kick, or ban.
+- **Players.** Who is online. Search filters that list. Unban asks for a license. Choose a person, then go to them, bring them, send them back, watch them, freeze them, fill their health, revive them, give an item, give dollars, set a reputation score, kick, or ban.
 - **Self.** God mode, no clip, invisible, infinite ammo, fill health, fill health and stamina, and revive. No clip moves with W and S, up with Q, down with Z. Shift changes the speed. Delete stops it.
 - **Developer tools.** Teleports, then copy coordinates. Teleports are the map waypoint, coordinates you type, Guarma, and the trip back. TP to Waypoint is the same move as `/tpm`. Copy coordinates puts x y z, a `vector3`, a `vector4`, or the heading on the clipboard. The same line is also written to the F8 log. The clipboard call is `exports.vorp_lib:copyToClipBoard`. If `vorp_lib` is not started, nothing is copied and the log says the clipboard is not available.
 
 Go back on a page returns to the page that opened it.
 
 Giving an item uses [fw_inventory](/fw-inventory) `AddItem`. The count is from 1 to 500. Giving dollars uses [fw_money](/fw-money) `AddCash`. The amount is from 1 to 100000. Both land in the satchel of the character they are playing. If that character is not selected, or the satchel has no room, nothing is given and the log says why.
+
+Reputation lists each class from [fw_reputation](/fw-reputation). The line shows the standing and the score. Choosing a class asks for a whole number from 0 to 1000 and saves it with `Set`. If that character is not selected, or the number is refused, nothing is saved and the log says why.
 
 A ban asks for the hours. `0` does not expire. The longest timed ban from the menu is 8760 hours, which is one year. The menu saves it with [fw_core](/fw-core) `SetBan`, then removes them from the server. Unban asks for the license, including `license:` at the front. A hex id on its own is treated as a Rockstar license.
 
@@ -111,6 +113,7 @@ The server checks the permission again before it does the thing. A menu left ope
 | `fw.admin.kick` | Kick. |
 | `fw.admin.ban` | Ban and unban. |
 | `fw.admin.give` | Give an item, or give dollars. |
+| `fw.admin.reputation` | Read and set a reputation score. |
 
 Self tools, the waypoint, typed coordinates, Guarma, and copy coordinates need `fw.admin`.
 
