@@ -1,0 +1,1731 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="API reference for the Project Territory framework. Each export includes the arguments, the rejection cases, and an example.">
+      
+      
+      
+      
+        <link rel="prev" href="../vorp-lib/">
+      
+      
+        <link rel="next" href="../tutorial-crafting/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/territory-crest.webp">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>Database - Project Territory Framework Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="territory" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#database" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Project Territory Framework Docs" class="md-header__button md-logo" aria-label="Project Territory Framework Docs" data-md-component="logo">
+      
+  <img src="../assets/images/territory-crest.webp" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Project Territory Framework Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Database
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="territory" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href=".." class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../tutorial-crafting/" class="md-tabs__link">
+          
+  
+  
+  Tutorials
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Project Territory Framework Docs" class="md-nav__button md-logo" aria-label="Project Territory Framework Docs" data-md-component="logo">
+      
+  <img src="../assets/images/territory-crest.webp" alt="logo">
+
+    </a>
+    Project Territory Framework Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-menu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_menu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-admin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_admin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-characters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_characters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-creator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_creator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-clothing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_clothing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-inventory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_inventory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-money/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_money
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-weapons/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_weapons
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-satchel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_satchel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-stores/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_stores
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-trade/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_trade
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vorp-lib/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    vorp_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#fw_players" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_players
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fw_characters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_characters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-table-of-your-own" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A table of your own
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fw_inventory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_inventory
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fw_items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_items
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fw_storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_storage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fw_currency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_currency
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fw_storage_currency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_storage_currency
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fw_weapons" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_weapons
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorials
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tutorials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial-crafting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crafting resource
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#fw_players" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_players
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fw_characters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_characters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-table-of-your-own" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A table of your own
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fw_inventory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_inventory
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fw_items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_items
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fw_storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_storage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fw_currency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_currency
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fw_storage_currency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_storage_currency
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fw_weapons" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_weapons
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="database">Database<a class="headerlink" href="#database" title="Permanent link">&para;</a></h1>
+<p>Do not read or write these tables from your script. Use the call on the matching page. This page tells you which id to save on a table you own, and what the columns mean when a call gives you a snapshot.</p>
+<p>The database name in <code>server.cfg</code> is <code>TerritoryFRP</code>. If it does not exist yet, oxmysql creates it and connects again. The name can only contain letters, numbers, and underscores. Replacing oxmysql with an untouched copy removes that auto-create. The framework still creates the tables below when each resource starts.</p>
+<p>If a table already exists and is missing the column that resource expects, the resource logs the mismatch and does not change the table. <code>fw_items</code> is the exception: missing <code>weapon</code>, <code>item_group</code>, <code>kit</code>, and <code>hash</code> columns are added, and a leftover <code>image</code> column from an older version is dropped.</p>
+<p>Do not put money or jobs on these tables. A later resource adds its own table and stores a character id or an account id. See <a href="#a-table-of-your-own">A table of your own</a>.</p>
+<h2 id="fw_players"><code>fw_players</code><a class="headerlink" href="#fw_players" title="Permanent link">&para;</a></h2>
+<p>Created by <code>fw_core</code>. One row per Rockstar license. There is no call yet to change role, warnings, slots, or bans. Change those in the table. They are read the next time that person joins.</p>
+<p><strong>Schema</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="o">`</span><span class="n">fw_players</span><span class="o">`</span><span class="w"> </span><span class="p">(</span>
+<span class="w">  </span><span class="o">`</span><span class="n">id</span><span class="o">`</span><span class="w"> </span><span class="nb">int</span><span class="w"> </span><span class="n">unsigned</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">license</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">64</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">steam</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">discord</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">name</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">64</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">''</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="k">role</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">'user'</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">character_slots</span><span class="o">`</span><span class="w"> </span><span class="n">tinyint</span><span class="w"> </span><span class="n">unsigned</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">warnings</span><span class="o">`</span><span class="w"> </span><span class="nb">smallint</span><span class="w"> </span><span class="n">unsigned</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">banned</span><span class="o">`</span><span class="w"> </span><span class="n">tinyint</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">banned_until</span><span class="o">`</span><span class="w"> </span><span class="nb">int</span><span class="w"> </span><span class="n">unsigned</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">created_at</span><span class="o">`</span><span class="w"> </span><span class="k">timestamp</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">last_seen</span><span class="o">`</span><span class="w"> </span><span class="k">timestamp</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">id</span><span class="o">`</span><span class="p">),</span>
+<span class="w">  </span><span class="k">UNIQUE</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="o">`</span><span class="n">uq_fw_players_license</span><span class="o">`</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">license</span><span class="o">`</span><span class="p">)</span>
+<span class="p">)</span><span class="w"> </span><span class="n">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">CHARSET</span><span class="o">=</span><span class="n">utf8mb4</span><span class="w"> </span><span class="k">COLLATE</span><span class="o">=</span><span class="n">utf8mb4_unicode_ci</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>Columns</strong></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Lua field</th>
+<th>Written when</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td><code>id</code></td>
+<td>Insert</td>
+<td>Account id. Store this on child tables.</td>
+</tr>
+<tr>
+<td><code>license</code></td>
+<td><code>license</code></td>
+<td>Insert</td>
+<td><code>license:…</code> or <code>license2:…</code>, prefix included. Unique. Max 64 bytes.</td>
+</tr>
+<tr>
+<td><code>steam</code></td>
+<td><code>steam</code></td>
+<td>Every successful admit</td>
+<td><code>steam:…</code> up to 40 bytes, or NULL.</td>
+</tr>
+<tr>
+<td><code>discord</code></td>
+<td><code>discord</code></td>
+<td>Every successful admit</td>
+<td><code>discord:…</code> up to 40 bytes, or NULL.</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td><code>name</code></td>
+<td>Every successful admit</td>
+<td>Display name, clipped to 64 characters.</td>
+</tr>
+<tr>
+<td><code>role</code></td>
+<td><code>role</code></td>
+<td>Default <code>'user'</code> on insert</td>
+<td>Account role. Not a job. Read into memory at connect. The creator's ped permission and admin commands use it.</td>
+</tr>
+<tr>
+<td><code>character_slots</code></td>
+<td><code>characterSlots</code></td>
+<td>Default <code>5</code> on insert</td>
+<td>Max characters for this account. <code>CreateCharacter</code> re-reads this column at create time.</td>
+</tr>
+<tr>
+<td><code>warnings</code></td>
+<td><code>warnings</code></td>
+<td>Default <code>0</code></td>
+<td>Stored only. No enforcement.</td>
+</tr>
+<tr>
+<td><code>banned</code></td>
+<td><code>banned</code></td>
+<td>Checked at connect</td>
+<td><code>1</code> refuses the connection. A connected player's in-memory copy shows <code>false</code>, because a banned license never attaches.</td>
+</tr>
+<tr>
+<td><code>banned_until</code></td>
+<td><code>bannedUntil</code></td>
+<td>Checked at connect</td>
+<td>Unix time. <code>0</code> with <code>banned = 1</code> means the ban does not expire. A time in the past clears <code>banned</code> on the next connect.</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>—</td>
+<td>Insert</td>
+<td>Not included on the Lua player record.</td>
+</tr>
+<tr>
+<td><code>last_seen</code></td>
+<td>—</td>
+<td>Admit, and again on drop</td>
+<td>Not included on the Lua player record.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Indexes</strong>: primary key <code>id</code>, unique <code>license</code>. Lookups by steam or discord are not indexed — add one if a feature queries those columns.</p>
+<p><strong>Relationships</strong>: <code>ON DELETE CASCADE</code> from <code>fw_characters.player_id</code> — deleting an account deletes its characters.</p>
+<p><strong>Calls</strong>: <a href="../fw-core/"><code>fw_core</code></a>. The fields you get back are the <a href="../fw-core/#account">account</a>.</p>
+<h2 id="fw_characters"><code>fw_characters</code><a class="headerlink" href="#fw_characters" title="Permanent link">&para;</a></h2>
+<p>Created by <code>fw_characters</code>. One row per character. Do not change this table from another script. Use the calls on <a href="../fw-characters/">fw_characters</a>.</p>
+<p><strong>Schema</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="o">`</span><span class="n">fw_characters</span><span class="o">`</span><span class="w"> </span><span class="p">(</span>
+<span class="w">  </span><span class="o">`</span><span class="n">id</span><span class="o">`</span><span class="w"> </span><span class="nb">int</span><span class="w"> </span><span class="n">unsigned</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="n">AUTO_INCREMENT</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">player_id</span><span class="o">`</span><span class="w"> </span><span class="nb">int</span><span class="w"> </span><span class="n">unsigned</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">slot</span><span class="o">`</span><span class="w"> </span><span class="n">tinyint</span><span class="w"> </span><span class="n">unsigned</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">first_name</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">last_name</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">nickname</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">gender</span><span class="o">`</span><span class="w"> </span><span class="n">enum</span><span class="p">(</span><span class="s1">'male'</span><span class="p">,</span><span class="s1">'female'</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">birth_date</span><span class="o">`</span><span class="w"> </span><span class="nb">date</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">description</span><span class="o">`</span><span class="w"> </span><span class="nb">text</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">appearance</span><span class="o">`</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">clothing</span><span class="o">`</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">barber</span><span class="o">`</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">x</span><span class="o">`</span><span class="w"> </span><span class="nb">float</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">y</span><span class="o">`</span><span class="w"> </span><span class="nb">float</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">z</span><span class="o">`</span><span class="w"> </span><span class="nb">float</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">heading</span><span class="o">`</span><span class="w"> </span><span class="nb">float</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">health</span><span class="o">`</span><span class="w"> </span><span class="nb">smallint</span><span class="w"> </span><span class="n">unsigned</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">600</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">health_core</span><span class="o">`</span><span class="w"> </span><span class="n">tinyint</span><span class="w"> </span><span class="n">unsigned</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">stamina_core</span><span class="o">`</span><span class="w"> </span><span class="n">tinyint</span><span class="w"> </span><span class="n">unsigned</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">is_dead</span><span class="o">`</span><span class="w"> </span><span class="n">tinyint</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">created_at</span><span class="o">`</span><span class="w"> </span><span class="k">timestamp</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">last_played</span><span class="o">`</span><span class="w"> </span><span class="k">timestamp</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">id</span><span class="o">`</span><span class="p">),</span>
+<span class="w">  </span><span class="k">UNIQUE</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="o">`</span><span class="n">uq_fw_characters_player_slot</span><span class="o">`</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">player_id</span><span class="o">`</span><span class="p">,</span><span class="w"> </span><span class="o">`</span><span class="n">slot</span><span class="o">`</span><span class="p">),</span>
+<span class="w">  </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="o">`</span><span class="n">fk_fw_characters_player</span><span class="o">`</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">player_id</span><span class="o">`</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="o">`</span><span class="n">fw_players</span><span class="o">`</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">id</span><span class="o">`</span><span class="p">)</span>
+<span class="w">    </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CASCADE</span>
+<span class="p">)</span><span class="w"> </span><span class="n">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">CHARSET</span><span class="o">=</span><span class="n">utf8mb4</span><span class="w"> </span><span class="k">COLLATE</span><span class="o">=</span><span class="n">utf8mb4_unicode_ci</span><span class="w"> </span><span class="n">ROW_FORMAT</span><span class="o">=</span><span class="k">DYNAMIC</span><span class="p">;</span>
+</code></pre></div>
+<p><strong>Columns</strong></p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Lua field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td><code>id</code></td>
+<td>Character id. The id inventory, money, and jobs should store later.</td>
+</tr>
+<tr>
+<td><code>player_id</code></td>
+<td><code>playerId</code></td>
+<td>Owner. <code>fw_players.id</code>.</td>
+</tr>
+<tr>
+<td><code>slot</code></td>
+<td><code>slot</code></td>
+<td>1 through that account's <code>character_slots</code>. Unique per account. Deleting a character frees the slot. Omitting <code>slot</code> on create uses the lowest free one.</td>
+</tr>
+<tr>
+<td><code>first_name</code></td>
+<td><code>firstName</code></td>
+<td>1–50 characters.</td>
+</tr>
+<tr>
+<td><code>last_name</code></td>
+<td><code>lastName</code></td>
+<td>1–50 characters.</td>
+</tr>
+<tr>
+<td><code>nickname</code></td>
+<td><code>nickname</code></td>
+<td>NULL when unset.</td>
+</tr>
+<tr>
+<td><code>gender</code></td>
+<td><code>gender</code></td>
+<td><code>male</code> or <code>female</code>.</td>
+</tr>
+<tr>
+<td><code>birth_date</code></td>
+<td><code>birthDate</code></td>
+<td><code>YYYY-MM-DD</code> or NULL. Year must sit in <code>FwCharactersConfig</code> (1800–1899).</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td><code>description</code></td>
+<td>Lore, up to 2000 characters. Always sent on insert, including <code>''</code>.</td>
+</tr>
+<tr>
+<td><code>appearance</code></td>
+<td><code>appearance</code></td>
+<td>Body and face JSON. NULL until <code>SetAppearance</code>. The creator stores the menu ped-data table here.</td>
+</tr>
+<tr>
+<td><code>clothing</code></td>
+<td><code>clothing</code></td>
+<td>Worn clothes, outfits, and wearable state. NULL until <code>fw_clothing</code> saves it. The shape is on <a href="../fw-clothing/">fw_clothing</a>.</td>
+</tr>
+<tr>
+<td><code>barber</code></td>
+<td><code>barber</code></td>
+<td>Hair, overlays, and presets. The shape is on <a href="../fw-creator/">fw_creator</a>.</td>
+</tr>
+<tr>
+<td><code>x</code>, <code>y</code>, <code>z</code></td>
+<td><code>x</code>, <code>y</code>, <code>z</code></td>
+<td>Last position. Insert uses <code>defaultSpawn</code>; the creator then saves the chosen spawn. While the character is online, a newer sample lives in the <code>fw_characters</code> server cache and is what a reconnect reads until the cache is flushed into these columns.</td>
+</tr>
+<tr>
+<td><code>heading</code></td>
+<td><code>heading</code></td>
+<td>Degrees.</td>
+</tr>
+<tr>
+<td><code>health</code></td>
+<td><code>health</code></td>
+<td>0–65535. Default 600.</td>
+</tr>
+<tr>
+<td><code>health_core</code></td>
+<td><code>healthCore</code></td>
+<td>0–100. Default 100.</td>
+</tr>
+<tr>
+<td><code>stamina_core</code></td>
+<td><code>staminaCore</code></td>
+<td>0–100. Default 100.</td>
+</tr>
+<tr>
+<td><code>is_dead</code></td>
+<td><code>isDead</code></td>
+<td><code>0</code> or <code>1</code>. Lua uses <code>true</code> / <code>false</code>.</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td><code>createdAt</code></td>
+<td>Insert time.</td>
+</tr>
+<tr>
+<td><code>last_played</code></td>
+<td><code>lastPlayed</code></td>
+<td>Select, clear, or player drop. NULL until the first selection.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Indexes</strong>: primary key <code>id</code>, unique <code>(player_id, slot)</code> — listing one account uses this index. The JSON columns are not indexed. <code>ROW_FORMAT=DYNAMIC</code> keeps a large document off the main row.</p>
+<p><strong>Write paths</strong>: <code>SaveState</code> updates position and health only — it never rewrites <code>appearance</code>, <code>clothing</code>, or <code>barber</code>. Each of those documents must encode to at most 262144 bytes. <code>GetCharacters</code> never selects the JSON columns; it selects <code>(appearance IS NOT NULL) AS has_appearance</code> (and the same for clothing/barber) and returns those as <code>hasAppearance</code>, <code>hasClothing</code>, <code>hasBarber</code>.</p>
+<p><strong>Calls</strong>: <a href="../fw-characters/"><code>fw_characters</code></a>. The fields you get back are the <a href="../fw-characters/#character-record">character record</a>.</p>
+<h2 id="a-table-of-your-own">A table of your own<a class="headerlink" href="#a-table-of-your-own" title="Permanent link">&para;</a></h2>
+<p>A resource that stores something for a character should follow this shape:</p>
+<ul>
+<li>Its own table, created by that resource.</li>
+<li>A column <code>character_id</code> that stores <code>fw_characters.id</code>.</li>
+<li>A foreign key to <code>fw_characters(id)</code> with <code>ON DELETE CASCADE</code> when the data must disappear with the character.</li>
+<li>No copy of the character's name, gender, or appearance — read those through <code>exports.fw_characters</code>.</li>
+</ul>
+<p>An account-level table uses <code>player_id</code> → <code>fw_players.id</code> the same way.</p>
+<p>The character id to use is the one from <code>CreateCharacter</code>, <code>GetActiveCharacter</code>, or <code>Player(source).state.fwCharacterId</code>. The account id is <code>player.id</code> from <code>GetPlayer</code>, or <code>Player(source).state.fwPlayerId</code>.</p>
+<h2 id="fw_inventory"><code>fw_inventory</code><a class="headerlink" href="#fw_inventory" title="Permanent link">&para;</a></h2>
+<p>Created by <code>fw_inventory</code> from <code>resources/[framework]/fw_inventory/sql/inventory.sql</code>. One row per character. The grid document and the item fields are in <a href="../fw-inventory/">fw_inventory</a>.</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="o">`</span><span class="n">fw_inventory</span><span class="o">`</span><span class="w"> </span><span class="p">(</span>
+<span class="w">  </span><span class="o">`</span><span class="n">character_id</span><span class="o">`</span><span class="w"> </span><span class="nb">int</span><span class="w"> </span><span class="n">unsigned</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">grid</span><span class="o">`</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">updated_at</span><span class="o">`</span><span class="w"> </span><span class="k">timestamp</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="p">,</span>
+<span class="w">  </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">character_id</span><span class="o">`</span><span class="p">),</span>
+<span class="w">  </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="o">`</span><span class="n">fk_fw_inventory_character</span><span class="o">`</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">character_id</span><span class="o">`</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="o">`</span><span class="n">fw_characters</span><span class="o">`</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">id</span><span class="o">`</span><span class="p">)</span>
+<span class="w">    </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CASCADE</span>
+<span class="p">)</span><span class="w"> </span><span class="n">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">CHARSET</span><span class="o">=</span><span class="n">utf8mb4</span><span class="w"> </span><span class="k">COLLATE</span><span class="o">=</span><span class="n">utf8mb4_unicode_ci</span><span class="w"> </span><span class="n">ROW_FORMAT</span><span class="o">=</span><span class="k">DYNAMIC</span><span class="p">;</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>character_id</code></td>
+<td><code>fw_characters.id</code>. Primary key. Deleting the character deletes the row.</td>
+</tr>
+<tr>
+<td><code>grid</code></td>
+<td>JSON document: <code>width</code>, <code>height</code>, <code>baseWidth</code>, <code>baseHeight</code>, <code>bonus</code>, <code>nextId</code>, and <code>items</code>. At most 262144 bytes. <code>width</code> and <code>height</code> are the drawn size.</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>Set by the database when the row is written.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="fw_items"><code>fw_items</code><a class="headerlink" href="#fw_items" title="Permanent link">&para;</a></h2>
+<p>Created by <code>fw_inventory</code> from <code>resources/[framework]/fw_inventory/sql/items.sql</code>. One row per item type. This is not a satchel. Placements stay in <code>fw_inventory.grid</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="o">`</span><span class="n">fw_items</span><span class="o">`</span><span class="w"> </span><span class="p">(</span>
+<span class="w">  </span><span class="o">`</span><span class="n">name</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">label</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">48</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">description</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">''</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">width</span><span class="o">`</span><span class="w"> </span><span class="n">tinyint</span><span class="w"> </span><span class="n">unsigned</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">height</span><span class="o">`</span><span class="w"> </span><span class="n">tinyint</span><span class="w"> </span><span class="n">unsigned</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">stack</span><span class="o">`</span><span class="w"> </span><span class="nb">smallint</span><span class="w"> </span><span class="n">unsigned</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">weapon</span><span class="o">`</span><span class="w"> </span><span class="n">tinyint</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">item_group</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">''</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">rotate</span><span class="o">`</span><span class="w"> </span><span class="n">tinyint</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">kit</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">''</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">hash</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">48</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="s1">''</span><span class="p">,</span>
+<span class="w">  </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">name</span><span class="o">`</span><span class="p">)</span>
+<span class="p">)</span><span class="w"> </span><span class="n">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">CHARSET</span><span class="o">=</span><span class="n">utf8mb4</span><span class="w"> </span><span class="k">COLLATE</span><span class="o">=</span><span class="n">utf8mb4_unicode_ci</span><span class="p">;</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>Primary key. Lowercase letters, digits, and underscores. The name <code>AddItem</code> uses.</td>
+</tr>
+<tr>
+<td><code>label</code></td>
+<td>Satchel text.</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>Side panel.</td>
+</tr>
+<tr>
+<td><code>width</code>, <code>height</code></td>
+<td>Cell footprint before turning.</td>
+</tr>
+<tr>
+<td><code>stack</code></td>
+<td>Copies that share one footprint. <code>1</code> means each copy is placed on its own.</td>
+</tr>
+<tr>
+<td><code>weapon</code></td>
+<td><code>1</code> when the item never stacks. A weapon is always one placement.</td>
+</tr>
+<tr>
+<td><code>item_group</code></td>
+<td>Filter and sort group. <code>ammo</code>, <code>animals</code>, <code>documents</code>, <code>food</code>, <code>herbs</code>, <code>horse</code>, <code>medical</code>, <code>tools</code>, <code>valuables</code>, <code>currency</code>, <code>weapons</code>, <code>materials</code>, or <code>container</code>.</td>
+</tr>
+<tr>
+<td><code>rotate</code></td>
+<td><code>1</code> when the player can turn it.</td>
+</tr>
+<tr>
+<td><code>kit</code></td>
+<td>Set only on a weapon item. Which equip slot it fills: <code>lasso</code>, <code>binoculars</code>, <code>lantern</code>, <code>bow</code>, <code>revolver</code>, <code>pistol</code>, <code>longarm</code>, <code>melee</code>, or <code>fishingrod</code>. Empty string on a non-weapon item.</td>
+</tr>
+<tr>
+<td><code>hash</code></td>
+<td>Set only on a weapon item. The game's weapon name, such as <code>WEAPON_REVOLVER_CATTLEMAN</code>. Empty string on a non-weapon item.</td>
+</tr>
+</tbody>
+</table>
+<p>An older version of this table had an <code>image</code> column instead of <code>kit</code> and <code>hash</code>. That column is dropped on start if it is still there. The picture is <code>fw_inventory/images/&lt;name&gt;.png</code>. An item file can set <code>image</code> to another name in that folder, such as <code>bill_stack_single</code> for dollars. That name stays on the item file. It is not a column. <code>rarity</code> and <code>mission</code> stay on the item file too, and they are copied back when the files load. Files in <code>items/</code> are written into this table on start and on <code>fw_items_reload</code>. A row inserted for an admin tool stays until it is deleted. The field list and the insert example are in <a href="../fw-inventory/">fw_inventory</a>. The <code>container</code> block on a pouch is not a column. It stays on the item file and is merged back onto the catalog when the files load.</p>
+<h2 id="fw_storage"><code>fw_storage</code><a class="headerlink" href="#fw_storage" title="Permanent link">&para;</a></h2>
+<p>Created by <code>fw_inventory</code> from <code>resources/[framework]/fw_inventory/sql/storage.sql</code>. One row per chest, wagon, horse, or container item. The id is chosen by the caller. Opening and moving items is in <a href="../fw-inventory/">fw_inventory</a>.</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="o">`</span><span class="n">fw_storage</span><span class="o">`</span><span class="w"> </span><span class="p">(</span>
+<span class="w">  </span><span class="o">`</span><span class="n">id</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">64</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">grid</span><span class="o">`</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">groups</span><span class="o">`</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">updated_at</span><span class="o">`</span><span class="w"> </span><span class="k">timestamp</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="p">,</span>
+<span class="w">  </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">id</span><span class="o">`</span><span class="p">)</span>
+<span class="p">)</span><span class="w"> </span><span class="n">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">CHARSET</span><span class="o">=</span><span class="n">utf8mb4</span><span class="w"> </span><span class="k">COLLATE</span><span class="o">=</span><span class="n">utf8mb4_unicode_ci</span><span class="w"> </span><span class="n">ROW_FORMAT</span><span class="o">=</span><span class="k">DYNAMIC</span><span class="p">;</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>Caller id, such as <code>chest:valentine_1</code> or <code>item:</code> plus a container id.</td>
+</tr>
+<tr>
+<td><code>grid</code></td>
+<td>Same document shape as a satchel: <code>width</code>, <code>height</code>, <code>baseWidth</code>, <code>baseHeight</code>, and <code>items</code>. At most 262144 bytes.</td>
+</tr>
+<tr>
+<td><code>groups</code></td>
+<td>JSON list of item groups this row accepts. <code>NULL</code> accepts every group.</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>Set by the database when the row is written.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="fw_currency"><code>fw_currency</code><a class="headerlink" href="#fw_currency" title="Permanent link">&para;</a></h2>
+<p>Created by <code>fw_money</code> from <code>resources/[framework]/fw_money/sql/currency.sql</code>. One row per character and currency name. This is the dollars that character is carrying in the satchel. Do not write this table from your script. Use <a href="../fw-money/">fw_money</a>.</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="o">`</span><span class="n">fw_currency</span><span class="o">`</span><span class="w"> </span><span class="p">(</span>
+<span class="w">  </span><span class="o">`</span><span class="n">character_id</span><span class="o">`</span><span class="w"> </span><span class="nb">int</span><span class="w"> </span><span class="n">unsigned</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">name</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">amount</span><span class="o">`</span><span class="w"> </span><span class="nb">int</span><span class="w"> </span><span class="n">unsigned</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">  </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">character_id</span><span class="o">`</span><span class="p">,</span><span class="w"> </span><span class="o">`</span><span class="n">name</span><span class="o">`</span><span class="p">),</span>
+<span class="w">  </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="o">`</span><span class="n">fk_fw_currency_character</span><span class="o">`</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">character_id</span><span class="o">`</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="o">`</span><span class="n">fw_characters</span><span class="o">`</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">id</span><span class="o">`</span><span class="p">)</span>
+<span class="w">    </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CASCADE</span>
+<span class="p">)</span><span class="w"> </span><span class="n">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">CHARSET</span><span class="o">=</span><span class="n">utf8mb4</span><span class="w"> </span><span class="k">COLLATE</span><span class="o">=</span><span class="n">utf8mb4_unicode_ci</span><span class="p">;</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>character_id</code></td>
+<td><code>fw_characters.id</code>. Deleting the character deletes the row.</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>Currency name. <code>cash</code> is dollars.</td>
+</tr>
+<tr>
+<td><code>amount</code></td>
+<td>Whole dollars this character can spend. That is loose piles in the satchel, plus piles inside a pouch still in the satchel. Each pile holds at most 500.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="fw_storage_currency"><code>fw_storage_currency</code><a class="headerlink" href="#fw_storage_currency" title="Permanent link">&para;</a></h2>
+<p>Created by <code>fw_money</code> from <code>resources/[framework]/fw_money/sql/storage_currency.sql</code>. One row per storage id and currency name. This is the dollars inside a chest, or inside a pouch that is on the ground. A pouch still in the satchel does not keep a row. Those dollars stay on <code>fw_currency</code>. The row is removed when the amount returns to 0, and when that storage is deleted. Do not write this table from your script.</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="o">`</span><span class="n">fw_storage_currency</span><span class="o">`</span><span class="w"> </span><span class="p">(</span>
+<span class="w">  </span><span class="o">`</span><span class="n">storage_id</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">64</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">name</span><span class="o">`</span><span class="w"> </span><span class="nb">varchar</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">amount</span><span class="o">`</span><span class="w"> </span><span class="nb">int</span><span class="w"> </span><span class="n">unsigned</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">  </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">storage_id</span><span class="o">`</span><span class="p">,</span><span class="w"> </span><span class="o">`</span><span class="n">name</span><span class="o">`</span><span class="p">)</span>
+<span class="p">)</span><span class="w"> </span><span class="n">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">CHARSET</span><span class="o">=</span><span class="n">utf8mb4</span><span class="w"> </span><span class="k">COLLATE</span><span class="o">=</span><span class="n">utf8mb4_unicode_ci</span><span class="p">;</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>storage_id</code></td>
+<td>The storage id from <code>fw_storage</code>, such as <code>item:</code> plus a container id, or a chest id.</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>Currency name. <code>cash</code> is dollars.</td>
+</tr>
+<tr>
+<td><code>amount</code></td>
+<td>Whole dollars in that storage.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="fw_weapons"><code>fw_weapons</code><a class="headerlink" href="#fw_weapons" title="Permanent link">&para;</a></h2>
+<p>Created by <code>fw_weapons</code> from <code>resources/[framework]/fw_weapons/sql/weapons.sql</code>. One row per character. Do not write this table from your script. Read and change the kit with <a href="../fw-weapons/">fw_weapons</a>.</p>
+<div class="highlight"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="o">`</span><span class="n">fw_weapons</span><span class="o">`</span><span class="w"> </span><span class="p">(</span>
+<span class="w">  </span><span class="o">`</span><span class="n">character_id</span><span class="o">`</span><span class="w"> </span><span class="nb">int</span><span class="w"> </span><span class="n">unsigned</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">kit</span><span class="o">`</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">ammo</span><span class="o">`</span><span class="w"> </span><span class="n">json</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
+<span class="w">  </span><span class="o">`</span><span class="n">updated_at</span><span class="o">`</span><span class="w"> </span><span class="k">timestamp</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CURRENT_TIMESTAMP</span><span class="p">,</span>
+<span class="w">  </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">character_id</span><span class="o">`</span><span class="p">),</span>
+<span class="w">  </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="o">`</span><span class="n">fk_fw_weapons_character</span><span class="o">`</span>
+<span class="w">    </span><span class="k">FOREIGN</span><span class="w"> </span><span class="k">KEY</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">character_id</span><span class="o">`</span><span class="p">)</span><span class="w"> </span><span class="k">REFERENCES</span><span class="w"> </span><span class="o">`</span><span class="n">fw_characters</span><span class="o">`</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">id</span><span class="o">`</span><span class="p">)</span>
+<span class="w">    </span><span class="k">ON</span><span class="w"> </span><span class="k">DELETE</span><span class="w"> </span><span class="k">CASCADE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">UPDATE</span><span class="w"> </span><span class="k">CASCADE</span>
+<span class="p">)</span><span class="w"> </span><span class="n">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">CHARSET</span><span class="o">=</span><span class="n">utf8mb4</span><span class="w"> </span><span class="k">COLLATE</span><span class="o">=</span><span class="n">utf8mb4_unicode_ci</span><span class="w"> </span><span class="n">ROW_FORMAT</span><span class="o">=</span><span class="k">DYNAMIC</span><span class="p">;</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>character_id</code></td>
+<td><code>fw_characters.id</code>. Deleting the character deletes the row.</td>
+</tr>
+<tr>
+<td><code>kit</code></td>
+<td>The equipped slots. Read them with <code>GetKit</code>.</td>
+</tr>
+<tr>
+<td><code>ammo</code></td>
+<td>How many rounds of each kind are on the character. <code>fw_weapons</code> writes this when the player uses a box or fires.</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>Set by the database when the row is written.</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "content.code.copy", "search.suggest"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+    
+  </body>
+</html>

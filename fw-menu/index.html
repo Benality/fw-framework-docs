@@ -1,0 +1,1532 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="API reference for the Project Territory framework. Each export includes the arguments, the rejection cases, and an example.">
+      
+      
+      
+      
+        <link rel="prev" href="../fw-core/">
+      
+      
+        <link rel="next" href="../fw-guide/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/territory-crest.webp">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>fw_menu - Project Territory Framework Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="territory" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#fw_menu" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Project Territory Framework Docs" class="md-header__button md-logo" aria-label="Project Territory Framework Docs" data-md-component="logo">
+      
+  <img src="../assets/images/territory-crest.webp" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Project Territory Framework Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              fw_menu
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="territory" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href=".." class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../tutorial-crafting/" class="md-tabs__link">
+          
+  
+  
+  Tutorials
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Project Territory Framework Docs" class="md-nav__button md-logo" aria-label="Project Territory Framework Docs" data-md-component="logo">
+      
+  <img src="../assets/images/territory-crest.webp" alt="logo">
+
+    </a>
+    Project Territory Framework Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_menu
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_menu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#get-the-menu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Get the menu
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Get the menu">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#getmenudata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetMenuData
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-a-menu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open a menu
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-submit-cancel-and-change-receive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What submit, cancel, and change receive
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#menu-handle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Menu handle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-calls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other calls
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-the-player-closes-the-menu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When the player closes the menu
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setscale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SetScale
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#state-bags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        State bags
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Keys
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-admin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_admin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-characters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_characters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-creator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_creator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-clothing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_clothing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-inventory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_inventory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-money/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_money
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-weapons/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_weapons
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-satchel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_satchel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-stores/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_stores
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-trade/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_trade
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vorp-lib/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    vorp_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../database/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorials
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tutorials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial-crafting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crafting resource
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#get-the-menu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Get the menu
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Get the menu">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#getmenudata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetMenuData
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-a-menu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open a menu
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-submit-cancel-and-change-receive" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What submit, cancel, and change receive
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#menu-handle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Menu handle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#other-calls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Other calls
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-the-player-closes-the-menu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When the player closes the menu
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setscale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SetScale
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#state-bags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        State bags
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Keys
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="fw_menu">fw_menu<a class="headerlink" href="#fw_menu" title="Permanent link">&para;</a></h1>
+<p>Runs in the player's game. Open a menu on their screen. This does not know about accounts, characters, or items.</p>
+<p>There is no code on the server. Every call on this page is an export from a client script, so call it from your own client script — not from the server.</p>
+<h2 id="get-the-menu">Get the menu<a class="headerlink" href="#get-the-menu" title="Permanent link">&para;</a></h2>
+<h3 id="getmenudata">GetMenuData<a class="headerlink" href="#getmenudata" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. This is the menu. Ask for it once, in the script that opens menus.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- The menu for this player's game.</span>
+<span class="c1">---@return table MenuData</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">MenuData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_menu</span><span class="p">:</span><span class="nf">GetMenuData</span><span class="p">()</span>
+</code></pre></div>
+<p>This is the same table <code>fw_menu</code> uses for itself, not a copy. Stick to the calls on this page. Other fields you might see on it are for <code>fw_menu</code>'s own bookkeeping and can change without notice.</p>
+<p>The same menu is also available from the message <code>fw_menu:getData</code>. That message stays in the player's game. Your script sends it, and passes a function. The menu calls that function with the menu table. <code>GetMenuData</code> is the easier way. Use the message only if you cannot call the export yet.</p>
+<div class="highlight"><pre><span></span><code><span class="nf">TriggerEvent</span><span class="p">(</span><span class="s1">'fw_menu:getData'</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">MenuData</span><span class="p">)</span>
+<span class="w">    </span><span class="nv">MenuData</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s1">'default'</span><span class="p">,</span><span class="w"> </span><span class="s1">'myshop'</span><span class="p">,</span><span class="w"> </span><span class="s1">'main'</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nv">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Shop'</span><span class="p">,</span>
+<span class="w">        </span><span class="nv">elements</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="p">{</span><span class="w"> </span><span class="nv">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Bread'</span><span class="p">,</span><span class="w"> </span><span class="nv">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'bread'</span><span class="w"> </span><span class="p">},</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">    </span><span class="p">},</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">data</span><span class="p">,</span><span class="w"> </span><span class="nv">menu</span><span class="p">)</span>
+<span class="w">        </span><span class="nv">menu</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+<span class="w">    </span><span class="kr">end</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">data</span><span class="p">,</span><span class="w"> </span><span class="nv">menu</span><span class="p">)</span>
+<span class="w">        </span><span class="nv">menu</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+<span class="w">    </span><span class="kr">end</span><span class="p">)</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="open-a-menu">Open a menu<a class="headerlink" href="#open-a-menu" title="Permanent link">&para;</a></h2>
+<p>Opens a list on the player's screen. You get back a handle. The functions you pass in receive that same handle as <code>menu</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Opens a menu. You get back the handle the functions below receive as menu.</span>
+<span class="c1">---@param menuType string use 'default'</span>
+<span class="c1">---@param namespace string your script or feature name</span>
+<span class="c1">---@param name string menu name inside that name</span>
+<span class="c1">---@param data table title, rows, and options</span>
+<span class="c1">---@param submit function|nil runs with (data, menu) when the player confirms a row, or steps a slider</span>
+<span class="c1">---@param cancel function|nil runs with (data, menu) when the player backs out</span>
+<span class="c1">---@param change function|nil runs with (data, menu) when the highlight or a slider moves</span>
+<span class="c1">---@param close function|nil runs with no arguments after the menu has closed</span>
+<span class="c1">---@return table menu</span>
+<span class="nv">MenuData</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="nv">menuType</span><span class="p">,</span><span class="w"> </span><span class="nv">namespace</span><span class="p">,</span><span class="w"> </span><span class="nv">name</span><span class="p">,</span><span class="w"> </span><span class="nv">data</span><span class="p">,</span><span class="w"> </span><span class="nv">submit</span><span class="p">,</span><span class="w"> </span><span class="nv">cancel</span><span class="p">,</span><span class="w"> </span><span class="nv">change</span><span class="p">,</span><span class="w"> </span><span class="nv">close</span><span class="p">)</span>
+</code></pre></div>
+<p><code>menuType</code> is <code>default</code>. That is the only built-in kind. Use <code>namespace</code> and <code>name</code> together so two menus do not get mixed up.</p>
+<p>If the player closed this exact menu (same <code>menuType</code>, <code>namespace</code>, and <code>name</code>) before, the row they had highlighted stays highlighted the next time it opens. That memory is kept by <code>fw_menu</code> itself and is forgotten when <code>fw_menu</code> restarts, not when your own script restarts.</p>
+<p><code>data</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>title</code></td>
+<td>Header.</td>
+</tr>
+<tr>
+<td><code>subtext</code></td>
+<td>Line under the header.</td>
+</tr>
+<tr>
+<td><code>elements</code></td>
+<td>Rows, in order.</td>
+</tr>
+<tr>
+<td><code>isGrid</code></td>
+<td>Icon grid instead of a list.</td>
+</tr>
+<tr>
+<td><code>disableMovement</code></td>
+<td>The player cannot walk while this menu is open. Nested menus share one freeze and release it when the last one closes.</td>
+</tr>
+<tr>
+<td><code>lockInventory</code></td>
+<td>While this menu is open, the satchel should stay closed. It sets <code>LocalPlayer.state.fwInventoryBusy</code> to true, and back to false when the last menu that asked for this has closed.</td>
+</tr>
+</tbody>
+</table>
+<p>A row:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>label</code></td>
+<td>Text on the row.</td>
+</tr>
+<tr>
+<td><code>value</code></td>
+<td>What you get back when the player confirms.</td>
+</tr>
+<tr>
+<td><code>desc</code></td>
+<td>Text shown for the highlighted row.</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>Leave it out for a normal row. <code>slider</code> for a slider.</td>
+</tr>
+<tr>
+<td><code>min</code>, <code>max</code>, <code>hop</code></td>
+<td>Slider range and step. <code>hop</code> defaults to 1.</td>
+</tr>
+<tr>
+<td><code>options</code></td>
+<td>Labels for a slider that is not a number range. <code>value</code> is the index, starting at 0.</td>
+</tr>
+<tr>
+<td><code>image</code></td>
+<td>Icon name when <code>isGrid</code> is true.</td>
+</tr>
+</tbody>
+</table>
+<p>The menu screen loads a grid icon from a fixed web path built from <code>image</code>, and that path points at a resource named <code>ip-inventory</code> (<code>nui://ip-inventory/web/images/items/&lt;image&gt;.png</code>). It is not <code>fw_menu</code>'s own path. Grid icons only show up if something on this server is actually serving files at that address. If nothing is, the row still works — the player just sees no icon.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">MenuData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_menu</span><span class="p">:</span><span class="nf">GetMenuData</span><span class="p">()</span>
+
+<span class="nv">MenuData</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s1">'default'</span><span class="p">,</span><span class="w"> </span><span class="s1">'myshop'</span><span class="p">,</span><span class="w"> </span><span class="s1">'main'</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nv">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Shop'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">subtext</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Select an item'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">disableMovement</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">elements</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nv">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Bread'</span><span class="p">,</span><span class="w"> </span><span class="nv">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'bread'</span><span class="p">,</span><span class="w"> </span><span class="nv">desc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Fresh bread'</span><span class="w"> </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nv">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Amount'</span><span class="p">,</span><span class="w"> </span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'slider'</span><span class="p">,</span><span class="w"> </span><span class="nv">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nv">min</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nv">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="nv">hop</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="p">},</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">data</span><span class="p">,</span><span class="w"> </span><span class="nv">menu</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">data</span><span class="p">.</span><span class="py">current</span><span class="p">.</span><span class="py">value</span><span class="p">)</span>
+<span class="w">    </span><span class="nv">menu</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+<span class="kr">end</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">data</span><span class="p">,</span><span class="w"> </span><span class="nv">menu</span><span class="p">)</span>
+<span class="w">    </span><span class="nv">menu</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+<p>A slider row is different from the other rows: moving it with Left or Right also calls your <code>submit</code> function right away, once per step, with <code>data.current</code> set to that slider row. It does not wait for the player to press Enter. If your <code>submit</code> function only expects a confirm value such as <code>'confirm'</code>, check <code>data.current.value</code> before acting on it, the same way the example above only closes the menu — a plain row's submit and a slider's submit both go through the same function.</p>
+<h2 id="what-submit-cancel-and-change-receive">What submit, cancel, and change receive<a class="headerlink" href="#what-submit-cancel-and-change-receive" title="Permanent link">&para;</a></h2>
+<p>The <code>data</code> your <code>submit</code> and <code>change</code> functions receive is not the <code>data</code> you gave <code>Open</code>. It is a small table about the one row involved:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>data.current</code></td>
+<td>The row that was confirmed or just changed — the same fields you gave it (<code>label</code>, <code>value</code>, <code>desc</code>, and so on), with the slider's <code>value</code> up to date if it is a slider.</td>
+</tr>
+<tr>
+<td><code>data.elements</code></td>
+<td>All of this menu's rows, as currently shown. Most scripts only need <code>data.current</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><code>cancel</code> receives a <code>data</code> with neither of those — there is nothing useful to read from it. You already know which menu was cancelled, because <code>cancel</code> is the function you gave that menu's <code>Open</code> call.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">MenuData</span><span class="p">.</span><span class="nf">Open</span><span class="p">(</span><span class="s1">'default'</span><span class="p">,</span><span class="w"> </span><span class="s1">'myshop'</span><span class="p">,</span><span class="w"> </span><span class="s1">'main'</span><span class="p">,</span><span class="w"> </span><span class="nv">shopData</span><span class="p">,</span>
+<span class="w">    </span><span class="kr">function</span><span class="p">(</span><span class="nv">data</span><span class="p">,</span><span class="w"> </span><span class="nv">menu</span><span class="p">)</span><span class="w"> </span><span class="c1">-- submit</span>
+<span class="w">        </span><span class="nb">print</span><span class="p">(</span><span class="s1">'picked'</span><span class="p">,</span><span class="w"> </span><span class="nv">data</span><span class="p">.</span><span class="py">current</span><span class="p">.</span><span class="py">value</span><span class="p">)</span>
+<span class="w">        </span><span class="nv">menu</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+<span class="w">    </span><span class="kr">end</span><span class="p">,</span>
+<span class="w">    </span><span class="kr">function</span><span class="p">(</span><span class="nv">data</span><span class="p">,</span><span class="w"> </span><span class="nv">menu</span><span class="p">)</span><span class="w"> </span><span class="c1">-- cancel</span>
+<span class="w">        </span><span class="nv">menu</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+<span class="w">    </span><span class="kr">end</span><span class="p">,</span>
+<span class="w">    </span><span class="kr">function</span><span class="p">(</span><span class="nv">data</span><span class="p">,</span><span class="w"> </span><span class="nv">menu</span><span class="p">)</span><span class="w"> </span><span class="c1">-- change</span>
+<span class="w">        </span><span class="nb">print</span><span class="p">(</span><span class="s1">'highlighted'</span><span class="p">,</span><span class="w"> </span><span class="nv">data</span><span class="p">.</span><span class="py">current</span><span class="p">.</span><span class="py">value</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">end</span>
+<span class="p">)</span>
+</code></pre></div>
+<h2 id="menu-handle">Menu handle<a class="headerlink" href="#menu-handle" title="Permanent link">&para;</a></h2>
+<p>The functions you passed to <code>Open</code> receive <code>menu</code>. <code>GetOpened</code> gives you the same kind of handle.</p>
+<table>
+<thead>
+<tr>
+<th>Call</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>menu.close()</code></td>
+<td>Closes this menu and runs the close function you gave <code>Open</code>.</td>
+</tr>
+<tr>
+<td><code>menu.refresh()</code></td>
+<td>Sends the current rows to the screen again.</td>
+</tr>
+<tr>
+<td><code>menu.setElement(index, key, value)</code></td>
+<td>Changes one field. <code>index</code> starts at 1.</td>
+</tr>
+<tr>
+<td><code>menu.setElements(elements)</code></td>
+<td>Replaces the row list.</td>
+</tr>
+<tr>
+<td><code>menu.setTitle(title)</code></td>
+<td>Changes the header.</td>
+</tr>
+<tr>
+<td><code>menu.update(query, newData)</code></td>
+<td>On every row whose fields match <code>query</code>, copies the fields from <code>newData</code>.</td>
+</tr>
+<tr>
+<td><code>menu.addNewElement(element)</code></td>
+<td>Adds a row.</td>
+</tr>
+<tr>
+<td><code>menu.removeElement(query)</code></td>
+<td>Removes every row whose fields match <code>query</code>.</td>
+</tr>
+<tr>
+<td><code>menu.removeElementByValue(value, stop)</code></td>
+<td>Removes rows with that <code>value</code>. <code>stop</code> true removes only the first.</td>
+</tr>
+<tr>
+<td><code>menu.removeElementByIndex(index)</code></td>
+<td>Removes that row. <code>index</code> starts at 1.</td>
+</tr>
+</tbody>
+</table>
+<p><code>menu.data</code> is also there to read, not just a parameter you handed in — it is the live row list <code>fw_menu</code> is drawing from. After a slider's <code>change</code> fires, its updated number is already in <code>menu.data.elements[index].value</code>, which is how the quantity example above could read it back. <code>menu.type</code>, <code>menu.namespace</code>, and <code>menu.name</code> are on the handle too, which is useful when you pulled a handle out of <code>GetOpenedMenus()</code> and need to tell which menu it is.</p>
+<h2 id="other-calls">Other calls<a class="headerlink" href="#other-calls" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Call</th>
+<th>Returns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MenuData.IsOpen(menuType, namespace, name)</code></td>
+<td>True when that menu is open.</td>
+</tr>
+<tr>
+<td><code>MenuData.GetOpened(menuType, namespace, name)</code></td>
+<td>The open menu, or nothing.</td>
+</tr>
+<tr>
+<td><code>MenuData.GetOpenedMenus()</code></td>
+<td>A list of open menus.</td>
+</tr>
+<tr>
+<td><code>MenuData.Close(menuType, namespace, name)</code></td>
+<td>Closes that menu.</td>
+</tr>
+<tr>
+<td><code>MenuData.CloseAll()</code></td>
+<td>Closes every open menu.</td>
+</tr>
+<tr>
+<td><code>MenuData.ReOpen(menu)</code></td>
+<td>Opens a menu that was closed, using a table from <code>GetOpenedMenus</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><code>fw_menu</code> calls <code>ReOpen</code> on its own: if the player opens RedM's pause menu while your menu is open, <code>fw_menu</code> closes it, then reopens it once they leave the pause menu. You will not normally call <code>ReOpen</code> yourself — it is here for the rare case where you saved a handle from <code>GetOpenedMenus()</code> and want to bring that exact menu back.</p>
+<h2 id="when-the-player-closes-the-menu">When the player closes the menu<a class="headerlink" href="#when-the-player-closes-the-menu" title="Permanent link">&para;</a></h2>
+<p><code>fw_menu:closed</code> stays in the player's game. Your script hears it only if it is already running. It has no extra information.</p>
+<p>It is sent at the moment the player presses Backspace to back out of the menu screen — the same moment the <code>cancel</code> function you gave that menu runs. It is not sent when your own script closes a menu by calling <code>menu.close()</code>, <code>MenuData.Close()</code>, or <code>MenuData.CloseAll()</code>. Use it for something like restoring the player's cursor or HUD in general, not as a per-menu close notice — for that, use the <code>cancel</code> or <code>close</code> function you gave <code>Open</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nf">AddEventHandler</span><span class="p">(</span><span class="s1">'fw_menu:closed'</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">()</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="setscale">SetScale<a class="headerlink" href="#setscale" title="Permanent link">&para;</a></h2>
+<p>Runs in the player's game. Exists to change how large the menu is drawn, with <code>1</code> meant as the normal size. In the current menu screen nothing is listening for this message yet, so calling it does not change anything the player sees today. It is safe to call — it will not error.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Sends a resize message to the menu screen. Has no visible effect until the menu screen listens for it.</span>
+<span class="c1">---@param scale number</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_menu</span><span class="p">:</span><span class="nf">SetScale</span><span class="p">(</span><span class="nv">scale</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nv">exports</span><span class="p">.</span><span class="py">fw_menu</span><span class="p">:</span><span class="nf">SetScale</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+<p><code>MenuData.SetScale(1)</code> is the same call after you have the menu table from <code>GetMenuData</code>.</p>
+<h2 id="state-bags">State bags<a class="headerlink" href="#state-bags" title="Permanent link">&para;</a></h2>
+<p><code>fwInventoryBusy</code> is the only one. It is yes while a menu that used <code>lockInventory</code> is open. The bag screen should stay closed while it is yes. It is set with replication on, so the server can technically read it too, but it exists for the player's own game to check — read it client-side unless you have a specific reason not to. Set it by opening a menu with <code>lockInventory = true</code>. Do not set it yourself, or the bag and the menu will disagree when the menu closes.</p>
+<div class="highlight"><pre><span></span><code><span class="kr">if</span><span class="w"> </span><span class="nv">LocalPlayer</span><span class="p">.</span><span class="py">state</span><span class="p">.</span><span class="py">fwInventoryBusy</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h2 id="keys">Keys<a class="headerlink" href="#keys" title="Permanent link">&para;</a></h2>
+<p>Enter confirms the highlighted row. Backspace cancels. Up and Down move the highlight. Left and Right change a slider — and, unlike Up and Down, each press also runs that slider row through <code>submit</code>, not just <code>change</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "content.code.copy", "search.suggest"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+    
+  </body>
+</html>

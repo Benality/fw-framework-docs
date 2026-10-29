@@ -1,0 +1,3131 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="API reference for the Project Territory framework. Each export includes the arguments, the rejection cases, and an example.">
+      
+      
+      
+      
+        <link rel="prev" href="../fw-clothing/">
+      
+      
+        <link rel="next" href="../fw-money/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/territory-crest.webp">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>fw_inventory - Project Territory Framework Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="territory" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#fw_inventory" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Project Territory Framework Docs" class="md-header__button md-logo" aria-label="Project Territory Framework Docs" data-md-component="logo">
+      
+  <img src="../assets/images/territory-crest.webp" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Project Territory Framework Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              fw_inventory
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="territory" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href=".." class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../tutorial-crafting/" class="md-tabs__link">
+          
+  
+  
+  Tutorials
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Project Territory Framework Docs" class="md-nav__button md-logo" aria-label="Project Territory Framework Docs" data-md-component="logo">
+      
+  <img src="../assets/images/territory-crest.webp" alt="logo">
+
+    </a>
+    Project Territory Framework Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-menu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_menu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-admin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_admin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-characters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_characters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-creator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_creator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-clothing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_clothing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_inventory
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_inventory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#a-chest-a-wagon-or-a-horse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A chest, a wagon, or a horse
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="A chest, a wagon, or a horse">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#which-items-can-go-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which items can go in
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-pouch-or-any-item-that-holds-other-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A pouch, or any item that holds other items
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-parcel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A parcel
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#calls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Calls
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Calls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#isready" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IsReady
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registeritem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RegisterItem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registerusable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RegisterUsable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getdefinition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetDefinition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getcatalog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetCatalog
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#additem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AddItem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#removeitem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RemoveItem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#takecurrency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TakeCurrency
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#takeplacement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TakePlacement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#removeitemdeferred" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RemoveItemDeferred
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getitems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetItems
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#canfit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CanFit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#placeat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PlaceAt
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setgridbonus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SetGridBonus
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cleargridbonus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ClearGridBonus
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#openstorage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OpenStorage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#closestorage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CloseStorage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registerstorage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RegisterStorage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#openregistered" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OpenRegistered
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unregisterstorage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UnregisterStorage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pullforkit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PullForKit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sethold" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SetHold
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#committrade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CommitTrade
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#messages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Messages
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Messages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fw_inventoryready" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_inventory:ready
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fw_inventorychanged" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_inventory:changed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-bag-screen-sends-the-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the bag screen sends the server
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-server-sends-the-bag-screen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the server sends the bag screen
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#console-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Console commands
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#state-bags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        State bags
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#item-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Item file
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Item file">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rarity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rarity
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#picture-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Picture size
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#container-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Container items
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#satchel-screen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Satchel screen
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-money/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_money
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-weapons/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_weapons
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-satchel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_satchel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-stores/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_stores
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-trade/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_trade
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vorp-lib/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    vorp_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../database/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorials
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tutorials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial-crafting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crafting resource
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#a-chest-a-wagon-or-a-horse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A chest, a wagon, or a horse
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="A chest, a wagon, or a horse">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#which-items-can-go-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Which items can go in
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-pouch-or-any-item-that-holds-other-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A pouch, or any item that holds other items
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-parcel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A parcel
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#calls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Calls
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Calls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#isready" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IsReady
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registeritem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RegisterItem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registerusable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RegisterUsable
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getdefinition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetDefinition
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getcatalog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetCatalog
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#additem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AddItem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#removeitem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RemoveItem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#takecurrency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TakeCurrency
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#takeplacement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TakePlacement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#removeitemdeferred" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RemoveItemDeferred
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getitems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetItems
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#canfit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CanFit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#placeat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PlaceAt
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setgridbonus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SetGridBonus
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cleargridbonus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ClearGridBonus
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#openstorage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OpenStorage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#closestorage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CloseStorage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registerstorage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RegisterStorage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#openregistered" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OpenRegistered
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unregisterstorage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UnregisterStorage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pullforkit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PullForKit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sethold" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SetHold
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#committrade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CommitTrade
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#messages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Messages
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Messages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fw_inventoryready" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_inventory:ready
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fw_inventorychanged" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_inventory:changed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-bag-screen-sends-the-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the bag screen sends the server
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-server-sends-the-bag-screen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the server sends the bag screen
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#console-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Console commands
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#state-bags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        State bags
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#item-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Item file
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Item file">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rarity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rarity
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#picture-size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Picture size
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#container-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Container items
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#satchel-screen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Satchel screen
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="fw_inventory">fw_inventory<a class="headerlink" href="#fw_inventory" title="Permanent link">&para;</a></h1>
+<p>Runs on the server. Give a player an item, take one away, add a new kind of item, or open a second grid such as a chest or a pouch.</p>
+<p><code>fw_satchel</code> is the screen the player sees. It draws their bag and, when one is open, the chest or pouch beside it. Your script does not open that screen itself, except with <code>OpenStorage</code>, which opens both.</p>
+<p>Ask <code>IsReady</code> first. If you also listen for <code>fw_inventory:ready</code> and your script starts later, you missed that message. Ask <code>IsReady</code> instead.</p>
+<p>A second grid is the same kind of squares as the player's bag. There are two ways to open one. A chest, a safety deposit box, a wagon, or a horse bag is a storage your script registers, then opens. A pouch is an item the player uses. Those are different jobs. Both are below.</p>
+<h2 id="a-chest-a-wagon-or-a-horse">A chest, a wagon, or a horse<a class="headerlink" href="#a-chest-a-wagon-or-a-horse" title="Permanent link">&para;</a></h2>
+<p>Register the storage when your script starts. The items stay in the database. The registration itself is remembered only while your script is running. When your script stops, the spot in the world goes away, and a restart does not leave a second prompt.</p>
+<p><code>source</code> is the player's number for this visit.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">RegisterStorage</span><span class="p">({</span>
+<span class="w">    </span><span class="nv">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'chest:valentine_1'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Chest'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">categories</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s1">'materials'</span><span class="p">,</span><span class="w"> </span><span class="s1">'tools'</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="nv">acceptWeapons</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">adminOnly</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">shared</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">characters</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">locations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nv">coords</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">vector3</span><span class="p">(</span><span class="o">-</span><span class="mf">308.0</span><span class="p">,</span><span class="w"> </span><span class="mf">776.0</span><span class="p">,</span><span class="w"> </span><span class="mf">118.0</span><span class="p">),</span><span class="w"> </span><span class="nv">distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">2.0</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="p">})</span>
+</code></pre></div>
+<p>Hold at that spot opens the chest. A horse bag or a wagon has no <code>locations</code>. Your horse or wagon script calls <code>OpenRegistered</code> when the player is there.</p>
+<ul>
+<li><code>id</code> is how the chest is remembered. <code>chest:valentine_1</code> is one chest. <code>chest:valentine_2</code> is a different chest. Use lowercase letters, digits, underscore, colon, and hyphen. Start with a letter or a digit. No spaces. Keep it to 64 characters or fewer. Do not start it with <code>item:</code>. That prefix is the storage inside a pouch.</li>
+<li><code>shared = true</code> is one set of items for everyone, saved under that <code>id</code>. A town chest.</li>
+<li><code>shared = false</code> is one set of items per character, saved as that <code>id</code> plus <code>:character:</code> plus the character's id. A safety deposit box, a horse bag, or a wagon. Register it once. Each character gets their own contents the first time they open it. The finished name still has to fit in 64 characters.</li>
+<li><code>characters</code>, on a shared storage, is the list of character ids allowed to open it. Leave it out, or pass nothing, and any character can open it. A personal storage ignores this list. The character id comes from <code>fw_characters</code>.</li>
+<li><code>adminOnly = true</code> means only a player <code>fw_admin</code> counts as an admin can open it. Anyone else gets <code>You cannot open that.</code> It still follows <code>shared</code>. A shared admin chest is one grid. A personal admin chest is one grid per admin. Leave it out and it is false.</li>
+<li><code>locations</code> is optional. Each entry is <code>coords</code> and <code>distance</code>. With no locations, nothing is placed in the world.</li>
+<li><code>contents</code> is optional. A list of <code>{ name = 'bread', count = 2 }</code>. The first time that storage is opened, and it has no saved row yet, those piles are packed in. A later open shows what was left. Taking them out does not pack them again. An empty chest stays empty. A shared chest packs once for everyone. A personal chest (<code>shared = false</code>) packs once for each character, because each character has a different saved grid. Dollars in that list stay on the chest until someone takes them out. A bad list comes back from <code>RegisterStorage</code> as the reason. Leave <code>contents</code> out and the chest starts empty.</li>
+<li><code>width</code> and <code>height</code> are how many squares, from 1 to 24. The example is 8 across and 6 down.</li>
+<li><code>label</code> is the title the player sees, and the words on the prompt. Leave it out and the title is <code>Storage</code>.</li>
+<li>The bag opens at the same time, with the chest beside it. The player drags items between them.</li>
+<li>The player must already be playing a character. Otherwise you get <code>Select a character first.</code></li>
+</ul>
+<p>A script that registered a storage opens it with <code>OpenRegistered</code>, so the personal name, the character list, and <code>adminOnly</code> are applied. <code>OpenStorage</code> is the low-level open. Use it for a storage you did not register. A direct <code>OpenStorage</code> does not add <code>:character:</code>, does not check the character list, and does not check <code>adminOnly</code>.</p>
+<p>One person can have a chest open at a time. The next person gets <code>Someone is using that.</code> One player can have one of these open. Opening a second one closes the first.</p>
+<p><code>CloseStorage</code> hides the chest and leaves the bag open. Closing the bag on the player's screen also closes the chest — that happens on the player's screen, not on this page.</p>
+<p>To make a chest larger later, register it again with the same name and a bigger width or height, or call <code>OpenStorage</code> with that same name. The items stay. Making it smaller, while an item sits on a square that would disappear, comes back as <code>Make room in there first.</code> Nothing is moved.</p>
+<h3 id="which-items-can-go-in">Which items can go in<a class="headerlink" href="#which-items-can-go-in" title="Permanent link">&para;</a></h3>
+<p>Every item has a category. The categories are <code>ammo</code>, <code>animals</code>, <code>documents</code>, <code>food</code>, <code>herbs</code>, <code>horse</code>, <code>medical</code>, <code>tools</code>, <code>valuables</code>, <code>currency</code>, <code>weapons</code>, <code>materials</code>, and <code>container</code>. A pouch uses <code>container</code>. Dollars use <code>currency</code>. The balance a shop spends is on <a href="../fw-money/">fw_money</a>.</p>
+<ul>
+<li>Leave <code>categories</code> out, and every category is allowed, except weapons when <code>acceptWeapons</code> is false.</li>
+<li>Pass a list, and only those categories can be dragged in. Herbs and tools: <code>categories = { 'herbs', 'tools' }</code>.</li>
+<li>An empty list, <code>categories = {}</code>, takes nothing.</li>
+<li>A name that is not in the list above comes back as <code>unknown category</code>.</li>
+<li>Something other than a list of strings, such as a number or a single string, comes back as <code>Invalid storage categories.</code></li>
+<li><code>acceptWeapons</code> is its own yes or no. It is not worked out from the category list. Leave it out on <code>RegisterStorage</code> and it is false, so a gun stays out. <code>true</code> lets weapons in. A weapon is an item whose category is <code>weapons</code>, or one that has a <code>kit</code> or a weapon <code>hash</code>. This is checked when the item is dragged in, including when that open came from a registration. A direct <code>OpenStorage</code> that was never registered still accepts weapons, so an older caller keeps working. A registered storage that refuses a gun shows <code>Weapons do not go in there.</code></li>
+</ul>
+<p>When the player drags the wrong kind of item, they see <code>That does not go in there.</code> The bag itself takes every category.</p>
+<p>A pouch, or any other item that has a <code>container</code> block, cannot be put into a chest, a wagon, a horse bag, or another pouch. The player sees <code>A container cannot go in there.</code> Taking that pouch back out into the bag is allowed. Handing one to another player is allowed.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">OpenRegistered</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="s1">'chest:valentine_1'</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="a-pouch-or-any-item-that-holds-other-items">A pouch, or any item that holds other items<a class="headerlink" href="#a-pouch-or-any-item-that-holds-other-items" title="Permanent link">&para;</a></h2>
+<p>A pouch is an item in the bag. When the player uses it, a second grid opens, the same kind of grid as a chest. You do not call <code>OpenStorage</code> for a pouch. The item does that.</p>
+<p>You add the pouch the same way you add any other item: a file in <code>items/</code>, or <code>RegisterItem</code>. The extra part is <code>container</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">ok</span><span class="p">,</span><span class="w"> </span><span class="nv">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">RegisterItem</span><span class="p">({</span>
+<span class="w">    </span><span class="nv">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'seed_pouch'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Seed Pouch'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">category</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'container'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">stack</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'A small pouch for seeds.'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">container</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nv">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Seed pouch'</span><span class="p">,</span>
+<span class="w">        </span><span class="nv">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">        </span><span class="nv">height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">        </span><span class="nv">categories</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s1">'herbs'</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="p">})</span>
+<span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">ok</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">err</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<p>The same fields work in an item file. The name is the key, so you leave <code>name</code> out of the file. The <a href="#item-file">item file</a> section shows that shape.</p>
+<p><code>items/container.lua</code> already ships with a pouch named <code>herb_pouch</code>, 2 by 2 in the bag with a 6-by-10 grid inside that only takes herbs. You can give that one to a player without registering anything, the same way you'd give any other item that ships in that folder.</p>
+<p>What you pass:</p>
+<ul>
+<li><code>category</code> on the pouch itself is <code>container</code>. That is the filter on the left of the bag. The list inside <code>container.categories</code> is what the pouch accepts.</li>
+<li><code>width</code> and <code>height</code> on the item are how many squares the pouch takes in the bag. Here that is 2 by 2.</li>
+<li><code>container.width</code> and <code>container.height</code> are how many squares are inside the pouch, from 1 to 24. Here that is 4 by 4.</li>
+<li><code>container.label</code> is the title of that second grid.</li>
+<li><code>container.categories</code> follows the same rules as a chest. Leave it out and the pouch takes anything. <code>{ 'herbs' }</code> takes herbs only. A pouch still cannot hold another pouch. The player sees <code>A container cannot go in there.</code></li>
+<li><code>container.contents</code> is optional. The same list as a chest: <code>{ name = 'bread', count = 2 }</code>. The first time that pouch is opened, those piles are packed in. After that it is a normal pouch. The player can put piles back in. Opening it again does not pack the list a second time. Dollars in that list count on the character who is carrying the pouch, the same way dollars already in a carried pouch do. A name that is not an item, a container, a mission item, the wrong category, or a pile that does not fit makes that pouch refuse to open. The server window shows the reason when the item files load.</li>
+<li>A pouch always holds a count of 1. Two pouches cannot share one square, because each one has its own contents.</li>
+</ul>
+<p>A picture named <code>seed_pouch.png</code> goes in <code>fw_inventory/images/</code>. A new picture shows up after <code>ensure fw_inventory</code>.</p>
+<p>Give it to the player with <code>AddItem</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">ok</span><span class="p">,</span><span class="w"> </span><span class="nv">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">AddItem</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="s1">'herb_pouch'</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">ok</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">err</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<p>Each pouch gets its own contents the first time it is used. Two pouches are two different storages. Moving a pouch around the bag keeps the same contents.</p>
+<p>The player opens the bag with B or <code>/satchel</code>, then right-clicks the pouch and chooses Open. The pouch grid appears beside the bag. They drag items in. Close on that panel hides the pouch and leaves the bag open.</p>
+<p>Drag a pile onto the pouch picture in the bag to put the whole pile inside while the pouch stays closed. The pile fills an open pile of the same item, then the first empty square. Split it first when you want to put in less. A pouch that does not take that kind of item says <code>That does not go in there.</code> Another pouch says <code>A container cannot go in there.</code> A full pouch says <code>Not enough room.</code> A pile set aside for a trade stays in the bag, and the reason is <code>That item is in a trade.</code> Opening the pouch and dragging into its panel still works. If that pouch is already the one open beside the bag, the panel shows the pile. Any other open chest stays as it was.</p>
+<p>A use function from <code>RegisterUsable</code> is skipped for a pouch. The pouch menu shows Open, and Open shows the pouch.</p>
+<p>Using a pouch while it is sitting inside another open chest or pouch is refused. The player sees <code>Take it out first.</code> Put it back in the bag, then use it.</p>
+<p>Discard throws the pouch away and deletes what was inside it. <code>RemoveItem</code> does the same. Moving it does not. A pouch that still holds dollars refuses with <code>Empty the bag first.</code> Take the dollars out first, or drop the bag. Dollars themselves refuse Discard with <code>You cannot throw money away.</code></p>
+<p>Dollars in a pouch you are carrying still count on <code>GetCash</code>. Dropping that pouch moves those dollars onto the pouch. They count again when someone picks the pouch up.</p>
+<p>Drop sets the pouch on the ground in front of the player. The contents stay, and the pouch keeps the same size and the same categories. Hold Open at the bag to look inside. Hold Pick up to put it back in a satchel that has room. Anyone nearby can do either. A restart leaves the pouch where it was. Bread, ammo, and guns have Discard only. They do not get Drop. Dollars do not get Drop either. The player puts them in a money bag, then drops that bag. The reason on the dollars themselves is <code>Put that in a bag first.</code></p>
+<h2 id="a-parcel">A parcel<a class="headerlink" href="#a-parcel" title="Permanent link">&para;</a></h2>
+<p>A parcel is a pouch the player only takes things out of. It is for a starter package, or anything else you hand over already packed. Give it with <code>AddItem</code>, the same way as any other item. This does not hand one out when a character is created. Your script does that when you want it to.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">starter_parcel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nv">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Starter parcel'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">category</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'container'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">stack</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'A parcel packed for a new arrival.'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">container</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nv">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Starter parcel'</span><span class="p">,</span>
+<span class="w">        </span><span class="nv">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">        </span><span class="nv">height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">        </span><span class="nv">parcel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">        </span><span class="nv">give</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">        </span><span class="nv">contents</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="p">{</span><span class="w"> </span><span class="nv">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'bread'</span><span class="p">,</span><span class="w"> </span><span class="nv">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span><span class="w"> </span><span class="nv">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'canned_beans'</span><span class="p">,</span><span class="w"> </span><span class="nv">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">},</span>
+<span class="w">            </span><span class="p">{</span><span class="w"> </span><span class="nv">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'biscuits'</span><span class="p">,</span><span class="w"> </span><span class="nv">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">},</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><code>items/container.lua</code> already has that parcel. A picture named <code>starter_parcel.png</code> belongs in <code>fw_inventory/images/</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">ok</span><span class="p">,</span><span class="w"> </span><span class="nv">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">AddItem</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="s1">'starter_parcel'</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">ok</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">err</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<p>What you pass, on top of a pouch:</p>
+<ul>
+<li><code>container.parcel = true</code> makes it a parcel. Leave it out, or set it false, and the item is a normal pouch.</li>
+<li><code>container.give = true</code> lets the player give that parcel, or put it on a trade offer. Leave it out and the parcel stays with them. Give is ignored on a pouch that is not a parcel. The player sees <code>That has to stay with you.</code></li>
+<li><code>container.contents</code> is required on a parcel. At least one <code>{ name, count }</code>. The same rules as a pouch: a real item, not a container, not a mission item, a category the parcel accepts, and the piles have to fit. A parcel with no list, or a list that cannot be packed, refuses to open. The server window shows the reason when the item files load.</li>
+</ul>
+<p>The player right-clicks the parcel and chooses Open. The piles are packed the first time. They drag what they want into the bag. Dragging something from the bag into the parcel is refused with <code>You can only take things out of that.</code> Moving piles around inside the parcel still works.</p>
+<p>When the last pile leaves, the parcel is removed and the panel closes. Discard throws the parcel away while piles are still inside, and those piles are deleted with it. Dollars still inside are taken off the character. If that balance cannot be saved, the parcel stays. Drop is not on the menu. Sending a drop anyway comes back as <code>That cannot be dropped.</code></p>
+<p>A parcel with <code>give = false</code> has no Give. One with <code>give = true</code> can be handed to a nearby player, or set on a trade offer, while it still has piles. The other player opens the same parcel.</p>
+<h2 id="calls">Calls<a class="headerlink" href="#calls" title="Permanent link">&para;</a></h2>
+<h3 id="isready">IsReady<a class="headerlink" href="#isready" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. Yes after the item list has loaded.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- True when inventory calls can be used.</span>
+<span class="c1">---@return boolean ready</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">IsReady</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">IsReady</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="registeritem">RegisterItem<a class="headerlink" href="#registeritem" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. Adds an item type, or replaces one that already exists. The same fields as an item file, plus <code>name</code>. Connected players get the new definition without a restart.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Adds or replaces an item type.</span>
+<span class="c1">--- False and a reason when the name or a field is rejected, or the row cannot be saved.</span>
+<span class="c1">---@param def table</span>
+<span class="c1">---@return boolean ok</span>
+<span class="c1">---@return string|nil err</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">RegisterItem</span><span class="p">(</span><span class="nv">def</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">ok</span><span class="p">,</span><span class="w"> </span><span class="nv">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">RegisterItem</span><span class="p">({</span>
+<span class="w">    </span><span class="nv">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'dried_meat'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Dried Meat'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">category</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'food'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">stack</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Smoked and dried. Keeps for a long time.'</span><span class="p">,</span>
+<span class="p">})</span>
+<span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">ok</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">err</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<p>A later reload from <code>items/</code> updates a name that also has a file. A name that exists only from this call is left in place, because it was already written to the database the first time you registered it.</p>
+<p><code>usable</code> is <code>true</code> or left out. Left out means the item is not usable, so the right-click menu leaves Use off. Set <code>usable = true</code> when the player should see Use. <code>RegisterUsable</code> turns Use on as well, for as long as that callback stays registered.</p>
+<p><code>context</code> is a list of extra right-click rows. Each entry is <code>{ id = 'sharpen', label = 'Sharpen' }</code>, or a short id string such as <code>'sharpen'</code>. The id is lowercase letters, digits, and underscores, up to 32 characters, and it starts with a letter. <code>use</code>, <code>open</code>, <code>give</code>, <code>drop</code>, <code>discard</code>, and <code>split</code> are already taken. The label is the words on the row, clipped to 32 characters. Leave <code>label</code> out and the id is shown.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">ok</span><span class="p">,</span><span class="w"> </span><span class="nv">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">RegisterItem</span><span class="p">({</span>
+<span class="w">    </span><span class="nv">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'knife'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Knife'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">category</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'tools'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">usable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nv">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'sharpen'</span><span class="p">,</span><span class="w"> </span><span class="nv">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Sharpen'</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="p">})</span>
+</code></pre></div>
+<p>When the player picks Sharpen, the server sends <code>fw_inventory:contextOption</code>. That message is local. Hear it with <code>AddEventHandler</code>. It is not queued, so the listener has to be running already. <code>source</code> is the player's number for this visit. <code>item</code> is a copy. <code>option</code> is the id, here <code>sharpen</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nf">AddEventHandler</span><span class="p">(</span><span class="s1">'fw_inventory:contextOption'</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">item</span><span class="p">,</span><span class="w"> </span><span class="nv">option</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">item</span><span class="p">.</span><span class="py">name</span><span class="w"> </span><span class="o">~=</span><span class="w"> </span><span class="s1">'knife'</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="nv">option</span><span class="w"> </span><span class="o">~=</span><span class="w"> </span><span class="s1">'sharpen'</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">        </span><span class="kr">return</span>
+<span class="w">    </span><span class="kr">end</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+<p>If the name you register, or the <code>hash</code> you give it, looks like a known RDR3 weapon such as <code>WEAPON_REVOLVER_SCHOFIELD</code>, you can leave <code>kit</code>, <code>hash</code>, <code>width</code>, <code>height</code>, and <code>rotate</code> out. They are filled in for you.</p>
+<h3 id="registerusable">RegisterUsable<a class="headerlink" href="#registerusable" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. Runs your function when the player uses that item from the satchel. The item is not removed unless you call <code>RemoveItem</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Registers a use callback for an item that already exists.</span>
+<span class="c1">--- False and a reason when the item is missing or the callback is not a function.</span>
+<span class="c1">---@param name string</span>
+<span class="c1">---@param callback fun(source: integer, item: table)</span>
+<span class="c1">---@return boolean ok</span>
+<span class="c1">---@return string|nil err</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">RegisterUsable</span><span class="p">(</span><span class="nv">name</span><span class="p">,</span><span class="w"> </span><span class="nv">callback</span><span class="p">)</span>
+</code></pre></div>
+<p><code>item</code> is a copy: <code>id</code>, <code>name</code>, <code>label</code>, <code>description</code>, <code>count</code>, <code>x</code>, <code>y</code>, <code>rotated</code>, <code>metadata</code>. Changing it does not change the satchel.</p>
+<p>If your resource stops, its use callbacks are removed, and Use leaves the menu for those items unless the item itself has <code>usable = true</code>. Start it again and register them again.</p>
+<p>Use is on the menu when <code>usable</code> is true, or when this callback is registered. Double-click uses that item too. A pouch shows Open instead, and double-click leaves the pouch closed.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">RegisterUsable</span><span class="p">(</span><span class="s1">'dried_meat'</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">item</span><span class="p">)</span>
+<span class="w">    </span><span class="kd">local</span><span class="w"> </span><span class="nv">ok</span><span class="p">,</span><span class="w"> </span><span class="nv">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">RemoveItem</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="s1">'dried_meat'</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">ok</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">        </span><span class="nb">print</span><span class="p">(</span><span class="nv">err</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">end</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+<p>A pouch, or any item with a <code>container</code>, never reaches this callback. Using it opens the pouch instead, as described in <a href="#a-pouch-or-any-item-that-holds-other-items">A pouch</a>.</p>
+<h3 id="getdefinition">GetDefinition<a class="headerlink" href="#getdefinition" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. A snapshot of one kind of item, or nothing when that name is not in the list. Changing what you got back does not change the list.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- One item type, or nil when the name is unknown.</span>
+<span class="c1">---@param name string</span>
+<span class="c1">---@return table|nil definition</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">GetDefinition</span><span class="p">(</span><span class="nv">name</span><span class="p">)</span>
+</code></pre></div>
+<p>The copy can include <code>name</code>, <code>label</code>, <code>description</code>, <code>width</code>, <code>height</code>, <code>stack</code>, <code>weapon</code>, <code>category</code>, <code>rotate</code>, <code>kit</code>, <code>hash</code>, <code>container</code>, <code>currency</code>, <code>image</code>, <code>chamber</code>, <code>rounds</code>, <code>ammo</code>, <code>rarity</code>, and <code>mission</code>. <code>image</code> is the picture file in <code>fw_inventory/images</code>, without <code>.png</code>, when it is not the item name. <code>currency</code> is set on a pile of money, such as <code>cash</code> for dollars. Shops spend that balance through <a href="../fw-money/">fw_money</a>. <code>category</code> is the kind of item, such as <code>food</code> or <code>tools</code>. <code>chamber</code> is which rounds a gun takes, such as <code>revolver</code> or <code>rifle</code>. <code>rounds</code> is how many that gun holds. <code>ammo</code> is set on a box or a bundle of arrows. <code>key</code> is the game ammo name, such as <code>AMMO_REVOLVER</code>. <code>fits</code> is the same word as the gun's <code>chamber</code>. <code>max</code> is the most of that kind the character can hold. <code>refill</code> is how many one use adds. <code>instant</code> is yes for arrows, which apply as soon as they are used. <code>rarity</code> is <code>uncommon</code>, <code>rare</code>, <code>epic</code>, or <code>legendary</code> when the item has a colored frame. It is left out for an ordinary item. <code>mission</code> is yes when that item has to stay in the satchel.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">def</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">GetDefinition</span><span class="p">(</span><span class="s1">'herb_pouch'</span><span class="p">)</span>
+<span class="kr">if</span><span class="w"> </span><span class="nv">def</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="getcatalog">GetCatalog<a class="headerlink" href="#getcatalog" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. A copy of every item type, keyed by name. Same fields as <code>GetDefinition</code>. Changing the copy does not change the list.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Every item type, keyed by name.</span>
+<span class="c1">---@return table catalog</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">GetCatalog</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">catalog</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">GetCatalog</span><span class="p">()</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">rounds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">catalog</span><span class="p">.</span><span class="py">ammo_revolver</span>
+<span class="kr">if</span><span class="w"> </span><span class="nv">rounds</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="additem">AddItem<a class="headerlink" href="#additem" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. Puts items into the satchel of the character this player is playing. It finds room first. If the whole count does not fit, nothing is added.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Adds items to the active character's satchel.</span>
+<span class="c1">--- False and a reason when the item is unknown, the player has no character, or it does not fit.</span>
+<span class="c1">---@param source integer</span>
+<span class="c1">---@param name string</span>
+<span class="c1">---@param count integer|nil</span>
+<span class="c1">---@param metadata table|nil</span>
+<span class="c1">---@return boolean ok</span>
+<span class="c1">---@return string|nil err</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">AddItem</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">name</span><span class="p">,</span><span class="w"> </span><span class="nv">count</span><span class="p">,</span><span class="w"> </span><span class="nv">metadata</span><span class="p">)</span>
+</code></pre></div>
+<p><code>count</code> defaults to 1. The maximum for one call is 500. Stacks that already match the name and metadata are filled first. A weapon never stacks on another weapon. A container item receives its own <code>metadata.containerId</code> on each new placement.</p>
+<p>Ammo is a box, or a bundle of arrows. <code>stack</code> is the most of that item the satchel can hold. Giving more than that fails with <code>You cannot carry any more of those.</code> Using the item from the satchel puts <code>refill</code> rounds on the character, up to <code>max</code>. A box takes about two seconds. The bag stays open while the revolver-cylinder loading prompt shows at the bottom right. Backspace closes the bag. A box that is still opening is cancelled, and the box stays in the bag. Arrows apply right away. The box is not used up when the character is already at <code>max</code>. A shop sells one box:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">ok</span><span class="p">,</span><span class="w"> </span><span class="nv">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">AddItem</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="s1">'ammo_revolver'</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">ok</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">err</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<p>The player uses it from the satchel. The rounds stay on the character when they log out, and they come back when that character is selected again. Draw the gun and press reload. That is on the <a href="../fw-weapons/">weapons</a> page.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">ok</span><span class="p">,</span><span class="w"> </span><span class="nv">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">AddItem</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="s1">'rope'</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">ok</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">err</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<p>If <code>name</code> is not a registered item, but it looks like a known RDR3 weapon, such as <code>weapon_revolver_cattleman</code>, this resource creates that item type for you on the spot and then gives it. Any other unknown name fails with <code>Unknown item.</code> — register it first with <code>RegisterItem</code> or a file in <code>items/</code>.</p>
+<h3 id="removeitem">RemoveItem<a class="headerlink" href="#removeitem" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. Takes that many of the name out of the satchel. If the player does not hold that many, nothing is removed. Removing a whole container placement deletes the storage that belongs to it.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Removes items from the active character's satchel.</span>
+<span class="c1">--- False and a reason when the player does not hold that many.</span>
+<span class="c1">---@param source integer</span>
+<span class="c1">---@param name string</span>
+<span class="c1">---@param count integer</span>
+<span class="c1">---@return boolean ok</span>
+<span class="c1">---@return string|nil err</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">RemoveItem</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">name</span><span class="p">,</span><span class="w"> </span><span class="nv">count</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">ok</span><span class="p">,</span><span class="w"> </span><span class="nv">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">RemoveItem</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="s1">'dried_meat'</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
+<span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">ok</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">err</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="takecurrency">TakeCurrency<a class="headerlink" href="#takecurrency" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. Takes dollars off one stack. <code>itemId</code> is that stack's id. <code>storageId</code> is the pouch when the stack is inside one you are still carrying, such as <code>item:</code> followed by the pouch id. Leave <code>storageId</code> empty when the stack is loose in the satchel. The count comes off that stack, and the character's dollar total drops by the same amount. If either change cannot be saved, neither one is kept.</p>
+<p>A pouch on the ground, or a chest, is refused. So is a stack that is not dollars, and a stack that is sitting in a trade.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Takes dollars off one stack.</span>
+<span class="c1">--- False and a reason when that stack cannot pay the count.</span>
+<span class="c1">---@param source integer</span>
+<span class="c1">---@param itemId string</span>
+<span class="c1">---@param count integer</span>
+<span class="c1">---@param storageId string|nil pouch id, or nothing when the stack is loose</span>
+<span class="c1">---@return boolean ok</span>
+<span class="c1">---@return string|nil err</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">TakeCurrency</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">itemId</span><span class="p">,</span><span class="w"> </span><span class="nv">count</span><span class="p">,</span><span class="w"> </span><span class="nv">storageId</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">ok</span><span class="p">,</span><span class="w"> </span><span class="nv">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">TakeCurrency</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">pileId</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="s1">'item:'</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">pouchId</span><span class="p">)</span>
+<span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">ok</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">err</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="takeplacement">TakePlacement<a class="headerlink" href="#takeplacement" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. Takes a count off one stack that is not dollars. <code>itemId</code> is that stack's id. <code>storageId</code> is the pouch when the stack is inside one you are still carrying. Leave <code>storageId</code> empty when the stack is loose in the satchel. Dollars are refused. Use <code>TakeCurrency</code> for those, because the dollar total has to drop with the stack.</p>
+<p>A pouch on the ground, or a chest, is refused. So is a stack that is sitting in a trade. If the stack does not hold that many, nothing is taken.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Takes a count off one stack that is not dollars.</span>
+<span class="c1">--- False and a reason when that stack cannot give the count.</span>
+<span class="c1">---@param source integer</span>
+<span class="c1">---@param itemId string</span>
+<span class="c1">---@param count integer</span>
+<span class="c1">---@param storageId string|nil pouch id, or nothing when the stack is loose</span>
+<span class="c1">---@return boolean ok</span>
+<span class="c1">---@return string|nil err</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">TakePlacement</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">itemId</span><span class="p">,</span><span class="w"> </span><span class="nv">count</span><span class="p">,</span><span class="w"> </span><span class="nv">storageId</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">ok</span><span class="p">,</span><span class="w"> </span><span class="nv">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">TakePlacement</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">pileId</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s1">'item:'</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">pouchId</span><span class="p">)</span>
+<span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">ok</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">err</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="removeitemdeferred">RemoveItemDeferred<a class="headerlink" href="#removeitemdeferred" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. Takes that many of the name out of the satchel, the same way <code>RemoveItem</code> does, and the bag screen updates right away. The database write waits.</p>
+<p>The waiting writes go out together about every five seconds. The satchel is also written when the player leaves, when the character is cleared, and when <code>fw_inventory</code> stops. A crash inside that wait can put the items back.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Removes items now and writes the satchel on the next flush.</span>
+<span class="c1">--- False and a reason when the player does not hold that many.</span>
+<span class="c1">---@param source integer</span>
+<span class="c1">---@param name string</span>
+<span class="c1">---@param count integer</span>
+<span class="c1">---@return boolean ok</span>
+<span class="c1">---@return string|nil err</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">RemoveItemDeferred</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">name</span><span class="p">,</span><span class="w"> </span><span class="nv">count</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">ok</span><span class="p">,</span><span class="w"> </span><span class="nv">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">RemoveItemDeferred</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="s1">'dried_meat'</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">ok</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">err</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="getitems">GetItems<a class="headerlink" href="#getitems" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. A snapshot of what is in the bag. You get nothing, and a reason, when the player has no character selected.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- The placements in the active character's satchel.</span>
+<span class="c1">---@param source integer</span>
+<span class="c1">---@return table|nil items</span>
+<span class="c1">---@return string|nil err</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">GetItems</span><span class="p">(</span><span class="nv">source</span><span class="p">)</span>
+</code></pre></div>
+<p>Each placement has <code>id</code>, <code>name</code>, <code>x</code>, <code>y</code>, <code>rotated</code>, <code>count</code>, and <code>metadata</code>. <code>x</code> and <code>y</code> are the top-left cell. <code>0, 0</code> is the top left.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">items</span><span class="p">,</span><span class="w"> </span><span class="nv">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">GetItems</span><span class="p">(</span><span class="nv">source</span><span class="p">)</span>
+<span class="kr">if</span><span class="w"> </span><span class="nv">items</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">err</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="canfit">CanFit<a class="headerlink" href="#canfit" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. True when <code>AddItem</code> would succeed for that name and count. It does not change the satchel.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- True when that many of the item would fit.</span>
+<span class="c1">---@param source integer</span>
+<span class="c1">---@param name string</span>
+<span class="c1">---@param count integer|nil</span>
+<span class="c1">---@param metadata table|nil</span>
+<span class="c1">---@return boolean ok</span>
+<span class="c1">---@return string|nil err</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">CanFit</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">name</span><span class="p">,</span><span class="w"> </span><span class="nv">count</span><span class="p">,</span><span class="w"> </span><span class="nv">metadata</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">ok</span><span class="p">,</span><span class="w"> </span><span class="nv">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">CanFit</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="s1">'lantern'</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">ok</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">err</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="placeat">PlaceAt<a class="headerlink" href="#placeat" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. Puts one new placement on an exact cell. It does not look for another spot, and it does not combine with a stack that is already sitting there.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Places one stack on an exact cell.</span>
+<span class="c1">--- False and a reason when the cell is taken, outside the grid, or the item cannot turn.</span>
+<span class="c1">---@param source integer</span>
+<span class="c1">---@param name string</span>
+<span class="c1">---@param count integer|nil</span>
+<span class="c1">---@param metadata table|nil</span>
+<span class="c1">---@param x integer</span>
+<span class="c1">---@param y integer</span>
+<span class="c1">---@param rotated boolean|nil</span>
+<span class="c1">---@return boolean ok</span>
+<span class="c1">---@return string|nil idOrErr</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">PlaceAt</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">name</span><span class="p">,</span><span class="w"> </span><span class="nv">count</span><span class="p">,</span><span class="w"> </span><span class="nv">metadata</span><span class="p">,</span><span class="w"> </span><span class="nv">x</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="p">,</span><span class="w"> </span><span class="nv">rotated</span><span class="p">)</span>
+</code></pre></div>
+<p><code>count</code> cannot be higher than that item's stack. On success the second value is the new placement id. <code>That does not fit.</code> means the rectangle is outside the grid or overlaps something else.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">ok</span><span class="p">,</span><span class="w"> </span><span class="nv">idOrErr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">PlaceAt</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="s1">'rope'</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">)</span>
+<span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">ok</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">idOrErr</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="setgridbonus">SetGridBonus<a class="headerlink" href="#setgridbonus" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. Adds columns or rows to the satchel under a name you choose, such as <code>backpack</code>. The same name replaces that bonus. It does not stack on itself. Two different names both apply. The grid cannot pass 24 by 24.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Adds or replaces a named size bonus on the satchel.</span>
+<span class="c1">--- False and a reason when the key or sizes are invalid, the total would pass 24, or shrinking would cut off an item.</span>
+<span class="c1">---@param source integer</span>
+<span class="c1">---@param key string</span>
+<span class="c1">---@param extraWidth integer</span>
+<span class="c1">---@param extraHeight integer</span>
+<span class="c1">---@return boolean ok</span>
+<span class="c1">---@return string|nil err</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">SetGridBonus</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">key</span><span class="p">,</span><span class="w"> </span><span class="nv">extraWidth</span><span class="p">,</span><span class="w"> </span><span class="nv">extraHeight</span><span class="p">)</span>
+</code></pre></div>
+<p><code>key</code> is lowercase letters, digits, and underscores, up to 32 characters. <code>0, 0</code> removes that bonus.</p>
+<table>
+<thead>
+<tr>
+<th><code>err</code></th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Invalid bonus.</code></td>
+<td><code>key</code> has characters outside lowercase letters, digits, and underscore, is longer than 32 characters, or <code>extraWidth</code>/<code>extraHeight</code> is not a whole number from 0 to 24.</td>
+</tr>
+<tr>
+<td><code>The satchel cannot grow any further.</code></td>
+<td>Adding this bonus on top of the base size and every other named bonus would ask for more than 24 columns or 24 rows, even though the satchel itself is capped at 24. Use a smaller bonus.</td>
+</tr>
+<tr>
+<td><code>Make room in the satchel first.</code></td>
+<td>Shrinking or removing a bonus would leave an item sitting partly off the grid. Nothing is moved.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">ok</span><span class="p">,</span><span class="w"> </span><span class="nv">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">SetGridBonus</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="s1">'backpack'</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span>
+<span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">ok</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">err</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="cleargridbonus">ClearGridBonus<a class="headerlink" href="#cleargridbonus" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. Removes one named bonus. The same <code>Invalid bonus.</code> and <code>Make room in the satchel first.</code> reasons from <code>SetGridBonus</code> apply here.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Removes a named size bonus.</span>
+<span class="c1">---@param source integer</span>
+<span class="c1">---@param key string</span>
+<span class="c1">---@return boolean ok</span>
+<span class="c1">---@return string|nil err</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">ClearGridBonus</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">key</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">ok</span><span class="p">,</span><span class="w"> </span><span class="nv">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">ClearGridBonus</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="s1">'backpack'</span><span class="p">)</span>
+<span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">ok</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">err</span><span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="openstorage">OpenStorage<a class="headerlink" href="#openstorage" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. Opens a chest, wagon, or horse, as described in <a href="#a-chest-a-wagon-or-a-horse">A chest, a wagon, or a horse</a>. The first call creates it. A later call with the same name opens the same items, and can make the grid larger. The player must be playing a character.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Opens a storage grid for this player.</span>
+<span class="c1">--- False and a reason when the id, size, or categories are rejected, or someone else has it open.</span>
+<span class="c1">---@param source integer</span>
+<span class="c1">---@param id string</span>
+<span class="c1">---@param params table</span>
+<span class="c1">---@return boolean ok</span>
+<span class="c1">---@return string|nil err</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">OpenStorage</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">id</span><span class="p">,</span><span class="w"> </span><span class="nv">params</span><span class="p">)</span>
+</code></pre></div>
+<p><code>id</code> is the name from the chest section. <code>params.width</code> and <code>params.height</code> are the squares, from 1 to 24. <code>params.label</code> is the title. <code>params.categories</code> is the list of categories, or leave it out. <code>params.acceptWeapons</code> defaults to yes on this call. Pass <code>false</code> when this open should refuse weapons. <code>params.contents</code> is the same list as <code>RegisterStorage</code>. It is packed only when this id has no saved row yet. A later open of the same id ignores the list. A bad list comes back with the same reasons as <code>RegisterStorage</code>. A storage you registered should be opened with <code>OpenRegistered</code> instead, so the personal name, the character list, and <code>adminOnly</code> are applied.</p>
+<table>
+<thead>
+<tr>
+<th><code>err</code></th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fw_inventory is not ready</code></td>
+<td>The item list has not loaded yet. Ask <code>IsReady</code> first.</td>
+</tr>
+<tr>
+<td><code>Select a character first.</code></td>
+<td>This player is not playing a character.</td>
+</tr>
+<tr>
+<td><code>player is not loaded</code></td>
+<td><code>source</code> is not a player who is in the server.</td>
+</tr>
+<tr>
+<td><code>Invalid storage.</code></td>
+<td>The name has a space, a capital letter, or some other character that is not allowed. Or <code>params</code> was left out.</td>
+</tr>
+<tr>
+<td><code>Invalid storage size.</code></td>
+<td>Width or height is outside 1–24.</td>
+</tr>
+<tr>
+<td><code>unknown category</code></td>
+<td>A category name is not in the list in the chest section.</td>
+</tr>
+<tr>
+<td><code>Invalid storage categories.</code></td>
+<td><code>params.categories</code> was something other than a list of category names.</td>
+</tr>
+<tr>
+<td><code>Make room in there first.</code></td>
+<td>A later open tried to make the grid smaller while an item sits on a square that would disappear.</td>
+</tr>
+<tr>
+<td><code>Someone is using that.</code></td>
+<td>Another player already has this one open.</td>
+</tr>
+</tbody>
+</table>
+<p>A container item cannot be placed into the storage. The player sees <code>A container cannot go in there.</code> Taking it back out into the bag is allowed.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">ok</span><span class="p">,</span><span class="w"> </span><span class="nv">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">OpenStorage</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="s1">'chest:valentine_1'</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nv">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Chest'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">categories</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s1">'materials'</span><span class="p">,</span><span class="w"> </span><span class="s1">'tools'</span><span class="w"> </span><span class="p">},</span>
+<span class="p">})</span>
+<span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">ok</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">err</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="closestorage">CloseStorage<a class="headerlink" href="#closestorage" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. Closes the second grid and leaves the satchel open. True when this player had one open. False when they did not.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Closes the storage this player has open.</span>
+<span class="c1">---@param source integer</span>
+<span class="c1">---@return boolean closed</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">CloseStorage</span><span class="p">(</span><span class="nv">source</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">CloseStorage</span><span class="p">(</span><span class="nv">source</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="registerstorage">RegisterStorage<a class="headerlink" href="#registerstorage" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. Call it when your script starts. The fields are in <a href="#a-chest-a-wagon-or-a-horse">A chest, a wagon, or a horse</a>. The registration is dropped when your script stops. The items stay saved.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Remembers a storage until the calling resource stops.</span>
+<span class="c1">--- False and a reason when the id, size, categories, character list, or locations are rejected.</span>
+<span class="c1">---@param params table</span>
+<span class="c1">---@return boolean ok</span>
+<span class="c1">---@return string|nil err</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">RegisterStorage</span><span class="p">(</span><span class="nv">params</span><span class="p">)</span>
+</code></pre></div>
+<p><code>params.id</code> follows the name rules in the chest section, and it must not start with <code>item:</code>. <code>params.shared</code> left out means one shared grid. <code>params.acceptWeapons</code> left out means weapons stay out. <code>params.adminOnly</code> left out means anyone can open it. <code>params.characters</code> left out means any character, on a shared storage. <code>params.locations</code> left out means no spot in the world. <code>params.contents</code> left out means the chest starts empty. When you pass it, the piles are packed the first time that grid is opened, as described in the chest section.</p>
+<table>
+<thead>
+<tr>
+<th><code>err</code></th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Invalid storage.</code></td>
+<td>The name is missing, too long, or starts with <code>item:</code>. Or <code>params</code> was left out.</td>
+</tr>
+<tr>
+<td><code>Invalid storage size.</code></td>
+<td>Width or height is outside 1–24.</td>
+</tr>
+<tr>
+<td><code>unknown category</code></td>
+<td>A category name is not in the list in the chest section.</td>
+</tr>
+<tr>
+<td><code>Invalid storage categories.</code></td>
+<td><code>params.categories</code> was something other than a list of category names.</td>
+</tr>
+<tr>
+<td><code>Invalid character list.</code></td>
+<td><code>params.characters</code> was not a list of character ids.</td>
+</tr>
+<tr>
+<td><code>Invalid storage locations.</code></td>
+<td>A spot was missing <code>coords</code>.</td>
+</tr>
+<tr>
+<td><code>Invalid storage contents.</code></td>
+<td><code>contents</code> was not a list of <code>{ name, count }</code>, or a count was outside 1–1000.</td>
+</tr>
+<tr>
+<td><code>Unknown item.</code></td>
+<td>A contents name is not an item.</td>
+</tr>
+<tr>
+<td><code>A container cannot go in there.</code></td>
+<td>A contents entry is itself a pouch or a parcel.</td>
+</tr>
+<tr>
+<td><code>That has to stay with you.</code></td>
+<td>A contents entry is a mission item.</td>
+</tr>
+<tr>
+<td><code>That does not go in there.</code></td>
+<td>A contents entry is a category this chest does not take.</td>
+</tr>
+<tr>
+<td><code>Weapons do not go in there.</code></td>
+<td>A contents entry is a weapon and <code>acceptWeapons</code> is not set.</td>
+</tr>
+<tr>
+<td><code>Not enough room.</code></td>
+<td>The piles do not fit the width and height.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">ok</span><span class="p">,</span><span class="w"> </span><span class="nv">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">RegisterStorage</span><span class="p">({</span>
+<span class="w">    </span><span class="nv">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'bank:valentine'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Safety deposit box'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">shared</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">locations</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nv">coords</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">vector3</span><span class="p">(</span><span class="o">-</span><span class="mf">308.0</span><span class="p">,</span><span class="w"> </span><span class="mf">776.0</span><span class="p">,</span><span class="w"> </span><span class="mf">118.0</span><span class="p">),</span><span class="w"> </span><span class="nv">distance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">2.0</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="p">})</span>
+<span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">ok</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">err</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<p>That box is personal. Each character gets their own items the first time they hold the prompt.</p>
+<h3 id="openregistered">OpenRegistered<a class="headerlink" href="#openregistered" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. Opens a storage you registered. It checks the character, the character list, <code>adminOnly</code>, and <code>shared</code>, then opens the grid. The player must be playing a character.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Opens a registered storage for this player.</span>
+<span class="c1">--- False and a reason when they cannot open it, or the storage was not registered.</span>
+<span class="c1">---@param source integer</span>
+<span class="c1">---@param id string</span>
+<span class="c1">---@return boolean ok</span>
+<span class="c1">---@return string|nil err</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">OpenRegistered</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">id</span><span class="p">)</span>
+</code></pre></div>
+<p><code>id</code> is the name you passed to <code>RegisterStorage</code>, without the <code>:character:</code> ending. A personal storage adds that ending for you.</p>
+<table>
+<thead>
+<tr>
+<th><code>err</code></th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fw_inventory is not ready</code></td>
+<td>The item list has not loaded yet. Ask <code>IsReady</code> first.</td>
+</tr>
+<tr>
+<td><code>Select a character first.</code></td>
+<td>This player is not playing a character.</td>
+</tr>
+<tr>
+<td><code>Finish the trade first.</code></td>
+<td>This player is in a trade.</td>
+</tr>
+<tr>
+<td><code>Invalid storage.</code></td>
+<td>Nothing is registered under that name, or the personal name would be longer than 64 characters.</td>
+</tr>
+<tr>
+<td><code>You cannot open that.</code></td>
+<td><code>adminOnly</code> is set and this player is not an admin, or <code>characters</code> is set and this character is not on the list.</td>
+</tr>
+<tr>
+<td><code>Someone is using that.</code></td>
+<td>Another player already has this grid open.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">ok</span><span class="p">,</span><span class="w"> </span><span class="nv">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">OpenRegistered</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="s1">'bank:valentine'</span><span class="p">)</span>
+<span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">ok</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">err</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<p>A horse or a wagon registers with <code>shared = false</code> and no <code>locations</code>, then calls this when the player is at that horse or wagon.</p>
+<h3 id="unregisterstorage">UnregisterStorage<a class="headerlink" href="#unregisterstorage" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. Removes one registration. The prompt goes away. The saved items stay, so registering the same name again opens the same chest.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Removes one registration. True when it was registered.</span>
+<span class="c1">---@param id string</span>
+<span class="c1">---@return boolean removed</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">UnregisterStorage</span><span class="p">(</span><span class="nv">id</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">UnregisterStorage</span><span class="p">(</span><span class="s1">'chest:valentine_1'</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="pullforkit">PullForKit<a class="headerlink" href="#pullforkit" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. <code>fw_weapons</code> uses this when a player equips a weapon. Other scripts should use <code>RemoveItem</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Takes one placement out of the satchel for a weapon slot.</span>
+<span class="c1">--- Nil and a reason when the placement is missing or the item coming off the slot does not fit back.</span>
+<span class="c1">---@param source integer</span>
+<span class="c1">---@param id string</span>
+<span class="c1">---@param displaced table|nil</span>
+<span class="c1">---@return table|nil item</span>
+<span class="c1">---@return string|nil err</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">PullForKit</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">id</span><span class="p">,</span><span class="w"> </span><span class="nv">displaced</span><span class="p">)</span>
+</code></pre></div>
+<p><code>id</code> is the placement id from <code>GetItems</code>. <code>displaced</code> is the item leaving that weapon slot, with <code>name</code>, <code>count</code>, <code>metadata</code>, and <code>rotated</code>. It is put back on the cell that was freed. If that cell does not fit, it is placed anywhere that does. If neither works, nothing is taken and the reason is <code>Make room in the satchel first.</code> A placement set aside with <code>SetHold</code> is not taken. The reason is <code>That item is in a trade.</code></p>
+<h3 id="sethold">SetHold<a class="headerlink" href="#sethold" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. Marks placements that must stay in the satchel. Discard, drop, use, equip, sort, and moving one into a chest all refuse with <code>That item is in a trade.</code> Move and split still work on placements that are not in the list. Pass nothing, or an empty list, to clear the hold.</p>
+<p>While any placement is held, opening a chest or a pouch comes back as <code>Finish the trade first.</code></p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Marks placements that a trade is holding. Nil or an empty list clears the hold.</span>
+<span class="c1">--- False and a reason when a listed placement is not in the satchel.</span>
+<span class="c1">---@param source integer</span>
+<span class="c1">---@param ids string[]|nil</span>
+<span class="c1">---@return boolean ok</span>
+<span class="c1">---@return string|nil err</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">SetHold</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">ids</span><span class="p">)</span>
+</code></pre></div>
+<p><code>source</code> is the player's number for this visit. <code>ids</code> are placement ids from <code>GetItems</code>. The same id twice comes back as <code>Invalid hold.</code></p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">GetItems</span><span class="p">(</span><span class="nv">source</span><span class="p">)</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">ok</span><span class="p">,</span><span class="w"> </span><span class="nv">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">SetHold</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">items</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nv">id</span><span class="w"> </span><span class="p">})</span>
+<span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">ok</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">err</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">SetHold</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="committrade">CommitTrade<a class="headerlink" href="#committrade" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. Gives each player's listed placements to the other player. Both satchels change, or neither does. The items land anywhere they fit. They do not keep the cells they had in an offer grid.</p>
+<p>Call this only when you already know both offers are the items you mean to move. If a placement is gone, or its count or metadata changed, nothing moves and the reason is <code>That offer changed.</code> If the other satchel cannot hold what is coming in, nothing moves and the reason is <code>Not enough room.</code> or <code>You cannot carry any more of those.</code></p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Swaps the listed placements between two satchels.</span>
+<span class="c1">--- False and a reason when either offer does not match the satchel, or either satchel cannot hold what it would receive.</span>
+<span class="c1">---@param sourceA integer</span>
+<span class="c1">---@param sourceB integer</span>
+<span class="c1">---@param offerA table</span>
+<span class="c1">---@param offerB table</span>
+<span class="c1">---@return boolean ok</span>
+<span class="c1">---@return string|nil err</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">CommitTrade</span><span class="p">(</span><span class="nv">sourceA</span><span class="p">,</span><span class="w"> </span><span class="nv">sourceB</span><span class="p">,</span><span class="w"> </span><span class="nv">offerA</span><span class="p">,</span><span class="w"> </span><span class="nv">offerB</span><span class="p">)</span>
+</code></pre></div>
+<p>Each offer is a list. Each entry needs <code>id</code>, <code>name</code>, <code>count</code>, and <code>metadata</code> for one whole placement. An empty list gives nothing. <code>sourceA</code> and <code>sourceB</code> are the two players' numbers. They must be different, and both must be playing a character.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">ok</span><span class="p">,</span><span class="w"> </span><span class="nv">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">CommitTrade</span><span class="p">(</span><span class="nv">sourceA</span><span class="p">,</span><span class="w"> </span><span class="nv">sourceB</span><span class="p">,</span><span class="w"> </span><span class="nv">offerA</span><span class="p">,</span><span class="w"> </span><span class="nv">offerB</span><span class="p">)</span>
+<span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">ok</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">err</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<p><a href="../fw-trade/">fw_trade</a> is the screen that locks two offers and then calls this.</p>
+<h2 id="messages">Messages<a class="headerlink" href="#messages" title="Permanent link">&para;</a></h2>
+<p>A message on the server is heard with <code>AddEventHandler</code>. A message from the server to the player's game is heard with <code>RegisterNetEvent</code>. A message from the player's game to the server is sent with <code>TriggerServerEvent</code>. Your script hears one only if it is already running. Put the listener at the top of your script.</p>
+<h3 id="fw_inventoryready">fw_inventory:ready<a class="headerlink" href="#fw_inventoryready" title="Permanent link">&para;</a></h3>
+<p>Local, on the server. Sent once, after the item list has loaded. If your script starts later, you missed it. Ask <code>IsReady</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="nf">AddEventHandler</span><span class="p">(</span><span class="s1">'fw_inventory:ready'</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">()</span>
+<span class="w">    </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">RegisterUsable</span><span class="p">(</span><span class="s1">'dried_meat'</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">item</span><span class="p">)</span>
+<span class="w">        </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">RemoveItem</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="s1">'dried_meat'</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">end</span><span class="p">)</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+<p><code>fw_characters:selected</code> loads or creates that character's bag. <code>fw_characters:cleared</code> saves it and forgets it. Both are messages on the server, described on <a href="../fw-characters/">fw_characters</a>.</p>
+<h3 id="fw_inventorychanged">fw_inventory:changed<a class="headerlink" href="#fw_inventorychanged" title="Permanent link">&para;</a></h3>
+<p>Local, on the server. Sent after the satchel is saved, with the player's number for this visit (<code>source</code> on other pages). Hear it if your script needs that same moment.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">---@param source integer</span>
+<span class="nf">AddEventHandler</span><span class="p">(</span><span class="s1">'fw_inventory:changed'</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">source</span><span class="p">)</span>
+<span class="w">    </span><span class="kd">local</span><span class="w"> </span><span class="nv">items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">GetItems</span><span class="p">(</span><span class="nv">source</span><span class="p">)</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="what-the-bag-screen-sends-the-server">What the bag screen sends the server<a class="headerlink" href="#what-the-bag-screen-sends-the-server" title="Permanent link">&para;</a></h3>
+<p>These are networked (<code>RegisterNetEvent</code> on the server, sent from the player's game with <code>TriggerServerEvent</code>). <code>fw_satchel</code> sends these when the player drags, uses, sorts, or drops. A script with its own bag screen could send them too, but for giving or taking items from your own script, use the calls above instead — <code>AddItem</code>, <code>RemoveItem</code>, and so on, not these.</p>
+<p><code>token</code> is a value you make up and send with the request. It comes back unchanged on <code>fw_inventory:updated</code> or <code>fw_inventory:rejected</code>, so a screen that fires several requests at once can tell which response answers which request. Leave it out, or pass anything, if you don't need that.</p>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Parameters</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fw_inventory:open</code></td>
+<td>none</td>
+<td>Opens the bag for the sender. Answered with <code>fw_inventory:opened</code>, or <code>fw_inventory:rejected</code> when the item list is not ready or the player has no character.</td>
+</tr>
+<tr>
+<td><code>fw_inventory:move</code></td>
+<td><code>id, x, y, rotated, token</code></td>
+<td>Moves a placement already in the bag to a new cell, or turns it. <code>id</code> is the placement id. <code>rotated</code> is <code>true</code>, <code>false</code>, or left out to keep its current facing.</td>
+</tr>
+<tr>
+<td><code>fw_inventory:sort</code></td>
+<td><code>token</code></td>
+<td>Rearranges the whole bag by item category, then size.</td>
+</tr>
+<tr>
+<td><code>fw_inventory:discard</code></td>
+<td><code>id, count, token</code></td>
+<td>Throws away up to <code>count</code> of that placement. <code>count</code> defaults to 1. The last one removes the placement, and deletes the container it owns, if it had one. A pouch that still holds dollars refuses with <code>Empty the bag first.</code> A parcel does not. Its remaining piles, including dollars, are deleted with it.</td>
+</tr>
+<tr>
+<td><code>fw_inventory:drop</code></td>
+<td><code>id, token</code></td>
+<td>Sets a pouch on the ground. <code>id</code> is the placement. Only an item with a <code>container</code> block can be dropped. A parcel cannot. The player sees <code>That cannot be dropped.</code> The contents of a pouch stay. <code>That item is in a trade.</code> is a placement set aside for a trade.</td>
+</tr>
+<tr>
+<td><code>fw_inventory:split</code></td>
+<td><code>id, count, token</code></td>
+<td>Cuts <code>count</code> off a stackable placement onto an empty cell of its own. <code>count</code> is a whole number from 1 up to one less than what is already there, and the item must be able to stack. <code>Not enough room.</code> means the bag has no free cell of that size.</td>
+</tr>
+<tr>
+<td><code>fw_inventory:use</code></td>
+<td><code>id, token, side</code></td>
+<td>Uses that placement, or opens a pouch. The bag sends this for Use, and for Open on a pouch. <code>side</code> is <code>'storage'</code> when the placement is sitting in an open chest or pouch rather than the bag — that is refused with <code>Take it out first.</code> Opens a pouch's storage, or runs its <code>RegisterUsable</code> callback, or rejects with <code>This cannot be used.</code> Three pouches can be open at once. A fourth is refused with <code>Close a pouch first.</code></td>
+</tr>
+<tr>
+<td><code>fw_inventory:context</code></td>
+<td><code>id, option, token</code></td>
+<td>The player picked a custom right-click row. <code>id</code> is the placement. <code>option</code> is the id from <code>context</code> on the item. <code>That action is not on this item.</code> means that id was not registered. <code>That item is in a trade.</code> means the pile is set aside. On success the server sends the local message <code>fw_inventory:contextOption</code>.</td>
+</tr>
+<tr>
+<td><code>fw_inventory:storageClose</code></td>
+<td><code>id</code></td>
+<td>Closes one pouch when <code>id</code> is that pouch. Leave <code>id</code> out to close every pouch the sender has open. Answered with <code>fw_inventory:storageClosed</code>.</td>
+</tr>
+<tr>
+<td><code>fw_inventory:storageMove</code></td>
+<td><code>storageId, id, x, y, rotated, token</code></td>
+<td>Moves a placement inside the pouch named by <code>storageId</code>, not the bag. <code>id</code> is the placement.</td>
+</tr>
+<tr>
+<td><code>fw_inventory:transfer</code></td>
+<td><code>fromSide, id, x, y, rotated, token, storageId, toStorageId</code></td>
+<td>Moves a placement between the bag and one open pouch, or from one open pouch to another. <code>fromSide</code> is <code>'satchel'</code> or <code>'storage'</code>. <code>storageId</code> is the pouch. When the pile moves from one open pouch onto another, <code>storageId</code> is the pouch it leaves and <code>toStorageId</code> is the pouch it lands in.</td>
+</tr>
+<tr>
+<td><code>fw_inventory:deposit</code></td>
+<td><code>id, containerId, token</code></td>
+<td>Puts the whole satchel pile <code>id</code> into the pouch placement <code>containerId</code>. The pouch can stay closed. The pile fills an open pile of the same item, then the first empty square. <code>Not enough room.</code> means the pouch cannot hold it. <code>That does not go in there.</code> means the pouch does not take that category. <code>You can only take things out of that.</code> means it is a parcel. <code>A container cannot go in there.</code> means the pile is itself a pouch. <code>That item is in a trade.</code> means one of the two placements is set aside.</td>
+</tr>
+<tr>
+<td><code>fw_inventory:openRegistered</code></td>
+<td><code>id</code></td>
+<td>Opens a registered storage for the sender. <code>id</code> is the name from <code>RegisterStorage</code>. Answered with <code>fw_inventory:opened</code>, or <code>fw_inventory:rejected</code> with <code>You cannot open that.</code> and the other reasons from <code>OpenRegistered</code>. The world prompt sends this. A horse script can call <code>OpenRegistered</code> instead.</td>
+</tr>
+<tr>
+<td><code>fw_inventory:requestStorageLocations</code></td>
+<td>none</td>
+<td>Asks for the spots that have a prompt. Answered with <code>fw_inventory:storageLocations</code> for the sender.</td>
+</tr>
+<tr>
+<td><code>fw_inventory:requestNearbyDrops</code></td>
+<td>none</td>
+<td>Asks which pouches are within 100 meters of the sender. Answered with <code>fw_inventory:dropped</code> only when that set changed. The same set gets no reply.</td>
+</tr>
+<tr>
+<td><code>fw_inventory:openDropped</code></td>
+<td><code>id</code></td>
+<td>Opens a pouch on the ground. <code>id</code> is the ground pouch from <code>fw_inventory:dropped</code>. Answered with <code>fw_inventory:opened</code>, or <code>fw_inventory:rejected</code>. <code>That is gone.</code> means someone already picked it up. <code>You are too far away.</code> means the player is not next to it.</td>
+</tr>
+<tr>
+<td><code>fw_inventory:pickupDropped</code></td>
+<td><code>id</code></td>
+<td>Puts that ground pouch into the sender's satchel when there is room. The contents come with it. <code>Not enough room.</code> leaves it on the ground.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="nf">RegisterNetEvent</span><span class="p">(</span><span class="s1">'fw_inventory:use'</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">id</span><span class="p">,</span><span class="w"> </span><span class="nv">token</span><span class="p">,</span><span class="w"> </span><span class="nv">side</span><span class="p">)</span>
+<span class="w">    </span><span class="c1">-- fw_satchel already does this. Shown so a custom screen knows the shape.</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="what-the-server-sends-the-bag-screen">What the server sends the bag screen<a class="headerlink" href="#what-the-server-sends-the-bag-screen" title="Permanent link">&para;</a></h3>
+<p>These are networked (<code>RegisterNetEvent</code> on the player's game, sent from the server with <code>TriggerClientEvent</code>). The screen in <a href="../fw-satchel/">fw_satchel</a> listens for these. A script with its own bag screen can listen too. Giving an item from your own script is still <code>AddItem</code>, not one of these.</p>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Parameters</th>
+<th>What it carries</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fw_inventory:opened</code></td>
+<td><code>payload</code></td>
+<td><code>payload.grid</code> is the bag. <code>payload.definitions</code> and <code>payload.categories</code> are every item type and the category names. <code>payload.storage</code> is the list of pouches that player has open. It is empty when none are open.</td>
+</tr>
+<tr>
+<td><code>fw_inventory:updated</code></td>
+<td><code>grid, token, storage</code></td>
+<td>The bag after a change, the <code>token</code> from the request that caused it (or nothing, when this page's own calls caused the change), and the list of open pouches. A pouch that left the list should come off the screen.</td>
+</tr>
+<tr>
+<td><code>fw_inventory:definitions</code></td>
+<td><code>definitions, categories</code></td>
+<td>Sent to everyone. Every item type and the category names, after <code>RegisterItem</code>, a reload, or a new weapon type being created automatically.</td>
+</tr>
+<tr>
+<td><code>fw_inventory:rejected</code></td>
+<td><code>reason, token</code></td>
+<td>A short reason, such as <code>That does not go in there.</code>, and the <code>token</code> from the request that failed.</td>
+</tr>
+<tr>
+<td><code>fw_inventory:close</code></td>
+<td>none</td>
+<td>Hide the bag. Sent when the character is deselected, the player leaves, or this resource stops.</td>
+</tr>
+<tr>
+<td><code>fw_inventory:storageClosed</code></td>
+<td><code>id</code></td>
+<td>Hide one pouch when <code>id</code> is set. Hide every open pouch when <code>id</code> is left out. The bag stays.</td>
+</tr>
+<tr>
+<td><code>fw_inventory:storageLocations</code></td>
+<td><code>list</code></td>
+<td>Sent to one player, or to everyone, when a storage is registered or removed. Each entry has <code>id</code>, <code>label</code>, and <code>locations</code>. <code>locations</code> is <code>{ x, y, z, distance }</code>. <code>fw_inventory</code> places a Hold prompt from this list.</td>
+</tr>
+<tr>
+<td><code>fw_inventory:dropped</code></td>
+<td><code>change</code></td>
+<td>The reply to the player who asked with <code>fw_inventory:requestNearbyDrops</code>, and only when a pouch was added or removed within 100 meters of them. <code>change.add</code> is one pouch, with <code>id</code>, <code>label</code>, <code>x</code>, <code>y</code>, <code>z</code>, and <code>heading</code>. <code>change.remove</code> is the id to stop drawing. <code>fw_inventory</code> draws that one bag, with Hold to open and Hold to pick up.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="nf">RegisterNetEvent</span><span class="p">(</span><span class="s1">'fw_inventory:rejected'</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">reason</span><span class="p">,</span><span class="w"> </span><span class="nv">token</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">reason</span><span class="p">)</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="console-commands">Console commands<a class="headerlink" href="#console-commands" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Where</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fw_items_reload</code></td>
+<td>Server console, or <code>/fw_items_reload</code> by an in-game admin</td>
+<td>Reads <code>items/</code> again and re-saves every item. A player who is not an admin gets <code>You are not an admin.</code> in the log. An admin gets an INFO line for how many items were reloaded.</td>
+</tr>
+<tr>
+<td><code>fw_giveitem &lt;serverId&gt; &lt;name&gt; [count]</code></td>
+<td>Server console only</td>
+<td>Calls <code>AddItem</code> for that player. A player who types it gets a warning in the log. The server window gets the same warning.</td>
+</tr>
+<tr>
+<td><code>fw_gridbonus &lt;serverId&gt; &lt;key&gt; &lt;extraWidth&gt; &lt;extraHeight&gt;</code></td>
+<td>Server console only</td>
+<td>Calls <code>SetGridBonus</code> for that player. Same console-only behavior as <code>fw_giveitem</code>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="state-bags">State bags<a class="headerlink" href="#state-bags" title="Permanent link">&para;</a></h2>
+<p>This resource does not set one. The bag screen reads <code>fwInventoryBusy</code> from <a href="../fw-menu/">fw_menu</a> when a menu wants the bag kept closed.</p>
+<h2 id="item-file">Item file<a class="headerlink" href="#item-file" title="Permanent link">&para;</a></h2>
+<p>Put a Lua file in <code>resources/[framework]/fw_inventory/items/</code>. The file returns a map. The key is the item name: lowercase letters, digits, and underscores, up to 32 characters.</p>
+<div class="highlight"><pre><span></span><code><span class="kr">return</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nv">dried_meat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nv">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Dried Meat'</span><span class="p">,</span>
+<span class="w">        </span><span class="nv">category</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'food'</span><span class="p">,</span>
+<span class="w">        </span><span class="nv">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">        </span><span class="nv">height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">        </span><span class="nv">stack</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span>
+<span class="w">        </span><span class="nv">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Smoked and dried. Keeps for a long time.'</span><span class="p">,</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="p">}</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>label</code></td>
+<td>The name</td>
+<td>Text in the satchel. Clipped to 48 characters.</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>empty</td>
+<td>Line in the satchel. Clipped to 200 characters.</td>
+</tr>
+<tr>
+<td><code>width</code>, <code>height</code></td>
+<td>Required, 1–12</td>
+<td>How many cells the item covers before it is turned.</td>
+</tr>
+<tr>
+<td><code>category</code></td>
+<td>Required</td>
+<td><code>ammo</code>, <code>animals</code>, <code>documents</code>, <code>food</code>, <code>herbs</code>, <code>horse</code>, <code>medical</code>, <code>tools</code>, <code>valuables</code>, <code>currency</code>, <code>weapons</code>, <code>materials</code>, or <code>container</code>. A pouch uses <code>container</code>. Dollars use <code>currency</code>.</td>
+</tr>
+<tr>
+<td><code>stack</code></td>
+<td>1</td>
+<td>How many copies share one footprint. Maximum 1000.</td>
+</tr>
+<tr>
+<td><code>weapon</code></td>
+<td>false</td>
+<td>When true, the item never stacks.</td>
+</tr>
+<tr>
+<td><code>rotate</code></td>
+<td>false</td>
+<td>The player can turn it.</td>
+</tr>
+<tr>
+<td><code>kit</code></td>
+<td>none</td>
+<td>Which weapon slot can hold it: <code>revolver</code>, <code>pistol</code>, <code>longarm</code>, <code>bow</code>, <code>lasso</code>, <code>melee</code>, <code>lantern</code>, <code>binoculars</code>, or <code>fishingrod</code>.</td>
+</tr>
+<tr>
+<td><code>hash</code></td>
+<td>none</td>
+<td>Weapon name, such as <code>WEAPON_REVOLVER_CATTLEMAN</code>. Required when <code>kit</code> is set.</td>
+</tr>
+<tr>
+<td><code>container</code></td>
+<td>none</td>
+<td>Opens a second grid when the player right-clicks the item and chooses Open. Stack is forced to 1. <code>parcel</code>, <code>give</code>, and <code>contents</code> are described in <a href="#a-parcel">A parcel</a>. <code>contents</code> on a pouch is described in <a href="#a-pouch-or-any-item-that-holds-other-items">A pouch</a>.</td>
+</tr>
+<tr>
+<td><code>usable</code></td>
+<td>false</td>
+<td><code>true</code> puts Use on the right-click menu. Left out, or <code>false</code>, leaves Use off unless <code>RegisterUsable</code> has a callback for this name. A pouch still shows Open.</td>
+</tr>
+<tr>
+<td><code>context</code></td>
+<td>none</td>
+<td>Extra right-click rows. A list of <code>{ id = 'sharpen', label = 'Sharpen' }</code>, or id strings. The player’s choice arrives as <code>fw_inventory:contextOption</code>.</td>
+</tr>
+<tr>
+<td><code>ammo</code></td>
+<td>none</td>
+<td>A box or a bundle of arrows. <code>key</code> is the game ammo name, such as <code>AMMO_REVOLVER</code>. <code>fits</code> is which guns take it: <code>revolver</code>, <code>pistol</code>, <code>repeater</code>, <code>rifle</code>, <code>elephant</code>, <code>shotgun</code>, <code>arrow</code>, or <code>varmint</code>. <code>max</code> is the most of that kind on the character, from 1 to 999. <code>refill</code> is how many one use adds, and it cannot be higher than <code>max</code>. <code>instant</code> skips the open wait. Arrows set it. <code>stack</code> is how many of the item the satchel can hold.</td>
+</tr>
+<tr>
+<td><code>chamber</code></td>
+<td>filled in for shipped guns</td>
+<td>Which <code>fits</code> value this gun accepts. Set it yourself on a new gun.</td>
+</tr>
+<tr>
+<td><code>rounds</code></td>
+<td>filled in for shipped guns</td>
+<td>How many rounds that gun holds. A Cattleman is 6. A bow is 20. From 1 to 100.</td>
+</tr>
+<tr>
+<td><code>rarity</code></td>
+<td>ordinary</td>
+<td><code>uncommon</code>, <code>rare</code>, <code>epic</code>, or <code>legendary</code>. Leave it out for an ordinary item.</td>
+</tr>
+<tr>
+<td><code>mission</code></td>
+<td>no</td>
+<td><code>true</code> when the item has to stay in the satchel.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="rarity">Rarity<a class="headerlink" href="#rarity" title="Permanent link">&para;</a></h3>
+<p>Leave <code>rarity</code> out and the satchel draws the plain slot. Set one of these words and the satchel, the shop, and a trade offer draw a colored frame. The same word shows under the name when the player rests on the item.</p>
+<table>
+<thead>
+<tr>
+<th>Word</th>
+<th>Frame</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>uncommon</code></td>
+<td>Green</td>
+</tr>
+<tr>
+<td><code>rare</code></td>
+<td>Blue</td>
+</tr>
+<tr>
+<td><code>epic</code></td>
+<td>Purple</td>
+</tr>
+<tr>
+<td><code>legendary</code></td>
+<td>Gold</td>
+</tr>
+</tbody>
+</table>
+<p><code>common</code> is the same as leaving it out. Any other word is rejected. <code>RegisterItem</code> comes back false, and the reason is <code>unknown rarity</code>.</p>
+<p>The name is the key in the item file, the same as any other item.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">letter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nv">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Folded Letter'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">category</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'documents'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">stack</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">rarity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'rare'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'The seal is still intact.'</span><span class="p">,</span>
+<span class="p">},</span>
+</code></pre></div>
+<p><code>mission = true</code> is separate from the frame. The player cannot give that item, trade it, sell it, throw it away, drop it, or put it in a pouch or a chest. Leave <code>rarity</code> out and the frame is the gold one. Set a rarity as well when you want a different color. The card says Mission item either way.</p>
+<p>A pouch that already holds a mission item cannot be dropped or thrown away until that item is taken out.</p>
+<p>Another script can still take the item with <code>RemoveItem</code>. That is how a job finishes and collects the letter. The player cannot do that from the satchel.</p>
+<p><code>rarity</code> and <code>mission</code> are not columns in <code>fw_items</code>. They stay on the item file, and they are put back when the files load. Put them in the file when they have to survive a restart. An item that exists only from <code>RegisterItem</code> keeps its row, and these two fields on that call last until the next start.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">warrant</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nv">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Arrest Warrant'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">category</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'documents'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">stack</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">mission</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'It carries the court seal.'</span><span class="p">,</span>
+<span class="p">},</span>
+</code></pre></div>
+<p>Shipped guns already have <code>chamber</code> and <code>rounds</code>. You only set those two when you add a gun the list does not know. Shipped ammo is in <code>items/ammo.lua</code>. A revolver box adds 12, up to 200. An explosive box adds 10, and 10 is the cap. Arrows add 10, up to 40, and they apply as soon as they are used. Fire, poison, and dynamite arrows add fewer. The satchel holds 20 of any one ammo item.</p>
+<p>If the item's name, or the <code>hash</code> you set, matches a known RDR3 weapon such as <code>weapon_revolver_cattleman</code> or <code>WEAPON_BOW</code>, you can leave <code>kit</code>, <code>hash</code>, <code>width</code>, <code>height</code>, and <code>rotate</code> out entirely — they are worked out for you from that name. The shipped <code>items/weapons.lua</code> sets them by hand anyway, so the shape is easy to see and change.</p>
+<p>The picture is <code>fw_inventory/images/&lt;name&gt;.png</code>. Set <code>image</code> on the item file when the picture has another name. Dollars use <code>bill_stack_single</code>. Leave off the <code>.png</code>. A new picture is not served until <code>ensure fw_inventory</code>.</p>
+<h3 id="picture-size">Picture size<a class="headerlink" href="#picture-size" title="Permanent link">&para;</a></h3>
+<p><code>fw_satchel</code> draws the picture inside a box sized to the item's <code>width</code> and <code>height</code> in cells, and shrinks or grows the picture to fit that box without stretching it — so a picture of roughly the right shape always looks right, even if its pixels don't match the table below exactly.</p>
+<p>For a crisp picture at the satchel's normal size, one cell is 48 pixels, with a 2-pixel gap between cells. A footprint of <code>n</code> cells in one direction comes out to <code>n * 48 + (n - 1) * 2</code> pixels in that direction:</p>
+<table>
+<thead>
+<tr>
+<th>width \ height</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1</strong></td>
+<td>48x48</td>
+<td>48x98</td>
+<td>48x148</td>
+<td>48x198</td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td>98x48</td>
+<td>98x98</td>
+<td>98x148</td>
+<td>98x198</td>
+</tr>
+<tr>
+<td><strong>3</strong></td>
+<td>148x48</td>
+<td>148x98</td>
+<td>148x148</td>
+<td>148x198</td>
+</tr>
+<tr>
+<td><strong>4</strong></td>
+<td>198x48</td>
+<td>198x98</td>
+<td>198x148</td>
+<td>198x198</td>
+</tr>
+</tbody>
+</table>
+<p>A <code>rope</code>, 3 wide and 1 tall, is <code>148x48</code>. A <code>herb_pouch</code>, 2 by 2, is <code>98x98</code>.</p>
+<p>The satchel's cell can grow up to 88 pixels on a tall window, so a picture made at double the table above holds up better on a bigger screen. There's no setting for this — it's just a size to draw at.</p>
+<p><code>fw_items_reload</code> reads <code>items/</code> again, as described in <a href="#console-commands">Console commands</a>. This resource always loads <code>ammo.lua</code>, <code>container.lua</code>, <code>currency.lua</code>, <code>food.lua</code>, <code>materials.lua</code>, <code>medical.lua</code>, <code>tools.lua</code>, and <code>weapons.lua</code>, plus any other <code>.lua</code> file it finds in that folder, in alphabetical order. The file name is the list you open. Each item still has its own <code>category</code>. If two files define the same name, the one that sorts later wins.</p>
+<h2 id="container-items">Container items<a class="headerlink" href="#container-items" title="Permanent link">&para;</a></h2>
+<p>The walkthrough is <a href="#a-pouch-or-any-item-that-holds-other-items">A pouch</a>. This is the item that ships in <code>items/container.lua</code>. The name is the key, so <code>name</code> is not repeated inside.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">herb_pouch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nv">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Herb Pouch'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">category</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'container'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">stack</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'A pouch for herbs.'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">container</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nv">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Herb pouch'</span><span class="p">,</span>
+<span class="w">        </span><span class="nv">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span>
+<span class="w">        </span><span class="nv">height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+<span class="w">        </span><span class="nv">categories</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s1">'herbs'</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><code>container</code> lives in the item file, or in the <code>RegisterItem</code> call. It is not a column you fill in by hand. A reload of the item files puts it back.</p>
+<h2 id="satchel-screen">Satchel screen<a class="headerlink" href="#satchel-screen" title="Permanent link">&para;</a></h2>
+<p><code>fw_satchel</code> opens with B or <code>/satchel</code>. <code>B</code>, Escape, Backspace, or Tab closes it and releases any open storage. The gunbelt closes with the bag. A trade uses that same screen. Those same keys decline the trade. That is on <a href="../fw-trade/">fw_trade</a>.</p>
+<p>Drag a placement. The cells under it turn green when it fits and red when it does not. R turns it when <code>rotate</code> is true. Dropping a stack on the same item, with the same metadata and room left in <code>stack</code>, combines them. A weapon never combines.</p>
+<p>Right-click a satchel placement for Use, Give, or Discard. A pile of more than one also offers Split in half and Split amount. Half cuts the pile in two, and an odd count leaves the extra one on the original pile. Amount is a slider from 1 up to one less than the pile. Either cut lands on an empty cell of its own. A pouch also has Drop. Dollars have no Discard. Discard throws the whole stack away. Drop sets that pouch on the ground. Give hands that whole stack to a nearby player. That is on <a href="../fw-trade/">fw_trade</a>. Double-click uses it. If nothing registered a use callback, the line under the grid says it cannot be used.</p>
+<p>A storage open adds a second panel to the left of the satchel, only as large as that storage's grid. The satchel and the weapon loadout stay where they are. When the loadout is open, the storage panel sits to the left of it. Close on that panel hides it and leaves the satchel open. Double-click on the storage grid is refused until the item is back in the satchel.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "content.code.copy", "search.suggest"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+    
+  </body>
+</html>

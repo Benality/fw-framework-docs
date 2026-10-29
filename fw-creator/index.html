@@ -1,0 +1,1914 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="API reference for the Project Territory framework. Each export includes the arguments, the rejection cases, and an example.">
+      
+      
+      
+      
+        <link rel="prev" href="../fw-characters/">
+      
+      
+        <link rel="next" href="../fw-clothing/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/territory-crest.webp">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>fw_creator - Project Territory Framework Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="territory" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#fw_creator" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Project Territory Framework Docs" class="md-header__button md-logo" aria-label="Project Territory Framework Docs" data-md-component="logo">
+      
+  <img src="../assets/images/territory-crest.webp" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Project Territory Framework Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              fw_creator
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="territory" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href=".." class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../tutorial-crafting/" class="md-tabs__link">
+          
+  
+  
+  Tutorials
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Project Territory Framework Docs" class="md-nav__button md-logo" aria-label="Project Territory Framework Docs" data-md-component="logo">
+      
+  <img src="../assets/images/territory-crest.webp" alt="logo">
+
+    </a>
+    Project Territory Framework Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-menu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_menu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-admin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_admin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-characters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_characters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_creator
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_creator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#where-the-menu-saves-things" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where the menu saves things
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#body-document" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Body document
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hair-document" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hair document
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#health-sent-to-the-menu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Health sent to the menu
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#messages-the-menu-uses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Messages the menu uses
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Messages the menu uses">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-hook-for-your-own-clothing-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A hook for your own clothing script
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#applying-the-starter-outfit-again" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Applying the starter outfit again
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#calls-in-the-players-game" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Calls in the player's game
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Calls in the player&#39;s game">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setappearancepaused" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SetAppearancePaused
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#isappearancepaused" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IsAppearancePaused
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ispedmodelcharacter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IsPedModelCharacter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getcachedexpressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetCachedExpressions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#publishlocalexpressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PublishLocalExpressions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clearlocalexpressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ClearLocalExpressions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#publishlocalfacecomps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PublishLocalFaceComps
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reassertlocalexpressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ReassertLocalExpressions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getmurphyassets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetMurphyAssets
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#state-bags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        State bags
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commands
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-clothing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_clothing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-inventory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_inventory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-money/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_money
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-weapons/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_weapons
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-satchel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_satchel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-stores/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_stores
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-trade/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_trade
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vorp-lib/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    vorp_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../database/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorials
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tutorials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial-crafting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crafting resource
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#where-the-menu-saves-things" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where the menu saves things
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#body-document" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Body document
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hair-document" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hair document
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#health-sent-to-the-menu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Health sent to the menu
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#messages-the-menu-uses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Messages the menu uses
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Messages the menu uses">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-hook-for-your-own-clothing-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A hook for your own clothing script
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#applying-the-starter-outfit-again" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Applying the starter outfit again
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#calls-in-the-players-game" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Calls in the player's game
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Calls in the player&#39;s game">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setappearancepaused" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SetAppearancePaused
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#isappearancepaused" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IsAppearancePaused
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ispedmodelcharacter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IsPedModelCharacter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getcachedexpressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetCachedExpressions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#publishlocalexpressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PublishLocalExpressions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clearlocalexpressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ClearLocalExpressions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#publishlocalfacecomps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PublishLocalFaceComps
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reassertlocalexpressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ReassertLocalExpressions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getmurphyassets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetMurphyAssets
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#state-bags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        State bags
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commands
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="fw_creator">fw_creator<a class="headerlink" href="#fw_creator" title="Permanent link">&para;</a></h1>
+<p>The character menu. Players use it to make a character and to play one. Create and read characters with <a href="../fw-characters/">fw_characters</a> — that is the page to build on. This page exists for two reasons: to show where the menu stores things on the character, and to document the handful of calls and messages this menu genuinely exposes for another script to use (pausing appearance updates while a player is shapeshifted, sharing a face with nearby players, and a couple of admin commands).</p>
+<p><code>Config.framework</code> in <code>shared/config.lua</code> must stay <code>fw</code>. Anything else and character select never answers.</p>
+<p>The number of characters an account can create is <code>characterSlots</code> on the account, not <code>Config.Slots</code> in this menu. The menu sends <code>Config.Slots</code> to the player's game only as a fallback, for the moment before the server has answered.</p>
+<h2 id="where-the-menu-saves-things">Where the menu saves things<a class="headerlink" href="#where-the-menu-saves-things" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>What the player enters</th>
+<th>Where it goes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Name</td>
+<td><code>firstName</code> and <code>lastName</code></td>
+</tr>
+<tr>
+<td>Gender</td>
+<td><code>male</code> or <code>female</code></td>
+</tr>
+<tr>
+<td>Birthday</td>
+<td><code>birthDate</code> as <code>YYYY-MM-DD</code></td>
+</tr>
+<tr>
+<td>Lore</td>
+<td><code>description</code></td>
+</tr>
+<tr>
+<td>Chosen spawn</td>
+<td><code>SaveState</code>, right after a new character is created</td>
+</tr>
+<tr>
+<td>Body and face</td>
+<td><code>appearance</code></td>
+</tr>
+<tr>
+<td>Hair and makeup</td>
+<td><code>barber</code></td>
+</tr>
+<tr>
+<td>Clothes</td>
+<td><a href="../fw-clothing/">fw_clothing</a>, not this menu</td>
+</tr>
+</tbody>
+</table>
+<p><code>Config.murphy_clothing</code> must stay true while <code>fw_clothing</code> is running.</p>
+<h2 id="body-document">Body document<a class="headerlink" href="#body-document" title="Permanent link">&para;</a></h2>
+<p><code>SetAppearance</code> stores the table the menu already built. These are the keys other code reads:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>gender</code></td>
+<td><code>Male</code> or <code>Female</code>.</td>
+</tr>
+<tr>
+<td><code>skintone</code></td>
+<td>Skin tone index.</td>
+</tr>
+<tr>
+<td><code>pedmodel.model</code></td>
+<td>Model name, such as <code>mp_male</code>.</td>
+</tr>
+<tr>
+<td><code>pedmodel.outfit</code></td>
+<td>Outfit preset on that model.</td>
+</tr>
+<tr>
+<td><code>head</code>, <code>upperbody</code>, <code>lowerbody</code>, <code>body</code>, <code>waist</code></td>
+<td>Body indexes.</td>
+</tr>
+<tr>
+<td><code>teeth</code>, <code>eyes</code></td>
+<td>Face component indexes.</td>
+</tr>
+<tr>
+<td><code>height</code></td>
+<td>A scale, <code>1.0</code> is the model default.</td>
+</tr>
+<tr>
+<td><code>expressions</code></td>
+<td>The face sliders. Keyed by slider name. See <a href="#getcachedexpressions">GetCachedExpressions</a>.</td>
+</tr>
+</tbody>
+</table>
+<p>Replace the document by sending the whole table. Do not write one key by itself and expect the rest to remain unless you read the current document first and send it back with your change.</p>
+<h2 id="hair-document">Hair document<a class="headerlink" href="#hair-document" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nv">hairstyle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{},</span>
+<span class="w">    </span><span class="nv">overlays</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{},</span>
+<span class="w">    </span><span class="nv">permanentoverlay</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{},</span>
+<span class="w">    </span><span class="nv">outfitId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'1230456'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">presets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nv">hairstyle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{},</span>
+<span class="w">            </span><span class="nv">overlays</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{},</span>
+<span class="w">            </span><span class="nv">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Base'</span><span class="p">,</span>
+<span class="w">            </span><span class="nv">outfitId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'1230456'</span><span class="p">,</span>
+<span class="w">            </span><span class="nv">price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">            </span><span class="nv">gender</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'male'</span><span class="p">,</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>The first save during character creation uses the preset name <code>Base</code>.</p>
+<h2 id="health-sent-to-the-menu">Health sent to the menu<a class="headerlink" href="#health-sent-to-the-menu" title="Permanent link">&para;</a></h2>
+<p>When a character is selected, the client receives:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nv">hOuter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">600</span><span class="p">,</span><span class="w"> </span><span class="c1">-- character.health</span>
+<span class="w">    </span><span class="nv">hInner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="c1">-- character.healthCore</span>
+<span class="w">    </span><span class="nv">sOuter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="c1">-- always 100; there is no second stamina field</span>
+<span class="w">    </span><span class="nv">sInner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="c1">-- character.staminaCore</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>That message is <code>murphy_creator:HealthFromCore</code>. The server sends it to the player's game. This menu does not save health when the player leaves. Use <code>SaveState</code> on <a href="../fw-characters/">fw_characters</a> for that.</p>
+<h2 id="messages-the-menu-uses">Messages the menu uses<a class="headerlink" href="#messages-the-menu-uses" title="Permanent link">&para;</a></h2>
+<p>These keep the old <code>murphy_creator</code> names so the screen did not have to be renamed. A new script should listen to the messages on <a href="../fw-characters/">fw_characters</a> instead of most of these.</p>
+<p>A networked message only reaches a listener that is already running when the message is sent. If your script starts later, you missed it; use the matching call instead, where one is listed.</p>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Direction</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>murphy_creator:getCharacters</code></td>
+<td>Networked, player's game to server</td>
+<td>Asks for the character list.</td>
+</tr>
+<tr>
+<td><code>murphy_creator:LaunchCharSelect</code></td>
+<td>Networked, server to player's game</td>
+<td>Opens the list.</td>
+</tr>
+<tr>
+<td><code>murphy_creator:CharSelectFailed</code></td>
+<td>Networked, server to player's game</td>
+<td>A reason string. The client writes it to the log and tries once more.</td>
+</tr>
+<tr>
+<td><code>fw_creator:selectCharacter</code></td>
+<td>Networked, player's game to server</td>
+<td>Selects that character id, then sends health.</td>
+</tr>
+<tr>
+<td><code>murphy_creator:deleteCharacter</code></td>
+<td>Networked, player's game to server</td>
+<td>The argument is the index in the list last sent to this player, not a character id.</td>
+</tr>
+<tr>
+<td><code>murphy_creator:HealthFromCore</code></td>
+<td>Networked, server to player's game</td>
+<td>The health table above.</td>
+</tr>
+</tbody>
+</table>
+<p><code>fw_characters:selected</code> is the event to use when your resource needs to know a character was chosen. A spawn script listens there, not on <code>fw_creator:selectCharacter</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nf">AddEventHandler</span><span class="p">(</span><span class="s1">'fw_characters:selected'</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">character</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">character</span><span class="p">.</span><span class="py">id</span><span class="p">)</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+<p><code>murphy_creator:HealthFromCore</code> is the health table above, sent by the server to the player's game. It is networked — your script only hears it if it is already running when the server sends it. Listen only if you are drawing your own health bar from that menu:</p>
+<div class="highlight"><pre><span></span><code><span class="nf">RegisterNetEvent</span><span class="p">(</span><span class="s1">'murphy_creator:HealthFromCore'</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">health</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">health</span><span class="p">.</span><span class="py">hOuter</span><span class="p">)</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+<p>The menu also uses these messages. A new script should keep using <a href="../fw-characters/">fw_characters</a>. They are listed so an older script can be matched to a name.</p>
+<table>
+<thead>
+<tr>
+<th>Message</th>
+<th>Direction</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>murphy_creator:GetHealthValues</code></td>
+<td>Networked, player's game to server</td>
+<td>Asks for the health table. The answer is <code>murphy_creator:HealthFromCore</code>.</td>
+</tr>
+<tr>
+<td><code>murphy_creator:OpenCharSelect</code></td>
+<td>Local, either way</td>
+<td>Opens the character list again.</td>
+</tr>
+<tr>
+<td><code>fw_creator:openSelect</code></td>
+<td>Networked, server to that player's game</td>
+<td>Opens the character list after a switch. The server is the sender.</td>
+</tr>
+<tr>
+<td><code>murphy_creator:LaunchCreator</code></td>
+<td>Local, player's game</td>
+<td>Opens the body editor for a new character.</td>
+</tr>
+<tr>
+<td><code>murphy_creator:deleteCharacterClient</code></td>
+<td>Networked, server to player's game</td>
+<td>The list index that was just deleted.</td>
+</tr>
+<tr>
+<td><code>murphy_creator:SecondChance</code></td>
+<td>Networked, server to player's game</td>
+<td>Opens the body editor again. <code>/secondchance</code> sends this.</td>
+</tr>
+<tr>
+<td><code>fw_creator:characterSelected</code></td>
+<td>Networked, player's game</td>
+<td>The menu's own note that a character was picked. Then it loads the body. Prefer <code>fw_characters:selected</code>.</td>
+</tr>
+<tr>
+<td><code>murphy_creator:loadskin</code></td>
+<td>Networked, player's game</td>
+<td>Puts the saved body back on. The reload command sends this.</td>
+</tr>
+<tr>
+<td><code>murphy_creator:loadskinvorp</code></td>
+<td>Networked, player's game</td>
+<td>The same reload, used after the model is already the right one.</td>
+</tr>
+<tr>
+<td><code>murphy_creator:localExpressionsReady</code></td>
+<td>Networked, player's game</td>
+<td>The face sliders and eyes/teeth are ready to share. The menu publishes them.</td>
+</tr>
+<tr>
+<td><code>murphy_creator:client:skinApplied</code></td>
+<td>Local, player's game</td>
+<td>The body finished applying. See <a href="#a-hook-for-your-own-clothing-script">below</a>.</td>
+</tr>
+<tr>
+<td><code>murphy_creator:client:characterCreated</code></td>
+<td>Local, player's game</td>
+<td>The new character was just saved by the menu. No arguments.</td>
+</tr>
+<tr>
+<td><code>murphy_creator:applystarteroutfit</code></td>
+<td>Networked, server to player's game</td>
+<td>Dresses the character in the configured starter outfit again. See <a href="#applying-the-starter-outfit-again">below</a>.</td>
+</tr>
+<tr>
+<td><code>murphy_barber_creator:loadbarberoverlay</code></td>
+<td>Networked, player's game</td>
+<td>Puts the saved hair and makeup back on.</td>
+</tr>
+<tr>
+<td><code>murphy_barber_creator:loadbarberoverlayOnCharacter</code></td>
+<td>Networked, player's game</td>
+<td>Same, for a character id you pass.</td>
+</tr>
+<tr>
+<td><code>murphy_barber_creator:updatehairstyle</code></td>
+<td>Networked, player's game to server</td>
+<td>The barber saves hair. A new script uses <code>SetBarber</code> on fw_characters.</td>
+</tr>
+<tr>
+<td><code>murphy_barber_creator:clotheitem</code></td>
+<td>Networked, player's game</td>
+<td>The barber applies the saved hair and makeup to a ped.</td>
+</tr>
+<tr>
+<td><code>murphy_creator:triggerCallback</code></td>
+<td>Networked, server to player's game</td>
+<td>The menu's private question. A new script does not send this.</td>
+</tr>
+<tr>
+<td><code>murphy_creator:responseCallback</code></td>
+<td>Networked, player's game to server</td>
+<td>The answer to that question. A new script does not send this.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="a-hook-for-your-own-clothing-script">A hook for your own clothing script<a class="headerlink" href="#a-hook-for-your-own-clothing-script" title="Permanent link">&para;</a></h3>
+<p><code>murphy_creator:client:skinApplied</code> is a local event, fired on the player's own game right after the menu finishes putting a saved body back on. It exists so a clothing script that is not <code>fw_clothing</code> can know the body just got rebuilt (the rebuild strips worn clothes) and re-dress the player without waiting for them to type a reload command.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- ped is the entity handle for the player's own character in this game.</span>
+<span class="c1">---@param ped integer</span>
+<span class="nf">AddEventHandler</span><span class="p">(</span><span class="s1">'murphy_creator:client:skinApplied'</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">ped</span><span class="p">)</span>
+<span class="w">    </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_creator</span><span class="p">:</span><span class="nf">ReassertLocalExpressions</span><span class="p">()</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+<p>If your clothing script's own reload event is listed in <code>Config.ExternalClothingEvents</code> in <code>shared/config.lua</code>, the menu fires that event too at the same moment, and you do not need to add a listener for <code>murphy_creator:client:skinApplied</code> at all.</p>
+<h3 id="applying-the-starter-outfit-again">Applying the starter outfit again<a class="headerlink" href="#applying-the-starter-outfit-again" title="Permanent link">&para;</a></h3>
+<p><code>murphy_creator:applystarteroutfit</code> is networked, server to player's game. A server script can send it to a player to make the menu dress their character in the configured starter outfit again — the same clothes a brand-new character spawns in before they own anything of their own.</p>
+<div class="highlight"><pre><span></span><code><span class="nf">TriggerClientEvent</span><span class="p">(</span><span class="s1">'murphy_creator:applystarteroutfit'</span><span class="p">,</span><span class="w"> </span><span class="nv">source</span><span class="p">)</span>
+</code></pre></div>
+<p>This only does something while <code>Config.CreatorClothing.starterOutfit.enabled</code> is true in <code>shared/config.lua</code>. With it off, or with no preset configured for that character's gender, the player's game quietly does nothing.</p>
+<h2 id="calls-in-the-players-game">Calls in the player's game<a class="headerlink" href="#calls-in-the-players-game" title="Permanent link">&para;</a></h2>
+<p>Create and read characters with <a href="../fw-characters/">fw_characters</a>. These calls are for a script that changes the body the player is looking at, such as an animal form, or that needs to keep a shared face in sync.</p>
+<h3 id="setappearancepaused">SetAppearancePaused<a class="headerlink" href="#setappearancepaused" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. Pass <code>true</code> before you change them into something that is not their character, such as a wolf. The character menu stops painting the human face on top. Pass <code>false</code> when they are themselves again.</p>
+<p>This also sets <code>LocalPlayer.state.murphy_appearance_paused</code>. Only this player's game can read that value.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Pauses face and clothes updates on this player's game.</span>
+<span class="c1">---@param paused boolean</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_creator</span><span class="p">:</span><span class="nf">SetAppearancePaused</span><span class="p">(</span><span class="nv">paused</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nv">exports</span><span class="p">.</span><span class="py">fw_creator</span><span class="p">:</span><span class="nf">SetAppearancePaused</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="isappearancepaused">IsAppearancePaused<a class="headerlink" href="#isappearancepaused" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. Yes while that pause is on.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- True while appearance updates are paused on this computer.</span>
+<span class="c1">---@return boolean</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_creator</span><span class="p">:</span><span class="nf">IsAppearancePaused</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">if</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_creator</span><span class="p">:</span><span class="nf">IsAppearancePaused</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="ispedmodelcharacter">IsPedModelCharacter<a class="headerlink" href="#ispedmodelcharacter" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. Yes when the loaded character is a custom model, not <code>mp_male</code> or <code>mp_female</code>. A barber script uses this so it does not paint skin and makeup onto a copied face.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- True when this character is not mp_male or mp_female.</span>
+<span class="c1">---@return boolean</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_creator</span><span class="p">:</span><span class="nf">IsPedModelCharacter</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">if</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_creator</span><span class="p">:</span><span class="nf">IsPedModelCharacter</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="getcachedexpressions">GetCachedExpressions<a class="headerlink" href="#getcachedexpressions" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. The face sliders, or nothing when none are loaded. The keys are the expression names the game uses. Changing the table does not change the face. Call <code>ReassertLocalExpressions</code> after you want them drawn again.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- The face sliders, or nothing when none are loaded.</span>
+<span class="c1">---@return table|nil expressions</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_creator</span><span class="p">:</span><span class="nf">GetCachedExpressions</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">expressions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_creator</span><span class="p">:</span><span class="nf">GetCachedExpressions</span><span class="p">()</span>
+<span class="kr">if</span><span class="w"> </span><span class="nv">expressions</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="publishlocalexpressions">PublishLocalExpressions<a class="headerlink" href="#publishlocalexpressions" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. Copies the current face sliders into the <code>murphy_expressions</code> state bag so other players' games can draw the same face on this player. The menu already does this on its own, about every two seconds. Call it yourself only if your script changed the sliders and cannot wait for that next tick.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Shares the local face sliders with other players.</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_creator</span><span class="p">:</span><span class="nf">PublishLocalExpressions</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nv">exports</span><span class="p">.</span><span class="py">fw_creator</span><span class="p">:</span><span class="nf">PublishLocalExpressions</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="clearlocalexpressions">ClearLocalExpressions<a class="headerlink" href="#clearlocalexpressions" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. Clears <code>murphy_expressions</code>. Call it when this player leaves the character, so the next person nearby does not keep the old face.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Clears the shared face sliders.</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_creator</span><span class="p">:</span><span class="nf">ClearLocalExpressions</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nv">exports</span><span class="p">.</span><span class="py">fw_creator</span><span class="p">:</span><span class="nf">ClearLocalExpressions</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="publishlocalfacecomps">PublishLocalFaceComps<a class="headerlink" href="#publishlocalfacecomps" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. Shares the eyes and teeth so a player who walks up later still sees them. The menu already does this alongside <code>PublishLocalExpressions</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Shares eyes and teeth with other players.</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_creator</span><span class="p">:</span><span class="nf">PublishLocalFaceComps</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nv">exports</span><span class="p">.</span><span class="py">fw_creator</span><span class="p">:</span><span class="nf">PublishLocalFaceComps</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="reassertlocalexpressions">ReassertLocalExpressions<a class="headerlink" href="#reassertlocalexpressions" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. Draws the saved face sliders on the local character again. Call it right after your script rebuilds that character, such as in the hook in <a href="#a-hook-for-your-own-clothing-script">A hook for your own clothing script</a>. You get no while appearance is paused, while there are no sliders, or while the character is missing or dead.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Draws the saved face sliders again. False when there is nothing to draw.</span>
+<span class="c1">---@return boolean ok</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_creator</span><span class="p">:</span><span class="nf">ReassertLocalExpressions</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nv">exports</span><span class="p">.</span><span class="py">fw_creator</span><span class="p">:</span><span class="nf">ReassertLocalExpressions</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="getmurphyassets">GetMurphyAssets<a class="headerlink" href="#getmurphyassets" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. The full clothing and barber picture catalog this menu knows about — every hair, makeup and clothing option, grouped by gender and category. A normal script does not need it. Read worn clothes with <a href="../fw-clothing/">fw_clothing</a>.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- The clothing and barber picture list.</span>
+<span class="c1">---@return table assets</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_creator</span><span class="p">:</span><span class="nf">GetMurphyAssets</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">assets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_creator</span><span class="p">:</span><span class="nf">GetMurphyAssets</span><span class="p">()</span>
+</code></pre></div>
+<h2 id="state-bags">State bags<a class="headerlink" href="#state-bags" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Who can read it</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>murphy_appearance_paused</code></td>
+<td>This player's game only</td>
+<td>Yes while <code>SetAppearancePaused(true)</code> is on.</td>
+</tr>
+<tr>
+<td><code>PlayerIsInCharacterShops</code></td>
+<td>The server and every player's game</td>
+<td>Yes while this player is in the character menu. No after they pick a character.</td>
+</tr>
+<tr>
+<td><code>murphy_expressions</code></td>
+<td>The server and every player's game</td>
+<td>The face sliders. Written by <code>PublishLocalExpressions</code>.</td>
+</tr>
+<tr>
+<td><code>murphy_face_comps</code></td>
+<td>The server and every player's game</td>
+<td>Eyes and teeth. Written by <code>PublishLocalFaceComps</code>.</td>
+</tr>
+<tr>
+<td><code>murphyLocale</code></td>
+<td>Everyone, on the global state</td>
+<td>A language name, if another resource sets <code>GlobalState.murphyLocale</code>. This menu reads it. It does not set it.</td>
+</tr>
+</tbody>
+</table>
+<p>A script that should not teleport someone who is still picking a character:</p>
+<div class="highlight"><pre><span></span><code><span class="kr">if</span><span class="w"> </span><span class="nf">Player</span><span class="p">(</span><span class="nv">source</span><span class="p">).</span><span class="nv">state</span><span class="p">.</span><span class="py">PlayerIsInCharacterShops</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<p>On the player's own game:</p>
+<div class="highlight"><pre><span></span><code><span class="kr">if</span><span class="w"> </span><span class="nv">LocalPlayer</span><span class="p">.</span><span class="py">state</span><span class="p">.</span><span class="py">murphy_appearance_paused</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h2 id="commands">Commands<a class="headerlink" href="#commands" title="Permanent link">&para;</a></h2>
+<p>There are two separate places that decide who may delete a character: one for the menu's own delete button, one for the <code>/deletechar</code> admin command. They are not the same setting.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Who</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/mc</code></td>
+<td>The player</td>
+<td>Reloads their body on the client. The name comes from <code>Config.LoadSkinCommand</code> in <code>shared/config.lua</code>; a server can rename it.</td>
+</tr>
+<tr>
+<td><code>/deletechar [characterId]</code></td>
+<td>Someone fw_admin says is an admin, or a role or identifier listed under <code>Config.Commands.deleteCharacter</code></td>
+<td>Deletes the caller's own character by id. The server console passes the permission check but the command still refuses to run for it, because the delete needs the owning player's account. Someone else's character id fails with an error from fw_characters.</td>
+</tr>
+<tr>
+<td><code>/secondchance [serverId]</code></td>
+<td>The same kind of check, under <code>Config.Commands.secondChance</code>. The console may run this one.</td>
+<td>Opens the body menu again for that player.</td>
+</tr>
+</tbody>
+</table>
+<p>The delete button inside the menu itself (<code>murphy_creator:deleteCharacter</code> above) is governed separately, by <code>Config.CharacterDeletion</code> in <code>shared/config.lua</code>. When <code>Config.CharacterDeletion.restrictToRoles</code> is false, every player may delete their own character from the menu, regardless of the <code>/deletechar</code> command's role list. Set <code>Config.CharacterDeletion.enabled</code> to false to turn that button off entirely.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "content.code.copy", "search.suggest"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+    
+  </body>
+</html>

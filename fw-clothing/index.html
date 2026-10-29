@@ -1,0 +1,2724 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="API reference for the Project Territory framework. Each export includes the arguments, the rejection cases, and an example.">
+      
+      
+      
+      
+        <link rel="prev" href="../fw-creator/">
+      
+      
+        <link rel="next" href="../fw-inventory/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/territory-crest.webp">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>fw_clothing - Project Territory Framework Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="territory" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#fw_clothing" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Project Territory Framework Docs" class="md-header__button md-logo" aria-label="Project Territory Framework Docs" data-md-component="logo">
+      
+  <img src="../assets/images/territory-crest.webp" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Project Territory Framework Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              fw_clothing
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="territory" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href=".." class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../tutorial-crafting/" class="md-tabs__link">
+          
+  
+  
+  Tutorials
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Project Territory Framework Docs" class="md-nav__button md-logo" aria-label="Project Territory Framework Docs" data-md-component="logo">
+      
+  <img src="../assets/images/territory-crest.webp" alt="logo">
+
+    </a>
+    Project Territory Framework Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-menu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_menu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-admin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_admin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-characters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_characters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-creator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_creator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_clothing
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_clothing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#clothing-document" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clothing document
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#calls-on-the-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Calls on the server
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Calls on the server">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#isbandanaequipped" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IsBandanaEquipped
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getplayerclothes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetPlayerClothes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getplayertemperatureprotection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetPlayerTemperatureProtection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setclothesforchar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SetClothesForChar
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#calls-in-the-players-game" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Calls in the player's game
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Calls in the player&#39;s game">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#areclothesstillapplied" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AreClothesStillApplied
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#isplayernaked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IsPlayerNaked
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#togglenaked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ToggleNaked
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setnaked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SetNaked
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getequippedclothing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetEquippedClothing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getequippedcategories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetEquippedCategories
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#isclothingcategoryequipped" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IsClothingCategoryEquipped
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getclothinginfo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetClothingInfo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gettemperatureprotection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetTemperatureProtection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getclothingtogglestate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetClothingToggleState
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#toggleclothingcategory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ToggleClothingCategory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#toggleclothingcomponent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ToggleClothingComponent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getwornclothingcategories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetWornClothingCategories
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#haswearablecategory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HasWearableCategory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hasanywearablecategory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HasAnyWearableCategory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#issleeverolled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IsSleeveRolled
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#togglesleeve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ToggleSleeve
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#togglecollar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ToggleCollar
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#toggleneckwearup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ToggleNeckwearUp
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getneckwearbandana" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetNeckwearBandana
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#togglebootsunder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ToggleBootsUnder
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#togglevestunder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ToggleVestUnder
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#toggleloadoutside" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ToggleLoadoutSide
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#togglehairpomade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ToggleHairPomade
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getsatchelpieceactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetSatchelPieceActions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cyclewearablevariation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CycleWearableVariation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#equipmultipleclothes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EquipMultipleClothes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#isbandanaequipped_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IsBandanaEquipped
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#messages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Messages
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Messages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#murphy_clothingclothesupdated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        murphy_clothing:clothesUpdated
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#murphy_clothingloadclothes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        murphy_clothing:loadclothes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#murphy_clothesonclothingchanged" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        murphy_clothes:OnClothingChanged
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fw_clothingsleevechanged" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_clothing:sleeveChanged
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bandana-and-temperature-messages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bandana and temperature messages
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opening-the-shop-from-the-players-game" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opening the shop from the player's game
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#messages-the-shop-sends-to-itself" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Messages the shop sends to itself
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#state-bags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        State bags
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commands
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-inventory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_inventory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-money/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_money
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-weapons/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_weapons
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-satchel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_satchel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-stores/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_stores
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-trade/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_trade
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vorp-lib/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    vorp_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../database/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorials
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tutorials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial-crafting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crafting resource
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#clothing-document" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clothing document
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#calls-on-the-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Calls on the server
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Calls on the server">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#isbandanaequipped" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IsBandanaEquipped
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getplayerclothes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetPlayerClothes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getplayertemperatureprotection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetPlayerTemperatureProtection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setclothesforchar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SetClothesForChar
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#calls-in-the-players-game" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Calls in the player's game
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Calls in the player&#39;s game">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#areclothesstillapplied" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AreClothesStillApplied
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#isplayernaked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IsPlayerNaked
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#togglenaked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ToggleNaked
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setnaked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SetNaked
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getequippedclothing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetEquippedClothing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getequippedcategories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetEquippedCategories
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#isclothingcategoryequipped" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IsClothingCategoryEquipped
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getclothinginfo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetClothingInfo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gettemperatureprotection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetTemperatureProtection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getclothingtogglestate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetClothingToggleState
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#toggleclothingcategory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ToggleClothingCategory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#toggleclothingcomponent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ToggleClothingComponent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getwornclothingcategories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetWornClothingCategories
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#haswearablecategory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HasWearableCategory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hasanywearablecategory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HasAnyWearableCategory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#issleeverolled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IsSleeveRolled
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#togglesleeve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ToggleSleeve
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#togglecollar" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ToggleCollar
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#toggleneckwearup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ToggleNeckwearUp
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getneckwearbandana" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetNeckwearBandana
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#togglebootsunder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ToggleBootsUnder
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#togglevestunder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ToggleVestUnder
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#toggleloadoutside" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ToggleLoadoutSide
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#togglehairpomade" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ToggleHairPomade
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getsatchelpieceactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetSatchelPieceActions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cyclewearablevariation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CycleWearableVariation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#equipmultipleclothes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EquipMultipleClothes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#isbandanaequipped_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IsBandanaEquipped
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#messages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Messages
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Messages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#murphy_clothingclothesupdated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        murphy_clothing:clothesUpdated
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#murphy_clothingloadclothes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        murphy_clothing:loadclothes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#murphy_clothesonclothingchanged" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        murphy_clothes:OnClothingChanged
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fw_clothingsleevechanged" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_clothing:sleeveChanged
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bandana-and-temperature-messages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bandana and temperature messages
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opening-the-shop-from-the-players-game" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opening the shop from the player's game
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#messages-the-shop-sends-to-itself" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Messages the shop sends to itself
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#state-bags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        State bags
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commands
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="fw_clothing">fw_clothing<a class="headerlink" href="#fw_clothing" title="Permanent link">&para;</a></h1>
+<p>Some calls run on the server. Most run in the player's game. Read the clothes a character is wearing, replace them, or toggle a piece on their body. The saved clothes live on the character. This resource writes them with <code>SetClothing</code> from <a href="../fw-characters/">fw_characters</a>.</p>
+<p>The shop still uses the old <code>murphy_clothing</code> and <code>murphy_clothes</code> event names. A new script should use the calls on this page.</p>
+<p>Cash lives on <a href="../fw-money/">fw_money</a>. This shop still does not take any dollars. A later change can call <code>RemoveCash</code>. Job-locked categories stay hidden because there is no job.</p>
+<p><code>fw_creator</code> must keep <code>Config.murphy_clothing</code> true.</p>
+<h2 id="clothing-document">Clothing document<a class="headerlink" href="#clothing-document" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nv">clothes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nv">hats</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="nv">texture</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nv">outfitId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'1234567'</span><span class="p">,</span><span class="w"> </span><span class="c1">-- '0' when no saved outfit is worn</span>
+<span class="w">    </span><span class="nv">outfits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{},</span>
+<span class="w">    </span><span class="nv">wearable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{},</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><code>clothes</code> is what the ped is wearing. Hair and beard stay on the barber document, not here. <code>outfitId</code> is the saved outfit, or <code>'0'</code>.</p>
+<p>A write only works while that player is online and has this character selected.</p>
+<h2 id="calls-on-the-server">Calls on the server<a class="headerlink" href="#calls-on-the-server" title="Permanent link">&para;</a></h2>
+<h3 id="isbandanaequipped">IsBandanaEquipped<a class="headerlink" href="#isbandanaequipped" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. Yes when the worn clothes include a mask (<code>masks</code>) or a large mask (<code>masks_large</code>) with a model number above 0.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- True when this player is wearing a mask or a large mask.</span>
+<span class="c1">---@param source integer</span>
+<span class="c1">---@return boolean</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">IsBandanaEquipped</span><span class="p">(</span><span class="nv">source</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">if</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">IsBandanaEquipped</span><span class="p">(</span><span class="nv">source</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="c1">-- hide the face from other players</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="getplayerclothes">GetPlayerClothes<a class="headerlink" href="#getplayerclothes" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. The worn clothes, turned into the numbers the game uses to draw them. You get an empty result when nothing is saved, or when a clothing slot has no matching picture in the catalog.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Worn clothes as asset hashes, keyed by category.</span>
+<span class="c1">---@param source integer</span>
+<span class="c1">---@return table clothes</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">GetPlayerClothes</span><span class="p">(</span><span class="nv">source</span><span class="p">)</span>
+</code></pre></div>
+<p>Most pieces come back as <code>{ hash, tint0, tint1, tint2 }</code>. A piece that is drawn from a story-mode model instead of a regular multiplayer item also carries <code>drawable</code>, <code>albedo</code>, <code>normal</code>, <code>material</code>, and <code>palette</code>, so check for those keys rather than assuming every category has them.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">clothes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">GetPlayerClothes</span><span class="p">(</span><span class="nv">source</span><span class="p">)</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">hat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">clothes</span><span class="p">.</span><span class="py">hats</span>
+<span class="kr">if</span><span class="w"> </span><span class="nv">hat</span><span class="w"> </span><span class="o">~=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">hat</span><span class="p">.</span><span class="py">hash</span><span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="getplayertemperatureprotection">GetPlayerTemperatureProtection<a class="headerlink" href="#getplayertemperatureprotection" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. How many warm pieces and cold pieces are worn, and the protection numbers from the clothing settings.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Warm and cold clothing counts for the active character.</span>
+<span class="c1">---@return table protection</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">GetPlayerTemperatureProtection</span><span class="p">(</span><span class="nv">source</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nv">warmItems</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">coldItems</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">coldProtection</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">heatProtection</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">protection</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">GetPlayerTemperatureProtection</span><span class="p">(</span><span class="nv">source</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nv">protection</span><span class="p">.</span><span class="py">coldProtection</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="setclothesforchar">SetClothesForChar<a class="headerlink" href="#setclothesforchar" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. Saves clothes for the character that is selected right now, then puts them on that player. This is the call a job or uniform script should use.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Saves worn clothes for the online player who has this character selected.</span>
+<span class="c1">--- False and a reason when the character is offline or an entry is not a model and texture.</span>
+<span class="c1">---@param charid integer|string</span>
+<span class="c1">---@param clothes table</span>
+<span class="c1">---@param outfitId integer|string|nil</span>
+<span class="c1">---@return boolean ok</span>
+<span class="c1">---@return string|nil err</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">SetClothesForChar</span><span class="p">(</span><span class="nv">charid</span><span class="p">,</span><span class="w"> </span><span class="nv">clothes</span><span class="p">,</span><span class="w"> </span><span class="nv">outfitId</span><span class="p">)</span>
+</code></pre></div>
+<p><code>charid</code> is <code>fw_characters.id</code>. <code>clothes</code> is <code>{ hats = { model = 12, texture = 1 } }</code>. <code>model</code> is the catalog index. <code>texture</code> is a number, or a table <code>{ palette, tint0, tint1, tint2 }</code>. Hair and beard are removed from the table before it is saved. Leave <code>outfitId</code> out to store no saved outfit.</p>
+<table>
+<thead>
+<tr>
+<th><code>err</code></th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SetClothesForChar: charid is required</code></td>
+<td>The character id is missing.</td>
+</tr>
+<tr>
+<td><code>SetClothesForChar: clothes must be a table { category = { model, texture } }</code></td>
+<td><code>clothes</code> is not a table.</td>
+</tr>
+<tr>
+<td><code>SetClothesForChar: invalid entry for category '&lt;category&gt;' ...</code></td>
+<td>That category has no numeric <code>model</code>.</td>
+</tr>
+<tr>
+<td><code>SetClothesForChar: invalid texture for category '&lt;category&gt;'</code></td>
+<td><code>texture</code> is not a number or a table.</td>
+</tr>
+<tr>
+<td><code>SetClothesForChar: that character is not selected by an online player</code></td>
+<td>Nobody online is playing that character.</td>
+</tr>
+<tr>
+<td><code>SetClothesForChar: could not save clothing</code></td>
+<td><code>SetClothing</code> failed.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">ok</span><span class="p">,</span><span class="w"> </span><span class="nv">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">SetClothesForChar</span><span class="p">(</span><span class="nv">characterId</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nv">hats</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w"> </span><span class="nv">texture</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">},</span>
+<span class="p">},</span><span class="w"> </span><span class="kc">nil</span><span class="p">)</span>
+<span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">ok</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">err</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h2 id="calls-in-the-players-game">Calls in the player's game<a class="headerlink" href="#calls-in-the-players-game" title="Permanent link">&para;</a></h2>
+<p>These run on the player's computer. <code>source</code> is not passed. They look at the clothes already loaded for the character they are playing.</p>
+<p>A category is one clothing slot. The names you will use most are <code>hats</code>, <code>shirts_full</code>, <code>vests</code>, <code>boots</code>, <code>neckwear</code>, <code>masks</code>, and <code>gunbelts</code>.</p>
+<h3 id="areclothesstillapplied">AreClothesStillApplied<a class="headerlink" href="#areclothesstillapplied" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. Yes when the clothes this resource last put on them are still there. No if clothes were never loaded this visit, or one slot is missing. The check skips <code>bodies_upper</code> and <code>bodies_lower</code> (those are the body, not clothes), and treats <code>neckwear</code> and <code>neckerchiefs</code> as the same slot, since the game stores either name under the other. The character menu uses this after it applies a body, to see if the clothes were wiped off.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- True when the last clothes this resource applied are still on the ped.</span>
+<span class="c1">---@return boolean</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">AreClothesStillApplied</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">AreClothesStillApplied</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nf">TriggerEvent</span><span class="p">(</span><span class="s1">'murphy_clothing:loadclothes'</span><span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="isplayernaked">IsPlayerNaked<a class="headerlink" href="#isplayernaked" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. Yes after <code>SetNaked(true)</code> or <code>ToggleNaked</code> has stripped them to the base body. No when their clothes are on.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- True when this player has been set naked by the clothing script.</span>
+<span class="c1">---@return boolean</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">IsPlayerNaked</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">if</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">IsPlayerNaked</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="togglenaked">ToggleNaked<a class="headerlink" href="#togglenaked" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. Switches between the base body and the saved clothes. Pass <code>true</code> to also show the small notice. You get back the new naked state.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Toggles the base body. Pass true to show the notice.</span>
+<span class="c1">---@param notify boolean|nil</span>
+<span class="c1">---@return boolean naked</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">ToggleNaked</span><span class="p">(</span><span class="nv">notify</span><span class="p">)</span>
+</code></pre></div>
+<p>A bathhouse script strips them, then puts the clothes back when they leave:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">ToggleNaked</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span>
+</code></pre></div>
+<p>The same action is the message <code>murphy_clothing:toggleNaked</code>. It stays in the player's game.</p>
+<div class="highlight"><pre><span></span><code><span class="nf">TriggerEvent</span><span class="p">(</span><span class="s1">'murphy_clothing:toggleNaked'</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="setnaked">SetNaked<a class="headerlink" href="#setnaked" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. <code>naked</code> true strips to the base body. <code>naked</code> false puts the saved clothes back. <code>notify</code> true shows the notice.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Sets the base body on or off.</span>
+<span class="c1">---@param naked boolean</span>
+<span class="c1">---@param notify boolean|nil</span>
+<span class="c1">---@return boolean naked</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">SetNaked</span><span class="p">(</span><span class="nv">naked</span><span class="p">,</span><span class="w"> </span><span class="nv">notify</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">SetNaked</span><span class="p">(</span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">)</span>
+</code></pre></div>
+<p>The same action is <code>murphy_clothing:setNaked</code> in the player's game:</p>
+<div class="highlight"><pre><span></span><code><span class="nf">TriggerEvent</span><span class="p">(</span><span class="s1">'murphy_clothing:setNaked'</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">)</span>
+</code></pre></div>
+<p><code>murphy_clothing:getNakedState</code> is the old message for the same check as <code>IsPlayerNaked</code>. It does not hand the answer to the script that sent it. Use the call.</p>
+<h3 id="getequippedclothing">GetEquippedClothing<a class="headerlink" href="#getequippedclothing" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. The saved pieces whose model number is above 0. Each one has <code>model</code>, <code>texture</code>, and <code>category</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Worn categories from the saved clothes on this computer.</span>
+<span class="c1">---@return table equipped</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">GetEquippedClothing</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">equipped</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">GetEquippedClothing</span><span class="p">()</span>
+<span class="kr">if</span><span class="w"> </span><span class="nv">equipped</span><span class="p">.</span><span class="py">hats</span><span class="w"> </span><span class="o">~=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">equipped</span><span class="p">.</span><span class="py">hats</span><span class="p">.</span><span class="py">model</span><span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="getequippedcategories">GetEquippedCategories<a class="headerlink" href="#getequippedcategories" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. The same pieces, with <code>model</code> and <code>texture</code> only.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Equipped categories, with model and texture.</span>
+<span class="c1">---@return table categories</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">GetEquippedCategories</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">categories</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">GetEquippedCategories</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="nv">categories</span><span class="p">.</span><span class="py">boots</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">categories</span><span class="p">.</span><span class="py">boots</span><span class="p">.</span><span class="py">model</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="isclothingcategoryequipped">IsClothingCategoryEquipped<a class="headerlink" href="#isclothingcategoryequipped" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. Yes when that category has a saved model above 0. This stays yes while the player has temporarily taken the piece off with a toggle.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- True when the saved outfit includes this category.</span>
+<span class="c1">---@param category string</span>
+<span class="c1">---@return boolean</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">IsClothingCategoryEquipped</span><span class="p">(</span><span class="nv">category</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">if</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">IsClothingCategoryEquipped</span><span class="p">(</span><span class="s1">'hats'</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">ToggleClothingComponent</span><span class="p">(</span><span class="s1">'hats'</span><span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="getclothinginfo">GetClothingInfo<a class="headerlink" href="#getclothinginfo" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. One category: <code>category</code>, <code>model</code>, <code>texture</code>, and <code>temperature</code> (<code>warm</code>, <code>cold</code>, or <code>neutral</code>). You get nothing when that slot is empty.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- One worn category, or nothing when it is empty.</span>
+<span class="c1">---@param category string</span>
+<span class="c1">---@return table|nil info</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">GetClothingInfo</span><span class="p">(</span><span class="nv">category</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">hat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">GetClothingInfo</span><span class="p">(</span><span class="s1">'hats'</span><span class="p">)</span>
+<span class="kr">if</span><span class="w"> </span><span class="nv">hat</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="gettemperatureprotection">GetTemperatureProtection<a class="headerlink" href="#gettemperatureprotection" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. The same kind of result as the server call, plus <code>categories</code>, the list of worn category names. A cold-weather script on the player's computer can read it without asking the server.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Warm and cold counts for the clothes on this computer.</span>
+<span class="c1">---@return table protection</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">GetTemperatureProtection</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">protection</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">GetTemperatureProtection</span><span class="p">()</span>
+<span class="kr">if</span><span class="w"> </span><span class="nv">protection</span><span class="p">.</span><span class="py">coldProtection</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="s1">'no coat'</span><span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="getclothingtogglestate">GetClothingToggleState<a class="headerlink" href="#getclothingtogglestate" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. Ask about a list of categories. For each one you get <code>owned</code> (the outfit includes it) and <code>on</code> (it is showing right now). <code>fw_weapons</code> uses this to see the gunbelt.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- owned and on, for each category name you pass.</span>
+<span class="c1">---@param categories string[]</span>
+<span class="c1">---@return table states</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">GetClothingToggleState</span><span class="p">(</span><span class="nv">categories</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">states</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">GetClothingToggleState</span><span class="p">({</span><span class="w"> </span><span class="s1">'gunbelts'</span><span class="w"> </span><span class="p">})</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">belt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">states</span><span class="p">.</span><span class="py">gunbelts</span>
+<span class="kr">if</span><span class="w"> </span><span class="nv">belt</span><span class="w"> </span><span class="o">~=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">belt</span><span class="p">.</span><span class="py">on</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="s1">'belt is on'</span><span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="toggleclothingcategory">ToggleClothingCategory<a class="headerlink" href="#toggleclothingcategory" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. Takes that saved piece off, or puts it back on. Works for any category the outfit owns, not only the ones listed under <code>ToggleClothingComponent</code> below. You get yes when it is on afterwards. You get no when the outfit has no such piece.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Toggles one saved category. False when the outfit has none.</span>
+<span class="c1">---@param category string</span>
+<span class="c1">---@return boolean on</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">ToggleClothingCategory</span><span class="p">(</span><span class="nv">category</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">on</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">ToggleClothingCategory</span><span class="p">(</span><span class="s1">'hats'</span><span class="p">)</span>
+</code></pre></div>
+<p>The message <code>murphy_clothes:Equip-UnequipCategory</code> does the same toggle. It stays in the player's game.</p>
+<div class="highlight"><pre><span></span><code><span class="nf">TriggerEvent</span><span class="p">(</span><span class="s1">'murphy_clothes:Equip-UnequipCategory'</span><span class="p">,</span><span class="w"> </span><span class="s1">'hats'</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="toggleclothingcomponent">ToggleClothingComponent<a class="headerlink" href="#toggleclothingcomponent" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. The wheel uses this to take a piece off or put it back, with a short matching animation (reaching for the hat, adjusting the belt, and so on). Only a fixed list of categories can be toggled this way: <code>hats</code>, <code>masks</code>, <code>eyewear</code>, <code>headwear</code>, <code>hat_accessories</code>, <code>neckwear</code>, <code>neckerchiefs</code>, <code>neckties</code>, <code>shirts_full</code>, <code>vests</code>, <code>suspenders</code>, <code>coats</code>, <code>coats_closed</code>, <code>coats_heavy</code>, <code>cloaks</code>, <code>ponchos</code>, <code>capes</code>, <code>gloves</code>, <code>gauntlets</code>, <code>gunbelts</code>, <code>gunbelt_accs</code>, <code>pants</code>, <code>chaps</code>, <code>spats</code>, <code>boots</code>, <code>boot_accessories</code>, <code>accessories</code>, <code>satchels</code>, <code>badges</code>, and <code>aprons</code>. Anything outside that list, or a category name that is not a string, is refused. You also get no while another toggle's animation is still playing, or while the player is dead. Otherwise you get yes — the toggle has started, even if that slot turns out to already be empty.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Toggles the piece in this category on the player's body.</span>
+<span class="c1">---@param category string</span>
+<span class="c1">---@return boolean ok</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">ToggleClothingComponent</span><span class="p">(</span><span class="nv">category</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">ToggleClothingComponent</span><span class="p">(</span><span class="s1">'gloves'</span><span class="p">)</span>
+</code></pre></div>
+<p>The message <code>murphy_clothing:toggleComponent</code> is the same call. The command <code>/toggleclothing hats</code> is the same call from chat.</p>
+<div class="highlight"><pre><span></span><code><span class="nf">TriggerEvent</span><span class="p">(</span><span class="s1">'murphy_clothing:toggleComponent'</span><span class="p">,</span><span class="w"> </span><span class="s1">'hats'</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="getwornclothingcategories">GetWornClothingCategories<a class="headerlink" href="#getwornclothingcategories" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. The category names from the list above that the player's outfit actually owns — the ones <code>ToggleClothingComponent</code> can act on. A piece they hid with a toggle is still in the list, because the outfit still owns it.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Category names the player can take off and put back on.</span>
+<span class="c1">---@return string[] categories</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">GetWornClothingCategories</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">categories</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">GetWornClothingCategories</span><span class="p">()</span>
+<span class="kr">for</span><span class="w"> </span><span class="nv">index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">#</span><span class="nv">categories</span><span class="w"> </span><span class="kr">do</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">categories</span><span class="p">[</span><span class="nv">index</span><span class="p">])</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="haswearablecategory">HasWearableCategory<a class="headerlink" href="#haswearablecategory" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. Yes when that slot has a multiplayer clothing piece on the body right now. No for a single-player or story piece, and no when the slot is empty.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- True when this slot has a multiplayer piece on the body.</span>
+<span class="c1">---@param category string</span>
+<span class="c1">---@return boolean</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">HasWearableCategory</span><span class="p">(</span><span class="nv">category</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">if</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">HasWearableCategory</span><span class="p">(</span><span class="s1">'shirts_full'</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">ToggleSleeve</span><span class="p">()</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="hasanywearablecategory">HasAnyWearableCategory<a class="headerlink" href="#hasanywearablecategory" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. Yes when anything is in that slot, including a single-player piece. Use this before a button that only removes the piece.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- True when this slot has any piece on the body.</span>
+<span class="c1">---@param category string</span>
+<span class="c1">---@return boolean</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">HasAnyWearableCategory</span><span class="p">(</span><span class="nv">category</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">if</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">HasAnyWearableCategory</span><span class="p">(</span><span class="s1">'hats'</span><span class="p">)</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">ToggleClothingComponent</span><span class="p">(</span><span class="s1">'hats'</span><span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="issleeverolled">IsSleeveRolled<a class="headerlink" href="#issleeverolled" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. Yes when the shirt sleeves are rolled.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- True when the shirt sleeves are rolled.</span>
+<span class="c1">---@return boolean</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">IsSleeveRolled</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">IsSleeveRolled</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">ToggleSleeve</span><span class="p">()</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="togglesleeve">ToggleSleeve<a class="headerlink" href="#togglesleeve" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. Rolls or unrolls the shirt sleeves. You get no when the shirt cannot do that, or nothing is worn in <code>shirts_full</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Rolls or unrolls the sleeves.</span>
+<span class="c1">---@return boolean ok</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">ToggleSleeve</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">ToggleSleeve</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="togglecollar">ToggleCollar<a class="headerlink" href="#togglecollar" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. Opens or closes the shirt collar, when that shirt has a collar.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Opens or closes the collar.</span>
+<span class="c1">---@return boolean ok</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">ToggleCollar</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">ToggleCollar</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="toggleneckwearup">ToggleNeckwearUp<a class="headerlink" href="#toggleneckwearup" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. Pulls a neckerchief up over the face, or back down. A robbery script can pull it up when the player starts a holdup. You get no when nothing is worn in <code>neckwear</code> or <code>neckerchiefs</code>, or that piece does not support being pulled up.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Pulls the neckerchief up or down.</span>
+<span class="c1">---@return boolean ok</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">ToggleNeckwearUp</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">ToggleNeckwearUp</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="getneckwearbandana">GetNeckwearBandana<a class="headerlink" href="#getneckwearbandana" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. <code>can</code> is yes when the neckwear can cover the face. <code>up</code> is yes when it is already up.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Whether the neckwear can cover the face, and whether it is up.</span>
+<span class="c1">---@return table state</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">GetNeckwearBandana</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">bandana</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">GetNeckwearBandana</span><span class="p">()</span>
+<span class="kr">if</span><span class="w"> </span><span class="nv">bandana</span><span class="p">.</span><span class="py">can</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">bandana</span><span class="p">.</span><span class="py">up</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">ToggleNeckwearUp</span><span class="p">()</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="togglebootsunder">ToggleBootsUnder<a class="headerlink" href="#togglebootsunder" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. Tucks the boots under the pants, or puts them back over.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Tucks the boots under the pants, or puts them over.</span>
+<span class="c1">---@return boolean ok</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">ToggleBootsUnder</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">ToggleBootsUnder</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="togglevestunder">ToggleVestUnder<a class="headerlink" href="#togglevestunder" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. Tucks the vest under the coat, or puts it back over.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Tucks the vest under the coat, or puts it over.</span>
+<span class="c1">---@return boolean ok</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">ToggleVestUnder</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">ToggleVestUnder</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="toggleloadoutside">ToggleLoadoutSide<a class="headerlink" href="#toggleloadoutside" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. Moves the shoulder holster (the <code>loadouts</code> piece) to the other side.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Moves the shoulder holster to the other side.</span>
+<span class="c1">---@return boolean ok</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">ToggleLoadoutSide</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">ToggleLoadoutSide</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="togglehairpomade">ToggleHairPomade<a class="headerlink" href="#togglehairpomade" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. Turns hair pomade on or off.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Turns hair pomade on or off.</span>
+<span class="c1">---@return boolean ok</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">ToggleHairPomade</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">ToggleHairPomade</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="getsatchelpieceactions">GetSatchelPieceActions<a class="headerlink" href="#getsatchelpieceactions" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. The bag screen asks this so it only shows Roll sleeves, or Tuck boots, when that piece can do it.</p>
+<p><code>slots</code> is a map. The key is a name you choose, such as <code>shirt</code>. The value is a list of category names to look at. You get back only the slots that have an action. A slot can include <code>collar</code>, <code>bandana</code>, <code>tuck</code>, or <code>variation</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Which extra actions the worn pieces support.</span>
+<span class="c1">---@param slots table</span>
+<span class="c1">---@return table actions</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">GetSatchelPieceActions</span><span class="p">(</span><span class="nv">slots</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">actions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">GetSatchelPieceActions</span><span class="p">({</span>
+<span class="w">    </span><span class="nv">shirt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s1">'shirts_full'</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="nv">neckwear</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s1">'neckwear'</span><span class="p">,</span><span class="w"> </span><span class="s1">'neckerchiefs'</span><span class="w"> </span><span class="p">},</span>
+<span class="p">})</span>
+<span class="kr">if</span><span class="w"> </span><span class="nv">actions</span><span class="p">.</span><span class="py">shirt</span><span class="w"> </span><span class="o">~=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="nv">actions</span><span class="p">.</span><span class="py">shirt</span><span class="p">.</span><span class="py">collar</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">ToggleCollar</span><span class="p">()</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="cyclewearablevariation">CycleWearableVariation<a class="headerlink" href="#cyclewearablevariation" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. Steps that piece to its next wearable look, such as the next sleeve style. Pass the category names to search. You get no when nothing in that list is on the body, or the piece has only one look.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Steps the worn piece to its next look.</span>
+<span class="c1">---@param categories string[]</span>
+<span class="c1">---@return boolean ok</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">CycleWearableVariation</span><span class="p">(</span><span class="nv">categories</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">CycleWearableVariation</span><span class="p">({</span><span class="w"> </span><span class="s1">'shirts_full'</span><span class="w"> </span><span class="p">})</span>
+</code></pre></div>
+<h3 id="equipmultipleclothes">EquipMultipleClothes<a class="headerlink" href="#equipmultipleclothes" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. Puts several pieces on at once. This changes what they are wearing right now. Saving that outfit for later is <code>SetClothesForChar</code> on the server.</p>
+<p><code>clothesData</code> is <code>{ hats = { model = 1, texture = 0 } }</code>. <code>tint0</code>, <code>tint1</code>, and <code>tint2</code> are optional. Leave <code>ped</code> out to use the player's character. You get no when <code>clothesData</code> is not a table. A category or model that does not exist in the catalog is skipped quietly — <code>ok</code> only reports whether <code>clothesData</code> itself was a table, not whether every piece in it was understood, so check the result with <code>GetEquippedCategories</code> afterwards if you need to be sure something was actually applied.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Puts several pieces on a character in this player's game.</span>
+<span class="c1">---@param clothesData table</span>
+<span class="c1">---@param ped integer|nil</span>
+<span class="c1">---@return boolean ok</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">EquipMultipleClothes</span><span class="p">(</span><span class="nv">clothesData</span><span class="p">,</span><span class="w"> </span><span class="nv">ped</span><span class="p">)</span>
+</code></pre></div>
+<p>A costume script on the player's computer:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">EquipMultipleClothes</span><span class="p">({</span>
+<span class="w">    </span><span class="nv">hats</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nv">texture</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="nv">shirts_full</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="nv">texture</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">},</span>
+<span class="p">})</span>
+</code></pre></div>
+<p>The message <code>murphy_clothes:EquipMultipleClothes</code> is the same call.</p>
+<div class="highlight"><pre><span></span><code><span class="nf">TriggerEvent</span><span class="p">(</span><span class="s1">'murphy_clothes:EquipMultipleClothes'</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nv">hats</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nv">texture</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">},</span>
+<span class="p">})</span>
+</code></pre></div>
+<h3 id="isbandanaequipped_1">IsBandanaEquipped<a class="headerlink" href="#isbandanaequipped_1" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. Yes when the saved clothes include a mask or a large mask with a model above 0. The server has a call with the same name for other scripts. Use that one from the server.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- True when a mask is in the saved clothes on this computer.</span>
+<span class="c1">---@return boolean</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">IsBandanaEquipped</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kr">if</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_clothing</span><span class="p">:</span><span class="nf">IsBandanaEquipped</span><span class="p">()</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="s1">'face covered'</span><span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h2 id="messages">Messages<a class="headerlink" href="#messages" title="Permanent link">&para;</a></h2>
+<p>A message on the server is heard with <code>AddEventHandler</code>. A message in the player's game is heard with <code>AddEventHandler</code> when it stays there, or <code>RegisterNetEvent</code> when the server can send it. Your script hears one only if it is already running. Put the listener at the top of your script.</p>
+<h3 id="murphy_clothingclothesupdated">murphy_clothing:clothesUpdated<a class="headerlink" href="#murphy_clothingclothesupdated" title="Permanent link">&para;</a></h3>
+<p>Stays on the server. Sent after clothes are saved, from the shop or from <code>SetClothesForChar</code>. A uniform script can wait for this, then read the clothes back:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">---@param source integer</span>
+<span class="c1">---@param charid integer</span>
+<span class="c1">---@param clothes table</span>
+<span class="nf">AddEventHandler</span><span class="p">(</span><span class="s1">'murphy_clothing:clothesUpdated'</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">charid</span><span class="p">,</span><span class="w"> </span><span class="nv">clothes</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">charid</span><span class="p">)</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="murphy_clothingloadclothes">murphy_clothing:loadclothes<a class="headerlink" href="#murphy_clothingloadclothes" title="Permanent link">&para;</a></h3>
+<p>Sent from the server to the player's game. Their game puts the saved clothes back on. The character menu sends the local version of this after a body is applied. You can send it yourself after you know the clothes were wiped off:</p>
+<div class="highlight"><pre><span></span><code><span class="nf">TriggerEvent</span><span class="p">(</span><span class="s1">'murphy_clothing:loadclothes'</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="murphy_clothesonclothingchanged">murphy_clothes:OnClothingChanged<a class="headerlink" href="#murphy_clothesonclothingchanged" title="Permanent link">&para;</a></h3>
+<p>Stays in the player's game. Sent when a category is taken off or put on. <code>category</code> is the slot name. <code>equipped</code> is yes when it is on. <code>fw_weapons</code> listens so a missing gunbelt puts the guns away.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">---@param category string</span>
+<span class="c1">---@param equipped boolean</span>
+<span class="nf">AddEventHandler</span><span class="p">(</span><span class="s1">'murphy_clothes:OnClothingChanged'</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">category</span><span class="p">,</span><span class="w"> </span><span class="nv">equipped</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">category</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">'gunbelts'</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">equipped</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">        </span><span class="nb">print</span><span class="p">(</span><span class="s1">'belt off'</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">end</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="fw_clothingsleevechanged">fw_clothing:sleeveChanged<a class="headerlink" href="#fw_clothingsleevechanged" title="Permanent link">&para;</a></h3>
+<p>Stays in the player's game. Sent after the sleeve or collar changes. It has no extra information. Read <code>IsSleeveRolled</code> if you need the new state.</p>
+<div class="highlight"><pre><span></span><code><span class="nf">AddEventHandler</span><span class="p">(</span><span class="s1">'fw_clothing:sleeveChanged'</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">()</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="bandana-and-temperature-messages">Bandana and temperature messages<a class="headerlink" href="#bandana-and-temperature-messages" title="Permanent link">&para;</a></h3>
+<p>These stay in the player's game. The calls above are the easier way. The messages exist so an older script can ask without a call.</p>
+<table>
+<thead>
+<tr>
+<th>Message</th>
+<th>What it does</th>
+<th>What to do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>murphy_clothes:CheckBandana</code></td>
+<td>Looks at the mask, then sends <code>murphy_clothes:BandanaStatus</code>.</td>
+<td>Prefer <code>IsBandanaEquipped</code>.</td>
+</tr>
+<tr>
+<td><code>murphy_clothes:BandanaStatus</code></td>
+<td><code>true</code> when a mask is on.</td>
+<td>Listen if you sent <code>CheckBandana</code>.</td>
+</tr>
+<tr>
+<td><code>murphy_clothes:ToggleBandana</code></td>
+<td><code>state</code> true means the bandana is up. Also sends <code>syn_robbery:bandana</code>.</td>
+<td>Prefer <code>ToggleNeckwearUp</code>.</td>
+</tr>
+<tr>
+<td><code>murphy_clothes:GetTemperatureProtection</code></td>
+<td>Then sends <code>murphy_clothes:TemperatureProtectionData</code>.</td>
+<td>Prefer <code>GetTemperatureProtection</code>.</td>
+</tr>
+<tr>
+<td><code>murphy_clothes:TemperatureProtectionData</code></td>
+<td>The protection table.</td>
+<td>Listen if you sent the ask above.</td>
+</tr>
+<tr>
+<td><code>murphy_clothes:TemperatureUpdate</code></td>
+<td>The protection table, sent about half a second after clothes change.</td>
+<td>Listen to follow warmth as they dress.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="nf">AddEventHandler</span><span class="p">(</span><span class="s1">'murphy_clothes:TemperatureUpdate'</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">protection</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">protection</span><span class="p">.</span><span class="py">coldProtection</span><span class="p">)</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="opening-the-shop-from-the-players-game">Opening the shop from the player's game<a class="headerlink" href="#opening-the-shop-from-the-players-game" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Message</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>murphy_clothes:OpenClothingMenu</code></td>
+<td>Opens the outfit list.</td>
+</tr>
+<tr>
+<td><code>murphy_clothes:OpenWardrobe</code></td>
+<td>Opens the same list in wardrobe mode.</td>
+</tr>
+<tr>
+<td><code>murphy_clothes:itemclothes</code></td>
+<td>Toggles one category. You pass the category, the model, and the texture. Prefer <code>ToggleClothingCategory</code>.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="nf">TriggerEvent</span><span class="p">(</span><span class="s1">'murphy_clothes:OpenWardrobe'</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="messages-the-shop-sends-to-itself">Messages the shop sends to itself<a class="headerlink" href="#messages-the-shop-sends-to-itself" title="Permanent link">&para;</a></h3>
+<p>A new script should use the calls above. These are listed so you can find the name when an older script already sends it.</p>
+<table>
+<thead>
+<tr>
+<th>Message</th>
+<th>Side</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>murphy_clothes:clotheitem</code></td>
+<td>Player's game</td>
+<td>Applies a whole outfit table.</td>
+</tr>
+<tr>
+<td><code>murphy_clothes:outfitchanged</code></td>
+<td>Player's game</td>
+<td>The outfit finished loading. Toggles start over.</td>
+</tr>
+<tr>
+<td><code>murphy_clothes:applyWearable</code></td>
+<td>Player's game</td>
+<td>Applies wearable state data (body shape, sleeve, collar, ...).</td>
+</tr>
+<tr>
+<td><code>murphy_clothes:ApplyClothesToCharid</code></td>
+<td>Player's game</td>
+<td>Loads clothes for a character id onto a given ped, for preview/dev use.</td>
+</tr>
+<tr>
+<td><code>murphy:clothing:RemoveAllClothes</code></td>
+<td>Player's game</td>
+<td>Clears the pieces on a ped, except the essential body categories.</td>
+</tr>
+<tr>
+<td><code>murphy_clothes:LoadBasSkin</code></td>
+<td>Player's game</td>
+<td>Captures the current base body as the saved skin to re-dress onto.</td>
+</tr>
+<tr>
+<td><code>murphy_clothes:Loadlowerbody</code></td>
+<td>Player's game</td>
+<td>Sets the saved lower body hash directly.</td>
+</tr>
+<tr>
+<td><code>murphy_clothes:Loadupperbody</code></td>
+<td>Player's game</td>
+<td>Sets the saved upper body hash directly.</td>
+</tr>
+<tr>
+<td><code>murphy_clothing:ResetClothesMenuCreator</code></td>
+<td>Player's game</td>
+<td>Resets the creator clothes step.</td>
+</tr>
+<tr>
+<td><code>murphy_clothing:OpenClothesMenuCreator</code></td>
+<td>Player's game</td>
+<td>Opens clothes during character creation.</td>
+</tr>
+<tr>
+<td><code>murphy_clothing:SaveClothesCreator</code></td>
+<td>Player's game</td>
+<td>Saves the creator clothes step.</td>
+</tr>
+<tr>
+<td><code>murphy_clothing:enterInstance</code></td>
+<td>Player's game to server</td>
+<td>The shop asks for a private room.</td>
+</tr>
+<tr>
+<td><code>murphy_clothing:leaveInstance</code></td>
+<td>Player's game to server</td>
+<td>The shop leaves that room.</td>
+</tr>
+<tr>
+<td><code>murphy_clothing:admin:requestOutfitMenu</code></td>
+<td>Player's game to server</td>
+<td>Asks to open the outfit menu through the admin-only chat command.</td>
+</tr>
+<tr>
+<td><code>murphy_clothing:admin:openOutfitMenu</code></td>
+<td>Server to player's game</td>
+<td>Opens it, after fw_admin confirms the player is an admin.</td>
+</tr>
+<tr>
+<td><code>murphy_clothing:admin:requestWearableMenu</code></td>
+<td>Player's game to server</td>
+<td>Asks to open the wearable management menu.</td>
+</tr>
+<tr>
+<td><code>murphy_clothing:admin:openWearableMenu</code></td>
+<td>Server to player's game</td>
+<td>Opens it, after fw_admin confirms the player is an admin.</td>
+</tr>
+<tr>
+<td><code>murphy_clothing:triggerCallback</code></td>
+<td>Server to player's game</td>
+<td>The shop's private question. A new script does not send this.</td>
+</tr>
+<tr>
+<td><code>murphy_clothing:responseCallback</code></td>
+<td>Player's game to server</td>
+<td>The answer to that question. A new script does not send this.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="state-bags">State bags<a class="headerlink" href="#state-bags" title="Permanent link">&para;</a></h2>
+<p>This resource does not set one. The character id is <code>fwCharacterId</code> on <a href="../fw-characters/">fw_characters</a>.</p>
+<h2 id="commands">Commands<a class="headerlink" href="#commands" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Who</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/loadclothes</code></td>
+<td>The player</td>
+<td>Puts the saved clothes back on.</td>
+</tr>
+<tr>
+<td><code>/undress</code></td>
+<td>The player</td>
+<td>Takes off every clothing piece except the body itself (hair, beard, skin, and so on stay).</td>
+</tr>
+<tr>
+<td><code>/getnaked</code></td>
+<td>The player</td>
+<td>Same switch as <code>ToggleNaked(true)</code> — strips to the base body, or puts the saved clothes back, with a small notice either way. An optional keybind does the same thing if the server sets <code>Config.ClothesManagement.GetNakedKeybind</code>.</td>
+</tr>
+<tr>
+<td><code>/toggleclothing &lt;category&gt;</code></td>
+<td>The player</td>
+<td>Same toggle as <code>ToggleClothingComponent</code>.</td>
+</tr>
+<tr>
+<td><code>/ClothesManagement</code></td>
+<td>A player who has <code>fw.admin</code> (see <a href="../fw-admin/">fw_admin</a>)</td>
+<td>Opens the wearable/body management menu. The name comes from <code>Config.ClothesManagement.Command</code>; an optional keybind (<code>Config.ClothesManagement.Keybind</code>) opens the same menu.</td>
+</tr>
+<tr>
+<td>Whatever name the server sets in <code>Config.MenuCommand</code></td>
+<td>A player who has <code>fw.admin</code></td>
+<td>Opens the outfit shop list. There is no command here unless the server sets this config value — it is nil by default.</td>
+</tr>
+<tr>
+<td><code>/temptest</code></td>
+<td>The player</td>
+<td>Prints the ambient temperature and this player's warm/cold item counts and protection levels to F8. A debug command, not part of the normal flow.</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "content.code.copy", "search.suggest"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+    
+  </body>
+</html>

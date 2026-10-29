@@ -1,0 +1,2437 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="API reference for the Project Territory framework. Each export includes the arguments, the rejection cases, and an example.">
+      
+      
+      
+      
+        <link rel="prev" href="../fw-satchel/">
+      
+      
+        <link rel="next" href="../fw-trade/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/territory-crest.webp">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>fw_stores - Project Territory Framework Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="territory" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#fw_stores" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Project Territory Framework Docs" class="md-header__button md-logo" aria-label="Project Territory Framework Docs" data-md-component="logo">
+      
+  <img src="../assets/images/territory-crest.webp" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Project Territory Framework Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              fw_stores
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="territory" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href=".." class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../tutorial-crafting/" class="md-tabs__link">
+          
+  
+  
+  Tutorials
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Project Territory Framework Docs" class="md-nav__button md-logo" aria-label="Project Territory Framework Docs" data-md-component="logo">
+      
+  <img src="../assets/images/territory-crest.webp" alt="logo">
+
+    </a>
+    Project Territory Framework Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-menu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_menu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-admin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_admin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-characters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_characters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-creator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_creator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-clothing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_clothing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-inventory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_inventory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-money/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_money
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-weapons/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_weapons
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-satchel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_satchel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_stores
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_stores
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#opening-the-counter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opening the counter
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-store-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The store list
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#list-prices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        List prices
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="List prices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rank-i-anyone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rank I, anyone
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rank-ii-recognized" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rank II, Recognized
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rank-iii-trusted" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rank III, Trusted
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rank-iv-established" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rank IV, Established
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gunsmith" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gunsmith
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#butcher" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Butcher
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trapper" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trapper
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bait-and-tackle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bait and tackle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#doctor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Doctor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#saloon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Saloon
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#barber" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Barber
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-trade/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_trade
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vorp-lib/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    vorp_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../database/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorials
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tutorials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial-crafting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crafting resource
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#opening-the-counter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Opening the counter
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-store-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The store list
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#list-prices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        List prices
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="List prices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rank-i-anyone" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rank I, anyone
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rank-ii-recognized" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rank II, Recognized
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rank-iii-trusted" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rank III, Trusted
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rank-iv-established" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rank IV, Established
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gunsmith" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gunsmith
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#butcher" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Butcher
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trapper" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trapper
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bait-and-tackle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bait and tackle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#doctor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Doctor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#saloon" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Saloon
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#barber" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Barber
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="fw_stores">fw_stores<a class="headerlink" href="#fw_stores" title="Permanent link">&para;</a></h1>
+<p>Runs in the player's game. Walk up to the clerk during open hours and press G. A short loading prompt plays while the counter is gathered, then the counter opens. Press Escape, or press Close, to leave it. Pressing Shop again closes it too.</p>
+<p>Closing the counter puts the shelf back the way the store lists it. What you settled stays in your bag.</p>
+<p>The clerk's goods are their own panel on the left, in the same journal style as the bag. Want and Offer are two panels between them and the bag. Want is what you are asking the clerk for. Offer is what you are putting up. None of those panels can be dragged. The bag on the right is the one you are carrying. Right-click, drag, split, use, give, and drop work the same way they do when you open the bag on its own. So do the pictures on the left of the bag, the clothes, the kit, and the gunbelt. The clerk keeps one pile of each thing. A pile with a number is a limited stock, and that number goes down when you buy it. A pile with no number is always in stock. Drag a pile into Want and choose how many. Canned beans from tier I can be up to 20 in one purchase. A hatchet is one, and a shovel is one. Those are as many as one pile in the satchel can hold. The rest of a limited pile stays on the counter. Shift-click a pile to move all of it onto Want or Offer. When Want already holds a purchase, Shift-click on dollars moves only the price still owed, and Shift-click on the trade goods moves only how many that purchase still needs. Otherwise Shift-click moves the whole pile. Ctrl-click moves 10. A counter pile that does not run out has no whole pile, so Shift does nothing there and Ctrl still takes 10. Click a pile on Want or Offer to put that whole pile back. Drag a pile from your bag into Offer. A pile the clerk does not buy is grey, in the bag and in an open pouch, and it will not move onto Offer. Dollars still move. So does something the clerk buys, and something that pays for a trade once you are trusted enough. A pile in an open pouch can go there too when the clerk takes it. The pile stays where it was. Drag a pile back out of Want to return it to the counter, or out of Offer to take it back. A counter pile will not sit in Offer, and a bag pile will not sit in Want.</p>
+<p>Gold numbers are what you pay. A number with a plus is what the clerk pays you. You pay with a dollars pile on Offer. Drag Dollars from your bag, or from an open pouch, onto Offer. The count is how many dollars you are putting up, and that many leave the stack right then. The amount under Offer is the dollars sitting there. Settle spends the price and puts the rest back in the bag. Drag those dollars off Offer, or close the counter, and they come back too. What you put on Offer that the clerk buys is taken out of the bag. What you put on Want is placed in the bag. If the clerk owes you, those dollars are placed in the bag. A tin of beans is 5 dollars at Worths in Valentine and 4 dollars in the other towns. Put dollars on Offer to buy it. A sack of flour is 10 dollars. A hatchet is 80 dollars, and it stays locked until you are established with the clerk. Worths also sells a loaf of bread for 2 dollars. The clerk buys an egg for 2 dollars at Worths and 1 dollar in the other towns, once you are recognized. An apple, a potato, or an ear of corn is 1 dollar. A bundle of mint is 2 dollars. A jar of honey, a block of beeswax, a bundle of wool, a rabbit pelt, or a fish is 4 dollars. A deer hide is 8 dollars. On this visit everyone is unknown, so the counter takes dollars and does not buy goods.</p>
+<p>On the left of the clerk's goods are the same round pictures as the bag. All shows every pile. Kit shows weapons and ammo together. Each other picture shows that one kind, such as food, medical, or containers. A pile that does not match goes grey and stays where it is. Press that picture again, or press All, to show every kind. Want and Offer are not filtered. The bag has its own pictures, the same ones you use when the counter is closed.</p>
+<p>Above the clerk's goods is a mark of four small squares, then I, II, III, and IV. I is Unknown, II is Recognized, III is Trusted, and IV is Established. The four squares show every pile, packed to the top of the counter. A numeral shows only that standing, packed the same way. You can press a numeral up through your own standing. A higher one stays grey. With reputation off, every visit is Unknown, so I can be pressed, and II, III, and IV stay grey. A pile above your standing is locked on the full counter and cannot be bought. A tin of peaches is II. The counter scrolls when the shelf is taller than the page.</p>
+<p>Goods, Work, and Services switch only the clerk's panel. Want, Offer, and the satchel stay where they are. Work says the clerk has no errand on this visit. Services says they are not mending or treating anyone on this visit.</p>
+<h2 id="opening-the-counter">Opening the counter<a class="headerlink" href="#opening-the-counter" title="Permanent link">&para;</a></h2>
+<p>Pressing Shop at the clerk opens that store, after a short loading prompt while the visit is built. That pause is <code>openPauseMs</code> on <code>FwStoresConfig</code>, 400 milliseconds unless you change it. The Shop prompt hides while that counter is on screen, and comes back when it closes. Start <code>fw_stores</code> after <code>fw_satchel</code> and <code>fw_inventory</code>, because the screen uses their pictures and the bag.</p>
+<p>Another script on the player's game can open a named store. <code>storeId</code> is the store name, such as <code>ValentineGeneral</code> or <code>BlackwaterGeneral</code>. A missing name does nothing. The counter closes if that event runs again while it is already open.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Opens one store's counter beside the bag.</span>
+<span class="c1">--- Nothing happens when that store is missing, or when the name is empty.</span>
+<span class="c1">---@param storeId string</span>
+<span class="c1">---@return nil</span>
+<span class="nf">AddEventHandler</span><span class="p">(</span><span class="s1">'fw_stores:open'</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">storeId</span><span class="p">)</span>
+<span class="w">    </span><span class="c1">-- The bag screen keeps the mouse.</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nf">TriggerEvent</span><span class="p">(</span><span class="s1">'fw_stores:open'</span><span class="p">,</span><span class="w"> </span><span class="s1">'ValentineGeneral'</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="the-store-list">The store list<a class="headerlink" href="#the-store-list" title="Permanent link">&para;</a></h2>
+<p>Write stores in <code>resources/[framework]/fw_stores/shared/config.lua</code>. A type is the kind of shop, such as <code>general</code>. A store is one counter of that type. Set <code>type = 'general'</code> on the store.</p>
+<p>A store is a named field on <code>StoresConfig</code>. That same table is <code>FwStoresConfig.stores</code>. The name is how you read one store.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">StoresConfig</span><span class="p">.</span><span class="py">BlackwaterGeneral</span><span class="p">.</span><span class="py">blip</span>
+<span class="nv">StoresConfig</span><span class="p">.</span><span class="py">BlackwaterGeneral</span><span class="p">.</span><span class="py">goods</span>
+<span class="nv">StoresConfig</span><span class="p">.</span><span class="py">BlackwaterGeneral</span><span class="p">.</span><span class="py">access</span>
+</code></pre></div>
+<p>A type on <code>FwStoresConfig.types</code> is one kind of shop. <code>general</code> is the first. A new kind is another entry there: a label, a template name, a scenario, lines, a mark, and who may trade. A store that names that type receives those fields.</p>
+<p>Write <code>type</code>, <code>name</code>, <code>location</code>, <code>model</code>, <code>voice</code>, and <code>hours</code> on the store. <code>type</code> is the kind, such as <code>general</code>. <code>name</code> is the words on the map mark. <code>hours</code> belongs to this shop and is not taken from the type. Leave <code>template</code>, <code>scenario</code>, <code>lines</code>, <code>takes</code>, <code>blip</code>, <code>access</code>, <code>pay</code>, <code>buy</code>, and <code>rows</code> off and the store uses its type. Write one of those fields when this shop should differ. A field you write replaces that field for this shop. A <code>blip</code> field you write replaces that one field, and the rest of the mark stays with the type. <code>template = false</code> skips the type's shelf and keeps only the <code>goods</code> and <code>buyback</code> written on this store.</p>
+<p><code>rows</code> on a type is how many rows that counter uses. Leave it off and the counter stays at <code>counter.rows</code>, which is 14. The gunsmith sets 20 so a rifle still packs. Raising the shared 14 would add empty rows to the general store. A store can write <code>rows</code> when that one shop should differ.</p>
+<p>Leave <code>pay</code> and <code>buy</code> off a type and that shop uses the general rates. Write them on the type when that trade should differ. <code>access.sell</code> set to a word that is not a standing, such as <code>Closed</code>, means the clerk never buys. The gunsmith is set that way. The butcher, the trapper, and the bait shop set <code>sell</code> to <code>Unknown</code>, so a first visit can still sell. The doctor and the saloon keep selling at Recognized, the same as the general store. Barter stays closed on these shelves until a type has a real trade.</p>
+<p><code>goods</code> and <code>buyback</code> are the shelf. <code>access</code> says who may buy, sell, and barter. <code>pay</code> is the share of the shelf price. <code>buy</code> is the share of the buyback. <code>StoresConfig.BlackwaterGeneral.access</code> matches the general type until Blackwater writes its own.</p>
+<p>The general type sets <code>template</code> to <code>general</code>, the shelf in <code>shared/templates.lua</code>. Then list only what differs. A line whose <code>item</code> is already on the template changes only the fields you write. A new <code>item</code> is added to that store alone. A <code>buyback</code> name you write replaces that price. A new name is added. One town's price does not change the template or another town.</p>
+<p>Worths does that. The tin of beans stays on the shelf and becomes 5 dollars. Bread is not on the template, so Worths alone sells it, for 2 dollars. An egg buyback of 2 replaces the template price of 1. Keane's Saloon does the same kind of change for one drink: whiskey there is 8 dollars, and the rest of the saloon shelf stays as written.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">ValentineGeneral</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'general'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Worths General Store'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">location</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">vector4</span><span class="p">(</span><span class="o">-</span><span class="mf">324.16</span><span class="p">,</span><span class="w"> </span><span class="mf">803.62</span><span class="p">,</span><span class="w"> </span><span class="mf">117.88</span><span class="p">,</span><span class="w"> </span><span class="mf">272.93</span><span class="p">),</span>
+<span class="w">    </span><span class="nv">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'u_m_m_valgenstoreowner_01'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">voice</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'0478_U_M_M_VALGENSTOREOWNER_01'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">hours</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">goods</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nv">item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'consumable_can_beans'</span><span class="p">,</span><span class="w"> </span><span class="nv">price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nv">item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'consumable_bread'</span><span class="p">,</span><span class="w"> </span><span class="nv">price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nv">buyback</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nv">egg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>The other general stores, in Strawberry, Saint Denis, Armadillo, Rhodes, Blackwater, Tumbleweed, and Wallace Station, keep the general type's shelf.</p>
+<p><code>location</code> is where the clerk stands, a <code>vector4</code> with the heading last. <code>hours</code> is written on that store. It is <code>{ open, close }</code> or <code>false</code>. The first hour is included and the second is not, so <code>{ 6, 21 }</code> is 6:00 through 20:59. When the first hour is later, such as <code>{ 21, 6 }</code>, the shop stays open across midnight. <code>false</code> means always open. The general stores are open all day. Outside the hours you write, the clerk is gone, the Shop prompt is hidden, and a sale is refused with <code>The store is closed.</code> If the time resource is not running, the shop stays open.</p>
+<p><code>model</code> is the ped. <code>scenario</code> is the stance, such as <code>WORLD_HUMAN_SHOPKEEPER</code>. <code>voice</code> is that ped's voice bank. <code>lines</code> names the greet, the browse line when the counter opens, and the sale line when the trade goes through. <code>takes</code> is how many recordings a line has. A sale picks one of those and cuts off a line already playing.</p>
+<p>The clerk appears within <code>spawnDistance</code> (50) while the shop is open. The prompt is within <code>promptDistance</code> (2.5). Each store's <code>blip.range</code> decides when its mark is on the map. <code>blipRange</code> (120) is that distance when a store does not set its own.</p>
+<p><code>blip</code> is that store's mark. Leave it off and the store uses its type's mark. The <code>name</code> on the store is the words on that mark. <code>style</code> is the blip style, such as <code>BLIP_STYLE_DEBUG_YELLOW</code>. <code>sprite</code> is the icon, such as <code>blip_ambient_npc</code>. <code>modifiers</code> is a list of blip modifiers, such as <code>BLIP_MODIFIER_MP_COLOR_6</code>. <code>color</code> is a color word, such as <code>yellow</code>, when you are not listing modifiers. <code>range</code> is how close the player must be, in metres, before the mark exists. The general type's mark uses <code>150</code>. The mark stays until the player is 20 metres past that, then it leaves the map. Come back inside the range and it returns. Leave <code>range</code> off a mark you write yourself and the store uses <code>blipRange</code> (120).</p>
+<p><code>card</code> set to <code>false</code>, or left out, means the mark has no card. A table is the card that opens when the player hovers that mark. Selecting it keeps the card open. <code>type</code> has to be <code>map_card_mission</code>. <code>title</code> is the large line. <code>subtitle</code> is the smaller line. <code>description</code> is the body, and <code>~n~</code> starts a new line. <code>footer</code> is the region line after the player selects the mark. Hovering does not change that line. <code>txd</code> is the picture's texture dictionary, such as <code>map_card_val_generalstore</code>. <code>txn</code> is the texture name inside it. The store sample uses <code>image</code>.</p>
+<p>A town mark is separate from the shop mark. It uses the town style and stays on the map, because it is created with no range. <code>FwStoresConfig.towns</code> names each town. <code>name</code> is the words on the mark and the card title. <code>coords</code> is where the mark sits. <code>footer</code> is the region line. <code>txds</code> is the list of card pictures. One picture is chosen when the player joins, and that picture stays until they leave and come back. Leave <code>txds</code> off when you have no picture. The texture name inside each dictionary is <code>image</code>.</p>
+<p>On a store, <code>town</code> is the key in that table, such as <code>valentine</code>. The card lists each shop type once, in this order: General Store, Gunsmith, Doctor, Barber, Butcher, Trapper, Bait and Tackle, Saloon. A type is left off when that town has no store of that type. Two saloons in one town are one Saloon line. A store with no <code>town</code>, such as a trapper camp, does not add a line and does not get a town mark. A town with no stores is skipped. A store that names a town missing from <code>towns</code> is skipped, and the client log says so.</p>
+<p>Saint Denis uses <code>nbx</code>, Blackwater uses <code>blk</code>, Armadillo uses <code>amd</code>, Tumbleweed uses <code>tbl</code>, and Van Horn uses <code>vht</code>. Wallace Station has one picture in the game. Lagras has two. The other towns have three.</p>
+<table>
+<thead>
+<tr>
+<th>Town</th>
+<th><code>txds</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Valentine</td>
+<td><code>map_card_val_generalstore</code>, <code>map_card_val_gunsmith</code>, <code>map_card_val_saloon2</code></td>
+</tr>
+<tr>
+<td>Strawberry</td>
+<td><code>map_card_str_generalstore</code>, <code>map_card_str_butcher</code>, <code>map_card_str_depot</code></td>
+</tr>
+<tr>
+<td>Rhodes</td>
+<td><code>map_card_rho_generalstore</code>, <code>map_card_rho_gunsmith</code>, <code>map_card_rho_saloon</code></td>
+</tr>
+<tr>
+<td>Saint Denis</td>
+<td><code>map_card_nbx_generalstore</code>, <code>map_card_nbx_gunsmith</code>, <code>map_card_nbx_nicesaloon</code></td>
+</tr>
+<tr>
+<td>Blackwater</td>
+<td><code>map_card_blk_generalstore</code>, <code>map_card_blk_saloon</code>, <code>map_card_blk_butcher</code></td>
+</tr>
+<tr>
+<td>Armadillo</td>
+<td><code>map_card_amd_generalstore</code>, <code>map_card_amd_saloon</code>, <code>map_card_amd_depot</code></td>
+</tr>
+<tr>
+<td>Tumbleweed</td>
+<td><code>map_card_tbl_generalstore</code>, <code>map_card_tbl_gunsmith</code>, <code>map_card_tbl_saloon</code></td>
+</tr>
+<tr>
+<td>Annesburg</td>
+<td><code>map_card_ann_gunsmith</code>, <code>map_card_ann_depot</code>, <code>map_card_fast_travel_annesburg</code></td>
+</tr>
+<tr>
+<td>Van Horn</td>
+<td><code>map_card_vht_saloon</code>, <code>map_card_vht_depot</code>, <code>map_card_vht_fence</code></td>
+</tr>
+<tr>
+<td>Wallace Station</td>
+<td><code>map_card_wal_generalstore</code></td>
+</tr>
+<tr>
+<td>Lagras</td>
+<td><code>map_card_lag_baitshop</code>, <code>map_card_fast_travel_lagras</code></td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="nv">towns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nv">valentine</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nv">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Valentine'</span><span class="p">,</span>
+<span class="w">        </span><span class="nv">coords</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">vector3</span><span class="p">(</span><span class="o">-</span><span class="mf">281.0</span><span class="p">,</span><span class="w"> </span><span class="mf">807.0</span><span class="p">,</span><span class="w"> </span><span class="mf">119.4</span><span class="p">),</span>
+<span class="w">        </span><span class="nv">footer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Valentine, The Heartlands, NH'</span><span class="p">,</span>
+<span class="w">        </span><span class="nv">txds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s1">'map_card_val_generalstore'</span><span class="p">,</span><span class="w"> </span><span class="s1">'map_card_val_gunsmith'</span><span class="p">,</span><span class="w"> </span><span class="s1">'map_card_val_saloon2'</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="p">},</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nv">ValentineGeneral</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nb">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'general'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">town</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'valentine'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nv">blip</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nv">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'General Store'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'BLIP_STYLE_DEBUG_YELLOW'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">sprite</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'blip_ambient_npc'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">range</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">150</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">modifiers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s1">'BLIP_MODIFIER_MP_COLOR_6'</span><span class="w"> </span><span class="p">},</span>
+<span class="w">    </span><span class="nv">card</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="p">},</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nv">location</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">vector4</span><span class="p">(</span><span class="o">-</span><span class="mf">324.16</span><span class="p">,</span><span class="w"> </span><span class="mf">803.62</span><span class="p">,</span><span class="w"> </span><span class="mf">117.88</span><span class="p">,</span><span class="w"> </span><span class="mf">272.93</span><span class="p">),</span>
+<span class="nv">hours</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="mi">21</span><span class="w"> </span><span class="p">},</span>
+<span class="nv">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'u_m_m_valgenstoreowner_01'</span><span class="p">,</span>
+<span class="nv">scenario</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'WORLD_HUMAN_SHOPKEEPER'</span><span class="p">,</span>
+<span class="nv">voice</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'0478_U_M_M_VALGENSTOREOWNER_01'</span><span class="p">,</span>
+<span class="nv">lines</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">greet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'WELCOME'</span><span class="p">,</span><span class="w"> </span><span class="nv">browse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'TAKE_YOUR_TIME'</span><span class="p">,</span><span class="w"> </span><span class="nv">sale</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'FAREWELL_SALE'</span><span class="w"> </span><span class="p">},</span>
+<span class="nv">takes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">sale</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="p">},</span>
+</code></pre></div>
+<p>Each line in <code>goods</code> is one pile on the counter.</p>
+<ul>
+<li><code>item</code> is the item name, such as <code>consumable_can_beans</code>. The label, the size, and the category come from that item.</li>
+<li><code>price</code> is the dollars for one, before a standing changes it. The full list is at the end of this page.</li>
+<li>Leave <code>count</code> off and the pile stays in stock. One purchase can take up to a full stack. A tin of beans is 20. A hatchet is 1. A shovel is 1.</li>
+<li><code>count</code> is a limited pile. That number goes down on this screen when it is bought.</li>
+<li><code>standing</code> is who may buy it. Leave it off and anyone can. <code>Recognized</code> is tier II, <code>Trusted</code> is tier III, and <code>Established</code> is tier IV. A player below that standing sees the pile locked.</li>
+<li><code>price</code> and <code>barter</code> can sit on the same pile. <code>price</code> is the dollars. <code>barter</code> is the other way to pay, once this visit may barter. The general shelf lists a tin of beans at 4 dollars and does not put a trade on it. Valentine writes the price as 5. A standing rate changes the dollars. It leaves the trade alone. A short stack does not pay for part of a trade.</li>
+<li><code>prices</code> sets the dollars for one standing and skips the type rate. <code>prices = { Established = 1 }</code> means Established pays 1 dollar.</li>
+</ul>
+<p><code>buyback</code> is what the clerk pays for one item placed on Offer. A number is the list price. A table uses <code>price</code> as the list price, and a standing name when that standing should get a different amount.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">egg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nv">price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nv">Established</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+<p>The general shelf lists a number for each good the clerk buys. An egg, an apple, a potato, or an ear of corn is 1 dollar. Valentine pays 2 dollars for an egg. Mint is 2. Honey, beeswax, wool, a rabbit pelt, or a fish is 4. A deer hide is 8.</p>
+<p>On the type, <code>pay</code> is the share of <code>price</code> the player pays. <code>1</code> is the shelf price. <code>0.9</code> is nine tenths of it. <code>buy</code> is the share of the buyback the clerk pays. The result is a whole dollar. A shelf price of at least 1 dollar stays at least 1 dollar.</p>
+<p><code>access</code> on the type says who may buy, who may sell, and who may barter. Each line is a standing name. Leave a line off, or set <code>Unknown</code>, and everyone may do that. A word that is not a standing refuses that action. The general store lets everyone buy. Selling waits for Recognized. Barter waits for Trusted.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">access</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nv">buy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Unknown'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">sell</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Recognized'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">barter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Trusted'</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>A pile's own <code>standing</code> still locks that pile. A tin of peaches stays Recognized even though buying, as an action, is open to everyone.</p>
+<p><code>FwStoresConfig.useReputation</code> starts as <code>false</code>. Every visit is then Unknown. Everyone can buy an unlocked pile. Selling and barter stay closed, because Unknown is below Recognized and Trusted. The rates and the access lines stay in the file for when you turn it on.</p>
+<p>Turn <code>useReputation</code> on when a resource named <code>fw_reputation</code> is running. <code>fw_stores</code> asks it for this player's standing at this store type. <code>source</code> is the player's number for this visit. <code>storeType</code> is the type key, such as <code>'general'</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">---@param source integer</span>
+<span class="c1">---@param storeType string</span>
+<span class="c1">---@return string standing</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_reputation</span><span class="p">:</span><span class="nf">GetStanding</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">storeType</span><span class="p">)</span>
+</code></pre></div>
+<p>Return <code>Unknown</code>, <code>Recognized</code>, <code>Trusted</code>, or <code>Established</code>. If <code>fw_reputation</code> is missing, the call fails, or the word is anything else, the visit stays Unknown.</p>
+<p>Settle takes Offer out of the bag and places Want in the bag. Dollars leave the stack when you put them on Offer, including dollars in a pouch you are still carrying. Settle puts back whatever the price did not use. Closing the counter puts the shelf back the way the store lists it, and puts those dollars back as well. The bag keeps what the clerk already handed over.</p>
+<p>Another script on the player's game can open the same screen. <code>visit</code> is the clerk's goods for that store. <code>live</code> is set for you, so the bag on the right is the one the player is carrying.</p>
+<div class="highlight"><pre><span></span><code><span class="nf">TriggerEvent</span><span class="p">(</span><span class="s1">'fw_satchel:shopToggle'</span><span class="p">,</span><span class="w"> </span><span class="nv">visit</span><span class="p">)</span>
+</code></pre></div>
+<p>Running it again closes the bag. This event opens the screen. Settle is what changes the bag.</p>
+<h2 id="list-prices">List prices<a class="headerlink" href="#list-prices" title="Permanent link">&para;</a></h2>
+<p>The number is the list price. An Unknown visit pays that many dollars. Recognized pays 95 percent, Trusted 90 percent, and Established 85 percent, rounded to a whole dollar. A price of at least 1 dollar stays at least 1 dollar.</p>
+<p>A later job should sit under these prices. A short chore pays about 1 or 2 dollars. A day of labor pays about 4 to 8 dollars, under a tin of food. A dangerous job can approach a small tool. It should stay well under a hatchet at 80 dollars.</p>
+<p>The shelf is food the counter keeps, household goods, a short rack of garden seed, and a few tools. The clerk does not buy these goods back. The buyback list is farm and hunt goods, and those prices stay below the shelf.</p>
+<h3 id="rank-i-anyone">Rank I, anyone<a class="headerlink" href="#rank-i-anyone" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>List price</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bannock</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Bar of Soap</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Beef Jerky</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Biscuits</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Bread Roll</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Candle</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Chewing Gum</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Cornbread</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Crackers</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Hard Candy</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Oatcakes</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Raisins</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Roasted Peanuts</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Salt</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Sarsaparilla</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Tin of Beans</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Tin of Crackers</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Washcloth</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Wooden Spoon</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h3 id="rank-ii-recognized">Rank II, Recognized<a class="headerlink" href="#rank-ii-recognized" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>List price</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bag of Rice</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Bag of Salt</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Bag of Sugar</td>
+<td>12</td>
+</tr>
+<tr>
+<td>Bandage</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Bean Seed</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Black Tea</td>
+<td>6</td>
+</tr>
+<tr>
+<td>Box of Bandages</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Box of Biscuits</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Cabbage Seed</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Carrot Seed</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Cloth</td>
+<td>6</td>
+</tr>
+<tr>
+<td>Coil of Rope</td>
+<td>6</td>
+</tr>
+<tr>
+<td>Corn Seed</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Dill Pickles</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Empty Bucket</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Empty Jar</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Horse Brush</td>
+<td>6</td>
+</tr>
+<tr>
+<td>Ink</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Jar of Honey</td>
+<td>6</td>
+</tr>
+<tr>
+<td>Kitchen Towel</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Lard</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Lettuce Seed</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Nails</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Notebook</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Oatmeal</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Oats</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Onion Vidalia Seed</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Paper</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Pen</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Potato Seed</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Pumpkin Seed</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Sack of Cornmeal</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Sack of Flour</td>
+<td>10</td>
+</tr>
+<tr>
+<td>Sack of Horse Feed</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Spool of String</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Sugar Cubes</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Tea</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Tin of Apricots</td>
+<td>6</td>
+</tr>
+<tr>
+<td>Tin of Carrots</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Tin of Corn</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Tin of Corned Beef</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Tin of Kidney Beans</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Tin of Peaches</td>
+<td>6</td>
+</tr>
+<tr>
+<td>Tin of Pears</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Tin of Peas</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Tin of Pork</td>
+<td>6</td>
+</tr>
+<tr>
+<td>Tin of Salmon</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Tin of Sweet Corn</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Tin of Vegetables</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Tomato Seed</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Tonic</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Wallet</td>
+<td>10</td>
+</tr>
+<tr>
+<td>Wheat Seed</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Yeast</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<h3 id="rank-iii-trusted">Rank III, Trusted<a class="headerlink" href="#rank-iii-trusted" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>List price</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Coffee Beans</td>
+<td>15</td>
+</tr>
+<tr>
+<td>Coffee Pot</td>
+<td>28</td>
+</tr>
+<tr>
+<td>Ground Coffee</td>
+<td>18</td>
+</tr>
+<tr>
+<td>Hammer</td>
+<td>25</td>
+</tr>
+<tr>
+<td>Lamp Oil</td>
+<td>15</td>
+</tr>
+<tr>
+<td>Pepper</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Skillet</td>
+<td>18</td>
+</tr>
+<tr>
+<td>Tobacco</td>
+<td>12</td>
+</tr>
+</tbody>
+</table>
+<h3 id="rank-iv-established">Rank IV, Established<a class="headerlink" href="#rank-iv-established" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>List price</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hatchet</td>
+<td>80</td>
+</tr>
+<tr>
+<td>Shovel</td>
+<td>60</td>
+</tr>
+</tbody>
+</table>
+<p>The other shops use the same standing and the same rates. A firearm on the gunsmith shelf is at least 120 dollars, above the hatchet. Ammunition stays cheap. The gunsmith does not buy anything back. The butcher pays more than the general store for the same hide. The trapper pays more than the butcher. The bait shop pays more than the general store for a fish. With reputation off, rank II and up stay locked. The butcher, the trapper, and the bait shop still buy, because their sell line is Unknown.</p>
+<h3 id="gunsmith">Gunsmith<a class="headerlink" href="#gunsmith" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Standing</th>
+<th>Item</th>
+<th>List price</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>I</td>
+<td>Arrows</td>
+<td>2</td>
+</tr>
+<tr>
+<td>I</td>
+<td>Pistol Ammo</td>
+<td>2</td>
+</tr>
+<tr>
+<td>I</td>
+<td>Revolver Ammo</td>
+<td>2</td>
+</tr>
+<tr>
+<td>I</td>
+<td>Varmint Rounds</td>
+<td>2</td>
+</tr>
+<tr>
+<td>I</td>
+<td>Repeater Ammo</td>
+<td>3</td>
+</tr>
+<tr>
+<td>I</td>
+<td>Rifle Ammo</td>
+<td>3</td>
+</tr>
+<tr>
+<td>I</td>
+<td>Shotgun Shells</td>
+<td>3</td>
+</tr>
+<tr>
+<td>I</td>
+<td>Hunting Knife</td>
+<td>12</td>
+</tr>
+<tr>
+<td>I</td>
+<td>Lasso</td>
+<td>15</td>
+</tr>
+<tr>
+<td>II</td>
+<td>Express Revolver, Pistol, Repeater, or Rifle Ammo</td>
+<td>6</td>
+</tr>
+<tr>
+<td>II</td>
+<td>Binoculars</td>
+<td>70</td>
+</tr>
+<tr>
+<td>II</td>
+<td>Bow</td>
+<td>90</td>
+</tr>
+<tr>
+<td>II</td>
+<td>Sawed-Off Shotgun</td>
+<td>120</td>
+</tr>
+<tr>
+<td>II</td>
+<td>Cattleman Revolver</td>
+<td>130</td>
+</tr>
+<tr>
+<td>II</td>
+<td>Varmint Rifle</td>
+<td>140</td>
+</tr>
+<tr>
+<td>II</td>
+<td>Double-Action Revolver</td>
+<td>150</td>
+</tr>
+<tr>
+<td>II</td>
+<td>Carbine Repeater</td>
+<td>160</td>
+</tr>
+<tr>
+<td>II</td>
+<td>Double-Barrel Shotgun</td>
+<td>170</td>
+</tr>
+<tr>
+<td>III</td>
+<td>Throwing Knives</td>
+<td>40</td>
+</tr>
+<tr>
+<td>III</td>
+<td>High Velocity or Split Point Ammo</td>
+<td>8</td>
+</tr>
+<tr>
+<td>III</td>
+<td>Improved Binoculars</td>
+<td>120</td>
+</tr>
+<tr>
+<td>III</td>
+<td>Schofield Revolver</td>
+<td>180</td>
+</tr>
+<tr>
+<td>III</td>
+<td>Springfield Rifle</td>
+<td>190</td>
+</tr>
+<tr>
+<td>III</td>
+<td>Volcanic Pistol</td>
+<td>200</td>
+</tr>
+<tr>
+<td>III</td>
+<td>Pump Shotgun</td>
+<td>200</td>
+</tr>
+<tr>
+<td>III</td>
+<td>Lancaster Repeater</td>
+<td>210</td>
+</tr>
+<tr>
+<td>IV</td>
+<td>Fire Arrows</td>
+<td>12</td>
+</tr>
+<tr>
+<td>IV</td>
+<td>Elephant Rifle Ammo</td>
+<td>12</td>
+</tr>
+<tr>
+<td>IV</td>
+<td>Poison Arrows</td>
+<td>15</td>
+</tr>
+<tr>
+<td>IV</td>
+<td>Incendiary Shotgun Shells</td>
+<td>18</td>
+</tr>
+<tr>
+<td>IV</td>
+<td>Fire Bottle</td>
+<td>20</td>
+</tr>
+<tr>
+<td>IV</td>
+<td>Explosive Ammo</td>
+<td>20</td>
+</tr>
+<tr>
+<td>IV</td>
+<td>Dynamite Arrows</td>
+<td>25</td>
+</tr>
+<tr>
+<td>IV</td>
+<td>Dynamite</td>
+<td>30</td>
+</tr>
+<tr>
+<td>IV</td>
+<td>Improved Bow</td>
+<td>250</td>
+</tr>
+<tr>
+<td>IV</td>
+<td>LeMat Revolver</td>
+<td>280</td>
+</tr>
+<tr>
+<td>IV</td>
+<td>Navy Revolver</td>
+<td>300</td>
+</tr>
+<tr>
+<td>IV</td>
+<td>Bolt Action Rifle</td>
+<td>320</td>
+</tr>
+<tr>
+<td>IV</td>
+<td>Semi-Auto Pistol</td>
+<td>340</td>
+</tr>
+<tr>
+<td>IV</td>
+<td>Repeating Shotgun</td>
+<td>340</td>
+</tr>
+<tr>
+<td>IV</td>
+<td>Mauser Pistol</td>
+<td>360</td>
+</tr>
+<tr>
+<td>IV</td>
+<td>Semi-Auto Shotgun</td>
+<td>380</td>
+</tr>
+<tr>
+<td>IV</td>
+<td>Carcano Rifle</td>
+<td>400</td>
+</tr>
+<tr>
+<td>IV</td>
+<td>M1899 Pistol</td>
+<td>420</td>
+</tr>
+<tr>
+<td>IV</td>
+<td>Rolling Block Rifle</td>
+<td>450</td>
+</tr>
+<tr>
+<td>IV</td>
+<td>Elephant Rifle</td>
+<td>500</td>
+</tr>
+</tbody>
+</table>
+<p>The same five gunsmiths sell this shelf: Kuo Chao &amp; Co. in Saint Denis, Rhodes, Schultz in Annesburg, Tumbleweed, and Valentine.</p>
+<h3 id="butcher">Butcher<a class="headerlink" href="#butcher" title="Permanent link">&para;</a></h3>
+<p>The butcher sells raw meat. Cooked cuts stay off the shelf.</p>
+<table>
+<thead>
+<tr>
+<th>Standing</th>
+<th>Item</th>
+<th>List price</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>I</td>
+<td>Stringy Meat</td>
+<td>2</td>
+</tr>
+<tr>
+<td>I</td>
+<td>Game Meat</td>
+<td>3</td>
+</tr>
+<tr>
+<td>II</td>
+<td>Pork</td>
+<td>5</td>
+</tr>
+<tr>
+<td>II</td>
+<td>Mutton</td>
+<td>5</td>
+</tr>
+<tr>
+<td>II</td>
+<td>Beef</td>
+<td>6</td>
+</tr>
+<tr>
+<td>II</td>
+<td>Venison</td>
+<td>6</td>
+</tr>
+<tr>
+<td>II</td>
+<td>Plump Bird</td>
+<td>6</td>
+</tr>
+<tr>
+<td>III</td>
+<td>Prime Beef</td>
+<td>12</td>
+</tr>
+<tr>
+<td>III</td>
+<td>Mature Venison</td>
+<td>12</td>
+</tr>
+<tr>
+<td>III</td>
+<td>Big Game</td>
+<td>14</td>
+</tr>
+</tbody>
+</table>
+<p>Anyone may sell here. The clerk pays 1 dollar for stringy meat or game, 2 for pork, mutton, beef, venison, or a plump bird, 4 for prime beef or mature venison, and 5 for big game. A rabbit pelt is 6 dollars. A deer hide is 12. The general store still pays 4 for a rabbit pelt and 8 for a deer hide.</p>
+<h3 id="trapper">Trapper<a class="headerlink" href="#trapper" title="Permanent link">&para;</a></h3>
+<p>The hunt kit uses the same prices as the gunsmith, so the two shelves agree.</p>
+<table>
+<thead>
+<tr>
+<th>Standing</th>
+<th>Item</th>
+<th>List price</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>I</td>
+<td>Tin of Worms</td>
+<td>2</td>
+</tr>
+<tr>
+<td>I</td>
+<td>Hunting Knife</td>
+<td>12</td>
+</tr>
+<tr>
+<td>II</td>
+<td>Binoculars</td>
+<td>70</td>
+</tr>
+<tr>
+<td>II</td>
+<td>Bow</td>
+<td>90</td>
+</tr>
+</tbody>
+</table>
+<p>Anyone may sell here. A rabbit pelt is 8 dollars. A deer hide is 16. Legendary parts and sewn clothes wait.</p>
+<h3 id="bait-and-tackle">Bait and tackle<a class="headerlink" href="#bait-and-tackle" title="Permanent link">&para;</a></h3>
+<p>One shop, in Lagras.</p>
+<table>
+<thead>
+<tr>
+<th>Standing</th>
+<th>Item</th>
+<th>List price</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>I</td>
+<td>Tin of Worms</td>
+<td>2</td>
+</tr>
+<tr>
+<td>I</td>
+<td>Tin of Crickets</td>
+<td>2</td>
+</tr>
+<tr>
+<td>I</td>
+<td>Herbivore Bait</td>
+<td>3</td>
+</tr>
+<tr>
+<td>I</td>
+<td>Predator Bait</td>
+<td>4</td>
+</tr>
+<tr>
+<td>II</td>
+<td>Fishing Rod</td>
+<td>25</td>
+</tr>
+<tr>
+<td>II</td>
+<td>Potent Herbivore Bait</td>
+<td>8</td>
+</tr>
+<tr>
+<td>II</td>
+<td>Potent Predator Bait</td>
+<td>10</td>
+</tr>
+</tbody>
+</table>
+<p>Anyone may sell a fish here, for 6 dollars. The general store pays 4.</p>
+<h3 id="doctor">Doctor<a class="headerlink" href="#doctor" title="Permanent link">&para;</a></h3>
+<p>The general store keeps the bandage and the plain tonic. The stronger medicines are on this shelf. The doctor sells the bandage and the tonic as well.</p>
+<table>
+<thead>
+<tr>
+<th>Standing</th>
+<th>Item</th>
+<th>List price</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>I</td>
+<td>Bandage</td>
+<td>3</td>
+</tr>
+<tr>
+<td>I</td>
+<td>Box of Bandages</td>
+<td>8</td>
+</tr>
+<tr>
+<td>I</td>
+<td>Tonic</td>
+<td>8</td>
+</tr>
+<tr>
+<td>II</td>
+<td>Herbal Tonic</td>
+<td>12</td>
+</tr>
+<tr>
+<td>II</td>
+<td>Herbal Medicine</td>
+<td>14</td>
+</tr>
+<tr>
+<td>II</td>
+<td>Snake Oil</td>
+<td>15</td>
+</tr>
+<tr>
+<td>III</td>
+<td>Burn Salve</td>
+<td>16</td>
+</tr>
+<tr>
+<td>III</td>
+<td>Juniper Balm</td>
+<td>18</td>
+</tr>
+<tr>
+<td>III</td>
+<td>Restorative</td>
+<td>22</td>
+</tr>
+<tr>
+<td>IV</td>
+<td>Health Serum</td>
+<td>35</td>
+</tr>
+<tr>
+<td>IV</td>
+<td>Antivenom</td>
+<td>40</td>
+</tr>
+</tbody>
+</table>
+<p>Selling waits for Recognized. A bundle of mint is 4 dollars. A ginseng root is 6. The general store pays 2 for mint. Treatment stays off this shelf.</p>
+<h3 id="saloon">Saloon<a class="headerlink" href="#saloon" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Standing</th>
+<th>Item</th>
+<th>List price</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>I</td>
+<td>Beer</td>
+<td>2</td>
+</tr>
+<tr>
+<td>I</td>
+<td>Beef Stew</td>
+<td>4</td>
+</tr>
+<tr>
+<td>II</td>
+<td>Whiskey</td>
+<td>6</td>
+</tr>
+<tr>
+<td>II</td>
+<td>Venison Stew</td>
+<td>6</td>
+</tr>
+<tr>
+<td>III</td>
+<td>Bottle of Whiskey</td>
+<td>14</td>
+</tr>
+<tr>
+<td>III</td>
+<td>Bottle of Brandy</td>
+<td>16</td>
+</tr>
+</tbody>
+</table>
+<p>Keane's in Valentine charges 8 dollars for whiskey. The other saloons charge 6. The clerk does not buy drinks back.</p>
+<h3 id="barber">Barber<a class="headerlink" href="#barber" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Standing</th>
+<th>Item</th>
+<th>List price</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>I</td>
+<td>Hair Tonic</td>
+<td>3</td>
+</tr>
+<tr>
+<td>I</td>
+<td>Pomade</td>
+<td>4</td>
+</tr>
+<tr>
+<td>II</td>
+<td>Shaving Tonic</td>
+<td>5</td>
+</tr>
+<tr>
+<td>II</td>
+<td>Beard Pomade</td>
+<td>6</td>
+</tr>
+</tbody>
+</table>
+<p>The clerk does not buy these back. A haircut is not on the counter.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "content.code.copy", "search.suggest"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+    
+  </body>
+</html>

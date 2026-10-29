@@ -1,0 +1,1598 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="API reference for the Project Territory framework. Each export includes the arguments, the rejection cases, and an example.">
+      
+      
+      
+      
+        <link rel="prev" href="../fw-money/">
+      
+      
+        <link rel="next" href="../fw-satchel/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/territory-crest.webp">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>fw_weapons - Project Territory Framework Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="territory" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#fw_weapons" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Project Territory Framework Docs" class="md-header__button md-logo" aria-label="Project Territory Framework Docs" data-md-component="logo">
+      
+  <img src="../assets/images/territory-crest.webp" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Project Territory Framework Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              fw_weapons
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="territory" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href=".." class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../tutorial-crafting/" class="md-tabs__link">
+          
+  
+  
+  Tutorials
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Project Territory Framework Docs" class="md-nav__button md-logo" aria-label="Project Territory Framework Docs" data-md-component="logo">
+      
+  <img src="../assets/images/territory-crest.webp" alt="logo">
+
+    </a>
+    Project Territory Framework Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-menu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_menu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-admin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_admin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-characters/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_characters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-creator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_creator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-clothing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_clothing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-inventory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_inventory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-money/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_money
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_weapons
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_weapons
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#calls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Calls
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Calls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#getkit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetKit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getkit_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetKit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getbelt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetBelt
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inspect
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#messages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Messages
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Messages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fw_weaponsupdated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_weapons:updated
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fw_weaponskit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_weapons:kit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fw_weaponsrejected" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_weapons:rejected
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fw_weaponswear" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_weapons:wear
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fw_weaponsequip" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_weapons:equip
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fw_weaponsunequip" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_weapons:unequip
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fw_weaponsmove" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_weapons:move
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ammo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ammo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#state-bags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        State bags
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-satchel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_satchel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-stores/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_stores
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-trade/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_trade
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vorp-lib/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    vorp_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../database/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorials
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tutorials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial-crafting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crafting resource
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#calls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Calls
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Calls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#getkit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetKit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getkit_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetKit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getbelt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetBelt
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#inspect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inspect
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#messages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Messages
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Messages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fw_weaponsupdated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_weapons:updated
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fw_weaponskit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_weapons:kit
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fw_weaponsrejected" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_weapons:rejected
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fw_weaponswear" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_weapons:wear
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fw_weaponsequip" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_weapons:equip
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fw_weaponsunequip" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_weapons:unequip
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fw_weaponsmove" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_weapons:move
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ammo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ammo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#state-bags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        State bags
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="fw_weapons">fw_weapons<a class="headerlink" href="#fw_weapons" title="Permanent link">&para;</a></h1>
+<p>Runs on the server and in the player's game. This is the weapon kit: the guns and tools the character has equipped, separate from the bag.</p>
+<p>The bag still holds the item. Equipping takes it out of the bag and puts it on a slot. Unequipping puts it back.</p>
+<p>The slots are <code>revolver_1</code> (right revolver), <code>revolver_2</code> (left revolver), <code>longarm</code>, <code>bow</code>, <code>lasso</code>, <code>knife</code>, <code>lantern</code>, <code>binoculars</code>, and <code>fishingrod</code> (fishing pole).</p>
+<p>A sidearm needs a gunbelt, and so does the knife. The left revolver also needs the offhand holster, and the right revolver has to be filled first. Dragging a gun onto the empty left slot shows <code>Equip the right revolver first.</code> Taking the right revolver off while the left one is still there shows <code>Take the left revolver off first.</code> <code>fw_weapons</code> reads the belt and holster from <a href="../fw-clothing/">fw_clothing</a>. If the gunbelt comes off, the right revolver, the left revolver, and the knife all go back to the bag. If just the offhand holster comes off, only the left revolver goes back. If the bag is full, the player sees <code>Make room in the satchel first.</code></p>
+<p><code>source</code> on this page is the player's number for this visit. Nothing is written as <code>nil</code>.</p>
+<h2 id="calls">Calls<a class="headerlink" href="#calls" title="Permanent link">&para;</a></h2>
+<h3 id="getkit">GetKit<a class="headerlink" href="#getkit" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. A snapshot of the kit for the character this player is playing. You get nothing when this player has not selected a character yet, when the kit is still loading right after they did, or when <code>fw_weapons</code> itself has not started yet. Changing the snapshot does not save.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- The equipped slots, or nothing when this player has no kit yet.</span>
+<span class="c1">---@param source integer</span>
+<span class="c1">---@return table|nil kit</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_weapons</span><span class="p">:</span><span class="nf">GetKit</span><span class="p">(</span><span class="nv">source</span><span class="p">)</span>
+</code></pre></div>
+<p>Each slot is <code>false</code> when it is empty. When it holds something, it has <code>name</code>, <code>count</code>, <code>metadata</code>, <code>hash</code>, <code>kit</code>, and <code>rotated</code>. <code>name</code> is the item name. <code>kit</code> is the kind of slot it belongs on, such as <code>revolver</code> or <code>melee</code>.</p>
+<p>A sheriff script can refuse to start a duel when the player has no sidearm:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">kit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_weapons</span><span class="p">:</span><span class="nf">GetKit</span><span class="p">(</span><span class="nv">source</span><span class="p">)</span>
+<span class="kr">if</span><span class="w"> </span><span class="nv">kit</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="nv">kit</span><span class="p">.</span><span class="py">revolver_1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+<span class="nb">print</span><span class="p">(</span><span class="nv">kit</span><span class="p">.</span><span class="py">revolver_1</span><span class="p">.</span><span class="py">name</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="getkit_1">GetKit<a class="headerlink" href="#getkit_1" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. The same snapshot, for the local player.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- The equipped slots on this player's game.</span>
+<span class="c1">---@return table kit</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_weapons</span><span class="p">:</span><span class="nf">GetKit</span><span class="p">()</span>
+</code></pre></div>
+<p>Before the server has sent a kit, this can be an empty table with no slot keys at all yet, not a table where every slot is <code>false</code>. Check with <code>type(...) == 'table'</code> rather than only <code>~= false</code>, so you don't try to read a field off nothing:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">kit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_weapons</span><span class="p">:</span><span class="nf">GetKit</span><span class="p">()</span>
+<span class="kr">if</span><span class="w"> </span><span class="nb">type</span><span class="p">(</span><span class="nv">kit</span><span class="p">.</span><span class="py">longarm</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">'table'</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">kit</span><span class="p">.</span><span class="py">longarm</span><span class="p">.</span><span class="py">name</span><span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="getbelt">GetBelt<a class="headerlink" href="#getbelt" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. The rounds on this character. One row for each kind above zero. <code>count</code> includes rounds already in a gun. <code>max</code> is the most of that kind the character can hold. <code>refill</code> is how many rounds make one full box. An empty list means the belt is empty. The list is only the kinds above zero, so a kind you have used up is not in it.</p>
+<p>The bag draws this on the gunbelt next to the loadout.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Rounds on this character. One row for each kind above zero.</span>
+<span class="c1">---@return table rows</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_weapons</span><span class="p">:</span><span class="nf">GetBelt</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">belt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_weapons</span><span class="p">:</span><span class="nf">GetBelt</span><span class="p">()</span>
+<span class="kr">for</span><span class="w"> </span><span class="nv">index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">#</span><span class="nv">belt</span><span class="w"> </span><span class="kr">do</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">belt</span><span class="p">[</span><span class="nv">index</span><span class="p">].</span><span class="nv">key</span><span class="p">,</span><span class="w"> </span><span class="nv">belt</span><span class="p">[</span><span class="nv">index</span><span class="p">].</span><span class="nv">count</span><span class="p">,</span><span class="w"> </span><span class="nv">belt</span><span class="p">[</span><span class="nv">index</span><span class="p">].</span><span class="nv">max</span><span class="p">,</span><span class="w"> </span><span class="nv">belt</span><span class="p">[</span><span class="nv">index</span><span class="p">].</span><span class="nv">refill</span><span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="inspect">Inspect<a class="headerlink" href="#inspect" title="Permanent link">&para;</a></h3>
+<p>Runs in the player's game. Draws the gun in that loadout slot and plays the inspect hold. The bag closes first, so the player can see it. You get no when that slot is empty, when the thing in it is not a gun, or when an inspect is already playing.</p>
+<p>A knife, lasso, lantern, binoculars, bow, or fishing pole cannot be inspected this way. Clean is on the same right-click menu, and it does nothing yet.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Draws the gun in this loadout slot and plays the inspect hold.</span>
+<span class="c1">--- False when the slot is empty, the weapon is not a gun, or an inspect is already playing.</span>
+<span class="c1">---@param slotId string</span>
+<span class="c1">---@return boolean started</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_weapons</span><span class="p">:</span><span class="nf">Inspect</span><span class="p">(</span><span class="nv">slotId</span><span class="p">)</span>
+</code></pre></div>
+<p><code>slotId</code> is a loadout slot name, such as <code>revolver_1</code> or <code>longarm</code>. The right-click menu on a filled loadout slot calls this for Inspect.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">started</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_weapons</span><span class="p">:</span><span class="nf">Inspect</span><span class="p">(</span><span class="s1">'revolver_1'</span><span class="p">)</span>
+<span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">started</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h2 id="messages">Messages<a class="headerlink" href="#messages" title="Permanent link">&para;</a></h2>
+<p>A message on the server is heard with <code>AddEventHandler</code>. A message from the server to the player's game is heard with <code>RegisterNetEvent</code>. A message from the player's game to the server is sent with <code>TriggerServerEvent</code>. Your script hears one only if it is already running. Put the listener at the top of your script.</p>
+<h3 id="fw_weaponsupdated">fw_weapons:updated<a class="headerlink" href="#fw_weaponsupdated" title="Permanent link">&para;</a></h3>
+<p>Local event in the player's game, raised with <code>TriggerEvent</code> and heard with <code>AddEventHandler</code>. Sent after the kit on this computer changes, including the first time it arrives from the server. <code>kit</code> is a snapshot. Ask <code>GetKit</code> when you need a fresh one.</p>
+<p>A holster script can watch for a rifle being put on the back:</p>
+<div class="highlight"><pre><span></span><code><span class="c1">---@param kit table</span>
+<span class="nf">AddEventHandler</span><span class="p">(</span><span class="s1">'fw_weapons:updated'</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">kit</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">kit</span><span class="p">.</span><span class="py">longarm</span><span class="w"> </span><span class="o">~=</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">        </span><span class="nb">print</span><span class="p">(</span><span class="nv">kit</span><span class="p">.</span><span class="py">longarm</span><span class="p">.</span><span class="py">name</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">end</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="fw_weaponskit">fw_weapons:kit<a class="headerlink" href="#fw_weaponskit" title="Permanent link">&para;</a></h3>
+<p>Networked event, sent from the server to the player's game with <code>TriggerClientEvent</code> and heard there with <code>RegisterNetEvent</code>. This is the kit they should show. <code>fw_weapons</code> already applies it and then sends <code>fw_weapons:updated</code>. Listen here only if you are drawing your own loadout.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">---@param kit table</span>
+<span class="nf">RegisterNetEvent</span><span class="p">(</span><span class="s1">'fw_weapons:kit'</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">kit</span><span class="p">)</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="fw_weaponsrejected">fw_weapons:rejected<a class="headerlink" href="#fw_weaponsrejected" title="Permanent link">&para;</a></h3>
+<p>Networked event, sent from the server to the player's game with <code>TriggerClientEvent</code> and heard there with <code>RegisterNetEvent</code>. <code>reason</code> is a short line. The satchel shows it. Listen here if your own screen should show that line.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">---@param reason string</span>
+<span class="nf">RegisterNetEvent</span><span class="p">(</span><span class="s1">'fw_weapons:rejected'</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">reason</span><span class="p">)</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">reason</span><span class="p">)</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+<p>This is sent whenever <code>fw_weapons:wear</code>, <code>fw_weapons:equip</code>, <code>fw_weapons:unequip</code>, or <code>fw_weapons:move</code> (described below) could not be done, when an ammo box or a bundle of arrows could not be used, and when rounds could not be taken off the gunbelt. The possible lines are:</p>
+<table>
+<thead>
+<tr>
+<th>Reason</th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Select a character first.</code></td>
+<td>This player is not playing a character.</td>
+</tr>
+<tr>
+<td><code>The kit is still loading.</code></td>
+<td>A character was just selected and the saved kit has not finished loading yet. Try again shortly.</td>
+</tr>
+<tr>
+<td><code>That item is not in the satchel.</code></td>
+<td>The placement id passed to <code>fw_weapons:equip</code> is not in the bag.</td>
+</tr>
+<tr>
+<td><code>That does not fit there.</code></td>
+<td>The slot name is not one of the nine listed above, or the item's <code>kit</code> does not match the slot it was aimed at.</td>
+</tr>
+<tr>
+<td><code>That slot is empty.</code></td>
+<td><code>fw_weapons:unequip</code> or <code>fw_weapons:move</code> named a slot that has nothing on it.</td>
+</tr>
+<tr>
+<td><code>Put on a gunbelt first.</code></td>
+<td><code>revolver_1</code>, <code>revolver_2</code>, or <code>knife</code> was used with no gunbelt worn.</td>
+</tr>
+<tr>
+<td><code>Put on another holster first.</code></td>
+<td><code>revolver_2</code> was used with no offhand holster worn.</td>
+</tr>
+<tr>
+<td><code>Equip the right revolver first.</code></td>
+<td>The left slot would end up holding a gun while the right slot stays empty.</td>
+</tr>
+<tr>
+<td><code>Take the left revolver off first.</code></td>
+<td>The right slot would be cleared while the left slot still holds a gun.</td>
+</tr>
+<tr>
+<td><code>Make room in the satchel first.</code></td>
+<td>The bag has no space for the item that needs to go back into it.</td>
+</tr>
+<tr>
+<td><code>The kit is busy.</code></td>
+<td>Another equip, unequip, or move for this player has not finished yet. Try again shortly.</td>
+</tr>
+<tr>
+<td><code>Could not save the kit.</code></td>
+<td>The database could not store the change. Rare. The action did not happen.</td>
+</tr>
+<tr>
+<td><code>You cannot carry any more of that ammunition.</code></td>
+<td>Using an ammo box or arrows would go past the carry limit for that kind. The item stays in the satchel.</td>
+</tr>
+<tr>
+<td><code>That box is gone.</code></td>
+<td>The ammo item was no longer in the satchel when the use finished.</td>
+</tr>
+<tr>
+<td><code>You cannot carry any more of those.</code></td>
+<td>Unloading a full box would not fit in the satchel. The rounds stay on the character.</td>
+</tr>
+<tr>
+<td><code>Not a full box.</code></td>
+<td>A short remainder was dragged back onto the satchel. The rounds stay. Choose Empty on the icon to clear them.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="fw_weaponswear">fw_weapons:wear<a class="headerlink" href="#fw_weaponswear" title="Permanent link">&para;</a></h3>
+<p>Networked event, sent from the player's game to the server with <code>TriggerServerEvent</code> and heard there with <code>RegisterNetEvent</code>. <code>fw_weapons</code> sends it itself when the gunbelt or the offhand holster changes. <code>belt</code> and <code>offhand</code> are yes or no.</p>
+<p>Another script should not send this. Change the clothes with <a href="../fw-clothing/">fw_clothing</a>. The kit follows.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">---@param belt boolean</span>
+<span class="c1">---@param offhand boolean</span>
+<span class="nf">TriggerServerEvent</span><span class="p">(</span><span class="s1">'fw_weapons:wear'</span><span class="p">,</span><span class="w"> </span><span class="nv">belt</span><span class="p">,</span><span class="w"> </span><span class="nv">offhand</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="fw_weaponsequip">fw_weapons:equip<a class="headerlink" href="#fw_weaponsequip" title="Permanent link">&para;</a></h3>
+<p>Networked event, sent from the player's game to the server with <code>TriggerServerEvent</code> and heard there with <code>RegisterNetEvent</code>. The satchel sends this when the player drops a bag item onto a loadout slot.</p>
+<p><code>placementId</code> is the <code>id</code> from <a href="../fw-inventory/">GetItems</a>. <code>slotId</code> is one of the slot names above. The item's <code>kit</code> field has to match that slot. A revolver goes on <code>revolver_1</code> (the right hip) or <code>revolver_2</code> (the left hip). The right slot has to already hold a gun before the left slot will take one. <code>revolver_1</code>, <code>revolver_2</code>, and <code>knife</code> all need a gunbelt worn first, and <code>revolver_2</code> also needs the offhand holster. A rifle goes on <code>longarm</code>. A fishing pole goes on <code>fishingrod</code>. The item name for the shipped pole is <code>weapon_fishingrod</code>, and its <code>kit</code> is <code>fishingrod</code>.</p>
+<p>If it fails, the player's game gets <code>fw_weapons:rejected</code> with one of the reasons listed above.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">---@param placementId integer</span>
+<span class="c1">---@param slotId string</span>
+<span class="nf">TriggerServerEvent</span><span class="p">(</span><span class="s1">'fw_weapons:equip'</span><span class="p">,</span><span class="w"> </span><span class="nv">placementId</span><span class="p">,</span><span class="w"> </span><span class="nv">slotId</span><span class="p">)</span>
+</code></pre></div>
+<p>A camp script can put the cattleman already in the bag onto the hip:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_inventory</span><span class="p">:</span><span class="nf">GetItems</span><span class="p">(</span><span class="nv">source</span><span class="p">)</span>
+<span class="kr">for</span><span class="w"> </span><span class="nv">index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">#</span><span class="nv">items</span><span class="w"> </span><span class="kr">do</span>
+<span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="nv">items</span><span class="p">[</span><span class="nv">index</span><span class="p">].</span><span class="nv">name</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">'weapon_revolver_cattleman'</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">        </span><span class="nf">TriggerClientEvent</span><span class="p">(</span><span class="s1">'my_camp:equip'</span><span class="p">,</span><span class="w"> </span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">items</span><span class="p">[</span><span class="nv">index</span><span class="p">].</span><span class="nv">id</span><span class="p">)</span>
+<span class="w">        </span><span class="kr">break</span>
+<span class="w">    </span><span class="kr">end</span>
+<span class="kr">end</span>
+</code></pre></div>
+<p>In the player's game, after that message:</p>
+<div class="highlight"><pre><span></span><code><span class="nf">RegisterNetEvent</span><span class="p">(</span><span class="s1">'my_camp:equip'</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">placementId</span><span class="p">)</span>
+<span class="w">    </span><span class="nf">TriggerServerEvent</span><span class="p">(</span><span class="s1">'fw_weapons:equip'</span><span class="p">,</span><span class="w"> </span><span class="nv">placementId</span><span class="p">,</span><span class="w"> </span><span class="s1">'revolver_1'</span><span class="p">)</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+<p>Giving a weapon the player does not already hold is <code>AddItem</code> on <a href="../fw-inventory/">fw_inventory</a>. They equip it from the loadout after that.</p>
+<h3 id="fw_weaponsunequip">fw_weapons:unequip<a class="headerlink" href="#fw_weaponsunequip" title="Permanent link">&para;</a></h3>
+<p>Networked event, sent from the player's game to the server with <code>TriggerServerEvent</code> and heard there with <code>RegisterNetEvent</code>. Puts that slot back into the bag.</p>
+<p><code>slotId</code> is the slot name. It has to already hold something, and taking the right revolver off while the left one is still in place is refused with <code>Take the left revolver off first.</code> <code>x</code> and <code>y</code> are the bag square to aim for, with <code>0, 0</code> at the top left. <code>rotated</code> turns the item if that item can turn. If that square does not fit, the item is placed anywhere that does. If the bag cannot take it, nothing moves, and the reason is <code>Make room in the satchel first.</code></p>
+<div class="highlight"><pre><span></span><code><span class="c1">---@param slotId string</span>
+<span class="c1">---@param x integer</span>
+<span class="c1">---@param y integer</span>
+<span class="c1">---@param rotated boolean</span>
+<span class="nf">TriggerServerEvent</span><span class="p">(</span><span class="s1">'fw_weapons:unequip'</span><span class="p">,</span><span class="w"> </span><span class="s1">'knife'</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="fw_weaponsmove">fw_weapons:move<a class="headerlink" href="#fw_weaponsmove" title="Permanent link">&para;</a></h3>
+<p>Networked event, sent from the player's game to the server with <code>TriggerServerEvent</code> and heard there with <code>RegisterNetEvent</code>. Swaps two slots.</p>
+<p><code>fromId</code> and <code>toId</code> both have to be real slots, and each cannot be empty. The item leaving <code>fromId</code> has to be allowed on <code>toId</code>, and if <code>toId</code> already holds something, that item has to be allowed back on <code>fromId</code> too — a swap only goes through when both items fit both ways. Moving into <code>revolver_1</code>, <code>revolver_2</code>, or <code>knife</code> needs the same gunbelt (and, for <code>revolver_2</code>, offhand holster) as equipping does.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">---@param fromId string</span>
+<span class="c1">---@param toId string</span>
+<span class="nf">TriggerServerEvent</span><span class="p">(</span><span class="s1">'fw_weapons:move'</span><span class="p">,</span><span class="w"> </span><span class="s1">'revolver_1'</span><span class="p">,</span><span class="w"> </span><span class="s1">'revolver_2'</span><span class="p">)</span>
+</code></pre></div>
+<p>Swaps the two revolvers when both slots already hold a gun. Moving the right revolver onto an empty left slot is refused with <code>Equip the right revolver first.</code></p>
+<h2 id="ammo">Ammo<a class="headerlink" href="#ammo" title="Permanent link">&para;</a></h2>
+<p>Ammo in the satchel is a box, or a bundle of arrows. It is not the clothing gunbelt. Using it from the satchel puts rounds on the character. A box takes about two seconds. The bag stays open, and the revolver-cylinder loading prompt shows at the bottom right. Backspace closes the bag. A box that is still opening is cancelled, and the box stays in the bag. Arrows apply right away. If that kind is already at its limit, the item is not used, and the player sees <code>You cannot carry any more of that ammunition.</code></p>
+<p>Those rounds stay on the character. Firing and reloading spend them. The satchel is not charged again. Two guns that take the same rounds, such as two Cattlemen, share that pool. The count is saved on the character and put back the next time that character is selected. The bag shows the kinds above zero on the gunbelt, next to the loadout. Read that list with <code>GetBelt</code>.</p>
+<p>To take rounds off, drag that kind's icon from the gunbelt onto the satchel, or right-click it and choose Unload. One full box goes back into the bag, and those rounds come off. The box comes back right away, and the bag stays open. If the bag cannot hold that box, nothing changes, and the player sees <code>You cannot carry any more of those.</code></p>
+<p>Each kind has its own limit. Taking express revolver rounds off frees room for more express rounds. It does not raise the limit on regular revolver rounds. When a kind hits zero it drops off the weapon wheel and off the gunbelt.</p>
+<p>If fewer than a full box are left, the menu says Empty. Empty clears the leftover and does not give an item, so a half-used box cannot be turned back into a full one. Dragging a short stack onto the satchel shows <code>Not a full box.</code> and leaves the rounds in place. Right-click Empty is how that kind is cleared.</p>
+<p>The satchel sends the ammo type, not a count. Leave this call to the bag screen.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">---@param ammoType string</span>
+<span class="c1">---@param empty boolean</span>
+<span class="nf">TriggerServerEvent</span><span class="p">(</span><span class="s1">'fw_weapons:unload'</span><span class="p">,</span><span class="w"> </span><span class="s1">'AMMO_REVOLVER'</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">)</span>
+</code></pre></div>
+<p><code>ammoType</code> is the game ammo name, such as <code>AMMO_REVOLVER</code>. <code>empty</code> is yes only for the Empty choice. A drag sends no. A box comes back when a full box of that kind is on the character and the bag can hold it. Those rounds then come off. Empty clears a short remainder and gives nothing.</p>
+<p>A shop gives a box with <code>AddItem</code>, on the <a href="../fw-inventory/">inventory</a> page. One revolver box adds 12 rounds, up to 200. The player uses the box, draws the gun, and presses reload.</p>
+<p>There is no call on this page for loading a gun by hand.</p>
+<h2 id="state-bags">State bags<a class="headerlink" href="#state-bags" title="Permanent link">&para;</a></h2>
+<p>This resource does not set one. Read the kit with <code>GetKit</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "content.code.copy", "search.suggest"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+    
+  </body>
+</html>

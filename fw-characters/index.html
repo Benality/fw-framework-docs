@@ -1,0 +1,2260 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="API reference for the Project Territory framework. Each export includes the arguments, the rejection cases, and an example.">
+      
+      
+      
+      
+        <link rel="prev" href="../fw-admin/">
+      
+      
+        <link rel="next" href="../fw-creator/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/territory-crest.webp">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+    
+    
+      
+        <title>fw_characters - Project Territory Framework Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="territory" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#fw_characters" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Project Territory Framework Docs" class="md-header__button md-logo" aria-label="Project Territory Framework Docs" data-md-component="logo">
+      
+  <img src="../assets/images/territory-crest.webp" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Project Territory Framework Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              fw_characters
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="territory" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href=".." class="md-tabs__link">
+          
+  
+  
+  Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../tutorial-crafting/" class="md-tabs__link">
+          
+  
+  
+  Tutorials
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Project Territory Framework Docs" class="md-nav__button md-logo" aria-label="Project Territory Framework Docs" data-md-component="logo">
+      
+  <img src="../assets/images/territory-crest.webp" alt="logo">
+
+    </a>
+    Project Territory Framework Docs
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-menu/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_menu
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-admin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_admin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_characters
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_characters
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#calls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Calls
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Calls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#isready" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IsReady
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getcharacters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetCharacters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getcharacter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetCharacter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getactivecharacter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetActiveCharacter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#createcharacter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CreateCharacter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updatecharacter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UpdateCharacter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selectcharacter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SelectCharacter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clearcharacter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ClearCharacter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setappearance-setclothing-setbarber" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SetAppearance, SetClothing, SetBarber
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#savestate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SaveState
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deletecharacter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DeleteCharacter
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#character-record" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Character record
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#messages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Messages
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Messages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fw_charactersready" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_characters:ready
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fw_characterscreated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_characters:created
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fw_charactersselected" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_characters:selected
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fw_characterscleared" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_characters:cleared
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fw_charactersreleased" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_characters:released
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fw_charactersrelog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_characters:relog
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fw_charactersleave" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_characters:leave
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fw_charactersupdated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_characters:updated
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fw_charactersdeleted" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_characters:deleted
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-value-the-players-game-can-read" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A value the player's game can read
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-the-character-is-standing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where the character is standing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#server-window" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Server window
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-creator/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_creator
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-clothing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_clothing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-inventory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_inventory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-money/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_money
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-weapons/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_weapons
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-satchel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_satchel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-stores/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_stores
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../fw-trade/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fw_trade
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vorp-lib/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    vorp_lib
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../database/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tutorials
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tutorials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tutorial-crafting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crafting resource
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#calls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Calls
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Calls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#isready" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IsReady
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getcharacters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetCharacters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getcharacter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetCharacter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getactivecharacter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GetActiveCharacter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#createcharacter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CreateCharacter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updatecharacter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UpdateCharacter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selectcharacter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SelectCharacter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clearcharacter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ClearCharacter
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setappearance-setclothing-setbarber" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SetAppearance, SetClothing, SetBarber
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#savestate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SaveState
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deletecharacter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DeleteCharacter
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#character-record" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Character record
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#messages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Messages
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Messages">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#fw_charactersready" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_characters:ready
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fw_characterscreated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_characters:created
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fw_charactersselected" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_characters:selected
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fw_characterscleared" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_characters:cleared
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fw_charactersreleased" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_characters:released
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fw_charactersrelog" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_characters:relog
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fw_charactersleave" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_characters:leave
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fw_charactersupdated" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_characters:updated
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fw_charactersdeleted" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fw_characters:deleted
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-value-the-players-game-can-read" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A value the player's game can read
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-the-character-is-standing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where the character is standing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#server-window" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Server window
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="fw_characters">fw_characters<a class="headerlink" href="#fw_characters" title="Permanent link">&para;</a></h1>
+<p>Runs on the server. This is how you create a character, read one, and save where they are standing or a saved document on them. Do not write the <code>fw_characters</code> table yourself.</p>
+<p>This does not open the character menu, and it does not move the player. The character menu does those things, then uses the calls on this page. Your script should use these calls too.</p>
+<p>Ask <code>IsReady</code> first. If it says no, every other call on this page comes back empty, and the reason is <code>fw_characters is not ready</code>. <code>nil</code> on this page means nothing came back.</p>
+<p>A call that takes a character id checks that this player owns that character. A missing character and someone else's character both come back as <code>character not found</code>.</p>
+<p>What you get back is a snapshot. Changing it does not save. Use <code>UpdateCharacter</code>, <code>SetAppearance</code>, <code>SetClothing</code>, <code>SetBarber</code>, or <code>SaveState</code>.</p>
+<h2 id="calls">Calls<a class="headerlink" href="#calls" title="Permanent link">&para;</a></h2>
+<h3 id="isready">IsReady<a class="headerlink" href="#isready" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. Yes after startup has finished.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- True when character calls can be used.</span>
+<span class="c1">---@return boolean ready</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_characters</span><span class="p">:</span><span class="nf">IsReady</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="getcharacters">GetCharacters<a class="headerlink" href="#getcharacters" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. Every character on this player's account, lowest slot first. The body, clothes, and hair are left out. <code>hasAppearance</code>, <code>hasClothing</code>, and <code>hasBarber</code> say whether each one was saved.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- The character list for this player, or nil when the player is not in the server.</span>
+<span class="c1">---@param source integer</span>
+<span class="c1">---@return table[]|nil characters</span>
+<span class="c1">---@return string|nil err</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_characters</span><span class="p">:</span><span class="nf">GetCharacters</span><span class="p">(</span><span class="nv">source</span><span class="p">)</span>
+</code></pre></div>
+<p><code>source</code> is the player's number for this visit. <code>player is not loaded</code> means that player has not finished joining.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">list</span><span class="p">,</span><span class="w"> </span><span class="nv">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_characters</span><span class="p">:</span><span class="nf">GetCharacters</span><span class="p">(</span><span class="nv">source</span><span class="p">)</span>
+<span class="kr">if</span><span class="w"> </span><span class="nv">list</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">err</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+
+<span class="kr">for</span><span class="w"> </span><span class="nv">index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">#</span><span class="nv">list</span><span class="w"> </span><span class="kr">do</span>
+<span class="w">    </span><span class="kd">local</span><span class="w"> </span><span class="nv">character</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">list</span><span class="p">[</span><span class="nv">index</span><span class="p">]</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">character</span><span class="p">.</span><span class="py">id</span><span class="p">,</span><span class="w"> </span><span class="nv">character</span><span class="p">.</span><span class="py">firstName</span><span class="p">,</span><span class="w"> </span><span class="nv">character</span><span class="p">.</span><span class="py">hasAppearance</span><span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="getcharacter">GetCharacter<a class="headerlink" href="#getcharacter" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. One full character, including body, clothes, and hair, when this player owns it.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- One character owned by this player, or nil and a reason.</span>
+<span class="c1">---@param source integer</span>
+<span class="c1">---@param characterId integer</span>
+<span class="c1">---@return table|nil character</span>
+<span class="c1">---@return string|nil err</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_characters</span><span class="p">:</span><span class="nf">GetCharacter</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">characterId</span><span class="p">)</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th><code>err</code></th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>player is not loaded</code></td>
+<td>That player has not finished joining.</td>
+</tr>
+<tr>
+<td><code>character id must be a positive integer</code></td>
+<td>The id is missing or below 1.</td>
+</tr>
+<tr>
+<td><code>character not found</code></td>
+<td>No character with that id on this account.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">character</span><span class="p">,</span><span class="w"> </span><span class="nv">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_characters</span><span class="p">:</span><span class="nf">GetCharacter</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">characterId</span><span class="p">)</span>
+<span class="kr">if</span><span class="w"> </span><span class="nv">character</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">err</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="getactivecharacter">GetActiveCharacter<a class="headerlink" href="#getactivecharacter" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. The character this player is playing right now. You get nothing, and no reason, when nobody is selected. You get nothing and a reason when this resource is not ready yet.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- The character selected for this player.</span>
+<span class="c1">--- Nil when no character is selected.</span>
+<span class="c1">---@param source integer</span>
+<span class="c1">---@return table|nil character</span>
+<span class="c1">---@return string|nil err</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_characters</span><span class="p">:</span><span class="nf">GetActiveCharacter</span><span class="p">(</span><span class="nv">source</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">character</span><span class="p">,</span><span class="w"> </span><span class="nv">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_characters</span><span class="p">:</span><span class="nf">GetActiveCharacter</span><span class="p">(</span><span class="nv">source</span><span class="p">)</span>
+<span class="kr">if</span><span class="w"> </span><span class="nv">character</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">err</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<p>Ask this again when you need a fresh copy. Do not keep the old one and treat it as live.</p>
+<h3 id="createcharacter">CreateCharacter<a class="headerlink" href="#createcharacter" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. Creates a character and gives you the new id. It does not make that character the one they are playing. Use <code>SelectCharacter</code> for that.</p>
+<p>Position and health on the new row come from the character config, not from <code>data</code>. The menu saves the spawn the player picked with <code>SaveState</code> right after.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Creates a character and returns the new id.</span>
+<span class="c1">--- Nil and a reason when the name, gender, slot, or document is rejected.</span>
+<span class="c1">---@param source integer</span>
+<span class="c1">---@param data table</span>
+<span class="c1">---@return integer|nil characterId</span>
+<span class="c1">---@return string|nil err</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_characters</span><span class="p">:</span><span class="nf">CreateCharacter</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">data</span><span class="p">)</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Required</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>firstName</code></td>
+<td>yes</td>
+<td>1–50 characters.</td>
+</tr>
+<tr>
+<td><code>lastName</code></td>
+<td>yes</td>
+<td>Same as the first name.</td>
+</tr>
+<tr>
+<td><code>gender</code></td>
+<td>yes</td>
+<td><code>male</code> or <code>female</code>. <code>Male</code> is accepted and stored in lowercase.</td>
+</tr>
+<tr>
+<td><code>birthDate</code></td>
+<td>no</td>
+<td><code>YYYY-MM-DD</code> between the configured years, or leave it out. <code>''</code> stores nothing.</td>
+</tr>
+<tr>
+<td><code>nickname</code></td>
+<td>no</td>
+<td>1–50 characters, or <code>''</code> to store nothing.</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>no</td>
+<td>Up to 2000 characters. Leave it out and it is stored as empty.</td>
+</tr>
+<tr>
+<td><code>slot</code></td>
+<td>no</td>
+<td>A free slot from 1 through this account's character limit. Leave it out and the lowest free slot is used.</td>
+</tr>
+<tr>
+<td><code>appearance</code>, <code>clothing</code>, <code>barber</code></td>
+<td>no</td>
+<td>A table, or leave it out. The saved text cannot be larger than 262144 bytes.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><code>err</code></th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>player is not loaded</code></td>
+<td>That player has not finished joining.</td>
+</tr>
+<tr>
+<td><code>character data must be a table</code></td>
+<td><code>data</code> is not a table.</td>
+</tr>
+<tr>
+<td><code>first name must be text</code></td>
+<td>The name is not text. The same shape is used for the last name, nickname, and description.</td>
+</tr>
+<tr>
+<td><code>first name contains unsupported characters</code></td>
+<td>The name has a control character.</td>
+</tr>
+<tr>
+<td><code>first name must be 1 to 50 characters</code></td>
+<td>Empty or too long. Description uses 2000.</td>
+</tr>
+<tr>
+<td><code>gender must be male or female</code></td>
+<td>Missing or any other value.</td>
+</tr>
+<tr>
+<td><code>birth date must be YYYY-MM-DD</code></td>
+<td>Present and not that shape.</td>
+</tr>
+<tr>
+<td><code>birth date must be a real date from 1800 to 1899</code></td>
+<td>Outside the configured years, or not a real day.</td>
+</tr>
+<tr>
+<td><code>appearance must be a table</code></td>
+<td>Present and not a table. The same words are used for clothing and barber.</td>
+</tr>
+<tr>
+<td><code>could not encode appearance</code></td>
+<td>The table could not be saved as text.</td>
+</tr>
+<tr>
+<td><code>appearance is too large</code></td>
+<td>Over 262144 bytes.</td>
+</tr>
+<tr>
+<td><code>character slot limit reached</code></td>
+<td>This account already has as many characters as it is allowed.</td>
+</tr>
+<tr>
+<td><code>character slot is not available</code></td>
+<td>That slot is taken or out of range.</td>
+</tr>
+<tr>
+<td><code>could not create the character</code></td>
+<td>The insert failed.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">characterId</span><span class="p">,</span><span class="w"> </span><span class="nv">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_characters</span><span class="p">:</span><span class="nf">CreateCharacter</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nv">firstName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Jane'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">lastName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Doe'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">gender</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'female'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">birthDate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'1870-04-12'</span><span class="p">,</span>
+<span class="p">})</span>
+<span class="kr">if</span><span class="w"> </span><span class="nv">characterId</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">err</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+
+<span class="kd">local</span><span class="w"> </span><span class="nv">selected</span><span class="p">,</span><span class="w"> </span><span class="nv">selectErr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_characters</span><span class="p">:</span><span class="nf">SelectCharacter</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">characterId</span><span class="p">)</span>
+<span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">selected</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">selectErr</span><span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+<p>After a successful insert, the local event <code>fw_characters:created</code> fires with the new character. It is not selected yet.</p>
+<h3 id="updatecharacter">UpdateCharacter<a class="headerlink" href="#updatecharacter" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. Changes name, gender, nickname, birth date, or description. Fields you leave out stay as they are. This does not change body, clothes, hair, position, or health.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Updates identity fields that are present in data.</span>
+<span class="c1">--- Nil and a reason when there is nothing to update or the character is not owned.</span>
+<span class="c1">---@param source integer</span>
+<span class="c1">---@param characterId integer</span>
+<span class="c1">---@param data table</span>
+<span class="c1">---@return boolean|nil ok</span>
+<span class="c1">---@return string|nil err</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_characters</span><span class="p">:</span><span class="nf">UpdateCharacter</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">characterId</span><span class="p">,</span><span class="w"> </span><span class="nv">data</span><span class="p">)</span>
+</code></pre></div>
+<p><code>''</code> for nickname or birth date clears that field. <code>''</code> for description stores an empty description.</p>
+<p><code>nothing to update</code> means <code>data</code> had none of those fields. <code>character not found</code> means this player does not own that id.</p>
+<p>The local event <code>fw_characters:updated</code> fires with the source and the character id. It does not include the new values. Call <code>GetCharacter</code>.</p>
+<h3 id="selectcharacter">SelectCharacter<a class="headerlink" href="#selectcharacter" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. Makes this character the one the player is playing. It does not move them. Your script does that, using <code>x</code>, <code>y</code>, <code>z</code>, and <code>heading</code> from the character you get back.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Selects an owned character for this player.</span>
+<span class="c1">---@param source integer</span>
+<span class="c1">---@param characterId integer</span>
+<span class="c1">---@return boolean|nil ok</span>
+<span class="c1">---@return string|nil err</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_characters</span><span class="p">:</span><span class="nf">SelectCharacter</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">characterId</span><span class="p">)</span>
+</code></pre></div>
+<p><code>character not found</code> means this player does not own that id. Selecting the character they are already playing returns true and fires nothing. Selecting a different one fires <code>fw_characters:cleared</code> for the old id, then <code>fw_characters:selected</code> with a copy of the new character.</p>
+<h3 id="clearcharacter">ClearCharacter<a class="headerlink" href="#clearcharacter" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. The player is no longer playing a character. True when it cleared one, and true when none was selected. <code>player is not loaded</code> when <code>source</code> is not a player id.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Clears the character selected for this player.</span>
+<span class="c1">---@param source integer</span>
+<span class="c1">---@return boolean|nil ok</span>
+<span class="c1">---@return string|nil err</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_characters</span><span class="p">:</span><span class="nf">ClearCharacter</span><span class="p">(</span><span class="nv">source</span><span class="p">)</span>
+</code></pre></div>
+<p><code>fw_characters:cleared</code> fires only when a character was actually selected. The player's game also receives <code>fw_characters:released</code> for that same character.</p>
+<h3 id="setappearance-setclothing-setbarber">SetAppearance, SetClothing, SetBarber<a class="headerlink" href="#setappearance-setclothing-setbarber" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. Replaces one saved block on a character this player owns. Pass nothing (<code>nil</code>) to clear it. The same rules apply to all three calls.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Replaces the body document. Nil clears it.</span>
+<span class="c1">---@param source integer</span>
+<span class="c1">---@param characterId integer</span>
+<span class="c1">---@param value table|nil</span>
+<span class="c1">---@return boolean|nil ok</span>
+<span class="c1">---@return string|nil err</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_characters</span><span class="p">:</span><span class="nf">SetAppearance</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">characterId</span><span class="p">,</span><span class="w"> </span><span class="nv">value</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Replaces the clothing document. Nil clears it.</span>
+<span class="c1">---@param source integer</span>
+<span class="c1">---@param characterId integer</span>
+<span class="c1">---@param value table|nil</span>
+<span class="c1">---@return boolean|nil ok</span>
+<span class="c1">---@return string|nil err</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_characters</span><span class="p">:</span><span class="nf">SetClothing</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">characterId</span><span class="p">,</span><span class="w"> </span><span class="nv">value</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Replaces the hair and makeup document. Nil clears it.</span>
+<span class="c1">---@param source integer</span>
+<span class="c1">---@param characterId integer</span>
+<span class="c1">---@param value table|nil</span>
+<span class="c1">---@return boolean|nil ok</span>
+<span class="c1">---@return string|nil err</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_characters</span><span class="p">:</span><span class="nf">SetBarber</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">characterId</span><span class="p">,</span><span class="w"> </span><span class="nv">value</span><span class="p">)</span>
+</code></pre></div>
+<p>The table is saved as text and cannot be larger than 262144 bytes. <code>appearance must be a table</code>, <code>could not encode appearance</code>, and <code>appearance is too large</code> use the document name. <code>character not found</code> means this player does not own that id.</p>
+<p><code>fw_characters:updated</code> fires. It does not include the document. Call <code>GetCharacter</code>.</p>
+<p>The character menu decides the keys inside <code>appearance</code> and <code>barber</code>. See <a href="../fw-creator/">fw_creator</a>. Worn clothes should go through <a href="../fw-clothing/">fw_clothing</a>, which calls <code>SetClothing</code> for you.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">ok</span><span class="p">,</span><span class="w"> </span><span class="nv">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_characters</span><span class="p">:</span><span class="nf">SetAppearance</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">characterId</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nv">gender</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Female'</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">skintone</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="p">})</span>
+<span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">ok</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">err</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h3 id="savestate">SaveState<a class="headerlink" href="#savestate" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. Saves where they are standing, and their health, for the character this player is playing. It does not change the name or the saved body, clothes, or hair. It does not send the <code>fw_characters:updated</code> message.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Saves position and health for the active character.</span>
+<span class="c1">---@param source integer</span>
+<span class="c1">---@param state table</span>
+<span class="c1">---@return boolean|nil ok</span>
+<span class="c1">---@return string|nil err</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_characters</span><span class="p">:</span><span class="nf">SaveState</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">state</span><span class="p">)</span>
+</code></pre></div>
+<p>Every field is optional, but position is all or nothing. If you send any of <code>x</code>, <code>y</code>, <code>z</code>, or <code>heading</code>, send all four.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>x</code>, <code>y</code>, <code>z</code>, <code>heading</code></td>
+<td>Numbers. Heading is degrees.</td>
+</tr>
+<tr>
+<td><code>health</code></td>
+<td>Whole number from 0 to 65535.</td>
+</tr>
+<tr>
+<td><code>healthCore</code></td>
+<td>Whole number from 0 to 100.</td>
+</tr>
+<tr>
+<td><code>staminaCore</code></td>
+<td>Whole number from 0 to 100.</td>
+</tr>
+<tr>
+<td><code>isDead</code></td>
+<td>True or false.</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th><code>err</code></th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>state must be a table</code></td>
+<td><code>state</code> is not a table.</td>
+</tr>
+<tr>
+<td><code>player is not loaded</code></td>
+<td>That number is not a player in the game.</td>
+</tr>
+<tr>
+<td><code>no active character</code></td>
+<td>No character is selected.</td>
+</tr>
+<tr>
+<td><code>position requires x, y, z, and heading</code></td>
+<td>Only part of the position was sent.</td>
+</tr>
+<tr>
+<td><code>health must be an integer from 0 to 65535</code></td>
+<td>Health is out of range.</td>
+</tr>
+<tr>
+<td><code>healthCore must be an integer from 0 to 100</code></td>
+<td>Health core is out of range.</td>
+</tr>
+<tr>
+<td><code>staminaCore must be an integer from 0 to 100</code></td>
+<td>Stamina core is out of range.</td>
+</tr>
+<tr>
+<td><code>isDead must be true or false</code></td>
+<td><code>isDead</code> is not a boolean.</td>
+</tr>
+<tr>
+<td><code>nothing to save</code></td>
+<td>None of these fields were sent.</td>
+</tr>
+<tr>
+<td><code>character not found</code></td>
+<td>The selected character no longer exists.</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">ok</span><span class="p">,</span><span class="w"> </span><span class="nv">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_characters</span><span class="p">:</span><span class="nf">SaveState</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nv">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mf">174.39</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">633.78</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">114.09</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">heading</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">90.0</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">health</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">540</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">isDead</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="p">})</span>
+<span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">ok</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">err</span><span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+<p>The game also reports where the ped is standing. Those reports update the coordinates <code>GetCharacter</code> returns, and they are written to the database on a timer, on disconnect, and when the character is cleared. <code>SaveState</code> writes immediately.</p>
+<h3 id="deletecharacter">DeleteCharacter<a class="headerlink" href="#deletecharacter" title="Permanent link">&para;</a></h3>
+<p>Runs on the server. Deletes a character this player owns. Body, clothes, and hair go with it. If it was selected, it is cleared first.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Deletes an owned character.</span>
+<span class="c1">---@param source integer</span>
+<span class="c1">---@param characterId integer</span>
+<span class="c1">---@return boolean|nil ok</span>
+<span class="c1">---@return string|nil err</span>
+<span class="nv">exports</span><span class="p">.</span><span class="py">fw_characters</span><span class="p">:</span><span class="nf">DeleteCharacter</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">characterId</span><span class="p">)</span>
+</code></pre></div>
+<p><code>character not found</code> means this player does not own that id. <code>fw_characters:cleared</code> fires when it was selected. <code>fw_characters:deleted</code> fires after the row is gone.</p>
+<h2 id="character-record">Character record<a class="headerlink" href="#character-record" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>Character id. Store this when a row belongs to one character.</td>
+</tr>
+<tr>
+<td><code>source</code></td>
+<td>Server id the row was loaded for.</td>
+</tr>
+<tr>
+<td><code>playerId</code></td>
+<td>Account id of the owner.</td>
+</tr>
+<tr>
+<td><code>slot</code></td>
+<td>Slot on that account, starting at 1.</td>
+</tr>
+<tr>
+<td><code>firstName</code>, <code>lastName</code></td>
+<td>1–50 characters.</td>
+</tr>
+<tr>
+<td><code>nickname</code></td>
+<td>Optional. Nil when empty.</td>
+</tr>
+<tr>
+<td><code>gender</code></td>
+<td><code>male</code> or <code>female</code>.</td>
+</tr>
+<tr>
+<td><code>birthDate</code></td>
+<td><code>YYYY-MM-DD</code>, or nil.</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>Lore. Empty string when blank.</td>
+</tr>
+<tr>
+<td><code>x</code>, <code>y</code>, <code>z</code>, <code>heading</code></td>
+<td>Last known position. A recent sample can be newer than the last database write.</td>
+</tr>
+<tr>
+<td><code>health</code></td>
+<td>0–65535. A new character starts at 600.</td>
+</tr>
+<tr>
+<td><code>healthCore</code>, <code>staminaCore</code></td>
+<td>0–100. A new character starts at 100.</td>
+</tr>
+<tr>
+<td><code>isDead</code></td>
+<td>True or false.</td>
+</tr>
+<tr>
+<td><code>createdAt</code></td>
+<td>When the row was created.</td>
+</tr>
+<tr>
+<td><code>lastPlayed</code></td>
+<td>When they last played it. Nil until the first selection.</td>
+</tr>
+<tr>
+<td><code>hasAppearance</code>, <code>hasClothing</code>, <code>hasBarber</code></td>
+<td>True when that document exists.</td>
+</tr>
+<tr>
+<td><code>appearance</code>, <code>clothing</code>, <code>barber</code></td>
+<td>The documents. Only on <code>GetCharacter</code> and <code>GetActiveCharacter</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><code>GetCharacters</code> leaves the three documents out.</p>
+<p>A new character is placed at the default spawn in <code>server/config.lua</code> until something calls <code>SaveState</code>. Birth years must fall between <code>minBirthYear</code> and <code>maxBirthYear</code> in that file. Today that is 1800 through 1899.</p>
+<h2 id="messages">Messages<a class="headerlink" href="#messages" title="Permanent link">&para;</a></h2>
+<p>These stay on the server. They are not sent to the player's game. Your script hears one only if it is already running. Put the listener at the top of your script. If your script starts after <code>fw_characters:ready</code> was sent, you missed it. Ask <code>IsReady</code> instead.</p>
+<p>The listeners for created, selected, cleared, updated, and deleted run before the call that caused them finishes. The snapshot in the message can be old a moment later. Ask <code>GetCharacter</code> when you need a fresh one.</p>
+<h3 id="fw_charactersready">fw_characters:ready<a class="headerlink" href="#fw_charactersready" title="Permanent link">&para;</a></h3>
+<p>Fires once, when the resource is ready. <code>version</code> is a string such as <code>1.0.0</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">---@param version string</span>
+<span class="nf">AddEventHandler</span><span class="p">(</span><span class="s1">'fw_characters:ready'</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">version</span><span class="p">)</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="fw_characterscreated">fw_characters:created<a class="headerlink" href="#fw_characterscreated" title="Permanent link">&para;</a></h3>
+<p>The new character is a copy and is not selected yet.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">---@param source integer</span>
+<span class="c1">---@param character table</span>
+<span class="nf">AddEventHandler</span><span class="p">(</span><span class="s1">'fw_characters:created'</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">character</span><span class="p">)</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="fw_charactersselected">fw_characters:selected<a class="headerlink" href="#fw_charactersselected" title="Permanent link">&para;</a></h3>
+<p>A snapshot of the character that just became the one they are playing. Ask <code>GetCharacter</code> when you need a fresh one.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">---@param source integer</span>
+<span class="c1">---@param character table</span>
+<span class="nf">AddEventHandler</span><span class="p">(</span><span class="s1">'fw_characters:selected'</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">character</span><span class="p">)</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="fw_characterscleared">fw_characters:cleared<a class="headerlink" href="#fw_characterscleared" title="Permanent link">&para;</a></h3>
+<p>The player is no longer on that character. It is also sent when they leave, if one was selected. It is not sent when this resource stops.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">---@param source integer</span>
+<span class="c1">---@param characterId integer</span>
+<span class="nf">AddEventHandler</span><span class="p">(</span><span class="s1">'fw_characters:cleared'</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">characterId</span><span class="p">)</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="fw_charactersreleased">fw_characters:released<a class="headerlink" href="#fw_charactersreleased" title="Permanent link">&para;</a></h3>
+<p>Sent to that player's game when the character is cleared, including a switch and a delete. It is not sent when they drop, because their game is already gone. Listen on the client. <code>characterId</code> is the character that just ended. Clear anything you were keeping for that character.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- The character on this player's game just ended.</span>
+<span class="c1">---@param characterId integer</span>
+<span class="c1">---@return nil</span>
+<span class="nf">RegisterNetEvent</span><span class="p">(</span><span class="s1">'fw_characters:released'</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">characterId</span><span class="p">)</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="fw_charactersrelog">fw_characters:relog<a class="headerlink" href="#fw_charactersrelog" title="Permanent link">&para;</a></h3>
+<p>Networked. The player's game sends it. <code>/relog</code> does that. The command name is <code>relogCommand</code> in <code>server/config.lua</code>.</p>
+<p>The server refuses, and writes a warning, when no character is selected, they are already on the character list, the last switch was too recent (<code>relogCooldownMs</code>), they are in a trade, their ped is dead, or they are hogtied or cuffed. A success saves place, health, and cores, clears the character, writes an info line, and tells that player's game to open the character list.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Asks to return to the character list.</span>
+<span class="c1">---@return nil</span>
+<span class="nf">TriggerServerEvent</span><span class="p">(</span><span class="s1">'fw_characters:relog'</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="fw_charactersleave">fw_characters:leave<a class="headerlink" href="#fw_charactersleave" title="Permanent link">&para;</a></h3>
+<p>Networked. The player's game sends it. <code>/leave</code> does that. The command name is <code>leaveCommand</code> in <code>server/config.lua</code>.</p>
+<p>The same save runs when a character is selected. Then the server drops them with <code>leaveReason</code>, which starts as <code>Left the server.</code> There is no wait between switches for this one. Someone on the character list, with no character selected, is dropped without a save.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">--- Asks to save and return to the RedM menu.</span>
+<span class="c1">---@return nil</span>
+<span class="nf">TriggerServerEvent</span><span class="p">(</span><span class="s1">'fw_characters:leave'</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="fw_charactersupdated">fw_characters:updated<a class="headerlink" href="#fw_charactersupdated" title="Permanent link">&para;</a></h3>
+<p>Name or a document was saved. Not fired by <code>SaveState</code>. The new values are not in the event. Call <code>GetCharacter</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">---@param source integer</span>
+<span class="c1">---@param characterId integer</span>
+<span class="nf">AddEventHandler</span><span class="p">(</span><span class="s1">'fw_characters:updated'</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">characterId</span><span class="p">)</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="fw_charactersdeleted">fw_characters:deleted<a class="headerlink" href="#fw_charactersdeleted" title="Permanent link">&para;</a></h3>
+<p>The character id that was deleted.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">---@param source integer</span>
+<span class="c1">---@param characterId integer</span>
+<span class="nf">AddEventHandler</span><span class="p">(</span><span class="s1">'fw_characters:deleted'</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="nv">characterId</span><span class="p">)</span>
+<span class="kr">end</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="a-value-the-players-game-can-read">A value the player's game can read<a class="headerlink" href="#a-value-the-players-game-can-read" title="Permanent link">&para;</a></h2>
+<p><code>Player(source).state.fwCharacterId</code> is the selected character id, or nothing when none is selected. The player's game can read it. The account id is still <code>fwPlayerId</code> from <a href="../fw-core/">fw_core</a>.</p>
+<p>On the server:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">characterId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">Player</span><span class="p">(</span><span class="nv">source</span><span class="p">).</span><span class="nv">state</span><span class="p">.</span><span class="py">fwCharacterId</span>
+<span class="kr">if</span><span class="w"> </span><span class="nv">characterId</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+</code></pre></div>
+<p>In the player's game:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">characterId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">LocalPlayer</span><span class="p">.</span><span class="py">state</span><span class="p">.</span><span class="py">fwCharacterId</span>
+</code></pre></div>
+<p><code>fwHogtied</code> and <code>fwCuffed</code> are true while that ped is hogtied or cuffed. The player's game publishes them about once a second. A switch reads them. They go back to false when the character ends.</p>
+<h2 id="where-the-character-is-standing">Where the character is standing<a class="headerlink" href="#where-the-character-is-standing" title="Permanent link">&para;</a></h2>
+<p>These are networked events: <code>RegisterNetEvent</code> on the server, sent from the player's game with <code>TriggerServerEvent</code>. <code>fw_characters</code>'s own client script sends them while the player plays. Another script should save a position with <code>SaveState</code> instead. Do not send these yourself, and do not listen for them. A bad position is ignored.</p>
+<table>
+<thead>
+<tr>
+<th>Message</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fw_characters:reportPosition</code></td>
+<td>The player's game tells the server <code>x</code>, <code>y</code>, <code>z</code>, and <code>heading</code> on a timer.</td>
+</tr>
+<tr>
+<td><code>fw_characters:commitPosition</code></td>
+<td>The player's game tells the server to store that position now, including when they are leaving.</td>
+</tr>
+</tbody>
+</table>
+<p>A jail script can store where they were standing before it moves them:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">character</span><span class="p">,</span><span class="w"> </span><span class="nv">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_characters</span><span class="p">:</span><span class="nf">GetActiveCharacter</span><span class="p">(</span><span class="nv">source</span><span class="p">)</span>
+<span class="kr">if</span><span class="w"> </span><span class="nv">character</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">err</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">return</span>
+<span class="kr">end</span>
+
+<span class="kd">local</span><span class="w"> </span><span class="nv">ok</span><span class="p">,</span><span class="w"> </span><span class="nv">saveErr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">exports</span><span class="p">.</span><span class="py">fw_characters</span><span class="p">:</span><span class="nf">SaveState</span><span class="p">(</span><span class="nv">source</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nv">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">character</span><span class="p">.</span><span class="py">x</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">character</span><span class="p">.</span><span class="py">y</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">character</span><span class="p">.</span><span class="py">z</span><span class="p">,</span>
+<span class="w">    </span><span class="nv">heading</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">character</span><span class="p">.</span><span class="py">heading</span><span class="p">,</span>
+<span class="p">})</span>
+<span class="kr">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="nv">ok</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="nb">print</span><span class="p">(</span><span class="nv">saveErr</span><span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+<h2 id="server-window">Server window<a class="headerlink" href="#server-window" title="Permanent link">&para;</a></h2>
+<p>These do nothing when a player types them in chat.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fw_characters</code></td>
+<td>Prints whether the resource is ready, and how many players have a character selected.</td>
+</tr>
+<tr>
+<td><code>fw_char_list &lt;serverId&gt;</code></td>
+<td>Lists that player's characters.</td>
+</tr>
+<tr>
+<td><code>fw_char_create &lt;serverId&gt; &lt;firstName&gt; &lt;lastName&gt; &lt;male\|female&gt; [YYYY-MM-DD]</code></td>
+<td>Creates one. Names cannot contain a space here. It does not select the new character.</td>
+</tr>
+<tr>
+<td><code>fw_char_select &lt;serverId&gt; &lt;characterId&gt;</code></td>
+<td>Selects that character.</td>
+</tr>
+<tr>
+<td><code>fw_char_delete &lt;serverId&gt; &lt;characterId&gt;</code></td>
+<td>Deletes that character.</td>
+</tr>
+</tbody>
+</table>
+<p><code>serverId</code> is the player number printed by <code>fw_health</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "content.code.copy", "search.suggest"], "search": "../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.c21346df.min.js"></script>
+      
+    
+  </body>
+</html>
