@@ -10,7 +10,7 @@ Runs in the player's game. Two covers:
 
 Leave `FWConfig.video` empty in `shared/config.lua`. The connect page then shows the server name, their name, and the three lines `gamemode`, `title`, and `subtitle`.
 
-Set `FWConfig.video` to a file in this resource, such as `html/intro.webm`, to play that file behind those words. A missing file is written once in the server window, and the words stay. `minHoldMs` is the shortest the spawn cover stays up, in milliseconds. `maxWaitMs` is how long to wait for the world, the clothes, and the weapons before showing them anyway. `sceneRadius` is how far around the spawn to stream, in metres.
+Set `FWConfig.video` to a file in this resource, such as `html/intro.webm`, to play that file behind those words. A missing file is written once in the server window, and the words stay. `minHoldMs` is the shortest the spawn cover stays up, in milliseconds. `maxWaitMs` is how long to wait for the clothes and the weapons before showing them anyway. `sceneWaitMs` is how long to stream the spawn, in milliseconds. The stream also stops when the ground around the player is loaded. `sceneRadius` is how far around the spawn to stream, in metres. The cover puts the ped back on screen after the card comes down. A visible set while the card is up does not remain.
 
 `fw_core` hands those words over before it lets the player in. The page closes when the character list is ready to be seen: it calls `loadingComplete`, and that call runs `ShutdownLoadingScreenNui`.
 
@@ -91,7 +91,7 @@ end)
 
 ### StreamScene
 
-Streams the world around a point. `x`, `y`, and `z` are metres. It stops when that spot is loaded, or when `maxWaitMs` runs out. Comes back yes when the spot loaded.
+Streams the world around a point. `x`, `y`, and `z` are metres. It stops when that spot is loaded, when the ground around the player is loaded, or when `sceneWaitMs` runs out. Comes back yes when the spot loaded.
 
 ```lua
 --- Streams the world around a spawn.
@@ -129,6 +129,5 @@ The cover listens for these. It does not send them. They are documented on the r
 
 - [fw_creator:bodyReady](/fw-creator#messages-the-menu-uses) — the saved body is on the ped. The cover waits for this first.
 - [fw_clothing:applied](/fw-clothing#fw_clothingapplied) — the clothes are on, or there were none. `fw_creator:bodyBare` means the same thing.
-- [fw_creator:barberReady](/fw-creator#messages-the-menu-uses) — the hair and makeup are on, or there were none.
-- [fw_creator:appearanceReady](/fw-creator#messages-the-menu-uses) — the cover asks for the weapon kit, after the body, the clothes, and the hair.
+- [fw_creator:appearanceReady](/fw-creator#messages-the-menu-uses) — the cover asks for the weapon kit, after the body and the clothes.
 - [fw_weapons:kitApplied](/fw-weapons#fw_weaponskitapplied) — the kit is on the current ped. The cover comes down after this, or when the wait runs out.
