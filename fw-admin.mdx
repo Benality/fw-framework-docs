@@ -85,15 +85,25 @@ end
 
 `/admin` opens the admin screen. It needs `fw.admin`. A smaller permission such as `fw.admin.kick` does not open it. Escape or Close leaves the screen. While it is open, that character stays still. The same words that go to the log also sit on the line under the panel.
 
-The left side has three sections.
+Page Up opens a smaller menu in the corner. The mouse stays on the game. Up and down move. Left and right change the list. Enter runs the line. Backspace closes it, and Page Up again closes it too. The game's key bindings list that key as Admin self menu, so it can be changed there. If the big screen is already open, Page Up does nothing.
 
-- **Players.** Who is online. The search box filters that list as you type. Refresh asks for the list again. Unban is a license field on this page. Choose a person and the actions stay beside the list: go to them, bring them, send them back, watch them, freeze them, fill their health, revive them, give an item, give dollars, set a reputation score, kick, or ban. Kick and ban ask you to confirm first. Watching someone closes the screen, so the camera is yours. Open `/admin` again to stop watching.
-- **Self.** God mode, no clip, invisible, infinite ammo, fill health, fill health and stamina, and revive. Each toggle shows On or Off. No clip moves with W and S, up with Q, down with Z. Shift changes the speed. Delete stops it. Turning no clip on closes the screen, so those keys work. Open `/admin` again when you want it back.
-- **Tools.** Teleports, and copy coordinates. Teleports are the map waypoint, coordinates you type, Guarma, and the trip back. TP to waypoint is the same move as `/tpm`. Copy coordinates puts x y z, a `vector3`, a `vector4`, or the heading on the clipboard. The same line is written to the F8 log and on the line under the panel. The clipboard call is `exports.vorp_lib:copyToClipBoard`. If `vorp_lib` is not started, nothing is copied and the log says the clipboard is not available.
+The left side lists the sections.
 
-The type and the journal image are the ones the satchel uses. [fw_satchel](/fw-satchel) has to be started for that art. If it is not, the screen still opens.
+- **Dashboard.** How many people are online, and their names. Choose a name and that person opens on Players.
+- **Players.** The search box filters the list as you type. Refresh asks for the list again. Each row is the name, the server number, and the dollars they are carrying. A dash is shown when cash cannot be read. Unban is a license field on this page. Choose a person and the actions open on the right: go to them, bring them, send them back, watch them, freeze them, fill their health, revive them, give an item, give dollars, set a reputation score, kick, or ban. Kick and ban ask you to confirm first. Watching someone closes the screen, so the camera is yours. Open `/admin` again to stop watching.
+- **Stores.** Search the shops, then choose one. The editor is the name, the type, the town, the clerk, the hours, the place, the shelf, and the buyback. Here fills the place from where you are standing. Save writes it. Reset shelf puts that type's starting shelf back. Delete asks first. New shop asks for an id, a type, a name, a clerk model, and a place, then copies that type's shelf. The server checks `fw.admin.stores` before it writes. How a shop is stored is in [fw_stores](/fw-stores).
+- **Teleports.** The map waypoint, coordinates you type, Guarma, and the trip back. Waypoint is the same move as `/tpm`.
+- **Coords.** Where you are standing, and copy for the plain numbers, a `vector3`, a `vector4`, or the heading. The same line is written to the F8 log and on the line under the panel. The clipboard call is `exports.vorp_lib:copyToClipBoard`. If `vorp_lib` is not started, nothing is copied and the log says the clipboard is not available.
 
-Giving an item uses [fw_inventory](/fw-inventory) `AddItem`. The count is from 1 to 500. Giving dollars uses [fw_money](/fw-money) `AddCash`. The amount is from 1 to 100000. Both land in the satchel of the character they are playing. If that character is not selected, or the satchel has no room, nothing is given and the log says why.
+Statistics, Whitelist, Reports, Admins, Logs, Admin Chat, Live Map, Blips, Spawner, Server Settings, and Resource Lookup are in the list and say they are not on the server yet. They do not run anything.
+
+The small menu has three lists.
+
+- **Player.** God mode, no clip, invisible, unlimited ammo, fill health, fill health and stamina, and revive. A toggle shows On or Off. No clip moves with W and S, up with Q, down with Z. Shift changes the speed. Delete stops it. Turning no clip on closes the small menu, so those keys work. Page Up opens it again.
+- **Teleport.** Waypoint, Guarma, and return.
+- **Display.** Show coordinates draws them on the screen while you play. The copy lines are the same four as Coords.
+
+Giving an item uses [fw_inventory](/fw-inventory) `AddItem`. The count is from 1 to 500. Giving dollars uses [fw_money](/fw-money) `AddCash`. The amount is from 1 to 100000. Both land in the satchel of the character they are playing. If that character is not selected, or the satchel has no room, nothing is given and the log says why. The dollars in the player table come from [fw_money](/fw-money) `GetCash`.
 
 Reputation lists each class from [fw_reputation](/fw-reputation). The line shows the standing and the score. Type a whole number from 0 to 1000 and save it. That uses `Set`. If that character is not selected, or the number is refused, nothing is saved and the log says why. Back returns to that person.
 
@@ -114,6 +124,7 @@ The server checks the permission again before it does the thing. A screen left o
 | `fw.admin.ban` | Ban and unban. |
 | `fw.admin.give` | Give an item, or give dollars. |
 | `fw.admin.reputation` | Read and set a reputation score. |
+| `fw.admin.stores` | List, read, save, create, delete, and reset a shop. |
 
 Self tools, the waypoint, typed coordinates, Guarma, and copy coordinates need `fw.admin`.
 
@@ -145,6 +156,19 @@ Networked, server to the player's game. Opens the admin screen for that player. 
 --- Networked. Trigger this from the server once you have already checked IsAdmin.
 ---@param source integer the player to open the screen for
 TriggerClientEvent('fw_admin:openMenu', source)
+```
+
+Page Up asks the server before the small menu opens. Another script can ask the same way, after `IsAdmin` is yes.
+
+```lua
+--- Networked. The server ignores it unless IsAdmin is yes for the sender.
+TriggerServerEvent('fw_admin:requestSelfMenu')
+```
+
+```lua
+--- Networked. Opens the small self menu for that player.
+---@param source integer
+TriggerClientEvent('fw_admin:openSelf', source)
 ```
 
 ### fw_admin:log
@@ -184,6 +208,8 @@ Networked, the player's game to the server. `target` is the other player's numbe
 | `fw_admin:teleportGuarma` | `fw.admin` | None. |
 | `fw_admin:teleportReturn` | `fw.admin` | None. |
 | `fw_admin:copyCoords` | `fw.admin` | `kind`: `xyz`, `vector3`, `vector4`, or `heading`. |
+| `fw_admin:requestSelfMenu` | `fw.admin` | None. The reply is `fw_admin:openSelf`. |
+| `fw_admin:stores` | `fw.admin.stores` | One table. `op` is `list`, `read`, `save`, `create`, `delete`, or `reset`. The reply is `fw_admin:storeData`. |
 
 ```lua
 --- Networked. Sent by the admin screen. The server ignores it unless that player may do it.
@@ -211,7 +237,7 @@ Networked, server to one player. The screen sends these after the check. Another
 
 | Event | Who receives it | Arguments |
 | --- | --- | --- |
-| `fw_admin:playerList` | The admin | A list of `{ id, name }`, or false when they may not see it. |
+| `fw_admin:playerList` | The admin | A list of `{ id, name, cash }`, or false when they may not see it. `cash` is the dollars they are carrying, or missing when cash cannot be read. |
 | `fw_admin:doMove` | The player who is moving | `x`, `y`, `z`, `heading` |
 | `fw_admin:doFreeze` | The player being frozen | `toggle` |
 | `fw_admin:doHeal` | The player being healed | `stamina` |
@@ -220,6 +246,8 @@ Networked, server to one player. The screen sends these after the check. Another
 | `fw_admin:doSelf` | The admin | `tool`, `on` |
 | `fw_admin:doTeleportWaypoint` | The admin | None |
 | `fw_admin:doCopy` | The admin | `kind` |
+| `fw_admin:openSelf` | The admin | None. Opens the small self menu. |
+| `fw_admin:storeData` | The admin | The shop list, and one shop when a read or a save just finished. |
 
 ```lua
 --- Networked. Sent by the server after a player action it allowed.
