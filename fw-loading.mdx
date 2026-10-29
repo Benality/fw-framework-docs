@@ -8,7 +8,7 @@ Runs in the player's game. Two covers:
 - From the moment someone connects until the character list is on screen. That page starts with them. It is not a second card stacked on the game's own screen.
 - After they pick a character, or finish creating one, until the body, clothes, and weapons are on.
 
-Leave `FWConfig.cutscenes` empty to keep the loading card. A name in that list, such as `Cutscene_MpIntro`, plays that game cutscene under the words. Several names pick one for the visit. The revolver-cylinder prompt runs with it, and the page draws a ring in the same corner because the page sits over the game prompt. The words stay on top.
+Leave `FWConfig.cutscenes` empty to keep the loading card. A name in that list, such as `Cutscene_MpIntro`, plays that game cutscene under the words. Several names pick one for the visit. The connect page background is clear in that case, so the cutscene shows through the words. The revolver-cylinder prompt runs with it, and the page draws a ring in the same corner because the page sits over the game prompt. The words stay on top.
 
 `FWConfig.video` is a file in this resource, such as `html/intro.webm`. It plays behind the words only when `cutscenes` is empty. A missing file is written once in the server window, and the words stay. `minHoldMs` is the shortest the spawn cover stays up, in milliseconds. `maxWaitMs` is how long to wait for the clothes and the weapons before showing them anyway. `sceneWaitMs` is how long to stream the spawn, in milliseconds. The stream also stops when the ground around the player is loaded. `sceneRadius` is how far around the spawn to stream, in metres. The cover puts the ped back on screen after the card comes down. A visible set while the card is up does not remain.
 
@@ -69,7 +69,7 @@ exports.fw_loading:ReleaseConnectScreen()
 
 Runs on the server, during `playerConnecting`. `deferrals` is the join handshake. `playerId` is the player's number for this visit. Call it before `deferrals.done`, or the connect page never receives the words. `fw_core` already does this on the way in. A script that replaces that check has to call it too.
 
-The page receives the player's name, the server name, `gamemode`, `title`, `subtitle`, and the video file name when one is set.
+The page receives the player's name, the server name, `gamemode`, `title`, `subtitle`, the video file name when one is set, and whether a cutscene is configured. A cutscene makes that page clear.
 
 ```lua
 --- Hands the connect page its words. Call this before deferrals.done.
