@@ -75,7 +75,7 @@ end
 
 | Command | Who | What happens |
 | --- | --- | --- |
-| `/admin` | A player in the game | Opens the admin menu when they have `fw.admin`. Anyone else gets a log line saying they are not an admin. |
+| `/admin` | A player in the game | Opens the admin screen when they have `fw.admin`. Anyone else gets a log line saying they are not an admin. |
 | `/tpm` | A player in the game | Moves them to the waypoint on their map when they have `fw.admin`. Anyone else gets a log line saying they are not an admin. Set a waypoint first. If the ground under it cannot be found, the log says so and they stay where they are. |
 | `/fw_admin` | The player who types it | The log says whether they are an admin. It does not print their ids. |
 | `fw_admin` | Server window | Prints whether fw_admin is ready. |
@@ -83,25 +83,25 @@ end
 | `admin` (no slash) | Server window | Prints that `/admin` is for a player in the game. It does nothing else. |
 | `tpm` | Server window | Prints that `/tpm` is for a player in the game. It does nothing else. |
 
-`/admin` opens a menu from [fw_menu](/fw-menu). It needs `fw.admin`. A smaller permission such as `fw.admin.kick` does not open it.
+`/admin` opens the admin screen. It needs `fw.admin`. A smaller permission such as `fw.admin.kick` does not open it. Escape or Close leaves the screen. While it is open, that character stays still. The same words that go to the log also sit on the line under the panel.
 
-The first page has three entries.
+The left side has three sections.
 
-- **Players.** Who is online. Search filters that list. Unban asks for a license. Choose a person, then go to them, bring them, send them back, watch them, freeze them, fill their health, revive them, give an item, give dollars, set a reputation score, kick, or ban.
-- **Self.** God mode, no clip, invisible, infinite ammo, fill health, fill health and stamina, and revive. No clip moves with W and S, up with Q, down with Z. Shift changes the speed. Delete stops it.
-- **Developer tools.** Teleports, then copy coordinates. Teleports are the map waypoint, coordinates you type, Guarma, and the trip back. TP to Waypoint is the same move as `/tpm`. Copy coordinates puts x y z, a `vector3`, a `vector4`, or the heading on the clipboard. The same line is also written to the F8 log. The clipboard call is `exports.vorp_lib:copyToClipBoard`. If `vorp_lib` is not started, nothing is copied and the log says the clipboard is not available.
+- **Players.** Who is online. The search box filters that list as you type. Refresh asks for the list again. Unban is a license field on this page. Choose a person and the actions stay beside the list: go to them, bring them, send them back, watch them, freeze them, fill their health, revive them, give an item, give dollars, set a reputation score, kick, or ban. Kick and ban ask you to confirm first. Watching someone closes the screen, so the camera is yours. Open `/admin` again to stop watching.
+- **Self.** God mode, no clip, invisible, infinite ammo, fill health, fill health and stamina, and revive. Each toggle shows On or Off. No clip moves with W and S, up with Q, down with Z. Shift changes the speed. Delete stops it. Turning no clip on closes the screen, so those keys work. Open `/admin` again when you want it back.
+- **Tools.** Teleports, and copy coordinates. Teleports are the map waypoint, coordinates you type, Guarma, and the trip back. TP to waypoint is the same move as `/tpm`. Copy coordinates puts x y z, a `vector3`, a `vector4`, or the heading on the clipboard. The same line is written to the F8 log and on the line under the panel. The clipboard call is `exports.vorp_lib:copyToClipBoard`. If `vorp_lib` is not started, nothing is copied and the log says the clipboard is not available.
 
-Go back on a page returns to the page that opened it.
+The type and the journal image are the ones the satchel uses. [fw_satchel](/fw-satchel) has to be started for that art. If it is not, the screen still opens.
 
 Giving an item uses [fw_inventory](/fw-inventory) `AddItem`. The count is from 1 to 500. Giving dollars uses [fw_money](/fw-money) `AddCash`. The amount is from 1 to 100000. Both land in the satchel of the character they are playing. If that character is not selected, or the satchel has no room, nothing is given and the log says why.
 
-Reputation lists each class from [fw_reputation](/fw-reputation). The line shows the standing and the score. Choosing a class asks for a whole number from 0 to 1000 and saves it with `Set`. If that character is not selected, or the number is refused, nothing is saved and the log says why.
+Reputation lists each class from [fw_reputation](/fw-reputation). The line shows the standing and the score. Type a whole number from 0 to 1000 and save it. That uses `Set`. If that character is not selected, or the number is refused, nothing is saved and the log says why. Back returns to that person.
 
-A ban asks for the hours. `0` does not expire. The longest timed ban from the menu is 8760 hours, which is one year. The menu saves it with [fw_core](/fw-core) `SetBan`, then removes them from the server. Unban asks for the license, including `license:` at the front. A hex id on its own is treated as a Rockstar license.
+A ban uses the hours field. You confirm before it is saved. `0` does not expire. The longest timed ban from the screen is 8760 hours, which is one year. The screen saves it with [fw_core](/fw-core) `SetBan`, then removes them from the server. Unban uses the license, including `license:` at the front. A hex id on its own is treated as a Rockstar license.
 
 Bring remembers where that person was standing, on the server. Send back uses that spot. A second bring keeps the first spot. Guarma remembers where you were standing the same way. If there is no remembered spot, back from Guarma uses a mainland spot near Saint Denis.
 
-The server checks the permission again before it does the thing. A menu left open by someone who loses admin will not let them teleport, kick, or give.
+The server checks the permission again before it does the thing. A screen left open by someone who loses admin will not let them teleport, kick, or give.
 
 ## Smaller permissions
 
@@ -126,9 +126,9 @@ add_principal identifier.license:YOUR_LICENSE group.helper
 
 These are networked events, sent with `RegisterNetEvent` and `TriggerServerEvent` / `TriggerClientEvent` — not `AddEventHandler`. None of them are queued: the listening side has to already be running when the message is sent, or it is simply missed. fw_admin's own client and server scripts are always running together while the resource is started, so this mostly matters if your own script triggers one of them.
 
-A new admin tool should check `IsAdmin` or `HasPermission` itself first, then do its own work. Prefer `AddItem`, `AddCash`, and `SetBan` when you are giving or banning from your own script. The events below belong to the menu. The server ignores an ask when the permission is no.
+A new admin tool should check `IsAdmin` or `HasPermission` itself first, then do its own work. Prefer `AddItem`, `AddCash`, and `SetBan` when you are giving or banning from your own script. The events below belong to the screen. The server ignores an ask when the permission is no.
 
-You can open the same menu from your own server script:
+You can open the same screen from your own server script:
 
 ```lua
 if not exports.fw_admin:IsAdmin(source) then
@@ -139,17 +139,17 @@ TriggerClientEvent('fw_admin:openMenu', source)
 
 ### fw_admin:openMenu
 
-Networked, server to the player's game. Opens the admin menu for that player. Their game shows "The menu is not running." in the log instead if `fw_menu` is not started.
+Networked, server to the player's game. Opens the admin screen for that player. Their game shows "The admin screen is not running." in the log instead if that screen has not loaded.
 
 ```lua
 --- Networked. Trigger this from the server once you have already checked IsAdmin.
----@param source integer the player to open the menu for
+---@param source integer the player to open the screen for
 TriggerClientEvent('fw_admin:openMenu', source)
 ```
 
 ### fw_admin:log
 
-Networked, server to that player's game. The menu writes the same line in the server window and in their F8 log. `level` is `info`, `warn`, or `error`.
+Networked, server to that player's game. The screen writes the same line in the server window and in their F8 log. When the screen is open, that line is also shown under the panel. `level` is `info`, `warn`, or `error`.
 
 ```lua
 --- Networked. Sent by fw_admin with a line for that player's F8 log.
@@ -158,7 +158,7 @@ Networked, server to that player's game. The menu writes the same line in the se
 TriggerClientEvent('fw_admin:log', source, message, level)
 ```
 
-### Asks from the menu
+### Asks from the screen
 
 Networked, the player's game to the server. `target` is the other player's number for this visit. The server reads where people are standing itself. Send back cannot be aimed at a spot the game invented.
 
@@ -186,7 +186,7 @@ Networked, the player's game to the server. `target` is the other player's numbe
 | `fw_admin:copyCoords` | `fw.admin` | `kind`: `xyz`, `vector3`, `vector4`, or `heading`. |
 
 ```lua
---- Networked. Sent by the admin menu. The server ignores it unless that player may do it.
+--- Networked. Sent by the admin screen. The server ignores it unless that player may do it.
 ---@param target integer
 TriggerServerEvent('fw_admin:goTo', target)
 ```
@@ -207,7 +207,7 @@ TriggerServerEvent('fw_admin:self', tool, force)
 
 ### Replies to the player's game
 
-Networked, server to one player. The menu sends these after the check. Another script should not trigger them. If you need to move, give, or ban, do that in your own script with your own check.
+Networked, server to one player. The screen sends these after the check. Another script should not trigger them. If you need to move, give, or ban, do that in your own script with your own check.
 
 | Event | Who receives it | Arguments |
 | --- | --- | --- |
@@ -232,10 +232,10 @@ TriggerClientEvent('fw_admin:doMove', source, x, y, z, heading)
 
 ### fw_admin:teleportWaypoint
 
-Networked, player's game to the server. Asks to teleport that player to their own map waypoint. The server ignores it unless `IsAdmin` is yes for whoever sent it. The admin menu sends this itself. `/tpm` checks `fw.admin` and then does the same move.
+Networked, player's game to the server. Asks to teleport that player to their own map waypoint. The server ignores it unless `IsAdmin` is yes for whoever sent it. The admin screen sends this itself. `/tpm` checks `fw.admin` and then does the same move.
 
 ```lua
---- Networked. Sent by the admin menu. The server ignores it unless IsAdmin is yes for the sender.
+--- Networked. Sent by the admin screen. The server ignores it unless IsAdmin is yes for the sender.
 TriggerServerEvent('fw_admin:teleportWaypoint')
 ```
 
