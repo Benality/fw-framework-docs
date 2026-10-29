@@ -5,6 +5,8 @@ description: "The character menu. Players use it to make a character and to play
 
 The character menu. Players use it to make a character and to play one. Create and read characters with [fw_characters](/fw-characters) — that is the page to build on. This page exists for two reasons: to show where the menu stores things on the character, and to document the handful of calls and messages this menu genuinely exposes for another script to use (pausing appearance updates while a player is shapeshifted, sharing a face with nearby players, and a couple of admin commands).
 
+The menu itself is Murphy's character creator and barber, used here under its own license — see [Scope](/#scope) on the overview page.
+
 `Config.framework` in `shared/config.lua` must stay `fw`. Anything else and character select never answers.
 
 The number of characters an account can create is `characterSlots` on the account, not `Config.Slots` in this menu. The menu sends `Config.Slots` to the player's game only as a fallback, for the moment before the server has answered.
