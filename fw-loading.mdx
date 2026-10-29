@@ -127,6 +127,8 @@ local waitMs = exports.fw_loading:MaxWaitMs()
 
 The cover listens for these. It does not send them. They are documented on the resource that sends them.
 
-- [fw_clothing:applied](/fw-clothing#fw_clothingapplied) — the clothes are on, or there were none.
-- [fw_creator:appearanceReady](/fw-creator#messages-the-menu-uses) — the cover asks for the weapon kit.
+- [fw_creator:bodyReady](/fw-creator#messages-the-menu-uses) — the saved body is on the ped. The cover waits for this first.
+- [fw_clothing:applied](/fw-clothing#fw_clothingapplied) — the clothes are on, or there were none. `fw_creator:bodyBare` means the same thing.
+- [fw_creator:barberReady](/fw-creator#messages-the-menu-uses) — the hair and makeup are on, or there were none.
+- [fw_creator:appearanceReady](/fw-creator#messages-the-menu-uses) — the cover asks for the weapon kit, after the body, the clothes, and the hair.
 - [fw_weapons:kitApplied](/fw-weapons#fw_weaponskitapplied) — the kit is on the current ped. The cover comes down after this, or when the wait runs out.
