@@ -1,4 +1,7 @@
-# fw_admin
+---
+title: "fw_admin"
+description: "Runs on the server. Ask this before you do something only an admin should do."
+---
 
 Runs on the server. Ask this before you do something only an admin should do.
 
@@ -80,7 +83,7 @@ end
 | `admin` (no slash) | Server window | Prints that `/admin` is for a player in the game. It does nothing else. |
 | `tpm` | Server window | Prints that `/tpm` is for a player in the game. It does nothing else. |
 
-`/admin` opens a menu from [fw_menu](fw-menu.md). It needs `fw.admin`. A smaller permission such as `fw.admin.kick` does not open it.
+`/admin` opens a menu from [fw_menu](/fw-menu). It needs `fw.admin`. A smaller permission such as `fw.admin.kick` does not open it.
 
 The first page has three entries.
 
@@ -90,9 +93,9 @@ The first page has three entries.
 
 Go back on a page returns to the page that opened it.
 
-Giving an item uses [fw_inventory](fw-inventory.md) `AddItem`. The count is from 1 to 500. Giving dollars uses [fw_money](fw-money.md) `AddCash`. The amount is from 1 to 100000. Both land in the satchel of the character they are playing. If that character is not selected, or the satchel has no room, nothing is given and the log says why.
+Giving an item uses [fw_inventory](/fw-inventory) `AddItem`. The count is from 1 to 500. Giving dollars uses [fw_money](/fw-money) `AddCash`. The amount is from 1 to 100000. Both land in the satchel of the character they are playing. If that character is not selected, or the satchel has no room, nothing is given and the log says why.
 
-A ban asks for the hours. `0` does not expire. The longest timed ban from the menu is 8760 hours, which is one year. The menu saves it with [fw_core](fw-core.md) `SetBan`, then removes them from the server. Unban asks for the license, including `license:` at the front. A hex id on its own is treated as a Rockstar license.
+A ban asks for the hours. `0` does not expire. The longest timed ban from the menu is 8760 hours, which is one year. The menu saves it with [fw_core](/fw-core) `SetBan`, then removes them from the server. Unban asks for the license, including `license:` at the front. A hex id on its own is treated as a Rockstar license.
 
 Bring remembers where that person was standing, on the server. Send back uses that spot. A second bring keeps the first spot. Guarma remembers where you were standing the same way. If there is no remembered spot, back from Guarma uses a mainland spot near Saint Denis.
 

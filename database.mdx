@@ -1,4 +1,7 @@
-# Database
+---
+title: "Database"
+description: "Do not read or write these tables from your script. Use the call on the matching page. This page tells you which id to save on a table you own, and..."
+---
 
 Do not read or write these tables from your script. Use the call on the matching page. This page tells you which id to save on a table you own, and what the columns mean when a call gives you a snapshot.
 
@@ -54,11 +57,11 @@ CREATE TABLE IF NOT EXISTS `fw_players` (
 
 **Relationships**: `ON DELETE CASCADE` from `fw_characters.player_id` — deleting an account deletes its characters.
 
-**Calls**: [`fw_core`](fw-core.md). The fields you get back are the [account](fw-core.md#account).
+**Calls**: [`fw_core`](/fw-core). The fields you get back are the [account](/fw-core#account).
 
 ## `fw_characters`
 
-Created by `fw_characters`. One row per character. Do not change this table from another script. Use the calls on [fw_characters](fw-characters.md).
+Created by `fw_characters`. One row per character. Do not change this table from another script. Use the calls on [fw_characters](/fw-characters).
 
 **Schema**
 
@@ -108,8 +111,8 @@ CREATE TABLE IF NOT EXISTS `fw_characters` (
 | `birth_date` | `birthDate` | `YYYY-MM-DD` or NULL. Year must sit in `FwCharactersConfig` (1800–1899). |
 | `description` | `description` | Lore, up to 2000 characters. Always sent on insert, including `''`. |
 | `appearance` | `appearance` | Body and face JSON. NULL until `SetAppearance`. The creator stores the menu ped-data table here. |
-| `clothing` | `clothing` | Worn clothes, outfits, and wearable state. NULL until `fw_clothing` saves it. The shape is on [fw_clothing](fw-clothing.md). |
-| `barber` | `barber` | Hair, overlays, and presets. The shape is on [fw_creator](fw-creator.md). |
+| `clothing` | `clothing` | Worn clothes, outfits, and wearable state. NULL until `fw_clothing` saves it. The shape is on [fw_clothing](/fw-clothing). |
+| `barber` | `barber` | Hair, overlays, and presets. The shape is on [fw_creator](/fw-creator). |
 | `x`, `y`, `z` | `x`, `y`, `z` | Last position. Insert uses `defaultSpawn`; the creator then saves the chosen spawn. While the character is online, a newer sample lives in the `fw_characters` server cache and is what a reconnect reads until the cache is flushed into these columns. |
 | `heading` | `heading` | Degrees. |
 | `health` | `health` | 0–65535. Default 600. |
@@ -123,7 +126,7 @@ CREATE TABLE IF NOT EXISTS `fw_characters` (
 
 **Write paths**: `SaveState` updates position and health only — it never rewrites `appearance`, `clothing`, or `barber`. Each of those documents must encode to at most 262144 bytes. `GetCharacters` never selects the JSON columns; it selects `(appearance IS NOT NULL) AS has_appearance` (and the same for clothing/barber) and returns those as `hasAppearance`, `hasClothing`, `hasBarber`.
 
-**Calls**: [`fw_characters`](fw-characters.md). The fields you get back are the [character record](fw-characters.md#character-record).
+**Calls**: [`fw_characters`](/fw-characters). The fields you get back are the [character record](/fw-characters#character-record).
 
 ## A table of your own
 
@@ -140,7 +143,7 @@ The character id to use is the one from `CreateCharacter`, `GetActiveCharacter`,
 
 ## `fw_inventory`
 
-Created by `fw_inventory` from `resources/[framework]/fw_inventory/sql/inventory.sql`. One row per character. The grid document and the item fields are in [fw_inventory](fw-inventory.md).
+Created by `fw_inventory` from `resources/[framework]/fw_inventory/sql/inventory.sql`. One row per character. The grid document and the item fields are in [fw_inventory](/fw-inventory).
 
 ```sql
 CREATE TABLE IF NOT EXISTS `fw_inventory` (
@@ -194,11 +197,11 @@ CREATE TABLE IF NOT EXISTS `fw_items` (
 | `kit` | Set only on a weapon item. Which equip slot it fills: `lasso`, `binoculars`, `lantern`, `bow`, `revolver`, `pistol`, `longarm`, `melee`, or `fishingrod`. Empty string on a non-weapon item. |
 | `hash` | Set only on a weapon item. The game's weapon name, such as `WEAPON_REVOLVER_CATTLEMAN`. Empty string on a non-weapon item. |
 
-An older version of this table had an `image` column instead of `kit` and `hash`. That column is dropped on start if it is still there. The picture is `fw_inventory/images/<name>.png`. An item file can set `image` to another name in that folder, such as `bill_stack_single` for dollars. That name stays on the item file. It is not a column. `rarity` and `mission` stay on the item file too, and they are copied back when the files load. Files in `items/` are written into this table on start and on `fw_items_reload`. A row inserted for an admin tool stays until it is deleted. The field list and the insert example are in [fw_inventory](fw-inventory.md). The `container` block on a pouch is not a column. It stays on the item file and is merged back onto the catalog when the files load.
+An older version of this table had an `image` column instead of `kit` and `hash`. That column is dropped on start if it is still there. The picture is `fw_inventory/images/<name>.png`. An item file can set `image` to another name in that folder, such as `bill_stack_single` for dollars. That name stays on the item file. It is not a column. `rarity` and `mission` stay on the item file too, and they are copied back when the files load. Files in `items/` are written into this table on start and on `fw_items_reload`. A row inserted for an admin tool stays until it is deleted. The field list and the insert example are in [fw_inventory](/fw-inventory). The `container` block on a pouch is not a column. It stays on the item file and is merged back onto the catalog when the files load.
 
 ## `fw_storage`
 
-Created by `fw_inventory` from `resources/[framework]/fw_inventory/sql/storage.sql`. One row per chest, wagon, horse, or container item. The id is chosen by the caller. Opening and moving items is in [fw_inventory](fw-inventory.md).
+Created by `fw_inventory` from `resources/[framework]/fw_inventory/sql/storage.sql`. One row per chest, wagon, horse, or container item. The id is chosen by the caller. Opening and moving items is in [fw_inventory](/fw-inventory).
 
 ```sql
 CREATE TABLE IF NOT EXISTS `fw_storage` (
@@ -219,7 +222,7 @@ CREATE TABLE IF NOT EXISTS `fw_storage` (
 
 ## `fw_currency`
 
-Created by `fw_money` from `resources/[framework]/fw_money/sql/currency.sql`. One row per character and currency name. This is the dollars that character is carrying in the satchel. Do not write this table from your script. Use [fw_money](fw-money.md).
+Created by `fw_money` from `resources/[framework]/fw_money/sql/currency.sql`. One row per character and currency name. This is the dollars that character is carrying in the satchel. Do not write this table from your script. Use [fw_money](/fw-money).
 
 ```sql
 CREATE TABLE IF NOT EXISTS `fw_currency` (
@@ -260,7 +263,7 @@ CREATE TABLE IF NOT EXISTS `fw_storage_currency` (
 
 ## `fw_weapons`
 
-Created by `fw_weapons` from `resources/[framework]/fw_weapons/sql/weapons.sql`. One row per character. Do not write this table from your script. Read and change the kit with [fw_weapons](fw-weapons.md).
+Created by `fw_weapons` from `resources/[framework]/fw_weapons/sql/weapons.sql`. One row per character. Do not write this table from your script. Read and change the kit with [fw_weapons](/fw-weapons).
 
 ```sql
 CREATE TABLE IF NOT EXISTS `fw_weapons` (

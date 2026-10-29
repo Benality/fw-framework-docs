@@ -1,4 +1,7 @@
-# fw_inventory
+---
+title: "fw_inventory"
+description: "Runs on the server. Give a player an item, take one away, add a new kind of item, or open a second grid such as a chest or a pouch."
+---
 
 Runs on the server. Give a player an item, take one away, add a new kind of item, or open a second grid such as a chest or a pouch.
 
@@ -55,7 +58,7 @@ To make a chest larger later, register it again with the same name and a bigger 
 
 ### Which items can go in
 
-Every item has a category. The categories are `ammo`, `animals`, `documents`, `food`, `herbs`, `horse`, `medical`, `tools`, `valuables`, `currency`, `weapons`, `materials`, and `container`. A pouch uses `container`. Dollars use `currency`. The balance a shop spends is on [fw_money](fw-money.md).
+Every item has a category. The categories are `ammo`, `animals`, `documents`, `food`, `herbs`, `horse`, `medical`, `tools`, `valuables`, `currency`, `weapons`, `materials`, and `container`. A pouch uses `container`. Dollars use `currency`. The balance a shop spends is on [fw_money](/fw-money).
 
 - Leave `categories` out, and every category is allowed, except weapons when `acceptWeapons` is false.
 - Pass a list, and only those categories can be dragged in. Herbs and tools: `categories = { 'herbs', 'tools' }`.
@@ -312,7 +315,7 @@ Runs on the server. A snapshot of one kind of item, or nothing when that name is
 exports.fw_inventory:GetDefinition(name)
 ```
 
-The copy can include `name`, `label`, `description`, `width`, `height`, `stack`, `weapon`, `category`, `rotate`, `kit`, `hash`, `container`, `currency`, `image`, `chamber`, `rounds`, `ammo`, `rarity`, and `mission`. `image` is the picture file in `fw_inventory/images`, without `.png`, when it is not the item name. `currency` is set on a pile of money, such as `cash` for dollars. Shops spend that balance through [fw_money](fw-money.md). `category` is the kind of item, such as `food` or `tools`. `chamber` is which rounds a gun takes, such as `revolver` or `rifle`. `rounds` is how many that gun holds. `ammo` is set on a box or a bundle of arrows. `key` is the game ammo name, such as `AMMO_REVOLVER`. `fits` is the same word as the gun's `chamber`. `max` is the most of that kind the character can hold. `refill` is how many one use adds. `instant` is yes for arrows, which apply as soon as they are used. `rarity` is `uncommon`, `rare`, `epic`, or `legendary` when the item has a colored frame. It is left out for an ordinary item. `mission` is yes when that item has to stay in the satchel.
+The copy can include `name`, `label`, `description`, `width`, `height`, `stack`, `weapon`, `category`, `rotate`, `kit`, `hash`, `container`, `currency`, `image`, `chamber`, `rounds`, `ammo`, `rarity`, and `mission`. `image` is the picture file in `fw_inventory/images`, without `.png`, when it is not the item name. `currency` is set on a pile of money, such as `cash` for dollars. Shops spend that balance through [fw_money](/fw-money). `category` is the kind of item, such as `food` or `tools`. `chamber` is which rounds a gun takes, such as `revolver` or `rifle`. `rounds` is how many that gun holds. `ammo` is set on a box or a bundle of arrows. `key` is the game ammo name, such as `AMMO_REVOLVER`. `fits` is the same word as the gun's `chamber`. `max` is the most of that kind the character can hold. `refill` is how many one use adds. `instant` is yes for arrows, which apply as soon as they are used. `rarity` is `uncommon`, `rare`, `epic`, or `legendary` when the item has a colored frame. It is left out for an ordinary item. `mission` is yes when that item has to stay in the satchel.
 
 ```lua
 local def = exports.fw_inventory:GetDefinition('herb_pouch')
@@ -367,7 +370,7 @@ if not ok then
 end
 ```
 
-The player uses it from the satchel. The rounds stay on the character when they log out, and they come back when that character is selected again. Draw the gun and press reload. That is on the [weapons](fw-weapons.md) page.
+The player uses it from the satchel. The rounds stay on the character when they log out, and they come back when that character is selected again. Draw the gun and press reload. That is on the [weapons](/fw-weapons) page.
 
 ```lua
 local ok, err = exports.fw_inventory:AddItem(source, 'rope', 1)
@@ -838,7 +841,7 @@ if not ok then
 end
 ```
 
-[fw_trade](fw-trade.md) is the screen that locks two offers and then calls this.
+[fw_trade](/fw-trade) is the screen that locks two offers and then calls this.
 
 ## Messages
 
@@ -856,7 +859,7 @@ AddEventHandler('fw_inventory:ready', function()
 end)
 ```
 
-`fw_characters:selected` loads or creates that character's bag. `fw_characters:cleared` saves it and forgets it. Both are messages on the server, described on [fw_characters](fw-characters.md).
+`fw_characters:selected` loads or creates that character's bag. `fw_characters:cleared` saves it and forgets it. Both are messages on the server, described on [fw_characters](/fw-characters).
 
 ### fw_inventory:changed
 
@@ -903,7 +906,7 @@ end)
 
 ### What the server sends the bag screen
 
-These are networked (`RegisterNetEvent` on the player's game, sent from the server with `TriggerClientEvent`). The screen in [fw_satchel](fw-satchel.md) listens for these. A script with its own bag screen can listen too. Giving an item from your own script is still `AddItem`, not one of these.
+These are networked (`RegisterNetEvent` on the player's game, sent from the server with `TriggerClientEvent`). The screen in [fw_satchel](/fw-satchel) listens for these. A script with its own bag screen can listen too. Giving an item from your own script is still `AddItem`, not one of these.
 
 | Event | Parameters | What it carries |
 | --- | --- | --- |
@@ -932,7 +935,7 @@ end)
 
 ## State bags
 
-This resource does not set one. The bag screen reads `fwInventoryBusy` from [fw_menu](fw-menu.md) when a menu wants the bag kept closed.
+This resource does not set one. The bag screen reads `fwInventoryBusy` from [fw_menu](/fw-menu) when a menu wants the bag kept closed.
 
 ## Item file
 
@@ -1068,10 +1071,10 @@ herb_pouch = {
 
 ## Satchel screen
 
-`fw_satchel` opens with B or `/satchel`. `B`, Escape, Backspace, or Tab closes it and releases any open storage. The gunbelt closes with the bag. A trade uses that same screen. Those same keys decline the trade. That is on [fw_trade](fw-trade.md).
+`fw_satchel` opens with B or `/satchel`. `B`, Escape, Backspace, or Tab closes it and releases any open storage. The gunbelt closes with the bag. A trade uses that same screen. Those same keys decline the trade. That is on [fw_trade](/fw-trade).
 
 Drag a placement. The cells under it turn green when it fits and red when it does not. R turns it when `rotate` is true. Dropping a stack on the same item, with the same metadata and room left in `stack`, combines them. A weapon never combines.
 
-Right-click a satchel placement for Use, Give, or Discard. A pile of more than one also offers Split in half and Split amount. Half cuts the pile in two, and an odd count leaves the extra one on the original pile. Amount is a slider from 1 up to one less than the pile. Either cut lands on an empty cell of its own. A pouch also has Drop. Dollars have no Discard. Discard throws the whole stack away. Drop sets that pouch on the ground. Give hands that whole stack to a nearby player. That is on [fw_trade](fw-trade.md). Double-click uses it. If nothing registered a use callback, the line under the grid says it cannot be used.
+Right-click a satchel placement for Use, Give, or Discard. A pile of more than one also offers Split in half and Split amount. Half cuts the pile in two, and an odd count leaves the extra one on the original pile. Amount is a slider from 1 up to one less than the pile. Either cut lands on an empty cell of its own. A pouch also has Drop. Dollars have no Discard. Discard throws the whole stack away. Drop sets that pouch on the ground. Give hands that whole stack to a nearby player. That is on [fw_trade](/fw-trade). Double-click uses it. If nothing registered a use callback, the line under the grid says it cannot be used.
 
 A storage open adds a second panel to the left of the satchel, only as large as that storage's grid. The satchel and the weapon loadout stay where they are. When the loadout is open, the storage panel sits to the left of it. Close on that panel hides it and leaves the satchel open. Double-click on the storage grid is refused until the item is back in the satchel.

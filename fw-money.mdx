@@ -1,4 +1,7 @@
-# fw_money
+---
+title: "fw_money"
+description: "Runs on the server. Read how many dollars a player is carrying, give them dollars, or take dollars away."
+---
 
 Runs on the server. Read how many dollars a player is carrying, give them dollars, or take dollars away.
 
@@ -201,7 +204,7 @@ fw_cash 1
 
 A counter does not call these. It takes the cash pile on Sell. The satchel uses these when a pile moves between a character and a storage. The amount is the new balance, including 0.
 
-`source` is not used here. `characterId` is `fw_characters.id`. `storageId` is the storage id from [fw_inventory](fw-inventory.md), such as `item:` plus a container id, or a chest id.
+`source` is not used here. `characterId` is `fw_characters.id`. `storageId` is the storage id from [fw_inventory](/fw-inventory), such as `item:` plus a container id, or a chest id.
 
 ```lua
 --- The character balance, without creating a row.

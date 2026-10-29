@@ -1,0 +1,66 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "willow",
+  "name": "Project Territory",
+  "description": "API reference for the Project Territory framework. Each export includes the arguments, the rejection cases, and an example.",
+  "colors": {
+    "primary": "#d1b287",
+    "light": "#e5cda0",
+    "dark": "#d1b287"
+  },
+  "logo": {
+    "light": "/images/territory-crest.webp",
+    "dark": "/images/territory-crest.webp"
+  },
+  "favicon": "/images/territory-crest.webp",
+  "appearance": {
+    "default": "dark",
+    "strict": true
+  },
+  "fonts": {
+    "heading": {
+      "family": "Rye"
+    }
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Reference",
+        "groups": [
+          {
+            "group": "Reference",
+            "pages": [
+              "index",
+              "fw-core",
+              "fw-menu",
+              "fw-guide",
+              "fw-admin",
+              "fw-characters",
+              "fw-creator",
+              "fw-clothing",
+              "fw-inventory",
+              "fw-money",
+              "fw-weapons",
+              "fw-satchel",
+              "fw-stores",
+              "fw-trade",
+              "vorp-lib",
+              "database"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Tutorials",
+        "groups": [
+          {
+            "group": "Tutorials",
+            "pages": [
+              "tutorial-crafting"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

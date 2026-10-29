@@ -1,10 +1,13 @@
-# fw_clothing
+---
+title: "fw_clothing"
+description: "Some calls run on the server. Most run in the player's game. Read the clothes a character is wearing, replace them, or toggle a piece on their body...."
+---
 
-Some calls run on the server. Most run in the player's game. Read the clothes a character is wearing, replace them, or toggle a piece on their body. The saved clothes live on the character. This resource writes them with `SetClothing` from [fw_characters](fw-characters.md).
+Some calls run on the server. Most run in the player's game. Read the clothes a character is wearing, replace them, or toggle a piece on their body. The saved clothes live on the character. This resource writes them with `SetClothing` from [fw_characters](/fw-characters).
 
 The shop still uses the old `murphy_clothing` and `murphy_clothes` event names. A new script should use the calls on this page.
 
-Cash lives on [fw_money](fw-money.md). This shop still does not take any dollars. A later change can call `RemoveCash`. Job-locked categories stay hidden because there is no job.
+Cash lives on [fw_money](/fw-money). This shop still does not take any dollars. A later change can call `RemoveCash`. Job-locked categories stay hidden because there is no job.
 
 `fw_creator` must keep `Config.murphy_clothing` true.
 
@@ -729,7 +732,7 @@ A new script should use the calls above. These are listed so you can find the na
 
 ## State bags
 
-This resource does not set one. The character id is `fwCharacterId` on [fw_characters](fw-characters.md).
+This resource does not set one. The character id is `fwCharacterId` on [fw_characters](/fw-characters).
 
 ## Commands
 
@@ -739,6 +742,6 @@ This resource does not set one. The character id is `fwCharacterId` on [fw_chara
 | `/undress` | The player | Takes off every clothing piece except the body itself (hair, beard, skin, and so on stay). |
 | `/getnaked` | The player | Same switch as `ToggleNaked(true)` — strips to the base body, or puts the saved clothes back, with a small notice either way. An optional keybind does the same thing if the server sets `Config.ClothesManagement.GetNakedKeybind`. |
 | `/toggleclothing <category>` | The player | Same toggle as `ToggleClothingComponent`. |
-| `/ClothesManagement` | A player who has `fw.admin` (see [fw_admin](fw-admin.md)) | Opens the wearable/body management menu. The name comes from `Config.ClothesManagement.Command`; an optional keybind (`Config.ClothesManagement.Keybind`) opens the same menu. |
+| `/ClothesManagement` | A player who has `fw.admin` (see [fw_admin](/fw-admin)) | Opens the wearable/body management menu. The name comes from `Config.ClothesManagement.Command`; an optional keybind (`Config.ClothesManagement.Keybind`) opens the same menu. |
 | Whatever name the server sets in `Config.MenuCommand` | A player who has `fw.admin` | Opens the outfit shop list. There is no command here unless the server sets this config value — it is nil by default. |
 | `/temptest` | The player | Prints the ambient temperature and this player's warm/cold item counts and protection levels to F8. A debug command, not part of the normal flow. |

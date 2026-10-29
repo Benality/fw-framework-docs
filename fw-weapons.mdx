@@ -1,4 +1,7 @@
-# fw_weapons
+---
+title: "fw_weapons"
+description: "Runs on the server and in the player's game. This is the weapon kit: the guns and tools the character has equipped, separate from the bag."
+---
 
 Runs on the server and in the player's game. This is the weapon kit: the guns and tools the character has equipped, separate from the bag.
 
@@ -6,7 +9,7 @@ The bag still holds the item. Equipping takes it out of the bag and puts it on a
 
 The slots are `revolver_1` (right revolver), `revolver_2` (left revolver), `longarm`, `bow`, `lasso`, `knife`, `lantern`, `binoculars`, and `fishingrod` (fishing pole).
 
-A sidearm needs a gunbelt, and so does the knife. The left revolver also needs the offhand holster, and the right revolver has to be filled first. Dragging a gun onto the empty left slot shows `Equip the right revolver first.` Taking the right revolver off while the left one is still there shows `Take the left revolver off first.` `fw_weapons` reads the belt and holster from [fw_clothing](fw-clothing.md). If the gunbelt comes off, the right revolver, the left revolver, and the knife all go back to the bag. If just the offhand holster comes off, only the left revolver goes back. If the bag is full, the player sees `Make room in the satchel first.`
+A sidearm needs a gunbelt, and so does the knife. The left revolver also needs the offhand holster, and the right revolver has to be filled first. Dragging a gun onto the empty left slot shows `Equip the right revolver first.` Taking the right revolver off while the left one is still there shows `Take the left revolver off first.` `fw_weapons` reads the belt and holster from [fw_clothing](/fw-clothing). If the gunbelt comes off, the right revolver, the left revolver, and the knife all go back to the bag. If just the offhand holster comes off, only the left revolver goes back. If the bag is full, the player sees `Make room in the satchel first.`
 
 `source` on this page is the player's number for this visit. Nothing is written as `nil`.
 
@@ -161,7 +164,7 @@ This is sent whenever `fw_weapons:wear`, `fw_weapons:equip`, `fw_weapons:unequip
 
 Networked event, sent from the player's game to the server with `TriggerServerEvent` and heard there with `RegisterNetEvent`. `fw_weapons` sends it itself when the gunbelt or the offhand holster changes. `belt` and `offhand` are yes or no.
 
-Another script should not send this. Change the clothes with [fw_clothing](fw-clothing.md). The kit follows.
+Another script should not send this. Change the clothes with [fw_clothing](/fw-clothing). The kit follows.
 
 ```lua
 ---@param belt boolean
@@ -173,7 +176,7 @@ TriggerServerEvent('fw_weapons:wear', belt, offhand)
 
 Networked event, sent from the player's game to the server with `TriggerServerEvent` and heard there with `RegisterNetEvent`. The satchel sends this when the player drops a bag item onto a loadout slot.
 
-`placementId` is the `id` from [GetItems](fw-inventory.md). `slotId` is one of the slot names above. The item's `kit` field has to match that slot. A revolver goes on `revolver_1` (the right hip) or `revolver_2` (the left hip). The right slot has to already hold a gun before the left slot will take one. `revolver_1`, `revolver_2`, and `knife` all need a gunbelt worn first, and `revolver_2` also needs the offhand holster. A rifle goes on `longarm`. A fishing pole goes on `fishingrod`. The item name for the shipped pole is `weapon_fishingrod`, and its `kit` is `fishingrod`.
+`placementId` is the `id` from [GetItems](/fw-inventory). `slotId` is one of the slot names above. The item's `kit` field has to match that slot. A revolver goes on `revolver_1` (the right hip) or `revolver_2` (the left hip). The right slot has to already hold a gun before the left slot will take one. `revolver_1`, `revolver_2`, and `knife` all need a gunbelt worn first, and `revolver_2` also needs the offhand holster. A rifle goes on `longarm`. A fishing pole goes on `fishingrod`. The item name for the shipped pole is `weapon_fishingrod`, and its `kit` is `fishingrod`.
 
 If it fails, the player's game gets `fw_weapons:rejected` with one of the reasons listed above.
 
@@ -203,7 +206,7 @@ RegisterNetEvent('my_camp:equip', function(placementId)
 end)
 ```
 
-Giving a weapon the player does not already hold is `AddItem` on [fw_inventory](fw-inventory.md). They equip it from the loadout after that.
+Giving a weapon the player does not already hold is `AddItem` on [fw_inventory](/fw-inventory). They equip it from the loadout after that.
 
 ### fw_weapons:unequip
 
@@ -255,7 +258,7 @@ TriggerServerEvent('fw_weapons:unload', 'AMMO_REVOLVER', false)
 
 `ammoType` is the game ammo name, such as `AMMO_REVOLVER`. `empty` is yes only for the Empty choice. A drag sends no. A box comes back when a full box of that kind is on the character and the bag can hold it. Those rounds then come off. Empty clears a short remainder and gives nothing.
 
-A shop gives a box with `AddItem`, on the [inventory](fw-inventory.md) page. One revolver box adds 12 rounds, up to 200. The player uses the box, draws the gun, and presses reload.
+A shop gives a box with `AddItem`, on the [inventory](/fw-inventory) page. One revolver box adds 12 rounds, up to 200. The player uses the box, draws the gun, and presses reload.
 
 There is no call on this page for loading a gun by hand.
 

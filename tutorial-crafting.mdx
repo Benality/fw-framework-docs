@@ -1,12 +1,15 @@
-# Tutorial: a crafting resource
+---
+title: "Tutorial: a crafting resource"
+description: "This builds one resource, fw_crafting, from nothing. A player types /craft and, if they are carrying 3 Plant Fiber, it becomes 1 Rope. One recipe, kept..."
+---
 
 This builds one resource, `fw_crafting`, from nothing. A player types `/craft` and, if they are carrying 3 Plant Fiber, it becomes 1 Rope. One recipe, kept small on purpose. The patterns here are the same ones you would use for ten recipes, or for giving items from any other kind of resource.
 
-Read [Write a script](README.md#write-a-script) first if you have not. This tutorial is that pattern, with a real feature built on top of it.
+Read [Write a script](/#write-a-script) first if you have not. This tutorial is that pattern, with a real feature built on top of it.
 
 ## What it needs running first
 
-`fw_crafting` calls [fw_core](fw-core.md), [fw_characters](fw-characters.md), and [fw_inventory](fw-inventory.md), and uses [vorp_lib](vorp-lib.md) for logging. All four have to already be in `server.cfg` above it:
+`fw_crafting` calls [fw_core](/fw-core), [fw_characters](/fw-characters), and [fw_inventory](/fw-inventory), and uses [vorp_lib](/vorp-lib) for logging. All four have to already be in `server.cfg` above it:
 
 ```
 ensure vorp_lib
@@ -66,7 +69,7 @@ There is no `fw_crafting` database table. The recipe is just logic; the satchel 
 
 ## Add the ingredient
 
-Rope already exists — it is in `fw_inventory`'s own item list. Plant Fiber does not, so `fw_crafting` registers it with [RegisterItem](fw-inventory.md#registeritem) the first time it starts:
+Rope already exists — it is in `fw_inventory`'s own item list. Plant Fiber does not, so `fw_crafting` registers it with [RegisterItem](/fw-inventory#registeritem) the first time it starts:
 
 ```lua
 local itemOk, itemErr = exports.fw_inventory:RegisterItem({
@@ -341,7 +344,7 @@ RegisterNetEvent('fw_crafting:result', function(ok, message)
 end)
 ```
 
-This is the same `say` helper [fw_trade](fw-trade.md) uses for its own rejections. There is no on-screen toast in this framework yet — feedback is a line in the player's own F8 console. Match that instead of inventing a second way to talk to the player.
+This is the same `say` helper [fw_trade](/fw-trade) uses for its own rejections. There is no on-screen toast in this framework yet — feedback is a line in the player's own F8 console. Match that instead of inventing a second way to talk to the player.
 
 `args[1]` lets `/craft rope` name a recipe. With one recipe it is not load-bearing, but it means adding a second recipe to `RECIPES` does not also require a second command.
 
@@ -383,4 +386,4 @@ The console (F8) should print `Crafted 1 Rope.`, and the satchel should show 7 P
 - More recipes are more entries in `RECIPES`. The crafting logic does not change.
 - Right now any player can type `/craft` from anywhere. A real crafting station would check distance to a prop, or an animation finishing, before calling `craft`. That check belongs on the server, next to the `RECIPES` lookup — not on the client, which can only ever be a suggestion.
 - A player crafting as fast as they can press Enter is not covered here. A small per-player cooldown, checked in the same place `ready` is checked, is the next thing to add before this goes near real players.
-- If the crafted item should do something when used — like `dried_meat` does in [fw_inventory](fw-inventory.md#registerusable) — register that separately with `RegisterUsable`. Crafting an item and using an item are two different calls.
+- If the crafted item should do something when used — like `dried_meat` does in [fw_inventory](/fw-inventory#registerusable) — register that separately with `RegisterUsable`. Crafting an item and using an item are two different calls.

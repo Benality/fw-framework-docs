@@ -1,8 +1,11 @@
-# fw_trade
+---
+title: "fw_trade"
+description: "Runs on the server and in the player's game. Two players trade what is in their satchels. The bag screen from fw_satchel draws it. This page is how a..."
+---
 
-Runs on the server and in the player's game. Two players trade what is in their satchels. The bag screen from [fw_satchel](fw-satchel.md) draws it. This page is how a trade starts, how the two offers lock, and how the items move.
+Runs on the server and in the player's game. Two players trade what is in their satchels. The bag screen from [fw_satchel](/fw-satchel) draws it. This page is how a trade starts, how the two offers lock, and how the items move.
 
-Money is not part of a trade. A gun on the belt is not in the satchel, so it is not part of a trade either. Put it in the bag first. That is on [fw_weapons](fw-weapons.md).
+Money is not part of a trade. A gun on the belt is not in the satchel, so it is not part of a trade either. Put it in the bag first. That is on [fw_weapons](/fw-weapons).
 
 ## Starting a trade
 
@@ -93,7 +96,7 @@ if exports.fw_trade:IsInTrade(source) then
 end
 ```
 
-The swap itself is `CommitTrade` on [fw_inventory](fw-inventory.md). `SetHold` on that page is how an offer stays in the satchel until Accept. Another script should not call those to finish a trade of its own unless it is running the same lock rules. This resource already does.
+The swap itself is `CommitTrade` on [fw_inventory](/fw-inventory). `SetHold` on that page is how an offer stays in the satchel until Accept. Another script should not call those to finish a trade of its own unless it is running the same lock rules. This resource already does.
 
 ## Messages
 

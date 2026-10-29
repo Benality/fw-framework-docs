@@ -1,4 +1,7 @@
-# fw_core
+---
+title: "fw_core"
+description: "Runs on the server. This is the account for a player who has joined. Your script reads that account here."
+---
 
 Runs on the server. This is the account for a player who has joined. Your script reads that account here.
 
@@ -17,7 +20,7 @@ The check-in does two jobs:
 - While this server is still on `1`, the call succeeds. Typing `fw_health` in the server window lists your script.
 - If a later update changes the calls so a script written for `1` would break, the first number becomes `2`. Your script then gets a clear line in the server window, telling you to update it, instead of failing in the middle of someone's visit.
 
-The other calls on this page still work if you skip the check-in. Do it anyway, once, after `IsReady` says yes. The example on the [first page](README.md) already does this. Copy that.
+The other calls on this page still work if you skip the check-in. Do it anyway, once, after `IsReady` says yes. The example on the [first page](/) already does this. Copy that.
 
 `GetVersion` and `GetApiVersion` are for looking. A normal script does not call them.
 
@@ -29,7 +32,7 @@ Runs on the server. Ask this before you use anything else on this page.
 
 It stays no until two things are done. `fw_core` has a normal version, such as `1.1.0`, and the player list has been created in the database. If the version is wrong, or the player list cannot be created, the server window shows an error. `IsReady` stays no. People trying to join are turned away.
 
-The server can say `fw_core` has started a moment before this is true. Checking once is too early. Keep checking for about two minutes. The example on the [first page](README.md) does that.
+The server can say `fw_core` has started a moment before this is true. Checking once is too early. Keep checking for about two minutes. The example on the [first page](/) does that.
 
 ```lua
 --- True when other scripts can use fw_core.
@@ -90,7 +93,7 @@ In the lines below, `your-script` stands in for your script's folder name.
 
 | What you get back | When |
 | --- | --- |
-| `fw_core is not ready` | The player list is not ready yet. Keep checking, as on the [first page](README.md). |
+| `fw_core is not ready` | The player list is not ready yet. Keep checking, as on the [first page](/). |
 | `RegisterResource must be called from another resource` | The call came from `fw_core` itself. Put it in your own script. |
 | `your-script: required API version must be a positive integer` | You did not pass a whole number above 0. Pass `1`. |
 | `fw_core API 1 is incompatible with required API 2; your-script needs a newer core` | You asked for `2`, and this server is still on `1`. |
@@ -219,7 +222,7 @@ A ban of one day is `os.time() + (24 * 3600)`. Lift it with `SetBan(license, nil
 | `steam` | Steam id, or nothing. |
 | `discord` | Discord id, or nothing. |
 | `name` | The name they joined with. |
-| `role` | A label on the account. A new account uses `account.defaultRole` in the config, which starts as `user`. This does not make them an admin. Use [fw_admin](fw-admin.md). |
+| `role` | A label on the account. A new account uses `account.defaultRole` in the config, which starts as `user`. This does not make them an admin. Use [fw_admin](/fw-admin). |
 | `characterSlots` | How many characters this account may create. A new account uses `account.defaultCharacterSlots`, which starts at 5. An account that already has a number keeps it. |
 | `warnings` | A stored count. Nothing happens because of it. |
 | `banned` | Always false here. A banned license never finishes joining. |
@@ -296,7 +299,7 @@ The settings are in `resources/[framework]/fw_core/shared/config.lua`, on `FwCor
 
 `account.defaultCharacterSlots` is how many characters a new account may create. It starts at 5. An account that already has a number in the database keeps that number.
 
-`account.defaultRole` is the label stored on a new account. It starts at `user`. It does not grant staff. Staff is [fw_admin](fw-admin.md).
+`account.defaultRole` is the label stored on a new account. It starts at `user`. It does not grant staff. Staff is [fw_admin](/fw-admin).
 
 `ban.permanent` is the sentence for a ban that does not expire. `ban.until` is the sentence for a ban that ends, and `%s` in that sentence is the time. `ban.dateFormat` is the pattern for that time. The clock is UTC. The pattern starts at `%Y-%m-%d %H:%M`.
 
