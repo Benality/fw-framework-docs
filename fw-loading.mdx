@@ -8,9 +8,9 @@ Runs in the player's game. Two covers:
 - From the moment someone connects until the character list is on screen. That page starts with them. It is not a second card stacked on the game's own screen.
 - After they pick a character, or finish creating one, until the body, clothes, and weapons are on.
 
-Leave `FWConfig.video` empty in `shared/config.lua`. The connect page then shows the server name, their name, and the three lines `gamemode`, `title`, and `subtitle`.
+Leave `FWConfig.cutscenes` empty to keep the loading card. A name in that list, such as `Cutscene_MpIntro`, plays that game cutscene under the words. Several names pick one for the visit. The revolver-cylinder prompt runs with it, and the page draws a ring in the same corner because the page sits over the game prompt. The words stay on top.
 
-Set `FWConfig.video` to a file in this resource, such as `html/intro.webm`, to play that file behind those words. A missing file is written once in the server window, and the words stay. `minHoldMs` is the shortest the spawn cover stays up, in milliseconds. `maxWaitMs` is how long to wait for the clothes and the weapons before showing them anyway. `sceneWaitMs` is how long to stream the spawn, in milliseconds. The stream also stops when the ground around the player is loaded. `sceneRadius` is how far around the spawn to stream, in metres. The cover puts the ped back on screen after the card comes down. A visible set while the card is up does not remain.
+`FWConfig.video` is a file in this resource, such as `html/intro.webm`. It plays behind the words only when `cutscenes` is empty. A missing file is written once in the server window, and the words stay. `minHoldMs` is the shortest the spawn cover stays up, in milliseconds. `maxWaitMs` is how long to wait for the clothes and the weapons before showing them anyway. `sceneWaitMs` is how long to stream the spawn, in milliseconds. The stream also stops when the ground around the player is loaded. `sceneRadius` is how far around the spawn to stream, in metres. The cover puts the ped back on screen after the card comes down. A visible set while the card is up does not remain.
 
 `fw_core` hands those words over before it lets the player in. The page closes when the character list is ready to be seen: it calls `loadingComplete`, and that call runs `ShutdownLoadingScreenNui`.
 
@@ -24,7 +24,7 @@ Set `FWConfig.video` to a file in this resource, such as `html/intro.webm`, to p
 
 Puts the cover up. `kind` is `connect` or `spawn`. Anything else is treated as `spawn`. Calling it again for the same kind does not restart the timer.
 
-On connect, the loadscreen page is already up. This call does not stack a second card on it.
+On connect, the loadscreen page is already up. This call does not stack a second card on it. When a cutscene is set, connect plays that cutscene under the page instead of leaving the page black, and spawn plays it again instead of the loading card. Spawn fades the cutscene in, then fades to black before the world comes back.
 
 ```lua
 --- Shows the connect or spawn cover.
