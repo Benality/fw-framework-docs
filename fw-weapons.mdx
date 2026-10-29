@@ -118,6 +118,17 @@ AddEventHandler('fw_weapons:updated', function(kit)
 end)
 ```
 
+### fw_weapons:kitApplied
+
+Stays in the player's game. Sent when the kit has been put on the ped that exists after `fw_creator:appearanceReady`. The spawn cover waits for this, then fades the world in. It is not sent for an ordinary outfit change.
+
+```lua
+--- The spawn kit is on the current ped.
+---@return nil
+AddEventHandler('fw_weapons:kitApplied', function()
+end)
+```
+
 ### fw_weapons:kit
 
 Networked event, sent from the server to the player's game with `TriggerClientEvent` and heard there with `RegisterNetEvent`. This is the kit they should show. `fw_weapons` already applies it and then sends `fw_weapons:updated`. Listen here only if you are drawing your own loadout.

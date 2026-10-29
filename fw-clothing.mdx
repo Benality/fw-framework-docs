@@ -629,6 +629,17 @@ end
 
 A message on the server is heard with `AddEventHandler`. A message in the player's game is heard with `AddEventHandler` when it stays there, or `RegisterNetEvent` when the server can send it. Your script hears one only if it is already running. Put the listener at the top of your script.
 
+### fw_clothing:applied
+
+Stays in the player's game. Sent when the saved clothes have been put on this ped, or when there was nothing to put on. A mannequin does not send it. The spawn cover waits for this before it shows the character.
+
+```lua
+--- The local player's clothes just finished, or there were none to apply.
+---@return nil
+AddEventHandler('fw_clothing:applied', function()
+end)
+```
+
 ### murphy_clothing:clothesUpdated
 
 Stays on the server. Sent after clothes are saved, from the shop or from `SetClothesForChar`. A uniform script can wait for this, then read the clothes back:

@@ -1,0 +1,108 @@
+---
+title: "fw_loading"
+description: "Covers the screen from the moment someone connects until the character list is ready, and again after they pick a character until that ped is dressed."
+---
+
+Runs in the player's game. Two covers:
+
+- From connect until the character list is on screen.
+- After they pick a character, or finish creating one, until the body, clothes, and weapons are on.
+
+Leave `FWConfig.video` empty in `shared/config.lua`. That keeps the game's own loading card. The three lines on that card are `gamemode`, `title`, and `subtitle`.
+
+Set `FWConfig.video` to a file in this resource, such as `html/intro.webm`, to play that instead. A missing file is written once in the server window, and the card is used. `minHoldMs` is the shortest the spawn cover stays up, in milliseconds. `maxWaitMs` is how long to wait for the world, the clothes, and the weapons before showing them anyway. `sceneRadius` is how far around the spawn to stream, in metres.
+
+The connect video plays once this resource has started. To play it from the first moment of connect, uncomment the `loadscreen` lines in `fxmanifest.lua`.
+
+`fw_creator` already calls these when a character is chosen. Use them yourself when you move someone a long way and need the same cover.
+
+## Calls
+
+All of these run in the player's game.
+
+### Show
+
+Puts the cover up. `kind` is `connect` or `spawn`. Anything else is treated as `spawn`. Calling it again for the same kind does not restart the timer.
+
+On connect, with no video, the game loading screen is already up, so this call does not stack a second card on it.
+
+```lua
+--- Shows the connect or spawn cover.
+---@param kind string connect or spawn
+---@return nil
+exports.fw_loading:Show(kind)
+```
+
+```lua
+exports.fw_loading:Show('spawn')
+```
+
+### Hide
+
+Takes the cover down. If it has been up for less than `minHoldMs`, this call waits out the rest. Safe to call when nothing is showing.
+
+```lua
+--- Hides the cover, after the minimum hold.
+---@return nil
+exports.fw_loading:Hide()
+```
+
+```lua
+exports.fw_loading:Hide()
+```
+
+### ReleaseConnectScreen
+
+Drops the connect screen so the character list can fade in. This does not wait. Call it once the list is actually ready to be seen.
+
+```lua
+--- Drops the connect screen.
+---@return nil
+exports.fw_loading:ReleaseConnectScreen()
+```
+
+```lua
+exports.fw_loading:ReleaseConnectScreen()
+```
+
+### StreamScene
+
+Streams the world around a point. `x`, `y`, and `z` are metres. It stops when that spot is loaded, or when `maxWaitMs` runs out. Comes back yes when the spot loaded.
+
+```lua
+--- Streams the world around a spawn.
+---@param x number
+---@param y number
+---@param z number
+---@return boolean loaded
+exports.fw_loading:StreamScene(x, y, z)
+```
+
+```lua
+local loaded = exports.fw_loading:StreamScene(x, y, z)
+if not loaded then
+    print('the spot did not finish streaming')
+end
+```
+
+### MaxWaitMs
+
+How long a spawn may wait for clothes and weapons, in milliseconds. A bad config value comes back as `15000`.
+
+```lua
+--- The spawn wait, in milliseconds.
+---@return integer
+exports.fw_loading:MaxWaitMs()
+```
+
+```lua
+local waitMs = exports.fw_loading:MaxWaitMs()
+```
+
+## Messages
+
+The cover listens for these. It does not send them. They are documented on the resource that sends them.
+
+- [fw_clothing:applied](/fw-clothing#fw_clothingapplied) — the clothes are on, or there were none.
+- [fw_creator:appearanceReady](/fw-creator#messages-the-menu-uses) — the cover asks for the weapon kit.
+- [fw_weapons:kitApplied](/fw-weapons#fw_weaponskitapplied) — the kit is on the current ped. The cover comes down after this, or when the wait runs out.

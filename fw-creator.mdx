@@ -127,6 +127,8 @@ The menu also uses these messages. A new script should keep using [fw_characters
 | `murphy_creator:loadskinvorp` | Networked, player's game | The same reload, used after the model is already the right one. |
 | `murphy_creator:localExpressionsReady` | Networked, player's game | The face sliders and eyes/teeth are ready to share. The menu publishes them. |
 | `murphy_creator:client:skinApplied` | Local, player's game | The body finished applying. See [below](#a-hook-for-your-own-clothing-script). |
+| `fw_creator:appearanceReady` | Local, player's game | The spawn cover sends this once clothes are on, or when there was nothing to wear. `fw_weapons` puts the kit on and answers with `fw_weapons:kitApplied`. |
+| `fw_creator:bodyBare` | Local, player's game | This apply had no clothes to put on. The spawn cover treats it like `fw_clothing:applied`. |
 | `murphy_creator:client:characterCreated` | Local, player's game | The new character was just saved by the menu. No arguments. |
 | `murphy_creator:applystarteroutfit` | Networked, server to player's game | Dresses the character in the configured starter outfit again. See [below](#applying-the-starter-outfit-again). |
 | `murphy_barber_creator:loadbarberoverlay` | Networked, player's game | Puts the saved hair and makeup back on. |
@@ -162,7 +164,30 @@ This only does something while `Config.CreatorClothing.starterOutfit.enabled` is
 
 ## Calls in the player's game
 
-Create and read characters with [fw_characters](/fw-characters). These calls are for a script that changes the body the player is looking at, such as an animal form, or that needs to keep a shared face in sync.
+Create and read characters with [fw_characters](/fw-characters). These calls are for a script that changes the body the player is looking at, such as an animal form, or that needs to keep a shared face in sync. The spawn cover itself is [fw_loading](/fw-loading).
+
+### HoldSpawnCover
+
+Runs in the player's game. Streams the spot, runs `applyAppearance`, and waits until the clothes and the weapon kit are on. The cover comes down even when that wait runs out. `x`, `y`, and `z` are the spawn, in metres. `applyAppearance` is the function that puts the body back on. It can be left out. Comes back yes when both finished in time.
+
+```lua
+--- Covers the spawn until the ped is dressed.
+---@param x number
+---@param y number
+---@param z number
+---@param applyAppearance fun()|nil
+---@return boolean ready
+exports.fw_creator:HoldSpawnCover(x, y, z, applyAppearance)
+```
+
+```lua
+local ready = exports.fw_creator:HoldSpawnCover(x, y, z, function()
+    TriggerEvent('murphy_creator:loadskin')
+end)
+if not ready then
+    print('spawned before everything finished')
+end
+```
 
 ### SetAppearancePaused
 
