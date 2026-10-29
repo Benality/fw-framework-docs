@@ -219,8 +219,8 @@ A ban of one day is `os.time() + (24 * 3600)`. Lift it with `SetBan(license, nil
 | `steam` | Steam id, or nothing. |
 | `discord` | Discord id, or nothing. |
 | `name` | The name they joined with. |
-| `role` | A label on the account. New accounts are `user`. This does not make them an admin. Use [fw_admin](fw-admin.md). |
-| `characterSlots` | How many characters this account may create. |
+| `role` | A label on the account. A new account uses `account.defaultRole` in the config, which starts as `user`. This does not make them an admin. Use [fw_admin](fw-admin.md). |
+| `characterSlots` | How many characters this account may create. A new account uses `account.defaultCharacterSlots`, which starts at 5. An account that already has a number keeps it. |
 | `warnings` | A stored count. Nothing happens because of it. |
 | `banned` | Always false here. A banned license never finishes joining. |
 | `bannedUntil` | Always 0 here. |
@@ -286,13 +286,31 @@ end
 
 On the server, the same value is `player.id` from `GetPlayer`. Prefer that call when you are already on the server. The state bag is there so the player's game can see the account id without asking.
 
-## Map
+## Config
 
-The minimap switch is in `resources/[framework]/fw_core/shared/config.lua`. It is `FwCoreConfig.map.reveal`.
+The settings are in `resources/[framework]/fw_core/shared/config.lua`, on `FwCoreConfig`. Change a value, then restart `fw_core`. Another script does not set these, and there is no export for them.
 
-`true` shows every region. Places the character has never visited are drawn. `false` leaves fog over those places.
+`map.reveal` shows every region when it is `true`. Places the character has never visited are drawn. `false` leaves fog over those places.
 
-This is not a call. Another script does not set it, and there is no export for it. Change the value, then restart `fw_core`.
+`map.revealAgainMs` is how long to wait, in milliseconds, after the character is chosen before the fog is set again. The character menu puts the fog back, so this runs a second time. It starts at 4000.
+
+`account.defaultCharacterSlots` is how many characters a new account may create. It starts at 5. An account that already has a number in the database keeps that number.
+
+`account.defaultRole` is the label stored on a new account. It starts at `user`. It does not grant staff. Staff is [fw_admin](fw-admin.md).
+
+`ban.permanent` is the sentence for a ban that does not expire. `ban.until` is the sentence for a ban that ends, and `%s` in that sentence is the time. `ban.dateFormat` is the pattern for that time. The clock is UTC. The pattern starts at `%Y-%m-%d %H:%M`.
+
+`join` holds the sentences a person sees while connecting.
+
+- `checking` is the line shown while the account is read.
+- `starting` is shown when the player list is still coming up.
+- `database` is shown when the database cannot be used.
+- `noLicense` is shown when RedM did not send a Rockstar license.
+- `alreadyHere` is shown when that same license is already in the server.
+- `failed` is shown when the account could not be loaded.
+- `unknownName` is stored when the name they joined with is empty.
+
+A blank sentence, a bad slot count, a bad role, or a bad delay keeps the value this page describes. Debug lines stay on the `fw_core_debug` convar. Set that in the server window. It does not live in this file.
 
 ## Server window
 
