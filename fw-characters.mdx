@@ -411,7 +411,7 @@ end)
 
 ### fw_characters:released
 
-Sent to that player's game when the character is cleared, including a switch and a delete. It is not sent when they drop, because their game is already gone. Listen on the client. `characterId` is the character that just ended. Clear anything you were keeping for that character.
+Sent to that player's game when the character is cleared, including a switch and a delete. It is not sent when they drop, and `/leave` does not send it, because their game is closing. Listen on the client. `characterId` is the character that just ended. Clear anything you were keeping for that character.
 
 ```lua
 --- The character on this player's game just ended.
@@ -437,7 +437,7 @@ TriggerServerEvent('fw_characters:relog')
 
 Networked. The player's game sends it. `/leave` does that. The command name is `leaveCommand` in `server/config.lua`.
 
-The same save runs when a character is selected. Then the server drops them with `leaveReason`, which starts as `Left the server.` There is no wait between switches for this one. Someone on the character list, with no character selected, is dropped without a save.
+The same save runs when a character is selected. Their game is not told to wipe, because the connection is about to close. The server puts them in the main session, then drops them on the next tick with `leaveReason`, which starts as `Left the server.` There is no wait between switches for this one. Someone on the character list, with no character selected, is dropped without a save.
 
 ```lua
 --- Asks to save and return to the RedM menu.
