@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "willow",
+  "theme": "linden",
   "name": "Project Territory",
   "description": "API reference for the Project Territory framework. Each export includes the arguments, the rejection cases, and an example.",
   "colors": {
