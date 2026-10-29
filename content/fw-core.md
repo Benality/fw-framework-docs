@@ -310,7 +310,7 @@ The settings are in `resources/[framework]/fw_core/shared/config.lua`, on `FwCor
 - `failed` is shown when the account could not be loaded.
 - `unknownName` is stored when the name they joined with is empty.
 
-A blank sentence, a bad slot count, a bad role, or a bad delay keeps the value this page describes. Debug lines stay on the `fw_core_debug` convar. Set that in the server window. It does not live in this file.
+A blank join or ban sentence warns once in the server window, and the player sees that the message could not be read. A bad time pattern puts the unix time in the ban sentence. A bad slot count stays at 5, a bad role stays at `user`, and a bad map delay stays at 4000. Debug lines stay on the `fw_core_debug` convar. Set that in the server window. It does not live in this file.
 
 ## Server window
 
