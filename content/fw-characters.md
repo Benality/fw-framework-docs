@@ -211,7 +211,7 @@ Runs on the server. The player is no longer playing a character. True when it cl
 exports.fw_characters:ClearCharacter(source)
 ```
 
-`fw_characters:cleared` fires only when a character was actually selected.
+`fw_characters:cleared` fires only when a character was actually selected. The player's game also receives `fw_characters:released` for that same character.
 
 ### SetAppearance, SetClothing, SetBarber
 
@@ -406,6 +406,42 @@ AddEventHandler('fw_characters:cleared', function(source, characterId)
 end)
 ```
 
+### fw_characters:released
+
+Sent to that player's game when the character is cleared, including a switch and a delete. It is not sent when they drop, because their game is already gone. Listen on the client. `characterId` is the character that just ended. Clear anything you were keeping for that character.
+
+```lua
+--- The character on this player's game just ended.
+---@param characterId integer
+---@return nil
+RegisterNetEvent('fw_characters:released', function(characterId)
+end)
+```
+
+### fw_characters:relog
+
+Networked. The player's game sends it. `/relog` does that. The command name is `relogCommand` in `server/config.lua`.
+
+The server refuses, and writes a warning, when no character is selected, they are already on the character list, the last switch was too recent (`relogCooldownMs`), they are in a trade, their ped is dead, or they are hogtied or cuffed. A success saves place, health, and cores, clears the character, writes an info line, and tells that player's game to open the character list.
+
+```lua
+--- Asks to return to the character list.
+---@return nil
+TriggerServerEvent('fw_characters:relog')
+```
+
+### fw_characters:leave
+
+Networked. The player's game sends it. `/leave` does that. The command name is `leaveCommand` in `server/config.lua`.
+
+The same save runs when a character is selected. Then the server drops them with `leaveReason`, which starts as `Left the server.` There is no wait between switches for this one. Someone on the character list, with no character selected, is dropped without a save.
+
+```lua
+--- Asks to save and return to the RedM menu.
+---@return nil
+TriggerServerEvent('fw_characters:leave')
+```
+
 ### fw_characters:updated
 
 Name or a document was saved. Not fired by `SaveState`. The new values are not in the event. Call `GetCharacter`.
@@ -447,7 +483,7 @@ In the player's game:
 local characterId = LocalPlayer.state.fwCharacterId
 ```
 
-This is the only state bag on this resource.
+`fwHogtied` and `fwCuffed` are true while that ped is hogtied or cuffed. The player's game publishes them about once a second. A switch reads them. They go back to false when the character ends.
 
 ## Where the character is standing
 

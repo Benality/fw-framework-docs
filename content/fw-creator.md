@@ -113,6 +113,7 @@ The menu also uses these messages. A new script should keep using [fw_characters
 | --- | --- | --- |
 | `murphy_creator:GetHealthValues` | Networked, player's game to server | Asks for the health table. The answer is `murphy_creator:HealthFromCore`. |
 | `murphy_creator:OpenCharSelect` | Local, either way | Opens the character list again. |
+| `fw_creator:openSelect` | Networked, server to that player's game | Opens the character list after a switch. The server is the sender. |
 | `murphy_creator:LaunchCreator` | Local, player's game | Opens the body editor for a new character. |
 | `murphy_creator:deleteCharacterClient` | Networked, server to player's game | The list index that was just deleted. |
 | `murphy_creator:SecondChance` | Networked, server to player's game | Opens the body editor again. `/secondchance` sends this. |
