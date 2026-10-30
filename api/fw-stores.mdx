@@ -11,7 +11,7 @@ Closing the counter puts the shelf back the way the store lists it. What was set
 
 ## Opening the counter
 
-Pressing Shop at the clerk opens that store, after a short loading prompt while the visit is built. The game asks the server for that shop's shelf, then draws it. That pause is `openPauseMs` on `FwStoresConfig`, 400 milliseconds unless you change it. The Shop prompt hides while that counter is on screen, and comes back when it closes. A shop that is turned off has no clerk, and the open is refused. Start `fw_stores` after `oxmysql`, `fw_satchel`, and `fw_inventory`. The tables are created on start. The screen uses the bag's pictures.
+Pressing Shop at the clerk opens that store, after a short loading prompt while the visit is built. The game asks the server for that shop's shelf, then draws it. That pause is `openPauseMs` on `FwStoresConfig`, 400 milliseconds unless you change it. The Shop prompt hides while that counter is on screen, and comes back when it closes. One player holds a counter at a time. The same player may ask again. A different player gets no shelf, the loading prompt stops, and the log says someone is already at the counter. Opening a second shop lets the first one go. Closing the counter lets it go too, and so does the player leaving. A shop that is turned off has no clerk, and the open is refused before anyone takes the counter. Start `fw_stores` after `oxmysql`, `fw_satchel`, and `fw_inventory`. The tables are created on start. The screen uses the bag's pictures.
 
 Another script on the client can open a named store. `storeId` is the store name, such as `ValentineGeneral` or `BlackwaterGeneral`. A missing name does nothing. The counter closes if that event runs again while it is already open.
 
@@ -202,6 +202,26 @@ end
 
 `store.type` is the class, such as `general`. `store.spot` is a coordinate.
 
+### HoldsCounter
+
+Runs on the server. True when this `source` is the player the counter was sent to. False when nobody holds that shop, or someone else does. A purchase has to pass this check. Call it before you treat that counter as free.
+
+```lua
+--- True when this player is the one the counter was sent to.
+--- False when nobody holds it, or someone else does.
+---@param source integer
+---@param storeId string
+---@return boolean
+exports.fw_stores:HoldsCounter(source, storeId)
+```
+
+```lua
+local holding = exports.fw_stores:HoldsCounter(source, 'ValentineGeneral')
+if not holding then
+    return
+end
+```
+
 ### BuildVisit
 
 Runs on the client. The same visit the counter opens, priced for the standing they have now. Nil when that store's shelf has not arrived yet, or the shop is missing. The bag screen uses this when a score changes while the counter is open, so a newly recognized clerk can buy an egg without a second visit. Open the counter first. The shelf is the one the server sent for that shop.
@@ -223,6 +243,8 @@ end
 
 Settle takes Offer out of the bag and places Want in the bag. Dollars leave the stack when you put them on Offer, including dollars in a pouch you are still carrying. Settle puts back whatever the price did not use. Closing the counter puts the shelf back the way the store lists it, and puts those dollars back as well. The bag keeps what the clerk already handed over.
 
+`fw_stores:settle` is networked. The client sends one table, the deal on Offer and Want. The server settles it only when that `source` holds that store. Anyone else is refused, nothing is taken, and the log says someone is already at the counter. A shop that is turned off or outside its hours is refused first, with the closed line.
+
 Another script on the client can open the same screen. `visit` is the clerk's goods for that store. `live` is set for you, so the bag on the right is the one the player is carrying.
 
 ```lua
@@ -235,7 +257,7 @@ Running it again closes the bag. This event opens the screen. Settle is what cha
 
 `/admin`, then Stores, is the screen for this. It needs `fw.admin`. Saving also needs `fw.admin.stores`. `fw.admin` already passes that check, so a current admin does not need a new line in `permissions.cfg`.
 
-Search the list, then choose a shop. The editor opens in a window over the list. Close and Escape leave it without saving. The window is the name, the type, the town, the clerk model and voice, the hours, and whether the shop is open. The place is x, y, z, and the heading. Here fills those from where you are standing. The shelf is each item, its price, and the standing that may buy it. Add trade under a pile lists the items that pay for it instead of dollars, and how many of each. Leave the standing on Anyone and every visit may buy that pile. Buyback is the item and the dollars the clerk pays for one. Save writes the row. Reset shelf puts that type's starting shelf back on this shop. Delete asks first.
+Search the list, then choose a shop. The editor opens in a window over the list. Close and Escape leave it without saving. The window is the name, the type, the town, the clerk model and voice, the hours, and whether the shop is open. The place is x, y, z, and the heading. Here fills those from where you are standing. The shelf is each item, its price, and the standing that may buy it. Add trade under a pile lists the items that pay for it instead of dollars, and how many of each. Leave the standing on Anyone and every visit may buy that pile. Buyback is the item and the dollars the clerk pays for one. Save writes the row. Open store closes the admin screen and opens that counter. If someone already holds it, the counter does not open. Reset shelf puts that type's starting shelf back on this shop. Delete asks first.
 
 A new shop needs an id, a type, a name, a clerk model, and a place. The id is a word such as `ValentineGeneral`. Creating it copies that type's starting shelf. The server refuses an item name the inventory does not know when you type a line and save. The starting shelf is copied as written.
 
@@ -389,7 +411,9 @@ The clerk and the counter use their own messages. They are networked, and they a
 
 `fw_stores:requestPlaces` is the client asking for the clerks. There are no arguments. The reply is `fw_stores:places`, sent to that player: a list of `{ id, type, town, name, x, y, z, h, model, voice, hours, scenario, lines, takes, blip }`. A shop that is turned off is left off the list.
 
-`fw_stores:requestShelf` asks for one counter. The arguments are a token and the store id. The reply is `fw_stores:shelf`, sent to that player: the token, then the shelf, or false when the shop is missing, turned off, or closed. The shelf is `{ id, type, goods, buyback, access, pay, buy, rows }`.
+`fw_stores:requestShelf` asks for one counter. The arguments are a token and the store id. The reply is `fw_stores:shelf`, sent to that player: the token, then the shelf, or false when the shop is missing, turned off, closed, or someone else already holds that counter. The shelf is `{ id, type, goods, buyback, access, pay, buy, rows }`. A real shelf is what takes the hold. The same player may ask again. Opening another shop releases the first.
+
+`fw_stores:releaseCounter` lets that hold go. The client sends it when the counter leaves the screen, with no arguments, and that player's shops are released. Pass a store id only to release that shop when this open claimed it and the counter never opened. It does not release a shop held by someone else. `fw_stores:settle` refuses unless `HoldsCounter` is true for that store. Nothing is taken.
 
 ## List prices
 
