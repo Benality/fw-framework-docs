@@ -91,7 +91,7 @@ The left side lists the sections.
 
 - **Dashboard.** How many people are online, and their names. Choose a name and that person opens on Players.
 - **Players.** The search box filters the list as you type. Refresh asks for the list again. Each row is the name, the server number, and the dollars they are carrying. A dash is shown when cash cannot be read. Unban is a license field on this page. Choose a person and the actions open on the right: go to them, bring them, send them back, watch them, freeze them, fill their health, revive them, give an item, give dollars, set a reputation score, kick, or ban. Kick and ban ask you to confirm first. Watching someone closes the screen, so the camera is yours. Open `/admin` again to stop watching.
-- **Stores.** Search the shops, then choose one. The editor opens in a window. It is the name, the type, the town, the clerk, the hours, the place, the shelf, and the buyback. Add trade under a shelf line lists what pays for that pile instead of dollars. Close leaves the window without saving. Here fills the place from where you are standing. Save writes it. Open store closes this screen and opens that counter. If someone is already there, the counter does not open, and `/admin` brings this screen back. Reset shelf puts that type's starting shelf back. Delete asks first. New shop stays on the page. It asks for an id, a type, a name, a clerk model, and a place, then copies that type's shelf. The server checks `fw.admin.stores` before it writes, and before Open store. How a shop is stored is in [fw_stores](/api/fw-stores).
+- **Stores.** Search the shops, then choose one. The editor opens in a window. It is the name, the type, the town, the clerk, the hours, the place, the shelf, and the buyback. Add trade under a shelf line lists what pays for that pile instead of dollars. Close leaves the window without saving. Here fills the place from where you are standing. Save writes it. Open store closes this screen and opens that counter. If someone is already there, the counter does not open, and `/admin` brings this screen back. Reset shelf copies that type's saved shelf onto this shop only. Delete asks first. New shop stays on the page. It asks for an id, a type, a name, a clerk model, and a place, then copies that type's saved shelf. Templates, beside New shop, lists the shared shelves. New template asks for an id and starts empty. Save writes that shelf and does not change shops that already copied it. Delete asks first. The server checks `fw.admin.stores` before it writes, and before Open store. How a shop is stored is in [fw_stores](/api/fw-stores).
 - **Teleports.** The map waypoint, coordinates you type, Guarma, and the trip back. Waypoint is the same move as `/tpm`.
 - **Coords.** Where you are standing, and copy for the plain numbers, a `vector3`, a `vector4`, or the heading. The same line is written to the F8 log and on the line under the panel. The clipboard call is `exports.vorp_lib:copyToClipBoard`. If `vorp_lib` is not started, nothing is copied and the log says the clipboard is not available.
 
@@ -124,7 +124,7 @@ The server checks the permission again before it does the thing. A screen left o
 | `fw.admin.ban` | Ban and unban. |
 | `fw.admin.give` | Give an item, or give dollars. |
 | `fw.admin.reputation` | Read and set a reputation score. |
-| `fw.admin.stores` | List, read, save, create, delete, reset, and open a shop. |
+| `fw.admin.stores` | List, read, save, create, delete, reset, and open a shop. List, read, save, create, and delete a shared shelf. |
 
 Self tools, the waypoint, typed coordinates, Guarma, and copy coordinates need `fw.admin`.
 
@@ -209,7 +209,7 @@ Networked, the client to the server. `target` is the other `source`. The server 
 | `fw_admin:teleportReturn` | `fw.admin` | None. |
 | `fw_admin:copyCoords` | `fw.admin` | `kind`: `xyz`, `vector3`, `vector4`, or `heading`. |
 | `fw_admin:requestSelfMenu` | `fw.admin` | None. The reply is `fw_admin:openSelf`. |
-| `fw_admin:stores` | `fw.admin.stores` | One table. `op` is `list`, `read`, `save`, `create`, `delete`, `reset`, or `open`. `list`, `read`, `save`, `create`, `delete`, and `reset` reply with `fw_admin:storeData`. `open` does not write the shop. The server sends `fw_admin:openStore` to that admin, with the store id. That client closes the admin screen and runs `fw_stores:open`. |
+| `fw_admin:stores` | `fw.admin.stores` | One table. `op` is `list`, `read`, `save`, `create`, `delete`, `reset`, `open`, `templateList`, `templateRead`, `templateSave`, `templateCreate`, or `templateDelete`. Shop ops other than `open` reply with `fw_admin:storeData`. `open` does not write the shop. The server sends `fw_admin:openStore` to that admin, with the store id. That client closes the admin screen and runs `fw_stores:open`. A template op uses the same reply. `templateSave` does not change shops that already copied that shelf. |
 
 ```lua
 --- Networked. Sent by the admin screen. The server ignores it unless that player may do it.

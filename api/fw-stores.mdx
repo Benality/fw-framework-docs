@@ -31,11 +31,9 @@ TriggerEvent('fw_stores:open', 'ValentineGeneral')
 
 ## The store list
 
-A shop the player can walk up to is a row in the database. Its name, town, place, clerk, hours, and the items on that counter live there. Change one from `/admin`, on Stores. After the first start, editing `StoresConfig` does not change the live counter.
+A shop the player can walk up to is a row in the database. Its name, town, place, clerk, hours, and the items on that counter live there. Change one from `/admin`, on Stores. The file does not list shops. A fresh database starts with none. Shops already saved keep their place. Their shelves were cleared once, and a later restart does not clear a shelf you stock after that.
 
-`StoresConfig` in `shared/config.lua` is the copy used when the shop table is empty. The first start writes every shop in that list, including Worths' bean price and Keane's whiskey line. A later start reads the tables and does not copy them again.
-
-A type on `FwStoresConfig.types` is the kind of shop, such as `general`. It stays in the file. So do the starting shelves in `shared/templates.lua`, the pay rates, who may trade, the clerk's stance and lines, and the map mark. A new kind of shop is another entry there: a label, a template name, a scenario, lines, a mark, and who may trade. A shop that names that type receives those fields.
+A type on `FwStoresConfig.types` is the kind of shop, such as `general`. It stays in the file. So do the pay rates, who may trade, the clerk's stance and lines, and the map mark. A new kind of shop is another entry there: a label, a template name, a scenario, lines, a mark, and who may trade. A shop that names that type receives those fields. The shelf does not. That is a saved row.
 
 `rows` on a type is how many rows that counter uses. Leave it off and the counter stays at `counter.rows`, which is 14. The gunsmith sets 20 so a rifle still packs. Raising the shared 14 would add empty rows to the general store.
 
@@ -43,29 +41,9 @@ Leave `pay` and `buy` off a type and that shop uses the general rates. Write the
 
 `access` says who may buy, sell, and barter. `pay` is the share of the shelf price. `buy` is the share of the buyback. Those stay on the type. The items and the dollars on one counter are the saved shelf.
 
-The general type sets `template` to `general`, the shelf in `shared/templates.lua`. On an empty database, a shop can still write a few lines that differ. A line whose `item` is already on the template changes only the fields you write. A new `item` is added to that shop alone. A `buyback` name you write replaces that price. Worths does that on the first copy: beans are 5 dollars, bread is added, and an egg is 2 dollars. Keane's Saloon adds whiskey at 8 dollars. Reset shelf on that shop puts the type's shelf back, so Worths' beans return to the template price.
+The general type sets `template` to `general`. That name is a shared shelf in the database. `shared/templates.lua` is copied in once, when the shelf table is empty, so a new database still gets general, gunsmith, butcher, trapper, bait, doctor, saloon, and barber. After that, the database is the shelf. Editing the Lua file does not change a shelf that was already copied. Templates on the admin screen add, edit, and delete a shelf. Saving a shelf does not change shops that already copied it. New shop copies that type's saved shelf onto the new shop. Reset shelf does the same for one shop. Deleting a name a type still points at makes those two calls fail until the shelf exists again.
 
-```lua
-ValentineGeneral = {
-    type = 'general',
-    name = 'Worths General Store',
-    location = vector4(-324.16, 803.62, 117.88, 272.93),
-    model = 'u_m_m_valgenstoreowner_01',
-    voice = '0478_U_M_M_VALGENSTOREOWNER_01',
-    hours = false,
-    goods = {
-        { item = 'consumable_can_beans', price = 5 },
-        { item = 'consumable_bread', price = 2 },
-    },
-    buyback = {
-        egg = 2,
-    },
-}
-```
-
-The other general stores, in Strawberry, Saint Denis, Armadillo, Rhodes, Blackwater, Tumbleweed, and Wallace Station, keep the general type's shelf on that first copy.
-
-`location` is where the clerk stands, a `vector4` with the heading last. On a live shop that place is the saved row. `hours` belongs to that shop. It is `{ open, close }` or `false`. The first hour is included and the second is not, so `{ 6, 21 }` is 6:00 through 20:59. When the first hour is later, such as `{ 21, 6 }`, the shop stays open across midnight. `false`, or both hours left empty, means always open. The general stores are open all day. Outside the hours you write, the clerk is gone, the Shop prompt is hidden, and a sale is refused with `The store is closed.` Turning the shop off does the same. If the time resource is not running, the shop stays open.
+`location` is where the clerk stands, a `vector4` with the heading last. On a live shop that place is the saved row. `hours` belongs to that shop. It is `{ open, close }` or `false`. The first hour is included and the second is not, so `{ 6, 21 }` is 6:00 through 20:59. When the first hour is later, such as `{ 21, 6 }`, the shop stays open across midnight. `false`, or both hours left empty, means always open. Outside the hours you write, the clerk is gone, the Shop prompt is hidden, and a sale is refused with `The store is closed.` Turning the shop off does the same. If the time resource is not running, the shop stays open.
 
 `model` is the ped. `scenario` is the stance, such as `WORLD_HUMAN_SHOPKEEPER`. `voice` is that ped's voice bank. `lines` names the greet, the browse line when the counter opens, and the sale line when the trade goes through. `takes` is how many recordings a line has. A sale picks one of those and cuts off a line already playing.
 
@@ -257,9 +235,11 @@ Running it again closes the bag. This event opens the screen. Settle is what cha
 
 `/admin`, then Stores, is the screen for this. It needs `fw.admin`. Saving also needs `fw.admin.stores`. `fw.admin` already passes that check, so a current admin does not need a new line in `permissions.cfg`.
 
-Search the list, then choose a shop. The editor opens in a window over the list. Close and Escape leave it without saving. The window is the name, the type, the town, the clerk model and voice, the hours, and whether the shop is open. The place is x, y, z, and the heading. Here fills those from where you are standing. The shelf is each item, its price, and the standing that may buy it. Add trade under a pile lists the items that pay for it instead of dollars, and how many of each. Leave the standing on Anyone and every visit may buy that pile. Buyback is the item and the dollars the clerk pays for one. Save writes the row. Open store closes the admin screen and opens that counter. If someone already holds it, the counter does not open. Reset shelf puts that type's starting shelf back on this shop. Delete asks first.
+Search the list, then choose a shop. The editor opens in a window over the list. Close and Escape leave it without saving. The window is the name, the type, the town, the clerk model and voice, the hours, and whether the shop is open. The place is x, y, z, and the heading. Here fills those from where you are standing. The shelf is each item, its price, and the standing that may buy it. Add trade under a pile lists the items that pay for it instead of dollars, and how many of each. Leave the standing on Anyone and every visit may buy that pile. Buyback is the item and the dollars the clerk pays for one. Save writes the row. Open store closes the admin screen and opens that counter. If someone already holds it, the counter does not open. Reset shelf copies that type's saved shelf onto this shop only. Other shops keep what they already have. Delete asks first.
 
-A new shop needs an id, a type, a name, a clerk model, and a place. The id is a word such as `ValentineGeneral`. Creating it copies that type's starting shelf. The server refuses an item name the inventory does not know when you type a line and save. The starting shelf is copied as written.
+Templates, beside New shop, is the shared shelves. The list is the shelf id and how many items are on it. New template asks for an id, such as `general`, and starts empty. Save writes that shelf. Delete asks first. A type that still names a deleted shelf has nothing to copy until you add that id again.
+
+A new shop needs an id, a type, a name, a clerk model, and a place. The id is a word such as `ValentineGeneral`. Creating it copies that type's saved shelf. The server refuses an item name the inventory does not know when you type a line and save.
 
 The calls below run on the server. `source` is the client id of the player who triggered the event. It changes every time they join. Each one returns nil, and a short reason, when that player does not have `fw.admin.stores`, or the stores are not ready yet. Show the reason. Do not save the page's numbers yourself. These calls are what the screen uses.
 
@@ -347,7 +327,7 @@ if result == nil then
 end
 ```
 
-`AdminCreate` adds a shop. `id` is a new word. The type has to exist. The place, the name, and the model are required. The starting shelf is copied from that type. The return is the list plus the new shop. `That shop id is already used.` means pick another id.
+`AdminCreate` adds a shop. `id` is a new word. The type has to exist. The place, the name, and the model are required. The shelf is copied from that type's saved shelf. The return is the list plus the new shop. `That shop id is already used.` means pick another id. `That type has no shelf.` means the type names a shelf that is not in the database.
 
 ```lua
 ---@param source integer
@@ -390,7 +370,7 @@ if result == nil then
 end
 ```
 
-`AdminResetShelf` puts the type's starting shelf on that shop. A price you changed on Worths goes back to the template. The return is the list plus that shop.
+`AdminResetShelf` copies that type's saved shelf onto this shop. Other shops stay as they are. The return is the list plus that shop. `That type has no shelf.` means the type names a shelf that is not in the database.
 
 ```lua
 ---@param source integer
@@ -407,6 +387,98 @@ if result == nil then
 end
 ```
 
+`AdminTemplateList` is the saved shelves. Each row is the id and how many items are on it. The return is the same list the shop screen uses, with `templates` filled in.
+
+```lua
+---@param source integer
+---@return table|nil result
+---@return string|nil err
+exports.fw_stores:AdminTemplateList(source)
+```
+
+```lua
+local result, err = exports.fw_stores:AdminTemplateList(source)
+if result == nil then
+    return
+end
+```
+
+`AdminTemplateRead` is one shelf for the editor. `template` on the return is the id, the goods, and the buyback. Nil, and `That shelf is not in the list.`, when the id is missing.
+
+```lua
+---@param source integer
+---@param templateId string
+---@return table|nil result
+---@return string|nil err
+exports.fw_stores:AdminTemplateRead(source, templateId)
+```
+
+```lua
+local result, err = exports.fw_stores:AdminTemplateRead(source, 'general')
+if result == nil then
+    return
+end
+```
+
+`AdminTemplateSave` writes that shelf. Shops that already copied it are left as they are. `goods` and `buyback` are the same lists a shop save uses. An item the inventory does not know is refused.
+
+```lua
+---@param source integer
+---@param payload table id, goods, and buyback
+---@return table|nil result
+---@return string|nil err
+exports.fw_stores:AdminTemplateSave(source, payload)
+```
+
+```lua
+local result, err = exports.fw_stores:AdminTemplateSave(source, {
+    id = 'general',
+    goods = {
+        { item = 'consumable_can_beans', price = 4 },
+    },
+    buyback = {
+        { item = 'egg', price = 1 },
+    },
+})
+if result == nil then
+    return
+end
+```
+
+`AdminTemplateCreate` adds an empty shelf. `id` is a word such as `general`. `That shelf id is already used.` means pick another id. The editor can fill it after this returns.
+
+```lua
+---@param source integer
+---@param templateId string
+---@return table|nil result
+---@return string|nil err
+exports.fw_stores:AdminTemplateCreate(source, templateId)
+```
+
+```lua
+local result, err = exports.fw_stores:AdminTemplateCreate(source, 'drygoods')
+if result == nil then
+    return
+end
+```
+
+`AdminTemplateDelete` removes that shelf. A type that still names it has nothing to copy until the shelf exists again. Shops that already copied it keep their items.
+
+```lua
+---@param source integer
+---@param templateId string
+---@return table|nil result
+---@return string|nil err
+exports.fw_stores:AdminTemplateDelete(source, templateId)
+```
+
+```lua
+local result, err = exports.fw_stores:AdminTemplateDelete(source, 'drygoods')
+if result == nil then
+    return
+end
+```
+
 The clerk and the counter use their own messages. They are networked, and they are not queued. Another script should open a counter with `fw_stores:open` and read a place with `GetStore`.
 
 `fw_stores:requestPlaces` is the client asking for the clerks. There are no arguments. The reply is `fw_stores:places`, sent to that player: a list of `{ id, type, town, name, x, y, z, h, model, voice, hours, scenario, lines, takes, blip }`. A shop that is turned off is left off the list.
@@ -416,6 +488,8 @@ The clerk and the counter use their own messages. They are networked, and they a
 `fw_stores:releaseCounter` lets that hold go. The client sends it when the counter leaves the screen, with no arguments, and that player's shops are released. Pass a store id only to release that shop when this open claimed it and the counter never opened. It does not release a shop held by someone else. `fw_stores:settle` refuses unless `HoldsCounter` is true for that store. Nothing is taken.
 
 ## List prices
+
+These numbers are the shared shelf that a new database copies in once. They are not what a shop is selling until New shop or Reset shelf copies that shelf, or you save items on that shop. An empty counter has nothing to buy or sell.
 
 The number is the list price. An Unknown visit pays that many dollars. Recognized pays 95 percent, Trusted 90 percent, and Established 85 percent, rounded to a whole dollar. A price of at least 1 dollar stays at least 1 dollar.
 
