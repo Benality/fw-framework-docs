@@ -24,9 +24,9 @@ Ask `IsReady` first. The server can say `fw_reputation` has started a moment bef
 
 The store counter can read the standing on the player's game. That copy only knows the character they are playing. Use the server call when the answer decides a sale, a payout, or anything else that has to be true.
 
-`FwStoresConfig.useReputation` in [fw_stores](/fw-stores) is on. The counter asks for the standing. A visit stays Unknown when this resource is missing, the call fails, or the score is still 0.
+`FwStoresConfig.useReputation` in [fw_stores](/api/fw-stores) is on. The counter asks for the standing. A visit stays Unknown when this resource is missing, the call fails, or the score is still 0.
 
-An admin sets a score from the player page in [fw_admin](/fw-admin). That uses `Set`.
+An admin sets a score from the player page in [fw_admin](/api/fw-admin). That uses `Set`.
 
 ## Calls
 
@@ -200,7 +200,7 @@ if score == nil then
 end
 ```
 
-## Events
+## Messages
 
 ### fw_reputation:changed
 

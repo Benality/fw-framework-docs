@@ -1,0 +1,89 @@
+---
+title: "API reference"
+description: "These pages are the actions your script can use. Each one says where it runs, what you give it, what you get back, and shows a short example."
+---
+
+These pages are the actions your script can use. Each one says where it runs, what you give it, what you get back, and shows a short example.
+
+How to install a resource stays in that resource's `README.md`. Do not open another resource's database tables yourself. Use the action on its page.
+
+Who this framework is for is on the [introduction](/introduction). The first script to copy is [Write a script](/guides/first-resource). What a player presses is the [player guide](/player).
+
+## Words used here
+
+- **Server** — the computer running the game. Players do not see this code.
+- **Player's game** — RedM on their computer. Some actions only work there.
+- **Call** — an action another script can use. It looks like `exports.fw_core:IsReady()`.
+- **Player number** — written as `source`. The server gives each connected player a number. That number changes every time they join.
+- **Nothing** — written as `nil`. The call did not find what you asked for.
+- **Message** — written as an event. Your script hears it only if it is already running. If your script starts later, you missed it.
+
+## Start order
+
+```
+ensure oxmysql
+ensure vorp_lib
+ensure fw_loading
+ensure fw_core
+ensure fw_menu
+ensure fw_admin
+ensure fw_characters
+ensure fw_loading
+ensure fw_creator
+ensure fw_clothing
+ensure fw_inventory
+ensure fw_money
+ensure fw_weapons
+ensure fw_reputation
+ensure fw_satchel
+ensure fw_stores
+ensure fw_missions
+ensure fw_trade
+ensure fw_guide
+```
+
+The folder `resources/[framework]/` is only a category. The resource name is the directory name, such as `fw_core`.
+
+## What each resource is for
+
+| Resource | You use it to |
+| --- | --- |
+| [vorp_lib](/api/vorp-lib) | Show the loading prompt, the revolver cylinder at the bottom right. Put a blip on the map, and a card on that blip. |
+| [fw_core](/api/fw-core) | Read the connected account, and check in that your script was written for the current set of calls. |
+| [fw_menu](/api/fw-menu) | Open a menu on the player's screen. |
+| [fw_admin](/api/fw-admin) | Check that a player is an in-game admin, and open the admin menu. |
+| [fw_characters](/api/fw-characters) | Create, read, select, and save a character. |
+| [fw_loading](/api/fw-loading) | Cover the screen from connect until the character list, and again until the ped is dressed. |
+| [fw_creator](/api/fw-creator) | See how the character menu stores a body and hair. Other resources should call `fw_characters`. |
+| [fw_clothing](/api/fw-clothing) | Read or replace the clothes the character is wearing, and toggle a piece on their body. |
+| [fw_inventory](/api/fw-inventory) | Give items, open a chest or pouch, and define item types. |
+| [fw_money](/api/fw-money) | Read, give, and take the dollars a character is carrying. |
+| [fw_weapons](/api/fw-weapons) | Read the equipped guns and tools, or move one between the bag and a slot. |
+| [fw_satchel](/api/fw-satchel) | The bag screen. It has no calls of its own. |
+| [fw_reputation](/api/fw-reputation) | Raise or lower a character's reputation in a class, and read the standing word. |
+| [fw_stores](/api/fw-stores) | Open a store counter and settle a purchase into the bag. |
+| [fw_missions](/api/fw-missions) | Offer an errand at a store, and raise reputation when a step is finished. |
+| [fw_trade](/api/fw-trade) | Trade with a nearby player, or give them one item. |
+| [fw_guide](/api/fw-guide) | Open the help screen. |
+| [Database](/api/database) | See which id to store on your own table. |
+
+`fw_core` creates the account when a player connects. `fw_loading` covers the screen until the character list is ready, and again while that character's clothes and weapons settle. `fw_characters` creates the character when something calls `CreateCharacter`. The character menu does that for players. `fw_clothing` saves worn clothes on that character. `fw_inventory` saves the satchel. `fw_money` saves the dollars that character is carrying. `fw_weapons` saves the equipped kit. `fw_satchel` is the screen. `fw_reputation` keeps a score per class for that character. `fw_stores` is the store counter. `fw_missions` is the errand on that counter's Work tab. `fw_trade` is two players trading what is in those satchels. `fw_guide` is the help screen.
+
+Cash is [fw_money](/api/fw-money). A bank and jobs are not here yet. Store `fw_characters.id` for something that belongs to one character, and `fw_players.id` for something that belongs to the account.
+
+What you get back is a snapshot. Changing it does not save. Use the call that writes that field.
+
+The check-in, and the ready loop, are in [Write a script](/guides/first-resource).
+
+## A good start looks like this
+
+```
+[fw_core][info] ready version=1.1.0 api=1
+[fw_admin] ready
+[fw_characters][info] ready version=1.0.0
+[fw_creator] ready
+[fw_clothing] ready. Purchases are not charged yet. Cash is fw_money.
+[fw_inventory] ready. 5 items.
+```
+
+In the server console, `fw_health` and `fw_characters` print status. A player who types them gets nothing.

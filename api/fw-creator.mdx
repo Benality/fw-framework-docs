@@ -3,9 +3,9 @@ title: "fw_creator"
 description: "The character menu. Players use it to make a character and to play one. Create and read characters with fw_characters — that is the page to build on...."
 ---
 
-The character menu. Players use it to make a character and to play one. Create and read characters with [fw_characters](/fw-characters) — that is the page to build on. This page exists for two reasons: to show where the menu stores things on the character, and to document the handful of calls and messages this menu genuinely exposes for another script to use (pausing appearance updates while a player is shapeshifted, sharing a face with nearby players, and a couple of admin commands).
+The character menu. Players use it to make a character and to play one. Create and read characters with [fw_characters](/api/fw-characters) — that is the page to build on. This page exists for two reasons: to show where the menu stores things on the character, and to document the handful of calls and messages this menu genuinely exposes for another script to use (pausing appearance updates while a player is shapeshifted, sharing a face with nearby players, and a couple of admin commands).
 
-The menu itself is Murphy's character creator and barber, used here under its own license — see [Scope](/#scope) on the overview page.
+The menu itself is Murphy's character creator and barber, used here under its own license — see [Scope](/introduction#scope) on the overview page.
 
 `Config.framework` in `shared/config.lua` must stay `fw`. Anything else and character select never answers.
 
@@ -22,7 +22,7 @@ The number of characters an account can create is `characterSlots` on the accoun
 | Chosen spawn | `SaveState`, right after a new character is created |
 | Body and face | `appearance` |
 | Hair and makeup | `barber` |
-| Clothes | [fw_clothing](/fw-clothing), not this menu |
+| Clothes | [fw_clothing](/api/fw-clothing), not this menu |
 
 `Config.murphy_clothing` must stay true while `fw_clothing` is running.
 
@@ -79,11 +79,11 @@ When a character is selected, the client receives:
 }
 ```
 
-That message is `murphy_creator:HealthFromCore`. The server sends it to the player's game. This menu does not save health when the player leaves. Use `SaveState` on [fw_characters](/fw-characters) for that.
+That message is `murphy_creator:HealthFromCore`. The server sends it to the player's game. This menu does not save health when the player leaves. Use `SaveState` on [fw_characters](/api/fw-characters) for that.
 
 ## Messages the menu uses
 
-These keep the old `murphy_creator` names so the screen did not have to be renamed. A new script should listen to the messages on [fw_characters](/fw-characters) instead of most of these.
+These keep the old `murphy_creator` names so the screen did not have to be renamed. A new script should listen to the messages on [fw_characters](/api/fw-characters) instead of most of these.
 
 A networked message only reaches a listener that is already running when the message is sent. If your script starts later, you missed it; use the matching call instead, where one is listed.
 
@@ -112,7 +112,7 @@ RegisterNetEvent('murphy_creator:HealthFromCore', function(health)
 end)
 ```
 
-The menu also uses these messages. A new script should keep using [fw_characters](/fw-characters). They are listed so an older script can be matched to a name.
+The menu also uses these messages. A new script should keep using [fw_characters](/api/fw-characters). They are listed so an older script can be matched to a name.
 
 | Message | Direction | What it does |
 | --- | --- | --- |
@@ -166,7 +166,7 @@ This only does something while `Config.CreatorClothing.starterOutfit.enabled` is
 
 ## Calls in the player's game
 
-Create and read characters with [fw_characters](/fw-characters). These calls are for a script that changes the body the player is looking at, such as an animal form, or that needs to keep a shared face in sync. The spawn cover itself is [fw_loading](/fw-loading).
+Create and read characters with [fw_characters](/api/fw-characters). These calls are for a script that changes the body the player is looking at, such as an animal form, or that needs to keep a shared face in sync. The spawn cover itself is [fw_loading](/api/fw-loading).
 
 ### HoldSpawnCover
 
@@ -309,7 +309,7 @@ exports.fw_creator:ReassertLocalExpressions()
 
 ### GetMurphyAssets
 
-Runs in the player's game. The full clothing and barber picture catalog this menu knows about — every hair, makeup and clothing option, grouped by gender and category. A normal script does not need it. Read worn clothes with [fw_clothing](/fw-clothing).
+Runs in the player's game. The full clothing and barber picture catalog this menu knows about — every hair, makeup and clothing option, grouped by gender and category. A normal script does not need it. Read worn clothes with [fw_clothing](/api/fw-clothing).
 
 ```lua
 --- The clothing and barber picture list.

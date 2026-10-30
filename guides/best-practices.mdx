@@ -1,0 +1,56 @@
+---
+title: "Best practices"
+description: "Config for numbers a person tunes, the logger, natives, and checks that stay on the server."
+---
+
+Match the resource you are editing. A straight line of code is easier to keep than a new helper. Names say what the value is, such as `playerId`, `requiredItem`, and `rewardAmount`.
+
+## Config
+
+A number a person would tune belongs in the resource config. Prices, distances, hours, models, item names, cooldowns, and on/off switches live there. A comment belongs on a field whose unit or effect is not obvious.
+
+`shared/config.lua` when both sides read it. `server/config.lua` when only the server should see it. The file is values only. The script that reads the config does the work.
+
+```lua
+FWConfig = {}
+
+-- How close the player must be, in metres.
+FWConfig.promptDistance = 2.5
+-- How long the claim stays closed, in milliseconds.
+FWConfig.cooldownMs = 4000
+```
+
+A second file in the same resource adds a group. It must not assign `FWConfig = {}` again, because that clears the first file. A resource that already uses another name, such as `FwStoresConfig`, keeps it.
+
+## Logging
+
+Log with `vorp_lib`. Do not use `print` for a log line.
+
+```lua
+local Logger = Import('logger').Logger
+local LOG_OPTIONS = { prefix = 'fw_trade' }
+
+Logger:Error('They are too far away.', { source = src }, LOG_OPTIONS)
+Logger:Warn('Finish the trade first.', { source = src }, LOG_OPTIONS)
+Logger:Info('You gave Rope to Mary.', LOG_OPTIONS)
+```
+
+`Error` is a failure. `Warn` is a refusal or a cancel. `Info` is a result. Put `{ prefix = 'resource_name' }` last. Put `{ source = src }` in front of it when the line is about one player.
+
+A line drawn on a screen, such as the satchel reason under the grid, is not a log. Still write the log.
+
+## Natives
+
+Read the native in `.library` before you write the call. Use the hash, the parameter order, and the types from that entry. A name like `p0` is still unknown. Keep that uncertainty in a comment on the call.
+
+A GTA native with the same name is a different function. Use a Lua wrapper such as `GiveWeaponToPed` only when its arguments match the catalog entry.
+
+Game helpers come from `vorp_lib` before you write one. Prompts, blips, and the loading spinner are already there. The list is [vorp_lib](/api/vorp-lib). The catalog links are on [resources](/guides/resources).
+
+## The server decides
+
+Client event data is untrusted. On the server, check the player, the permission, the inventory, the amount, the distance, and the cooldown before money, items, or rewards change.
+
+What you get back from a call is a snapshot. Changing the table does not save. Use the call that writes that field. `GetCash` reads dollars. `AddCash` and `RemoveCash` change them. `GetKit` reads the equipped guns. Equipping goes through the weapons calls.
+
+Another resource should use a feature without editing `fw_*` files. Give that caller a named export, a local event, a networked event, or a state bag. The [API reference](/api) is those names.

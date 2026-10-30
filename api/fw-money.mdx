@@ -163,13 +163,7 @@ exports.fw_money:RemoveCurrency(source, name, amount)
 local paid, err = exports.fw_money:RemoveCurrency(source, 'cash', 50)
 ```
 
-## What the player can do
-
-The player can split a pile, give that pile, offer it in a trade, or drag it into a pouch whose categories include `currency`. The money bag item accepts `currency`. A herb pouch does not. Dragging dollars into a pouch you are carrying leaves `GetCash` the same. Those dollars still spend.
-
-Drop is refused on the dollars themselves. The player puts them in a money bag, then drops the bag. The dollars stay inside that bag, and they leave `GetCash`. Picking the bag up puts them back.
-
-Discard is refused on the dollars. Discard is also refused on a bag that still holds dollars. The reason is `Empty the bag first.` Take the dollars out, or drop the bag.
+Splitting, giving, and dropping a pile is on the [money](/player/money) page. Dragging dollars into a pouch the character is still carrying leaves `GetCash` the same. Dropping that pouch takes those dollars out of `GetCash`.
 
 `AddItem` and `RemoveItem` on the item `cash` change the same balance. A counter takes the cash pile the player puts on Sell. A charge with no grid, such as the tailor, calls `RemoveCash`.
 
@@ -188,7 +182,7 @@ Discard is refused on the dollars. Discard is also refused on a bag that still h
 | `Could not read the cash.` | The balance could not be read. |
 | `Could not save the cash.` | The balance could not be written. Nothing else was kept from that change. |
 
-## Console command
+## Commands
 
 | Command | Where | What it does |
 | --- | --- | --- |
@@ -204,7 +198,7 @@ fw_cash 1
 
 A counter does not call these. It takes the cash pile on Sell. The satchel uses these when a pile moves between a character and a storage. The amount is the new balance, including 0.
 
-`source` is not used here. `characterId` is `fw_characters.id`. `storageId` is the storage id from [fw_inventory](/fw-inventory), such as `item:` plus a container id, or a chest id.
+`source` is not used here. `characterId` is `fw_characters.id`. `storageId` is the storage id from [fw_inventory](/api/fw-inventory), such as `item:` plus a container id, or a chest id.
 
 ```lua
 --- The character balance, without creating a row.

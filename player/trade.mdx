@@ -1,0 +1,56 @@
+---
+title: "Trade"
+description: "Offer a trade to someone nearby, or give them one pile from your bag."
+---
+
+Money is not part of a trade. A gun on the belt is not in the satchel, so it is not part of a trade either. Put it in the bag first. That is on [weapons](/player/weapons).
+
+## Starting a trade
+
+Stand within about 8 meters of the other players. Hold the interact control (the same one a clothing shop uses) and the prompt says **Offer trade**. Typing `/trade` does the same thing.
+
+That opens markers on the nearby players. Click the person you want. Escape cancels and nothing is offered. Someone in another building does not get a marker. Up to 8 people nearby can show at once.
+
+The other player gets a prompt, `{Name} wants to trade`. Hold to open it. Press the other control to decline. The prompt lasts about 20 seconds. If it runs out, both players see `The trade offer expired.`
+
+The name is the character's first and last name.
+
+Type `/tradeui` to open this screen by yourself. Your satchel is on the right. Their offer fills with copies of what is already in your bag, so you can see that grid. Drag into your offer, then lock it. Accept turns on, and clicking it does not move anything. Escape, Decline, or `/tradeui` again closes it.
+
+A trade does not start when either player is already trading, dead, or not playing a character. The player who offered it then sees a short reason, such as `They are too far away.` or `They are already trading.`
+
+## The screen
+
+Both players see the same bag screen.
+
+- The right side is their own satchel.
+- **Your offer** is the top grid on the left. It is 10 cells across and 5 down. Drag a whole placement up from the satchel. Drag it back to take it out of the offer. The placement stays in the satchel until the trade is accepted, and it still takes up its old space there.
+- **Their offer** is the bottom grid. It stays empty, with `They have not locked an offer.`, until the other player locks.
+- **Decline trade** is there for both players the whole time. `B`, Escape, Backspace, or Tab does the same thing. Both screens close and nothing moves.
+- **Accept trade** is only on the screen of the player who offered the trade.
+
+`Lock offer` shows your grid to the other player and stops you from dragging. `Unlock offer` hides it again and turns Accept off. You cannot drag while you are locked. Unlock first, then change the offer.
+
+Accept stays dim until both offers are locked. The other player never gets an Accept button. They see `Waiting for them to accept.` once both are locked. If either player unlocks, Accept turns off again.
+
+The offer grids only hold what fits in 10 by 5. A placement that does not fit stays in the satchel, and the player sees `That does not fit.`
+
+Drop, use, equip, and sort will not take a placement that is in an offer. The player sees `That item is in a trade.` Move and split still work on what is left in the bag, so a stack can be split and then dragged in. A pouch cannot be opened while the trade screen is up. The reason is `Finish the trade first.`
+
+## When it finishes
+
+Accept gives each locked offer to the other satchel. A pouch keeps what is inside it, because that stays with the pouch. The items land in the first open cells. They do not keep the cells from the offer grid.
+
+If the other satchel cannot hold what is coming in, both players stay on the trade screen and see `There is no room for that in the satchel.` Nothing is taken.
+
+The trade also ends, and nothing moves, when someone walks farther than about 12 meters away, dies, leaves, or drops their character. Both players see a short reason, such as `You walked too far apart.`
+
+## Giving an item
+
+Right-click a placement in the satchel and choose **Give**. The bag hides, the same markers come up, and you click who receives it. The whole stack moves. There is no trade screen and they do not have to accept. Split the stack first when you want to hand over only part of it.
+
+Both players get a line in the log, such as `You gave Rope to {Name}.` and `{Name} gave you Rope.` The same log is where a failure shows up, such as `They have no room for that.` Open the client console with F8 to read it.
+
+Nothing moves, and you see a short reason, when they are too far away, already trading, or their satchel has no room. You see `They have no room for that.` in that last case. You also cannot give while you are already in a trade. The reason is `Finish the trade first.`
+
+Escape on the markers puts the bag back and leaves the item where it was.

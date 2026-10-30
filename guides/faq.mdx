@@ -1,0 +1,32 @@
+---
+title: "FAQ"
+description: "The ready check, the check-in, the start order, and why changing a returned table does not save."
+---
+
+## fw_core says it started, and IsReady is still no
+
+The server can say `fw_core` has started while it is still creating the player list. Checking once is too early. Keep checking for about two minutes. The loop is in [Write a script](/guides/first-resource).
+
+`IsReady` stays no until `fw_core` has a normal version, such as `1.1.0`, and the player list has been created in the database. If either of those fails, the server window shows an error and new players are turned away.
+
+## Do I have to call RegisterResource?
+
+The other calls still work if you skip it. Call it anyway. The check-in is how your script says it was written for the current set of calls. Right now that set is number `1`. You do not pass your script's name. If a later update changes the calls so an old script would break, the server window tells you to update yours.
+
+## Which resource starts first?
+
+`ensure` order in `server.cfg` is the start order. `dependencies` in the manifest does not start those resources for you. It only stops yours from starting before them. The list is on the [API start page](/api).
+
+`oxmysql` and `vorp_lib` come before the framework resources. `fw_core` comes before a script that reads the account.
+
+## I changed the table from GetCharacter and it did not save
+
+What you get back is a snapshot. Changing it does not save. Use the call that writes that field. The same is true for cash, the kit, and the bag.
+
+## The player joined before my script started
+
+`fw_core:playerLoaded` is not queued. Your script hears it only if it is already running. If the player joined first, ask `GetPlayer` on [fw_core](/api/fw-core).
+
+## Where do I store an id?
+
+Store `fw_characters.id` for something that belongs to one character, and `fw_players.id` for something that belongs to the account. Do not open another resource's tables yourself. The columns are on [Database](/api/database) so you can see which id to keep. The writes go through the calls.

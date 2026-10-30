@@ -1,0 +1,42 @@
+---
+title: "Threads"
+description: "CreateThread and Wait. A loop runs while it has work, then it stops."
+---
+
+`CreateThread` starts work that can wait without freezing the rest of the script. `Wait` is in milliseconds. `Wait(1000)` is one second.
+
+The ready check in [Write a script](/guides/first-resource) is a thread. It asks `IsReady`, waits a tenth of a second, and gives up after about two minutes.
+
+```lua
+CreateThread(function()
+    local timeoutAt = GetGameTimer() + 120000
+    while not exports.fw_core:IsReady() do
+        if GetGameTimer() >= timeoutAt then
+            return
+        end
+        Wait(100)
+    end
+end)
+```
+
+## A loop needs a reason to keep going
+
+Do not add a per-frame loop, or call a native again each tick, unless the frame is the point. A prompt, a blip, and a zone from [vorp_lib](/api/vorp-lib) already wait for the player to get close. Use those before you write a loop that measures distance every frame.
+
+When you do need a loop, turn it off when the work is done. A `while true` that always `Wait(0)` runs every frame for the whole session.
+
+```lua
+local listening = false
+
+local function watchCounter()
+    CreateThread(function()
+        while listening do
+            Wait(500)
+        end
+    end)
+end
+```
+
+Set `listening` to false when the player walks away, and the thread ends. If the check can wait a second while the player is far, wait that long. Drop to a short wait only while they are close enough that the frame matters.
+
+`Wait` inside a server event is the same rule. Copy `source` first, as [events](/guides/events) shows, because the wait is long enough for that player to leave.

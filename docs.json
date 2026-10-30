@@ -2,7 +2,7 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "linden",
   "name": "Project Territory",
-  "description": "API reference for the Project Territory framework. Each export includes the arguments, the rejection cases, and an example.",
+  "description": "Player guide, API reference, and development guides for the Project Territory framework.",
   "colors": {
     "primary": "#d1b287",
     "light": "#e5cda0",
@@ -25,45 +25,171 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Reference",
+        "tab": "Home",
         "groups": [
           {
-            "group": "Reference",
+            "group": "Welcome",
             "pages": [
-              "index",
-              "fw-core",
-              "fw-menu",
-              "fw-guide",
-              "fw-admin",
-              "fw-characters",
-              "fw-loading",
-              "fw-creator",
-              "fw-clothing",
-              "fw-inventory",
-              "fw-money",
-              "fw-weapons",
-              "fw-satchel",
-              "fw-reputation",
-              "fw-stores",
-              "fw-missions",
-              "fw-trade",
-              "vorp-lib",
-              "database"
+              "introduction"
             ]
           }
         ]
       },
       {
-        "tab": "Tutorials",
+        "tab": "Player Guide",
         "groups": [
           {
-            "group": "Tutorials",
+            "group": "Playing",
             "pages": [
-              "tutorial-crafting"
+              "player/index",
+              "player/satchel",
+              "player/trade",
+              "player/money",
+              "player/shops",
+              "player/weapons",
+              "player/characters"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Start",
+            "pages": [
+              "api/index"
+            ]
+          },
+          {
+            "group": "Core",
+            "pages": [
+              "api/fw-core",
+              "api/fw-characters",
+              "api/database"
+            ]
+          },
+          {
+            "group": "Inventory",
+            "pages": [
+              "api/fw-inventory",
+              "api/fw-money",
+              "api/fw-weapons",
+              "api/fw-satchel"
+            ]
+          },
+          {
+            "group": "World",
+            "pages": [
+              "api/fw-stores",
+              "api/fw-missions",
+              "api/fw-trade",
+              "api/fw-reputation"
+            ]
+          },
+          {
+            "group": "Screen",
+            "pages": [
+              "api/fw-menu",
+              "api/fw-guide",
+              "api/fw-loading",
+              "api/fw-creator",
+              "api/fw-clothing",
+              "api/fw-admin"
+            ]
+          },
+          {
+            "group": "Library",
+            "pages": [
+              "api/vorp-lib"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Guides",
+        "groups": [
+          {
+            "group": "Start",
+            "pages": [
+              "guides/first-resource",
+              "guides/crafting",
+              "guides/faq"
+            ]
+          },
+          {
+            "group": "Lua and RedM",
+            "pages": [
+              "guides/lua",
+              "guides/events",
+              "guides/threads",
+              "guides/best-practices",
+              "guides/resources"
             ]
           }
         ]
       }
-    ]
-  }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "RDR3 Natives",
+          "href": "https://rdr3natives.com",
+          "icon": "book-open"
+        },
+        {
+          "anchor": "RDR3 Discoveries",
+          "href": "https://github.com/femga/rdr3_discoveries",
+          "icon": "github"
+        },
+        {
+          "anchor": "RDR3 Decompiled Scripts",
+          "href": "https://github.com/outsider31000/rdr2-scripts-decompiled",
+          "icon": "github"
+        },
+        {
+          "anchor": "RDR3 Native Flags and Enums",
+          "href": "https://github.com/Halen84/RDR3-Native-Flags-And-Enums",
+          "icon": "flag"
+        },
+        {
+          "anchor": "CFX.re Documentation",
+          "href": "https://docs.fivem.net/docs/",
+          "icon": "book"
+        },
+        {
+          "anchor": "CFX Artifacts",
+          "href": "https://runtime.fivem.net/artifacts/fivem/build_server_windows/master/",
+          "icon": "terminal"
+        },
+        {
+          "anchor": "Lua Documentation",
+          "href": "https://www.lua.org/docs.html",
+          "icon": "code"
+        }
+      ]
+    }
+  },
+  "redirects": [
+    { "source": "/index", "destination": "/introduction" },
+    { "source": "/fw-core", "destination": "/api/fw-core" },
+    { "source": "/fw-menu", "destination": "/api/fw-menu" },
+    { "source": "/fw-guide", "destination": "/api/fw-guide" },
+    { "source": "/fw-admin", "destination": "/api/fw-admin" },
+    { "source": "/fw-characters", "destination": "/api/fw-characters" },
+    { "source": "/fw-loading", "destination": "/api/fw-loading" },
+    { "source": "/fw-creator", "destination": "/api/fw-creator" },
+    { "source": "/fw-clothing", "destination": "/api/fw-clothing" },
+    { "source": "/fw-inventory", "destination": "/api/fw-inventory" },
+    { "source": "/fw-money", "destination": "/api/fw-money" },
+    { "source": "/fw-weapons", "destination": "/api/fw-weapons" },
+    { "source": "/fw-satchel", "destination": "/api/fw-satchel" },
+    { "source": "/fw-reputation", "destination": "/api/fw-reputation" },
+    { "source": "/fw-stores", "destination": "/api/fw-stores" },
+    { "source": "/fw-missions", "destination": "/api/fw-missions" },
+    { "source": "/fw-trade", "destination": "/api/fw-trade" },
+    { "source": "/vorp-lib", "destination": "/api/vorp-lib" },
+    { "source": "/database", "destination": "/api/database" },
+    { "source": "/tutorial-crafting", "destination": "/guides/crafting" }
+  ]
 }

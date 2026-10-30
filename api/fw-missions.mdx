@@ -5,9 +5,9 @@ description: "Offer an errand at a store. Finishing a step raises that store's r
 
 Runs on the server. A player reads the errand on the Work tab of the store counter, next to Goods. The server checks where they are standing, what is in the satchel, and whether that step was already finished. The client's ask does not grant the reward.
 
-`source` is the player's number for this visit. A class is a reputation name from [fw_reputation](/fw-reputation), such as `general`. The standing words that class already uses are Unknown, Recognized, Trusted, and Established. This resource does not keep a second score. It calls `Add` on fw_reputation.
+`source` is the player's number for this visit. A class is a reputation name from [fw_reputation](/api/fw-reputation), such as `general`. The standing words that class already uses are Unknown, Recognized, Trusted, and Established. This resource does not keep a second score. It calls `Add` on fw_reputation.
 
-An errand belongs to one store, such as `ValentineGeneral`. The reputation it adds belongs to the class on the errand, which for Worths is `general`. A purchase adds its own point. That amount is `FwStoresConfig.purchasePoints` on [fw_stores](/fw-stores), and it is the same at every shop.
+An errand belongs to one store, such as `ValentineGeneral`. The reputation it adds belongs to the class on the errand, which for Worths is `general`. A purchase adds its own point. That amount is `FwStoresConfig.purchasePoints` on [fw_stores](/api/fw-stores), and it is the same at every shop.
 
 Nothing, written as `nil`, means the call did not do it, and the second value is the reason. `That errand is already registered.` means the id was used once. `An errand needs a step.` means the list of steps was empty. `The errands are not ready` means the table is not ready yet.
 

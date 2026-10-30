@@ -1,0 +1,90 @@
+---
+title: "fw_trade"
+description: "Runs on the server and in the player's game. Pick a nearby player, and hear the messages the trade screen sends."
+---
+
+Runs on the server and in the player's game. Two players trade what is in their satchels. The bag screen from [fw_satchel](/api/fw-satchel) draws it. How a player starts a trade, locks an offer, or gives one item is on the [trade](/player/trade) page.
+
+Money is not part of a trade. A gun on the belt is not in the satchel, so it is not part of a trade either. Put it in the bag first. That is on [fw_weapons](/api/fw-weapons).
+
+`source` on this page is the player's number for this visit. `nil` means nothing came back.
+
+A give, and a refusal, write a line for that player. Open the client console with F8 to read it. The server window shows the same line.
+
+## Calls
+
+### SelectPlayer
+
+Runs in the player's game. Shows the nearby-player markers and waits until they click one, or cancel. The player's number for this visit comes back. Nothing comes back when they cancel, nobody is close enough, or the markers are already up.
+
+```lua
+--- The server id of the player they clicked. Nothing when they cancel.
+---@return integer|nil serverId
+exports.fw_trade:SelectPlayer()
+```
+
+```lua
+local serverId = exports.fw_trade:SelectPlayer()
+if serverId == nil then
+    return
+end
+```
+
+Call it from the player's game, not the server. It takes the mouse until they click or press Escape. Do not call it while another menu already has the mouse.
+
+### IsInTrade
+
+Runs on the server. Yes when this player has the trade screen open. No during the prompt before that, and no when they are not trading.
+
+```lua
+--- True when this player has the trade screen open.
+---@param source integer
+---@return boolean
+exports.fw_trade:IsInTrade(source)
+```
+
+```lua
+if exports.fw_trade:IsInTrade(source) then
+    print('Finish the trade first.')
+    return
+end
+```
+
+The swap itself is `CommitTrade` on [fw_inventory](/api/fw-inventory). `SetHold` on that page is how an offer stays in the satchel until Accept. Another script should not call those to finish a trade of its own unless it is running the same lock rules. This resource already does.
+
+## Messages
+
+A message on the server is heard with `AddEventHandler`. A message from the server to the player's game is heard with `RegisterNetEvent`. A message from the player's game to the server is sent with `TriggerServerEvent`. Your script hears one only if it is already running. Put the listener at the top of your script.
+
+These are sent by this resource's own screen. Do not send them from another script. That skips the distance check, or fights the two players for the same trade.
+
+### From the player's game to the server
+
+| Message | What it does |
+| --- | --- |
+| `fw_trade:request` | Offers a trade to the player number they clicked. |
+| `fw_trade:give` | Hands one whole placement to that player. The arguments are their player number and the placement id. The bag screen sends this after Give. |
+| `fw_trade:respond` | The other player accepts (`true`) or declines (`false`) the prompt. |
+| `fw_trade:offer` | Replaces that player's unlocked offer. The argument is a list of `{ id, x, y, rotated }`. |
+| `fw_trade:lock` | `true` locks the offer. `false` unlocks it. |
+| `fw_trade:accept` | The player who started the trade finishes it. Refused until both offers are locked. |
+| `fw_trade:decline` | Either player cancels. Nothing moves. |
+| `fw_trade:abort` | The player's game reports that someone walked too far or died. The server checks the distance and whether they are dead before it ends the trade. |
+
+### From the server to the player's game
+
+| Message | What it carries |
+| --- | --- |
+| `fw_trade:waiting` | The other character's name, while the prompt is up. |
+| `fw_trade:invited` | `{ from, name }` for the player who was offered the trade. `from` is that other player's number. |
+| `fw_trade:inviteClosed` | A short reason. The trade screen does not open. |
+| `fw_trade:state` | The current view: whether you started it, the other name, both lock flags, your offer, and their offer once they have locked. |
+| `fw_trade:notice` | A short reason while the screen stays open, such as `There is no room for that in the satchel.` |
+| `fw_trade:closed` | A short reason. The bag closes. |
+| `fw_trade:rejected` | A short reason when the offer never started. |
+
+```lua
+RegisterNetEvent('fw_trade:closed', function(reason)
+    print(reason)
+end)
+```

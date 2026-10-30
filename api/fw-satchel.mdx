@@ -3,19 +3,17 @@ title: "fw_satchel"
 description: "Runs on the player's game. There is no code on the server. This is the bag screen. It draws the grid from fw_inventory and the loadout from fw_weapons."
 ---
 
-Runs on the player's game. There is no code on the server. This is the bag screen. It draws the grid from [fw_inventory](/fw-inventory) and the loadout from [fw_weapons](/fw-weapons).
+Runs on the player's game. There is no code on the server. This is the bag screen. It draws the grid from [fw_inventory](/api/fw-inventory) and the loadout from [fw_weapons](/api/fw-weapons).
 
 It has no exports and no state bag. Give an item, open a chest, or define an item with the calls on the inventory page. Read the equipped weapons with `GetKit` on the weapons page. This page exists so you know which messages the screen is already listening for, and which call to use instead of sending your own.
 
-The player opens the bag with `B`, or by typing `/satchel`. `B`, Escape, Backspace, or Tab closes it. Closing the bag also closes the gunbelt, and an open chest or pouch. During a trade, those same keys decline the trade instead, and the bag closes when the trade ends. That flow is on [fw_trade](/fw-trade).
+The player opens the bag with `B`, or `/satchel`. How the filters, pouches, and Give work is on the [satchel](/player/satchel) page. `B`, Escape, Backspace, or Tab closes the bag, the gunbelt, and an open chest or pouch. During a trade, those same keys decline the trade. That flow is on [fw_trade](/api/fw-trade). Give is not on the menu during a trade.
 
 Resting on a pile draws a red tile behind the picture. The switch is `highlightPile` in `resources/[framework]/fw_satchel/shared/config.lua`. `true` draws that tile. `false` leaves it off. Another script does not call this. Change the value, then restart `fw_satchel`.
 
-Right-click a placement in the bag for Use, Give, Drop, or Split. Give hides the bag, shows markers on nearby players, and hands that whole stack to the one they click. The bag comes back after. Split is only there when the stack is more than one. Give is not on the menu during a trade.
-
 ## Trade screen
 
-`fw_trade` asks this screen to show the bag with two offer grids beside it. The messages stay in the player's game. Your script should not send them. Start a trade with the prompt or `/trade`, described on [fw_trade](/fw-trade). `/tradeui` opens the same screen with nobody else in it, so you can look at the layout. Escape closes that preview.
+`fw_trade` asks this screen to show the bag with two offer grids beside it. The messages stay in the player's game. Your script should not send them. Start a trade with the prompt or `/trade`, described on [fw_trade](/api/fw-trade). `/tradeui` opens the same screen with nobody else in it, so you can look at the layout. Escape closes that preview.
 
 | Message | What the screen does with it |
 | --- | --- |
@@ -40,13 +38,13 @@ The gunbelt sits on the left of those slots. Each kind on the character is an ic
 
 Drag a gunbelt icon onto the satchel, or right-click it and choose Unload, to put one full box back in the bag. Those rounds come off that kind only. The bag stays open. If fewer than a full box are left, the menu says Empty. Empty clears the leftover and does not give an item. Dragging a short stack onto the satchel shows `Not a full box.` and leaves the rounds in place. If the bag cannot hold the box, nothing changes and the player sees `You cannot carry any more of those.`
 
-Use an ammo box or a bundle of arrows from the bag. That puts rounds on the character. The bag stays open. A box shows the revolver-cylinder loading prompt at the bottom right for about two seconds. Backspace closes the bag. A box that is still opening is cancelled, and the box stays in the bag. Draw the gun and press reload. Firing spends those rounds. The bag is not charged again. That is on [fw_weapons](/fw-weapons). Inspect uses `Inspect` on that same page. Read the belt with `GetBelt` on that page.
+Use an ammo box or a bundle of arrows from the bag. That puts rounds on the character. The bag stays open. A box shows the revolver-cylinder loading prompt at the bottom right for about two seconds. Backspace closes the bag. A box that is still opening is cancelled, and the box stays in the bag. Draw the gun and press reload. Firing spends those rounds. The bag is not charged again. That is on [fw_weapons](/api/fw-weapons). Inspect uses `Inspect` on that same page. Read the belt with `GetBelt` on that page.
 
-`fwInventoryBusy` on [fw_menu](/fw-menu) is how another menu asks this screen to stay closed.
+`fwInventoryBusy` on [fw_menu](/api/fw-menu) is how another menu asks this screen to stay closed.
 
 ## The command
 
-`/satchel` is a client command, typed in chat or the console. It toggles the screen: closed if open, otherwise it asks the server to open it. It takes no arguments and gives nothing back. A script should not run it for the player — trigger the underlying calls on [fw_inventory](/fw-inventory) instead, as shown below.
+`/satchel` is a client command, typed in chat or the console. It toggles the screen: closed if open, otherwise it asks the server to open it. It takes no arguments and gives nothing back. A script should not run it for the player — trigger the underlying calls on [fw_inventory](/api/fw-inventory) instead, as shown below.
 
 ## Messages the screen uses
 
@@ -56,7 +54,7 @@ These go between the bag screen and the server. A new script should use the call
 
 ### From the server to the player's game
 
-Heard with `RegisterNetEvent`. These are sent by [fw_inventory](/fw-inventory) and [fw_weapons](/fw-weapons), not by this resource.
+Heard with `RegisterNetEvent`. These are sent by [fw_inventory](/api/fw-inventory) and [fw_weapons](/api/fw-weapons), not by this resource.
 
 | Message | What the screen does with it | What you should use |
 | --- | --- | --- |
@@ -79,7 +77,7 @@ end)
 
 ### From the player's game to the server
 
-Sent with `TriggerServerEvent`. The bag screen is the thing that sends these, in response to the player dragging or clicking in the UI. A script building its own panel should call the matching export on [fw_inventory](/fw-inventory) or [fw_weapons](/fw-weapons) instead of sending the message directly — the export does the same validation the screen relies on.
+Sent with `TriggerServerEvent`. The bag screen is the thing that sends these, in response to the player dragging or clicking in the UI. A script building its own panel should call the matching export on [fw_inventory](/api/fw-inventory) or [fw_weapons](/api/fw-weapons) instead of sending the message directly — the export does the same validation the screen relies on.
 
 | Message | What it does | What you should use |
 | --- | --- | --- |
@@ -93,9 +91,9 @@ Sent with `TriggerServerEvent`. The bag screen is the thing that sends these, in
 | `fw_inventory:split` | Cuts some off a pile onto an empty square of its own. | The player chooses Split in half, or Split amount |
 | `fw_inventory:sort` | Packs the bag. | The player chooses sort |
 | `fw_inventory:storageClose` | Closes one pouch when an id is sent, or every open pouch when it is not. The bag stays open. | `CloseStorage` |
-| `fw_weapons:equip` | Puts a bag item onto a weapon slot. | See [fw_weapons](/fw-weapons) |
-| `fw_weapons:unequip` | Puts a weapon slot back in the bag. | See [fw_weapons](/fw-weapons) |
-| `fw_weapons:move` | Swaps two weapon slots. | See [fw_weapons](/fw-weapons) |
+| `fw_weapons:equip` | Puts a bag item onto a weapon slot. | See [fw_weapons](/api/fw-weapons) |
+| `fw_weapons:unequip` | Puts a weapon slot back in the bag. | See [fw_weapons](/api/fw-weapons) |
+| `fw_weapons:move` | Swaps two weapon slots. | See [fw_weapons](/api/fw-weapons) |
 
 A shop that hands the player a rope does this. It does not send `fw_inventory:move`, and it does not open the bag:
 
@@ -109,4 +107,4 @@ end
 
 ## Clothing while the bag is open
 
-The bag screen also shows a row of worn clothing (hat, coat, gloves, and so on) so the player can toggle a piece on or off without leaving the screen. It reads and changes that through [fw_clothing](/fw-clothing)'s own exports. There is nothing here for another script to call — if you need to read or change what a character is wearing, use fw_clothing directly.
+The bag screen also shows a row of worn clothing (hat, coat, gloves, and so on) so the player can toggle a piece on or off without leaving the screen. It reads and changes that through [fw_clothing](/api/fw-clothing)'s own exports. There is nothing here for another script to call — if you need to read or change what a character is wearing, use fw_clothing directly.

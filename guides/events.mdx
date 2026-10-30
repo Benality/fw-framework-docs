@@ -1,0 +1,50 @@
+---
+title: "Events"
+description: "Hear a message on the server, send one to a single player, and copy source before you wait."
+---
+
+A message is an event. Your script hears it only if it is already running. If your script starts later, you missed it. Put the listener at the top of the file.
+
+## Which call
+
+| You are | You hear it with | You send it with |
+| --- | --- | --- |
+| On the server, and the message stays on the server | `AddEventHandler` | `TriggerEvent` |
+| In the player's game, hearing the server | `RegisterNetEvent` | The server used `TriggerClientEvent` |
+| On the server, hearing the player's game | `RegisterNetEvent` | The player's game used `TriggerServerEvent` |
+
+`fw_core:playerLoaded` is a server message. It is not sent to the player's game.
+
+```lua
+AddEventHandler('fw_core:playerLoaded', function(source, player)
+    print(('source %d is account %d'):format(source, player.id))
+end)
+```
+
+`source` inside that function is the player's number for this visit. Copy it into a local before any wait. After the wait, `source` is no longer safe, and that player may have left.
+
+```lua
+RegisterNetEvent('fw_example:claim', function()
+    local playerId = source
+    Wait(4000)
+    if GetPlayerPing(playerId) < 1 then
+        return
+    end
+end)
+```
+
+## One player
+
+Send a client event to one player. That player's number is the second argument.
+
+```lua
+TriggerClientEvent('fw_inventory:rejected', playerId, reason, token)
+```
+
+`TriggerClientEvent(name, -1, ...)` reaches every connected player. Use `-1` only when every connected player has to receive it, and the payload is small and rare. A player across the map does not have to draw a bag someone dropped in Valentine. When only nearby players need it, send to those players, or let a client ask when it gets close.
+
+Leave a one-line comment on any `-1` that says why every player needs it.
+
+What the player's game sends is untrusted. On the server, check the player, the permission, the inventory, the amount, the distance, and the cooldown before money, items, or rewards change. Those amounts are calculated on the server. A reward can be claimed once.
+
+The crafting tutorial shows one server event that does those checks: [a crafting resource](/guides/crafting).

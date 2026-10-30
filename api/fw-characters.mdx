@@ -254,7 +254,7 @@ The table is saved as text and cannot be larger than 262144 bytes. `appearance m
 
 `fw_characters:updated` fires. It does not include the document. Call `GetCharacter`.
 
-The character menu decides the keys inside `appearance` and `barber`. See [fw_creator](/fw-creator). Worn clothes should go through [fw_clothing](/fw-clothing), which calls `SetClothing` for you.
+The character menu decides the keys inside `appearance` and `barber`. See [fw_creator](/api/fw-creator). Worn clothes should go through [fw_clothing](/api/fw-clothing), which calls `SetClothing` for you.
 
 ```lua
 local ok, err = exports.fw_characters:SetAppearance(source, characterId, {
@@ -469,7 +469,7 @@ end)
 
 ## A value the player's game can read
 
-`Player(source).state.fwCharacterId` is the selected character id, or nothing when none is selected. The player's game can read it. The account id is still `fwPlayerId` from [fw_core](/fw-core).
+`Player(source).state.fwCharacterId` is the selected character id, or nothing when none is selected. The player's game can read it. The account id is still `fwPlayerId` from [fw_core](/api/fw-core).
 
 On the server:
 

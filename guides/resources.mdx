@@ -1,0 +1,36 @@
+---
+title: "Resources"
+description: "The RedM references in the sidebar, and what each one is for."
+---
+
+The same links sit in the sidebar on every page. Read the entry before you write a native, a hash, or a parameter list. [Best practices](/guides/best-practices) says how a call from this list gets into a script.
+
+## RDR3 Natives
+
+[rdr3natives.com](https://rdr3natives.com) is the native catalog. One native is a name, a hash, a parameter list, and a return type. A GTA native with the same name is a different function.
+
+The copy this server keeps is `.library/RDR3natives-main`. Use that copy when you are writing a resource here. The site is the same catalog when you are away from the server files.
+
+## RDR3 Discoveries
+
+[femga/rdr3_discoveries](https://github.com/femga/rdr3_discoveries) is the community research: animations, weapons, clothes, controls, ped flags, and hashes that are not natives. Natives missing from the catalog are in `discoveredNatives` there. The server copy is `.library/rdr3_discoveries-master`.
+
+## RDR3 Decompiled Scripts
+
+[rdr2-scripts-decompiled](https://github.com/outsider31000/rdr2-scripts-decompiled) is the game's own scripts, decompiled. Use it when you need to see how the game calls a native, including a value the catalog still names `p0`.
+
+## RDR3 Native Flags and Enums
+
+[RDR3-Native-Flags-And-Enums](https://github.com/Halen84/RDR3-Native-Flags-And-Enums) lists flag and enum values the catalog does not spell out. A comment on the call should say which value you picked and why.
+
+## CFX.re Documentation
+
+[docs.fivem.net](https://docs.fivem.net/docs/) is the server and resource manual: the manifest, `server.cfg`, events, and state bags. RedM uses that same runtime.
+
+## CFX Artifacts
+
+[Server artifacts](https://runtime.fivem.net/artifacts/fivem/build_server_windows/master/) are the Windows server builds. The server you run is one of those builds.
+
+## Lua Documentation
+
+[lua.org/docs](https://www.lua.org/docs.html) is the language manual. RedM runs Lua 5.4. The short version for a resource on this framework is [Lua](/guides/lua).

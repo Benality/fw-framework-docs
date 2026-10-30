@@ -1,0 +1,91 @@
+---
+title: "Lua"
+description: "Locals, tables, functions, and which file runs on the server, the player's game, or both."
+---
+
+RedM runs Lua 5.4. A resource is a folder with an `fxmanifest.lua`. The manifest says which files run where.
+
+`nil` means nothing. A call that did not find what you asked for gives you `nil`. `source`, inside a server event, is the player's number for this visit. That number changes every time they join.
+
+## Where the file runs
+
+A client script runs on each player's computer. It draws, it reads the keys, and it does not decide that money or items changed.
+
+A server script runs once, on the server. It checks the player, then changes money, items, or a saved character.
+
+A shared script runs in both places. Config and item names belong there. A function that gives an item does not.
+
+The manifest lists them:
+
+```lua
+fx_version 'cerulean'
+game 'rdr3'
+
+rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aware my resources *will* become incompatible once RedM ships.'
+
+lua54 'yes'
+
+shared_scripts {
+    'shared/config.lua',
+}
+
+client_scripts {
+    'client/main.lua',
+}
+
+server_scripts {
+    'server/main.lua',
+}
+```
+
+Clients do not talk to each other. One player's game sends a message to the server. The server sends a message to the player who should see the result. That is [events](/guides/events).
+
+## Locals
+
+A name without `local` is visible to every script on that side. Give it `local` unless the framework already shares that name, such as `FWConfig`.
+
+```lua
+local rewardAmount = 1
+
+local function grantReward(playerId)
+    if rewardAmount < 1 then
+        return false
+    end
+    return exports.fw_inventory:AddItem(playerId, 'canned_beans', rewardAmount)
+end
+```
+
+A function does one job. Return as soon as the check fails, instead of wrapping the rest of the function in `if`.
+
+## Tables
+
+A list uses numbers, and the first one is `1`, not `0`.
+
+```lua
+local towns = { 'Valentine', 'Rhodes', 'Blackwater' }
+print(towns[1])
+```
+
+A record uses names. That is how a character, an item, and a shop are passed around.
+
+```lua
+local offer = {
+    storeId = 'ValentineGeneral',
+    itemName = 'canned_beans',
+    amount = 1,
+}
+
+print(offer.itemName)
+```
+
+Two tables with the same fields are still two tables. `==` compares the table itself, not the fields inside it.
+
+## Strings and numbers
+
+Join strings with `..`. Prefer `string.format` when the line has several values.
+
+```lua
+local line = ('%s x%d'):format(offer.itemName, offer.amount)
+```
+
+An amount of dollars or items is a whole number. Milliseconds and seconds are not the same. A name that does not say the unit should not be the only place the unit lives. Put a tunable number in [config](/guides/best-practices).
