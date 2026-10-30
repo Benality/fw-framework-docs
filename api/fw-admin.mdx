@@ -83,7 +83,7 @@ end
 | `admin` (no slash) | Server window | Prints that `/admin` is for a player in the game. It does nothing else. |
 | `tpm` | Server window | Prints that `/tpm` is for a player in the game. It does nothing else. |
 
-`/admin` opens the admin screen. It needs `fw.admin`. A smaller permission such as `fw.admin.kick` does not open it. Escape or Close leaves the screen. While it is open, that character stays still. The same words that go to the log also sit on the line under the panel.
+`/admin` opens the admin screen. It needs `fw.admin`. A smaller permission such as `fw.admin.kick` does not open it. The screen is drawn with the menu art from [fw_menu](/api/fw-menu), so that resource has to be started. Escape or Close leaves the screen. While it is open, that character stays still. The same words that go to the log also sit on the line under the panel.
 
 Page Up opens a smaller menu in the corner. The mouse stays on the game. Up and down move. Left and right change the list. Enter runs the line. Backspace closes it, and Page Up again closes it too. The game's key bindings list that key as Admin self menu, so it can be changed there. If the big screen is already open, Page Up does nothing.
 
