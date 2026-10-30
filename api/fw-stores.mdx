@@ -41,7 +41,7 @@ Leave `pay` and `buy` off a type and that shop uses the general rates. Write the
 
 `access` says who may buy, sell, and barter. `pay` is the share of the shelf price. `buy` is the share of the buyback. Those stay on the type. The items and the dollars on one counter are the saved shelf.
 
-The general type sets `template` to `general`. That name is a shared shelf in the database. `shared/templates.lua` is copied in once, when the shelf table is empty, so a new database still gets general, gunsmith, butcher, trapper, bait, doctor, saloon, and barber. After that, the database is the shelf. Editing the Lua file does not change a shelf that was already copied. Templates on the admin screen add, edit, and delete a shelf. Saving a shelf does not change shops that already copied it. New shop copies that type's saved shelf onto the new shop. Reset shelf does the same for one shop. Deleting a name a type still points at makes those two calls fail until the shelf exists again.
+The general type sets `template` to `general`. That name is a shared shelf you save in the database. The server does not copy a shelf in from a file. Templates on the admin screen add, edit, and delete a shelf. A new database has none until you create one. Saving a shelf does not change shops that already copied it. New shop copies that type's saved shelf onto the new shop, when that shelf exists. Reset shelf does the same for one shop. Deleting a name a type still points at makes those two calls fail until the shelf exists again.
 
 `location` is where the clerk stands, a `vector4` with the heading last. On a live shop that place is the saved row. `hours` belongs to that shop. It is `{ open, close }` or `false`. The first hour is included and the second is not, so `{ 6, 21 }` is 6:00 through 20:59. When the first hour is later, such as `{ 21, 6 }`, the shop stays open across midnight. `false`, or both hours left empty, means always open. Outside the hours you write, the clerk is gone, the Shop prompt is hidden, and a sale is refused with `The store is closed.` Turning the shop off does the same. If the time resource is not running, the shop stays open.
 
@@ -507,7 +507,7 @@ The clerk and the counter use their own messages. They are networked, and they a
 
 ## List prices
 
-These numbers are the shared shelf that a new database copies in once. They are not what a shop is selling until you apply that shelf, create a shop, or save items on that shop. An empty counter has nothing to buy or sell.
+These numbers are a price guide. The server does not write them. A shelf exists only after you save it. An empty counter has nothing to buy or sell.
 
 The number is the list price. An Unknown visit pays that many dollars. Recognized pays 95 percent, Trusted 90 percent, and Established 85 percent, rounded to a whole dollar. A price of at least 1 dollar stays at least 1 dollar.
 
