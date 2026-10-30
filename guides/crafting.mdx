@@ -206,7 +206,7 @@ RegisterNetEvent('fw_crafting:craft', function(recipeName)
 end)
 ```
 
-`local src = source` reads the player number off the event itself, not off an argument. A `TriggerServerEvent('fw_crafting:craft', recipeName)` call cannot forge who it is — `source` is set by FXServer before your handler runs. If this line were instead a `source` argument the client passed in, any player could craft on behalf of any other player's inventory by sending someone else's number.
+`local src = source` reads the `source` off the event itself, not off an argument. A `TriggerServerEvent('fw_crafting:craft', recipeName)` call cannot forge who it is — `source` is set by FXServer before your handler runs. If this line were instead a `source` argument the client passed in, any player could craft on behalf of any other player's inventory by sending someone else's number.
 
 ## The rest of server/main.lua
 
@@ -322,7 +322,7 @@ The client sends the command and prints whatever the server decides happened. It
 local Logger = Import('logger').Logger
 local LOG_OPTIONS = { prefix = 'fw_crafting' }
 
---- Writes one line with vorp_lib on this player's game. level is error or info.
+--- Writes one line with vorp_lib on this client. level is error or info.
 ---@param message string
 ---@param level string|nil
 ---@return nil
@@ -373,7 +373,7 @@ In the server console, give yourself fiber and craft:
 fw_crafting_give <your server id>
 ```
 
-In the player's game, open the satchel and confirm 10 Plant Fiber are there, then type:
+On the client, open the satchel and confirm 10 Plant Fiber are there, then type:
 
 ```
 /craft

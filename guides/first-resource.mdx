@@ -9,7 +9,7 @@ The check-in is how your script says "I was written for the current set of calls
 
 The server can say `fw_core` has started while it is still creating the player list. If you ask once and stop, you asked too soon. Keep asking for about two minutes.
 
-`source` is the player's number for this visit. That number changes every time they join. Nothing, written as `nil`, means the call did not find what you asked for.
+`source` is the client id of the player who triggered the event. It changes every time they join. `nil` means the export did not find what you asked for.
 
 ```lua
 CreateThread(function()
@@ -36,7 +36,7 @@ end)
 
 Put `RegisterResource` in your own script. You do not type your script's name. The server already knows who called.
 
-`fw_core:playerLoaded` is a message on the server. It is not sent to the player's game. Your script hears it only if it is already running. If the player joined before your script started, ask `GetPlayer` instead.
+`fw_core:playerLoaded` is a server event. It is not sent to the client. Your script hears it only if it is already running. If the player joined before your script started, ask `GetPlayer` instead.
 
 The folder `resources/[framework]/` is only a category. The resource name is the directory name, such as `fw_core`. `dependencies` in the manifest does not start those resources for you. It only stops yours from starting before them. The `ensure` order in `server.cfg` still matters. The list is on the [API start page](/api).
 

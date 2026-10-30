@@ -9,7 +9,7 @@ The menu itself is Murphy's character creator and barber, used here under its ow
 
 `Config.framework` in `shared/config.lua` must stay `fw`. Anything else and character select never answers.
 
-The number of characters an account can create is `characterSlots` on the account, not `Config.Slots` in this menu. The menu sends `Config.Slots` to the player's game only as a fallback, for the moment before the server has answered.
+The number of characters an account can create is `characterSlots` on the account, not `Config.Slots` in this menu. The menu sends `Config.Slots` to the client only as a fallback, for the moment before the server has answered.
 
 ## Where the menu saves things
 
@@ -79,22 +79,22 @@ When a character is selected, the client receives:
 }
 ```
 
-That message is `murphy_creator:HealthFromCore`. The server sends it to the player's game. This menu does not save health when the player leaves. Use `SaveState` on [fw_characters](/api/fw-characters) for that.
+That event is `murphy_creator:HealthFromCore`. The server sends it to the client. This menu does not save health when the player leaves. Use `SaveState` on [fw_characters](/api/fw-characters) for that.
 
-## Messages the menu uses
+## Events the menu uses
 
-These keep the old `murphy_creator` names so the screen did not have to be renamed. A new script should listen to the messages on [fw_characters](/api/fw-characters) instead of most of these.
+These keep the old `murphy_creator` names so the screen did not have to be renamed. A new script should listen to the events on [fw_characters](/api/fw-characters) instead of most of these.
 
-A networked message only reaches a listener that is already running when the message is sent. If your script starts later, you missed it; use the matching call instead, where one is listed.
+A networked event only reaches a listener that is already running when the event is sent. If your script starts later, you missed it; use the matching export instead, where one is listed.
 
 | Event | Direction | What it does |
 | --- | --- | --- |
-| `murphy_creator:getCharacters` | Networked, player's game to server | Asks for the character list. |
-| `murphy_creator:LaunchCharSelect` | Networked, server to player's game | Opens the list. |
-| `murphy_creator:CharSelectFailed` | Networked, server to player's game | A reason string. The client writes it to the log and tries once more. |
-| `fw_creator:selectCharacter` | Networked, player's game to server | Selects that character id, then sends health. |
-| `murphy_creator:deleteCharacter` | Networked, player's game to server | The argument is the index in the list last sent to this player, not a character id. |
-| `murphy_creator:HealthFromCore` | Networked, server to player's game | The health table above. |
+| `murphy_creator:getCharacters` | Networked, client to server | Asks for the character list. |
+| `murphy_creator:LaunchCharSelect` | Networked, server to client | Opens the list. |
+| `murphy_creator:CharSelectFailed` | Networked, server to client | A reason string. The client writes it to the log and tries once more. |
+| `fw_creator:selectCharacter` | Networked, client to server | Selects that character id, then sends health. |
+| `murphy_creator:deleteCharacter` | Networked, client to server | The argument is the index in the list last sent to this player, not a character id. |
+| `murphy_creator:HealthFromCore` | Networked, server to client | The health table above. |
 
 `fw_characters:selected` is the event to use when your resource needs to know a character was chosen. A spawn script listens there, not on `fw_creator:selectCharacter`:
 
@@ -104,7 +104,7 @@ AddEventHandler('fw_characters:selected', function(source, character)
 end)
 ```
 
-`murphy_creator:HealthFromCore` is the health table above, sent by the server to the player's game. It is networked — your script only hears it if it is already running when the server sends it. Listen only if you are drawing your own health bar from that menu:
+`murphy_creator:HealthFromCore` is the health table above, sent by the server to the client. It is networked — your script only hears it if it is already running when the server sends it. Listen only if you are drawing your own health bar from that menu:
 
 ```lua
 RegisterNetEvent('murphy_creator:HealthFromCore', function(health)
@@ -114,31 +114,31 @@ end)
 
 The menu also uses these messages. A new script should keep using [fw_characters](/api/fw-characters). They are listed so an older script can be matched to a name.
 
-| Message | Direction | What it does |
+| Event | Direction | What it does |
 | --- | --- | --- |
-| `murphy_creator:GetHealthValues` | Networked, player's game to server | Asks for the health table. The answer is `murphy_creator:HealthFromCore`. |
+| `murphy_creator:GetHealthValues` | Networked, client to server | Asks for the health table. The answer is `murphy_creator:HealthFromCore`. |
 | `murphy_creator:OpenCharSelect` | Local, either way | Opens the character list again. |
-| `fw_creator:openSelect` | Networked, server to that player's game | Opens the character list after a switch. The server is the sender. |
-| `murphy_creator:LaunchCreator` | Local, player's game | Opens the body editor for a new character. |
-| `murphy_creator:deleteCharacterClient` | Networked, server to player's game | The list index that was just deleted. |
-| `murphy_creator:SecondChance` | Networked, server to player's game | Opens the body editor again. `/secondchance` sends this. |
-| `fw_creator:characterSelected` | Networked, player's game | The menu's own note that a character was picked. Then it loads the body. Prefer `fw_characters:selected`. |
-| `murphy_creator:loadskin` | Networked, player's game | Puts the saved body back on. The reload command sends this. |
-| `murphy_creator:loadskinvorp` | Networked, player's game | The same reload, used after the model is already the right one. |
-| `murphy_creator:localExpressionsReady` | Networked, player's game | The face sliders and eyes/teeth are ready to share. The menu publishes them. |
-| `murphy_creator:client:skinApplied` | Local, player's game | The body finished applying. See [below](#a-hook-for-your-own-clothing-script). |
-| `fw_creator:bodyReady` | Local, player's game | The saved body is on the ped. Clothes and hair still follow. The spawn cover waits for this before it will accept the clothes or the hair. |
-| `fw_creator:bodyBare` | Local, player's game | This apply had no clothes to put on. The spawn cover treats it like `fw_clothing:applied`, once `fw_creator:bodyReady` has arrived. |
-| `fw_creator:barberReady` | Local, player's game | The hair and makeup are on, or this character has none. The spawn cover does not wait on it. A later barber script should send the same event when its own apply finishes. |
-| `fw_creator:appearanceReady` | Local, player's game | The spawn cover sends this once the body and the clothes have finished, or when that wait runs out. `fw_weapons` puts the kit on and answers with `fw_weapons:kitApplied`. |
-| `murphy_creator:client:characterCreated` | Local, player's game | The new character was just saved by the menu. No arguments. |
-| `murphy_creator:applystarteroutfit` | Networked, server to player's game | Dresses the character in the configured starter outfit again. See [below](#applying-the-starter-outfit-again). |
-| `murphy_barber_creator:loadbarberoverlay` | Networked, player's game | Puts the saved hair and makeup back on. |
-| `murphy_barber_creator:loadbarberoverlayOnCharacter` | Networked, player's game | Same, for a character id you pass. |
-| `murphy_barber_creator:updatehairstyle` | Networked, player's game to server | The barber saves hair. A new script uses `SetBarber` on fw_characters. |
-| `murphy_barber_creator:clotheitem` | Networked, player's game | The barber applies the saved hair and makeup to a ped. |
-| `murphy_creator:triggerCallback` | Networked, server to player's game | The menu's private question. A new script does not send this. |
-| `murphy_creator:responseCallback` | Networked, player's game to server | The answer to that question. A new script does not send this. |
+| `fw_creator:openSelect` | Networked, server to that client | Opens the character list after a switch. The server is the sender. |
+| `murphy_creator:LaunchCreator` | Local, client | Opens the body editor for a new character. |
+| `murphy_creator:deleteCharacterClient` | Networked, server to client | The list index that was just deleted. |
+| `murphy_creator:SecondChance` | Networked, server to client | Opens the body editor again. `/secondchance` sends this. |
+| `fw_creator:characterSelected` | Networked, client | The menu's own note that a character was picked. Then it loads the body. Prefer `fw_characters:selected`. |
+| `murphy_creator:loadskin` | Networked, client | Puts the saved body back on. The reload command sends this. |
+| `murphy_creator:loadskinvorp` | Networked, client | The same reload, used after the model is already the right one. |
+| `murphy_creator:localExpressionsReady` | Networked, client | The face sliders and eyes/teeth are ready to share. The menu publishes them. |
+| `murphy_creator:client:skinApplied` | Local, client | The body finished applying. See [below](#a-hook-for-your-own-clothing-script). |
+| `fw_creator:bodyReady` | Local, client | The saved body is on the ped. Clothes and hair still follow. The spawn cover waits for this before it will accept the clothes or the hair. |
+| `fw_creator:bodyBare` | Local, client | This apply had no clothes to put on. The spawn cover treats it like `fw_clothing:applied`, once `fw_creator:bodyReady` has arrived. |
+| `fw_creator:barberReady` | Local, client | The hair and makeup are on, or this character has none. The spawn cover does not wait on it. A later barber script should send the same event when its own apply finishes. |
+| `fw_creator:appearanceReady` | Local, client | The spawn cover sends this once the body and the clothes have finished, or when that wait runs out. `fw_weapons` puts the kit on and answers with `fw_weapons:kitApplied`. |
+| `murphy_creator:client:characterCreated` | Local, client | The new character was just saved by the menu. No arguments. |
+| `murphy_creator:applystarteroutfit` | Networked, server to client | Dresses the character in the configured starter outfit again. See [below](#applying-the-starter-outfit-again). |
+| `murphy_barber_creator:loadbarberoverlay` | Networked, client | Puts the saved hair and makeup back on. |
+| `murphy_barber_creator:loadbarberoverlayOnCharacter` | Networked, client | Same, for a character id you pass. |
+| `murphy_barber_creator:updatehairstyle` | Networked, client to server | The barber saves hair. A new script uses `SetBarber` on fw_characters. |
+| `murphy_barber_creator:clotheitem` | Networked, client | The barber applies the saved hair and makeup to a ped. |
+| `murphy_creator:triggerCallback` | Networked, server to client | The menu's private question. A new script does not send this. |
+| `murphy_creator:responseCallback` | Networked, client to server | The answer to that question. A new script does not send this. |
 
 ### A hook for your own clothing script
 
@@ -156,21 +156,21 @@ If your clothing script's own reload event is listed in `Config.ExternalClothing
 
 ### Applying the starter outfit again
 
-`murphy_creator:applystarteroutfit` is networked, server to player's game. A server script can send it to a player to make the menu dress their character in the configured starter outfit again — the same clothes a brand-new character spawns in before they own anything of their own.
+`murphy_creator:applystarteroutfit` is networked, server to client. A server script can send it to a player to make the menu dress their character in the configured starter outfit again — the same clothes a brand-new character spawns in before they own anything of their own.
 
 ```lua
 TriggerClientEvent('murphy_creator:applystarteroutfit', source)
 ```
 
-This only does something while `Config.CreatorClothing.starterOutfit.enabled` is true in `shared/config.lua`. With it off, or with no preset configured for that character's gender, the player's game quietly does nothing.
+This only does something while `Config.CreatorClothing.starterOutfit.enabled` is true in `shared/config.lua`. With it off, or with no preset configured for that character's gender, the client quietly does nothing.
 
-## Calls in the player's game
+## Client exports
 
 Create and read characters with [fw_characters](/api/fw-characters). These calls are for a script that changes the body the player is looking at, such as an animal form, or that needs to keep a shared face in sync. The spawn cover itself is [fw_loading](/api/fw-loading).
 
 ### HoldSpawnCover
 
-Runs in the player's game. Streams the spot, starts the saved skin load, and waits until the body, the clothes, and the weapon kit have finished. Hair keeps applying after the cover comes down. The cover comes down anyway when a wait runs out. `x`, `y`, and `z` are the spawn, in metres. Leave the function argument out. A function passed through this export does not arrive, and the cover then never starts the skin load. Comes back yes when the body, the clothes, and the weapon kit finished in time.
+Runs on the client. Streams the spot, starts the saved skin load, and waits until the body, the clothes, and the weapon kit have finished. Hair keeps applying after the cover comes down. The cover comes down anyway when a wait runs out. `x`, `y`, and `z` are the spawn, in metres. Leave the function argument out. A function passed through this export does not arrive, and the cover then never starts the skin load. Comes back yes when the body, the clothes, and the weapon kit finished in time.
 
 ```lua
 --- Covers the spawn until the body, the clothes, and the weapon kit have finished.
@@ -191,12 +191,12 @@ end
 
 ### SetAppearancePaused
 
-Runs in the player's game. Pass `true` before you change them into something that is not their character, such as a wolf. The character menu stops painting the human face on top. Pass `false` when they are themselves again.
+Runs on the client. Pass `true` before you change them into something that is not their character, such as a wolf. The character menu stops painting the human face on top. Pass `false` when they are themselves again.
 
-This also sets `LocalPlayer.state.murphy_appearance_paused`. Only this player's game can read that value.
+This also sets `LocalPlayer.state.murphy_appearance_paused`. Only this client can read that value.
 
 ```lua
---- Pauses face and clothes updates on this player's game.
+--- Pauses face and clothes updates on this client.
 ---@param paused boolean
 exports.fw_creator:SetAppearancePaused(paused)
 ```
@@ -207,7 +207,7 @@ exports.fw_creator:SetAppearancePaused(true)
 
 ### IsAppearancePaused
 
-Runs in the player's game. Yes while that pause is on.
+Runs on the client. Yes while that pause is on.
 
 ```lua
 --- True while appearance updates are paused on this computer.
@@ -223,7 +223,7 @@ end
 
 ### IsPedModelCharacter
 
-Runs in the player's game. Yes when the loaded character is a custom model, not `mp_male` or `mp_female`. A barber script uses this so it does not paint skin and makeup onto a copied face.
+Runs on the client. Yes when the loaded character is a custom model, not `mp_male` or `mp_female`. A barber script uses this so it does not paint skin and makeup onto a copied face.
 
 ```lua
 --- True when this character is not mp_male or mp_female.
@@ -239,10 +239,10 @@ end
 
 ### GetCachedExpressions
 
-Runs in the player's game. The face sliders, or nothing when none are loaded. The keys are the expression names the game uses. Changing the table does not change the face. Call `ReassertLocalExpressions` after you want them drawn again.
+Runs on the client. The face sliders, or nil when none are loaded. The keys are the expression names the game uses. Changing the table does not change the face. Call `ReassertLocalExpressions` after you want them drawn again.
 
 ```lua
---- The face sliders, or nothing when none are loaded.
+--- The face sliders, or nil when none are loaded.
 ---@return table|nil expressions
 exports.fw_creator:GetCachedExpressions()
 ```
@@ -256,7 +256,7 @@ end
 
 ### PublishLocalExpressions
 
-Runs in the player's game. Copies the current face sliders into the `murphy_expressions` state bag so other players' games can draw the same face on this player. The menu already does this on its own, about every two seconds. Call it yourself only if your script changed the sliders and cannot wait for that next tick.
+Runs on the client. Copies the current face sliders into the `murphy_expressions` state bag so other players' games can draw the same face on this player. The menu already does this on its own, about every two seconds. Call it yourself only if your script changed the sliders and cannot wait for that next tick.
 
 ```lua
 --- Shares the local face sliders with other players.
@@ -269,7 +269,7 @@ exports.fw_creator:PublishLocalExpressions()
 
 ### ClearLocalExpressions
 
-Runs in the player's game. Clears `murphy_expressions`. Call it when this player leaves the character, so the next person nearby does not keep the old face.
+Runs on the client. Clears `murphy_expressions`. Call it when this player leaves the character, so the next person nearby does not keep the old face.
 
 ```lua
 --- Clears the shared face sliders.
@@ -282,7 +282,7 @@ exports.fw_creator:ClearLocalExpressions()
 
 ### PublishLocalFaceComps
 
-Runs in the player's game. Shares the eyes and teeth so a player who walks up later still sees them. The menu already does this alongside `PublishLocalExpressions`.
+Runs on the client. Shares the eyes and teeth so a player who walks up later still sees them. The menu already does this alongside `PublishLocalExpressions`.
 
 ```lua
 --- Shares eyes and teeth with other players.
@@ -295,7 +295,7 @@ exports.fw_creator:PublishLocalFaceComps()
 
 ### ReassertLocalExpressions
 
-Runs in the player's game. Draws the saved face sliders on the local character again. Call it right after your script rebuilds that character, such as in the hook in [A hook for your own clothing script](#a-hook-for-your-own-clothing-script). You get no while appearance is paused, while there are no sliders, or while the character is missing or dead.
+Runs on the client. Draws the saved face sliders on the local character again. Call it right after your script rebuilds that character, such as in the hook in [A hook for your own clothing script](#a-hook-for-your-own-clothing-script). You get no while appearance is paused, while there are no sliders, or while the character is missing or dead.
 
 ```lua
 --- Draws the saved face sliders again. False when there is nothing to draw.
@@ -309,7 +309,7 @@ exports.fw_creator:ReassertLocalExpressions()
 
 ### GetMurphyAssets
 
-Runs in the player's game. The full clothing and barber picture catalog this menu knows about — every hair, makeup and clothing option, grouped by gender and category. A normal script does not need it. Read worn clothes with [fw_clothing](/api/fw-clothing).
+Runs on the client. The full clothing and barber picture catalog this menu knows about — every hair, makeup and clothing option, grouped by gender and category. A normal script does not need it. Read worn clothes with [fw_clothing](/api/fw-clothing).
 
 ```lua
 --- The clothing and barber picture list.
@@ -325,10 +325,10 @@ local assets = exports.fw_creator:GetMurphyAssets()
 
 | Name | Who can read it | What it is |
 | --- | --- | --- |
-| `murphy_appearance_paused` | This player's game only | Yes while `SetAppearancePaused(true)` is on. |
-| `PlayerIsInCharacterShops` | The server and every player's game | Yes while this player is in the character menu. No after they pick a character. |
-| `murphy_expressions` | The server and every player's game | The face sliders. Written by `PublishLocalExpressions`. |
-| `murphy_face_comps` | The server and every player's game | Eyes and teeth. Written by `PublishLocalFaceComps`. |
+| `murphy_appearance_paused` | This client only | Yes while `SetAppearancePaused(true)` is on. |
+| `PlayerIsInCharacterShops` | The server and every client | Yes while this player is in the character menu. No after they pick a character. |
+| `murphy_expressions` | The server and every client | The face sliders. Written by `PublishLocalExpressions`. |
+| `murphy_face_comps` | The server and every client | Eyes and teeth. Written by `PublishLocalFaceComps`. |
 | `murphyLocale` | Everyone, on the global state | A language name, if another resource sets `GlobalState.murphyLocale`. This menu reads it. It does not set it. |
 
 A script that should not teleport someone who is still picking a character:

@@ -5,7 +5,7 @@ description: "Runs on the server. This is the account for a player who has joine
 
 Runs on the server. This is the account for a player who has joined. Your script reads that account here.
 
-The player's game only prints a log line. Reading an account stays on the server.
+The client only prints a log line. Reading an account stays on the server.
 
 ## Why you check in
 
@@ -24,7 +24,7 @@ The other calls on this page still work if you skip the check-in. Do it anyway, 
 
 `GetVersion` and `GetApiVersion` are for looking. A normal script does not call them.
 
-## Calls
+## Exports
 
 ### IsReady
 
@@ -51,7 +51,7 @@ end
 Runs on the server. Gives the full version, such as `1.1.0`. A normal script does not need this. It does not check the database. It can give you a version while `IsReady` is still no.
 
 ```lua
---- The version, such as '1.1.0', or nothing if the version is not three numbers.
+--- The version, such as '1.1.0', or nil if the version is not three numbers.
 ---@return string|nil version
 exports.fw_core:GetVersion()
 ```
@@ -65,7 +65,7 @@ print(exports.fw_core:GetVersion())
 Runs on the server. Gives the first number of the version, such as `1`. A normal script does not need this. `RegisterResource` already compares that number for you.
 
 ```lua
---- The first number of the version, or nothing if the version is not three numbers.
+--- The first number of the version, or nil if the version is not three numbers.
 ---@return integer|nil apiVersion
 exports.fw_core:GetApiVersion()
 ```
@@ -114,16 +114,16 @@ Calling it again from the same script replaces the stored number. Stopping your 
 
 ### GetPlayer
 
-Runs on the server. Gives a snapshot of the account for a player who has finished joining. You get nothing while they are still connecting, and nothing if that player number is not in the game. Changing the snapshot does not save.
+Runs on the server. Gives a snapshot of the account for a player who has finished joining. You get nil while they are still connecting, and nil if that `source` is not in the game. Changing the snapshot does not save.
 
 ```lua
---- The connected account, or nothing when that player has not finished joining.
+--- The connected account, or nil when that player has not finished joining.
 ---@param source integer
 ---@return table|nil player
 exports.fw_core:GetPlayer(source)
 ```
 
-`source` is the player's number for this visit. The fields are in [Account](#account).
+`source` is the client id of the player who triggered the event. It changes every time they join. The fields are in [Account](#account).
 
 ```lua
 local player = exports.fw_core:GetPlayer(source)
@@ -135,10 +135,10 @@ print(('source %d is account %d'):format(source, player.id))
 
 ### GetPlayerById
 
-Runs on the server. The same account, found by account id instead of player number. You get nothing when that person is offline. This does not look in the database for someone who is not in the game.
+Runs on the server. The same account, found by account id instead of `source`. You get nil when that person is offline. This does not look in the database for someone who is not in the game.
 
 ```lua
---- The connected account for an account id, or nothing when that person is offline.
+--- The connected account for an account id, or nil when that person is offline.
 ---@param playerId integer
 ---@return table|nil player
 exports.fw_core:GetPlayerById(playerId)
@@ -155,10 +155,10 @@ end
 
 ### GetSourceByPlayerId
 
-Runs on the server. The player number for an account that is online. You get nothing when that person is offline. Use this when you saved an account id and need to send that person a message in their game.
+Runs on the server. `source` for an account that is online. You get nil when that person is offline. Use this when you saved an account id and need to send a client event to that player.
 
 ```lua
---- The player number for an online account, or nothing when that person is offline.
+--- `source` for an online account, or nil when that person is offline.
 ---@param playerId integer
 ---@return integer|nil source
 exports.fw_core:GetSourceByPlayerId(playerId)
@@ -178,12 +178,12 @@ Runs on the server. Saves a ban on a license, or lifts one. This writes the play
 
 `license` is their Rockstar license, including `license:` at the front. You can read it from `GetPlayer` while they are online, or from `fw_admin` in the server window. A license longer than 64 characters is refused with the same reason as a license that does not start with `license:`. That is the size of the license column.
 
-`untilTime` is a whole number of seconds since 1970, the usual unix time. `0` is a ban that does not expire. Pass nothing (`nil`) to lift the ban. A time that is already past is refused.
+`untilTime` is a whole number of seconds since 1970, the usual unix time. `0` is a ban that does not expire. Pass nil to lift the ban. A time that is already past is refused.
 
 You get `false` and a reason when the player list is not ready, the license is missing or not in the list, or the time is not `0` or a future time. Nothing is written in those cases.
 
 ```lua
---- Saves a ban, or lifts one when untilTime is nothing.
+--- Saves a ban, or lifts one when untilTime is nil.
 --- False and a reason when the license or the time is refused, or the save fails.
 ---@param license string
 ---@param untilTime integer|nil 0 does not expire, nil lifts the ban
@@ -219,8 +219,8 @@ A ban of one day is `os.time() + (24 * 3600)`. Lift it with `SetBan(license, nil
 | `id` | Account id. Save this when something belongs to the person, not to one character. |
 | `source` | Player number for this visit. It changes when they join again. |
 | `license` | Their Rockstar license, including `license:` at the front. |
-| `steam` | Steam id, or nothing. |
-| `discord` | Discord id, or nothing. |
+| `steam` | Steam id, or nil. |
+| `discord` | Discord id, or nil. |
 | `name` | The name they joined with. |
 | `role` | A label on the account. A new account uses `account.defaultRole` in the config, which starts as `user`. This does not make them an admin. Use [fw_admin](/api/fw-admin). |
 | `characterSlots` | How many characters this account may create. A new account uses `account.defaultCharacterSlots`, which starts at 5. An account that already has a number keeps it. |
@@ -232,9 +232,9 @@ There is no call to change role, warnings, or character slots. `SetBan` changes 
 
 A person is turned away while joining when the database is down, the server is still starting, RedM did not send a license, the license is banned, or that same license is already in the server.
 
-## Messages
+## Events
 
-These stay on the server. They are not sent to the player's game. Your script hears one only if it is already running. Put the listener at the top of your script. If your script starts later, you missed the message. Ask the matching call instead, where one is listed.
+These stay on the server. They are not sent to the client. Your script hears one only if it is already running. Put the listener at the top of your script. If your script starts later, you missed the event. Ask the matching call instead, where one is listed.
 
 ### fw_core:ready
 
@@ -255,7 +255,7 @@ Sent when a player has finished joining. `player` is a snapshot of the account. 
 
 ```lua
 --- player is a snapshot of the account. Ask GetPlayer again when you need a fresh one.
----@param source integer player's number for this visit
+---@param source integer client id for this visit
 ---@param player table
 ---@return nil
 AddEventHandler('fw_core:playerLoaded', function(source, player)
@@ -269,16 +269,16 @@ Sent when that player leaves. `player` is a snapshot taken before the account is
 
 ```lua
 --- player is a snapshot taken before the account is forgotten.
----@param source integer player's number for this visit
+---@param source integer client id for this visit
 ---@param player table
 ---@return nil
 AddEventHandler('fw_core:playerDropped', function(source, player)
 end)
 ```
 
-## A value the player's game can read
+## A value the client can read
 
-`Player(source).state.fwPlayerId` is the account id. This is the only state bag on this resource. In the player's game:
+`Player(source).state.fwPlayerId` is the account id. This is the only state bag on this resource. On the client:
 
 ```lua
 local playerId = LocalPlayer.state.fwPlayerId
@@ -287,7 +287,7 @@ if playerId == nil then
 end
 ```
 
-On the server, the same value is `player.id` from `GetPlayer`. Prefer that call when you are already on the server. The state bag is there so the player's game can see the account id without asking.
+On the server, the same value is `player.id` from `GetPlayer`. Prefer that call when you are already on the server. The state bag is there so the client can see the account id without asking.
 
 ## Config
 
@@ -323,7 +323,7 @@ A line about one player is also written to that player's console, the F8 window.
 
 ### fw_core:log
 
-Sent to one player's game. It copies one server line into that player's console. You do not send this, and you do not need to listen for it.
+Sent to one client. It copies one server line into that player's console. You do not send this, and you do not need to listen for it.
 
 ```lua
 --- Copies one server line into this player's console.

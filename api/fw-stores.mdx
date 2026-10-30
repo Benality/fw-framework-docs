@@ -3,7 +3,7 @@ title: "fw_stores"
 description: "Open a named store from another script, and change the shop list."
 ---
 
-Runs in the player's game. Another script opens a named store with the event under Opening the counter. What the player presses, and what a purchase costs, is on the [shops](/player/shops) page.
+Runs on the client. Another script opens a named store with the event under Opening the counter. What the player presses, and what a purchase costs, is on the [shops](/player/shops) page.
 
 Goods, Work, and Services switch only the clerk's panel. Work lists the errands this clerk will give. A store with none still says the clerk has nothing to do. How to add an errand is in [fw_missions](/api/fw-missions). Services says they are not mending or treating anyone on this visit.
 
@@ -13,7 +13,7 @@ Closing the counter puts the shelf back the way the store lists it. What was set
 
 Pressing Shop at the clerk opens that store, after a short loading prompt while the visit is built. The game asks the server for that shop's shelf, then draws it. That pause is `openPauseMs` on `FwStoresConfig`, 400 milliseconds unless you change it. The Shop prompt hides while that counter is on screen, and comes back when it closes. A shop that is turned off has no clerk, and the open is refused. Start `fw_stores` after `oxmysql`, `fw_satchel`, and `fw_inventory`. The tables are created on start. The screen uses the bag's pictures.
 
-Another script on the player's game can open a named store. `storeId` is the store name, such as `ValentineGeneral` or `BlackwaterGeneral`. A missing name does nothing. The counter closes if that event runs again while it is already open.
+Another script on the client can open a named store. `storeId` is the store name, such as `ValentineGeneral` or `BlackwaterGeneral`. A missing name does nothing. The counter closes if that event runs again while it is already open.
 
 ```lua
 --- Opens one store's counter beside the bag.
@@ -170,7 +170,7 @@ A pile's own `standing` still locks that pile. A tin of peaches stays Recognized
 
 `purchasePoints` is how many points one purchase adds to that store's class. It is one number for every shop. The count is once for the visit, when the player leaves with at least one good, not once for each item. Dollars handed back do not count. A sale that only hands goods in does not count. `0` turns it off. `1` is the number written now. Recognized is 25, so one purchase does not cross a tier by itself.
 
-`fw_reputation` keeps the score. `source` is the player's number for this visit. `storeType` is the type key, such as `'general'`. The class name in `fw_reputation` has to be that same word.
+`fw_reputation` keeps the score. `source` is the client id of the player who triggered the event. It changes every time they join. `storeType` is the type key, such as `'general'`. The class name in `fw_reputation` has to be that same word.
 
 ```lua
 ---@param source integer
@@ -183,11 +183,11 @@ Return `Unknown`, `Recognized`, `Trusted`, or `Established`. If `fw_reputation` 
 
 ### GetStore
 
-Runs on the server. The store's id, its type, and the clerk's ground point. Nothing when that store is missing. A shop that is turned off still returns the spot, so an errand can measure the distance. The clerk is not standing there while the shop is off or outside its hours. `spot` is the place you measure a distance from.
+Runs on the server. The store's id, its type, and the clerk's ground point. Nil when that store is missing. A shop that is turned off still returns the spot, so an errand can measure the distance. The clerk is not standing there while the shop is off or outside its hours. `spot` is the place you measure a distance from.
 
 ```lua
 --- The store's type and the clerk's ground point.
---- Nothing when that store is missing.
+--- Nil when that store is missing.
 ---@param storeId string
 ---@return table|nil store id, type, and spot
 exports.fw_stores:GetStore(storeId)
@@ -204,11 +204,11 @@ end
 
 ### BuildVisit
 
-Runs on the player's game. The same visit the counter opens, priced for the standing they have now. Nothing when that store's shelf has not arrived yet, or the shop is missing. The bag screen uses this when a score changes while the counter is open, so a newly recognized clerk can buy an egg without a second visit. Open the counter first. The shelf is the one the server sent for that shop.
+Runs on the client. The same visit the counter opens, priced for the standing they have now. Nil when that store's shelf has not arrived yet, or the shop is missing. The bag screen uses this when a score changes while the counter is open, so a newly recognized clerk can buy an egg without a second visit. Open the counter first. The shelf is the one the server sent for that shop.
 
 ```lua
 --- The visit the bag screen opens, priced for this player's standing.
---- Nothing when that store is missing.
+--- Nil when that store is missing.
 ---@param storeId string
 ---@return table|nil visit
 exports.fw_stores:BuildVisit(storeId)
@@ -223,7 +223,7 @@ end
 
 Settle takes Offer out of the bag and places Want in the bag. Dollars leave the stack when you put them on Offer, including dollars in a pouch you are still carrying. Settle puts back whatever the price did not use. Closing the counter puts the shelf back the way the store lists it, and puts those dollars back as well. The bag keeps what the clerk already handed over.
 
-Another script on the player's game can open the same screen. `visit` is the clerk's goods for that store. `live` is set for you, so the bag on the right is the one the player is carrying.
+Another script on the client can open the same screen. `visit` is the clerk's goods for that store. `live` is set for you, so the bag on the right is the one the player is carrying.
 
 ```lua
 TriggerEvent('fw_satchel:shopToggle', visit)
@@ -239,7 +239,7 @@ Search the list, then choose a shop. The editor opens in a window over the list.
 
 A new shop needs an id, a type, a name, a clerk model, and a place. The id is a word such as `ValentineGeneral`. Creating it copies that type's starting shelf. The server refuses an item name the inventory does not know when you type a line and save. The starting shelf is copied as written.
 
-The calls below run on the server. `source` is the player's number for this visit. Each one is nothing, and a short reason, when that player does not have `fw.admin.stores`, or the stores are not ready yet. Show the reason. Do not save the page's numbers yourself. These calls are what the screen uses.
+The calls below run on the server. `source` is the client id of the player who triggered the event. It changes every time they join. Each one returns nil, and a short reason, when that player does not have `fw.admin.stores`, or the stores are not ready yet. Show the reason. Do not save the page's numbers yourself. These calls are what the screen uses.
 
 `IsReady` says the shop list has been read. It stays no until the tables exist and the rows are loaded. The server can say fw_stores has started a moment before this is true. Keep checking for a short while.
 
@@ -271,7 +271,7 @@ if payload == nil then
 end
 ```
 
-`AdminRead` is that same list, plus `store` for one id. `store` is the editor: `id`, `name`, `type`, `town`, `model`, `voice`, `x`, `y`, `z`, `h`, `openHour`, `closeHour`, `enabled`, `goods`, and `buyback`. `openHour` and `closeHour` are nothing when the shop stays open all day. `goods` is `{ item, price, standing, barter }`. `barter` is `{ item, count }`, or nothing when that pile has no trade. `buyback` is `{ item, price }`. Nothing, and `That shop is not in the list.`, when the id is missing.
+`AdminRead` is that same list, plus `store` for one id. `store` is the editor: `id`, `name`, `type`, `town`, `model`, `voice`, `x`, `y`, `z`, `h`, `openHour`, `closeHour`, `enabled`, `goods`, and `buyback`. `openHour` and `closeHour` are nil when the shop stays open all day. `goods` is `{ item, price, standing, barter }`. `barter` is `{ item, count }`, or nil when that pile has no trade. `buyback` is `{ item, price }`. Nothing, and `That shop is not in the list.`, when the id is missing.
 
 ```lua
 ---@param source integer
@@ -387,7 +387,7 @@ end
 
 The clerk and the counter use their own messages. They are networked, and they are not queued. Another script should open a counter with `fw_stores:open` and read a place with `GetStore`.
 
-`fw_stores:requestPlaces` is the player's game asking for the clerks. There are no arguments. The reply is `fw_stores:places`, sent to that player: a list of `{ id, type, town, name, x, y, z, h, model, voice, hours, scenario, lines, takes, blip }`. A shop that is turned off is left off the list.
+`fw_stores:requestPlaces` is the client asking for the clerks. There are no arguments. The reply is `fw_stores:places`, sent to that player: a list of `{ id, type, town, name, x, y, z, h, model, voice, hours, scenario, lines, takes, blip }`. A shop that is turned off is left off the list.
 
 `fw_stores:requestShelf` asks for one counter. The arguments are a token and the store id. The reply is `fw_stores:shelf`, sent to that player: the token, then the shelf, or false when the shop is missing, turned off, or closed. The shelf is `{ id, type, goods, buyback, access, pay, buy, rows }`.
 

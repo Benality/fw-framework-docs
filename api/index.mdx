@@ -11,12 +11,12 @@ Who this framework is for is on the [introduction](/introduction). The first scr
 
 ## Words used here
 
-- **Server** — the computer running the game. Players do not see this code.
-- **Player's game** — RedM on their computer. Some actions only work there.
-- **Call** — an action another script can use. It looks like `exports.fw_core:IsReady()`.
-- **Player number** — written as `source`. The server gives each connected player a number. That number changes every time they join.
-- **Nothing** — written as `nil`. The call did not find what you asked for.
-- **Message** — written as an event. Your script hears it only if it is already running. If your script starts later, you missed it.
+- **Server** — a server script runs once, on the computer running the game. Players do not see this code.
+- **Client** — a client script runs on each player's machine. Some exports only work there.
+- **Export** — an action another script can use. It looks like `exports.fw_core:IsReady()`.
+- **source** — on the server, the client id of the player who triggered the event. It changes every time they join.
+- **nil** — the export did not find what you asked for.
+- **Event** — your script hears it only if it is already running. If your script starts later, you missed it.
 
 ## Start order
 

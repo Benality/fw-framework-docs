@@ -5,7 +5,7 @@ description: "Keep a reputation score for a character, by class, and read the st
 
 Runs on the server. Other scripts raise or lower a score. The score belongs to the character they are playing, and to one class, such as `general`.
 
-`source` is the player's number for this visit. A class is a name from `server/config.lua` in `fw_reputation`. A store passes its type, and the names already in that file match those types. A mission needs its own line in that file before it can change a score. The name has to be one word: a letter, then letters, numbers, or `_`.
+`source` is the client id of the player who triggered the event. It changes every time they join. A class is a name from `server/config.lua` in `fw_reputation`. A store passes its type, and the names already in that file match those types. A mission needs its own line in that file before it can change a score. The name has to be one word: a letter, then letters, numbers, or `_`.
 
 The score is a whole number from 0 to 1000. A class with no row yet is 0. These scores are the standing words stores already use:
 
@@ -18,17 +18,17 @@ The score is a whole number from 0 to 1000. A class with no row yet is 0. These 
 
 A higher line wins. 40 is Recognized. 150 and above is Established. The lines and the 1000 cap are in the config. Change them there.
 
-Nothing, written as `nil`, means the call did not do it, and the second value is the reason. `Select a character first.` means they are not playing a character. `Unknown class.` means that name is not in the config. `fw_reputation is not ready` means the table is not ready yet.
+`nil` means the export did not do it, and the second value is the reason. `Select a character first.` means they are not playing a character. `Unknown class.` means that name is not in the config. `fw_reputation is not ready` means the table is not ready yet.
 
 Ask `IsReady` first. The server can say `fw_reputation` has started a moment before the table is ready. Keep asking for about two minutes.
 
-The store counter can read the standing on the player's game. That copy only knows the character they are playing. Use the server call when the answer decides a sale, a payout, or anything else that has to be true.
+The store counter can read the standing on the client. That copy only knows the character they are playing. Use the server call when the answer decides a sale, a payout, or anything else that has to be true.
 
 `FwStoresConfig.useReputation` in [fw_stores](/api/fw-stores) is on. The counter asks for the standing. A visit stays Unknown when this resource is missing, the call fails, or the score is still 0.
 
 An admin sets a score from the player page in [fw_admin](/api/fw-admin). That uses `Set`.
 
-## Calls
+## Exports
 
 ### IsReady
 
@@ -50,11 +50,11 @@ end
 
 Runs on the server. The score for one class. A missing row is 0.
 
-Nothing when no character is selected, or the class is not configured.
+Nil when no character is selected, or the class is not configured.
 
 ```lua
 --- The score for this character and class. A missing row is 0.
---- Nothing when no character is selected, or the class is not configured.
+--- Nil when no character is selected, or the class is not configured.
 ---@param source integer
 ---@param className string
 ---@return integer|nil score
@@ -72,15 +72,15 @@ end
 
 ### GetStanding
 
-Runs on the server, and on the player's game.
+Runs on the server, and on the client.
 
 On the server, this is the standing word for that score: `Unknown`, `Recognized`, `Trusted`, or `Established`. Nothing in the same cases as `GetScore`.
 
-On the player's game, it only knows the character they are playing. Pass their own player number. Nothing until that copy has arrived, or when the class is not one they were sent. A purchase still has to ask the server. The screen can ask here so a locked row shows up before that.
+On the client, it only knows the character they are playing. Pass their own `source`. Nothing until that copy has arrived, or when the class is not one they were sent. A purchase still has to ask the server. The screen can ask here so a locked row shows up before that.
 
 ```lua
 --- The standing word for this character and class.
---- Nothing when no character is selected, or the class is not configured.
+--- Nil when no character is selected, or the class is not configured.
 ---@param source integer
 ---@param className string
 ---@return string|nil standing
@@ -100,11 +100,11 @@ end
 
 Runs on the server. Every configured class, in the order they are written in the config. Each row has `class`, `label`, `score`, and `standing`. A missing row counts as 0, Unknown.
 
-Nothing when no character is selected.
+Nil when no character is selected.
 
 ```lua
 --- Every configured class for this character.
---- Nothing when no character is selected.
+--- Nil when no character is selected.
 ---@param source integer
 ---@return table|nil list
 ---@return string|nil err
@@ -129,7 +129,7 @@ If the score does not change, you still get that score back. `fw_reputation:chan
 
 ```lua
 --- Adds to the score, then clamps it to the configured limits.
---- Nothing when no character is selected, the class is not configured, or the amount is refused.
+--- Nil when no character is selected, the class is not configured, or the amount is refused.
 ---@param source integer
 ---@param className string
 ---@param amount integer
@@ -156,7 +156,7 @@ If the score does not change, you still get that score back. `fw_reputation:chan
 
 ```lua
 --- Lowers the score, then clamps it to the configured limits.
---- Nothing when no character is selected, the class is not configured, or the amount is refused.
+--- Nil when no character is selected, the class is not configured, or the amount is refused.
 ---@param source integer
 ---@param className string
 ---@param amount integer
@@ -183,7 +183,7 @@ If the stored score is already that number, you still get it back. `fw_reputatio
 
 ```lua
 --- Replaces the score. 0 is allowed.
---- Nothing when no character is selected, the class is not configured, or the score is refused.
+--- Nil when no character is selected, the class is not configured, or the score is refused.
 ---@param source integer
 ---@param className string
 ---@param score integer
@@ -200,7 +200,7 @@ if score == nil then
 end
 ```
 
-## Messages
+## Events
 
 ### fw_reputation:changed
 

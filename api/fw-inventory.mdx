@@ -7,7 +7,7 @@ Runs on the server. Give a player an item, take one away, add a new kind of item
 
 `fw_satchel` is the screen the player sees. It draws their bag and, when one is open, the chest or pouch beside it. Your script does not open that screen itself, except with `OpenStorage`, which opens both.
 
-Ask `IsReady` first. If you also listen for `fw_inventory:ready` and your script starts later, you missed that message. Ask `IsReady` instead.
+Ask `IsReady` first. If you also listen for `fw_inventory:ready` and your script starts later, you missed that event. Ask `IsReady` instead.
 
 A second grid is the same kind of squares as the player's bag. There are two ways to open one. A chest, a safety deposit box, a wagon, or a horse bag is a storage your script registers, then opens. A pouch is an item the player uses. Those are different jobs. Both are below.
 
@@ -15,7 +15,7 @@ A second grid is the same kind of squares as the player's bag. There are two way
 
 Register the storage when your script starts. The items stay in the database. The registration itself is remembered only while your script is running. When your script stops, the spot in the world goes away, and a restart does not leave a second prompt.
 
-`source` is the player's number for this visit.
+`source` is the client id of the player who triggered the event. It changes every time they join.
 
 ```lua
 exports.fw_inventory:RegisterStorage({
@@ -194,7 +194,7 @@ When the last pile leaves, the parcel is removed and the panel closes. Discard t
 
 A parcel with `give = false` has no Give. One with `give = true` can be handed to a nearby player, or set on a trade offer, while it still has piles. The other player opens the same parcel.
 
-## Calls
+## Exports
 
 ### IsReady
 
@@ -261,7 +261,7 @@ local ok, err = exports.fw_inventory:RegisterItem({
 })
 ```
 
-When the player picks Sharpen, the server sends `fw_inventory:contextOption`. That message is local. Hear it with `AddEventHandler`. It is not queued, so the listener has to be running already. `source` is the player's number for this visit. `item` is a copy. `option` is the id, here `sharpen`.
+When the player picks Sharpen, the server sends `fw_inventory:contextOption`. That event is local. Hear it with `AddEventHandler`. It is not queued, so the listener has to be running already. `source` is the client id of the player who triggered the event. It changes every time they join. `item` is a copy. `option` is the id, here `sharpen`.
 
 ```lua
 AddEventHandler('fw_inventory:contextOption', function(source, item, option)
@@ -306,7 +306,7 @@ A pouch, or any item with a `container`, never reaches this callback. Using it o
 
 ### GetDefinition
 
-Runs on the server. A snapshot of one kind of item, or nothing when that name is not in the list. Changing what you got back does not change the list.
+Runs on the server. A snapshot of one kind of item, or nil when that name is not in the list. Changing what you got back does not change the list.
 
 ```lua
 --- One item type, or nil when the name is unknown.
@@ -417,7 +417,7 @@ A pouch on the ground, or a chest, is refused. So is a stack that is not dollars
 ---@param source integer
 ---@param itemId string
 ---@param count integer
----@param storageId string|nil pouch id, or nothing when the stack is loose
+---@param storageId string|nil pouch id, or nil when the stack is loose
 ---@return boolean ok
 ---@return string|nil err
 exports.fw_inventory:TakeCurrency(source, itemId, count, storageId)
@@ -443,7 +443,7 @@ A pouch on the ground, or a chest, is refused. So is a stack that is sitting in 
 ---@param source integer
 ---@param itemId string
 ---@param count integer
----@param storageId string|nil pouch id, or nothing when the stack is loose
+---@param storageId string|nil pouch id, or nil when the stack is loose
 ---@return boolean ok
 ---@return string|nil err
 exports.fw_inventory:TakePlacement(source, itemId, count, storageId)
@@ -484,7 +484,7 @@ end
 
 ### GetItems
 
-Runs on the server. A snapshot of what is in the bag. You get nothing, and a reason, when the player has no character selected.
+Runs on the server. A snapshot of what is in the bag. You get nil, and a reason, when the player has no character selected.
 
 ```lua
 --- The placements in the active character's satchel.
@@ -786,7 +786,7 @@ exports.fw_inventory:PullForKit(source, id, displaced)
 
 ### SetHold
 
-Runs on the server. Marks placements that must stay in the satchel. Discard, drop, use, equip, sort, and moving one into a chest all refuse with `That item is in a trade.` Move and split still work on placements that are not in the list. Pass nothing, or an empty list, to clear the hold.
+Runs on the server. Marks placements that must stay in the satchel. Discard, drop, use, equip, sort, and moving one into a chest all refuse with `That item is in a trade.` Move and split still work on placements that are not in the list. Pass nil, or an empty list, to clear the hold.
 
 While any placement is held, opening a chest or a pouch comes back as `Finish the trade first.`
 
@@ -800,7 +800,7 @@ While any placement is held, opening a chest or a pouch comes back as `Finish th
 exports.fw_inventory:SetHold(source, ids)
 ```
 
-`source` is the player's number for this visit. `ids` are placement ids from `GetItems`. The same id twice comes back as `Invalid hold.`
+`source` is the client id of the player who triggered the event. It changes every time they join. `ids` are placement ids from `GetItems`. The same id twice comes back as `Invalid hold.`
 
 ```lua
 local items = exports.fw_inventory:GetItems(source)
@@ -831,7 +831,7 @@ Call this only when you already know both offers are the items you mean to move.
 exports.fw_inventory:CommitTrade(sourceA, sourceB, offerA, offerB)
 ```
 
-Each offer is a list. Each entry needs `id`, `name`, `count`, and `metadata` for one whole placement. An empty list gives nothing. `sourceA` and `sourceB` are the two players' numbers. They must be different, and both must be playing a character.
+Each offer is a list. Each entry needs `id`, `name`, `count`, and `metadata` for one whole placement. An empty list gives nothing. `sourceA` and `sourceB` are both players' `source` values. They must be different, and both must be playing a character.
 
 ```lua
 local ok, err = exports.fw_inventory:CommitTrade(sourceA, sourceB, offerA, offerB)
@@ -843,9 +843,9 @@ end
 
 [fw_trade](/api/fw-trade) is the screen that locks two offers and then calls this.
 
-## Messages
+## Events
 
-A message on the server is heard with `AddEventHandler`. A message from the server to the player's game is heard with `RegisterNetEvent`. A message from the player's game to the server is sent with `TriggerServerEvent`. Your script hears one only if it is already running. Put the listener at the top of your script.
+A server event is heard with `AddEventHandler`. A client event from the server is heard with `RegisterNetEvent`. The client sends one with `TriggerServerEvent`. Your script hears one only if it is already running. Put the listener at the top of your script.
 
 ### fw_inventory:ready
 
@@ -863,7 +863,7 @@ end)
 
 ### fw_inventory:changed
 
-Local, on the server. Sent after the satchel is saved, with the player's number for this visit (`source` on other pages). Hear it if your script needs that same moment.
+Local, on the server. Sent after the satchel is saved, with `source` (`source` on other pages). Hear it if your script needs that same moment.
 
 ```lua
 ---@param source integer
@@ -874,7 +874,7 @@ end)
 
 ### What the bag screen sends the server
 
-These are networked (`RegisterNetEvent` on the server, sent from the player's game with `TriggerServerEvent`). `fw_satchel` sends these when the player drags, uses, sorts, or drops. A script with its own bag screen could send them too, but for giving or taking items from your own script, use the calls above instead — `AddItem`, `RemoveItem`, and so on, not these.
+These are networked (`RegisterNetEvent` on the server, sent from the client with `TriggerServerEvent`). `fw_satchel` sends these when the player drags, uses, sorts, or drops. A script with its own bag screen could send them too, but for giving or taking items from your own script, use the calls above instead — `AddItem`, `RemoveItem`, and so on, not these.
 
 `token` is a value you make up and send with the request. It comes back unchanged on `fw_inventory:updated` or `fw_inventory:rejected`, so a screen that fires several requests at once can tell which response answers which request. Leave it out, or pass anything, if you don't need that.
 
@@ -887,7 +887,7 @@ These are networked (`RegisterNetEvent` on the server, sent from the player's ga
 | `fw_inventory:drop` | `id, token` | Sets a pouch on the ground. `id` is the placement. Only an item with a `container` block can be dropped. A parcel cannot. The player sees `That cannot be dropped.` The contents of a pouch stay. `That item is in a trade.` is a placement set aside for a trade. |
 | `fw_inventory:split` | `id, count, token` | Cuts `count` off a stackable placement onto an empty cell of its own. `count` is a whole number from 1 up to one less than what is already there, and the item must be able to stack. `Not enough room.` means the bag has no free cell of that size. |
 | `fw_inventory:use` | `id, token, side` | Uses that placement, or opens a pouch. The bag sends this for Use, and for Open on a pouch. `side` is `'storage'` when the placement is sitting in an open chest or pouch rather than the bag — that is refused with `Take it out first.` Opens a pouch's storage, or runs its `RegisterUsable` callback, or rejects with `This cannot be used.` Three pouches can be open at once. A fourth is refused with `Close a pouch first.` |
-| `fw_inventory:context` | `id, option, token` | The player picked a custom right-click row. `id` is the placement. `option` is the id from `context` on the item. `That action is not on this item.` means that id was not registered. `That item is in a trade.` means the pile is set aside. On success the server sends the local message `fw_inventory:contextOption`. |
+| `fw_inventory:context` | `id, option, token` | The player picked a custom right-click row. `id` is the placement. `option` is the id from `context` on the item. `That action is not on this item.` means that id was not registered. `That item is in a trade.` means the pile is set aside. On success the server sends the local event `fw_inventory:contextOption`. |
 | `fw_inventory:storageClose` | `id` | Closes one pouch when `id` is that pouch. Leave `id` out to close every pouch the sender has open. Answered with `fw_inventory:storageClosed`. |
 | `fw_inventory:storageMove` | `storageId, id, x, y, rotated, token` | Moves a placement inside the pouch named by `storageId`, not the bag. `id` is the placement. |
 | `fw_inventory:transfer` | `fromSide, id, x, y, rotated, token, storageId, toStorageId` | Moves a placement between the bag and one open pouch, or from one open pouch to another. `fromSide` is `'satchel'` or `'storage'`. `storageId` is the pouch. When the pile moves from one open pouch onto another, `storageId` is the pouch it leaves and `toStorageId` is the pouch it lands in. |
@@ -906,7 +906,7 @@ end)
 
 ### What the server sends the bag screen
 
-These are networked (`RegisterNetEvent` on the player's game, sent from the server with `TriggerClientEvent`). The screen in [fw_satchel](/api/fw-satchel) listens for these. A script with its own bag screen can listen too. Giving an item from your own script is still `AddItem`, not one of these.
+These are networked (`RegisterNetEvent` on the client, sent from the server with `TriggerClientEvent`). The screen in [fw_satchel](/api/fw-satchel) listens for these. A script with its own bag screen can listen too. Giving an item from your own script is still `AddItem`, not one of these.
 
 | Event | Parameters | What it carries |
 | --- | --- | --- |

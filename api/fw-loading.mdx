@@ -3,7 +3,7 @@ title: "fw_loading"
 description: "Covers the screen from the moment someone connects until the character list is ready, and again after they pick a character until that ped is dressed."
 ---
 
-Runs in the player's game. Two covers:
+Runs on the client. Two covers:
 
 - From the moment someone connects until the character list is on screen. That page starts with them. It is not a second card stacked on the game's own screen.
 - After they pick a character, or finish creating one, until the body, clothes, and weapons are on.
@@ -16,9 +16,9 @@ The spawn cover, after a character is chosen, tries a random entry from `FWConfi
 
 `fw_creator` already calls these when a character is chosen. Use them yourself when you move someone a long way and need the same cover.
 
-## Calls
+## Exports
 
-`Show`, `Hide`, `ReleaseConnectScreen`, `StreamScene`, and `MaxWaitMs` run in the player's game. `Handover` runs on the server.
+`Show`, `Hide`, `ReleaseConnectScreen`, `StreamScene`, and `MaxWaitMs` run on the client. `Handover` runs on the server.
 
 ### Show
 
@@ -67,7 +67,7 @@ exports.fw_loading:ReleaseConnectScreen()
 
 ### Handover
 
-Runs on the server, during `playerConnecting`. `deferrals` is the join handshake. `playerId` is the player's number for this visit. Call it before `deferrals.done`, or the connect page never receives the words. `fw_core` already does this on the way in. A script that replaces that check has to call it too.
+Runs on the server, during `playerConnecting`. `deferrals` is the join handshake. `playerId` is that player's `source`. Call it before `deferrals.done`, or the connect page never receives the words. `fw_core` already does this on the way in. A script that replaces that check has to call it too.
 
 The page receives the player's name, the server name, `gamemode`, `title`, `subtitle`, the connect video file name when one is set, and the slideshow image list and interval when one is set instead.
 
@@ -123,11 +123,11 @@ exports.fw_loading:MaxWaitMs()
 local waitMs = exports.fw_loading:MaxWaitMs()
 ```
 
-## Messages
+## Events
 
 The cover listens for these. It does not send them. They are documented on the resource that sends them.
 
-- [fw_creator:bodyReady](/api/fw-creator#messages-the-menu-uses) — the saved body is on the ped. The cover waits for this first.
+- [fw_creator:bodyReady](/api/fw-creator#events-the-menu-uses) — the saved body is on the ped. The cover waits for this first.
 - [fw_clothing:applied](/api/fw-clothing#fw_clothingapplied) — the clothes are on, or there were none. `fw_creator:bodyBare` means the same thing.
-- [fw_creator:appearanceReady](/api/fw-creator#messages-the-menu-uses) — the cover asks for the weapon kit, after the body and the clothes.
+- [fw_creator:appearanceReady](/api/fw-creator#events-the-menu-uses) — the cover asks for the weapon kit, after the body and the clothes.
 - [fw_weapons:kitApplied](/api/fw-weapons#fw_weaponskitapplied) — the kit is on the current ped. The cover comes down after this, or when the wait runs out.

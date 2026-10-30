@@ -1,11 +1,13 @@
 ---
 title: "Lua"
-description: "Locals, tables, functions, and which file runs on the server, the player's game, or both."
+description: "Locals, tables, functions, and which file runs on the server, the client, or both."
 ---
 
 RedM runs Lua 5.4. A resource is a folder with an `fxmanifest.lua`. The manifest says which files run where.
 
-`nil` means nothing. A call that did not find what you asked for gives you `nil`. `source`, inside a server event, is the player's number for this visit. That number changes every time they join.
+The language manual is the [Lua 5.4 reference](https://www.lua.org/manual/5.4/). [Creating your first script](https://docs.fivem.net/docs/scripting-manual/introduction/creating-your-first-script/) is the same walk for a resource: a manifest, a client script, and a server script.
+
+`nil` means there is no value. An export that did not find what you asked for returns `nil`. On the server, `source` is the client id of the player who triggered the event. It changes every time they join.
 
 ## Where the file runs
 
@@ -38,7 +40,7 @@ server_scripts {
 }
 ```
 
-Clients do not talk to each other. One player's game sends a message to the server. The server sends a message to the player who should see the result. That is [events](/guides/events).
+Clients do not talk to each other. One client sends an event to the server. The server sends an event to the client who should see the result. That is [events](/guides/events).
 
 ## Locals
 

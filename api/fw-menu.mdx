@@ -1,9 +1,9 @@
 ---
 title: "fw_menu"
-description: "Runs in the player's game. Open a menu on their screen. This does not know about accounts, characters, or items."
+description: "Runs on the client. Open a menu on their screen. This does not know about accounts, characters, or items."
 ---
 
-Runs in the player's game. Open a menu on their screen. This does not know about accounts, characters, or items.
+Runs on the client. Open a menu on their screen. This does not know about accounts, characters, or items.
 
 There is no code on the server. Every call on this page is an export from a client script, so call it from your own client script — not from the server.
 
@@ -11,17 +11,17 @@ There is no code on the server. Every call on this page is an export from a clie
 
 ### GetMenuData
 
-Runs in the player's game. This is the menu. Ask for it once, in the script that opens menus.
+Runs on the client. This is the menu. Ask for it once, in the script that opens menus.
 
 ```lua
---- The menu for this player's game.
+--- The menu for this client.
 ---@return table MenuData
 local MenuData = exports.fw_menu:GetMenuData()
 ```
 
 This is the same table `fw_menu` uses for itself, not a copy. Stick to the calls on this page. Other fields you might see on it are for `fw_menu`'s own bookkeeping and can change without notice.
 
-The same menu is also available from the message `fw_menu:getData`. That message stays in the player's game. Your script sends it, and passes a function. The menu calls that function with the menu table. `GetMenuData` is the easier way. Use the message only if you cannot call the export yet.
+The same menu is also available from the event `fw_menu:getData`. That event stays on the client. Your script sends it, and passes a function. The menu calls that function with the menu table. `GetMenuData` is the easier way. Use the event only if you cannot call the export yet.
 
 ```lua
 TriggerEvent('fw_menu:getData', function(MenuData)
@@ -156,7 +156,7 @@ The functions you passed to `Open` receive `menu`. `GetOpened` gives you the sam
 | Call | Returns |
 | --- | --- |
 | `MenuData.IsOpen(menuType, namespace, name)` | True when that menu is open. |
-| `MenuData.GetOpened(menuType, namespace, name)` | The open menu, or nothing. |
+| `MenuData.GetOpened(menuType, namespace, name)` | The open menu, or nil. |
 | `MenuData.GetOpenedMenus()` | A list of open menus. |
 | `MenuData.Close(menuType, namespace, name)` | Closes that menu. |
 | `MenuData.CloseAll()` | Closes every open menu. |
@@ -166,7 +166,7 @@ The functions you passed to `Open` receive `menu`. `GetOpened` gives you the sam
 
 ## When the player closes the menu
 
-`fw_menu:closed` stays in the player's game. Your script hears it only if it is already running. It has no extra information.
+`fw_menu:closed` stays on the client. Your script hears it only if it is already running. It has no extra information.
 
 It is sent at the moment the player presses Backspace to back out of the menu screen — the same moment the `cancel` function you gave that menu runs. It is not sent when your own script closes a menu by calling `menu.close()`, `MenuData.Close()`, or `MenuData.CloseAll()`. Use it for something like restoring the player's cursor or HUD in general, not as a per-menu close notice — for that, use the `cancel` or `close` function you gave `Open`.
 
@@ -177,10 +177,10 @@ end)
 
 ## SetScale
 
-Runs in the player's game. Exists to change how large the menu is drawn, with `1` meant as the normal size. In the current menu screen nothing is listening for this message yet, so calling it does not change anything the player sees today. It is safe to call — it will not error.
+Runs on the client. Exists to change how large the menu is drawn, with `1` meant as the normal size. In the current menu screen nothing is listening for this event yet, so calling it does not change anything the player sees today. It is safe to call — it will not error.
 
 ```lua
---- Sends a resize message to the menu screen. Has no visible effect until the menu screen listens for it.
+--- Sends a resize event to the menu screen. Has no visible effect until the menu screen listens for it.
 ---@param scale number
 exports.fw_menu:SetScale(scale)
 ```

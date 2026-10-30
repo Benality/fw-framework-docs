@@ -1,9 +1,9 @@
 ---
 title: "vorp_lib"
-description: "Runs in the player's game. This page is the loading prompt, the revolver cylinder at the bottom right, a map blip, and copying a line to the clipboard...."
+description: "Runs on the client. This page is the loading prompt, the revolver cylinder at the bottom right, a map blip, and copying a line to the clipboard...."
 ---
 
-Runs in the player's game. This page is the loading prompt, the revolver cylinder at the bottom right, a map blip, and copying a line to the clipboard. The game has one of these prompts. Starting it again only changes the words.
+Runs on the client. This page is the loading prompt, the revolver cylinder at the bottom right, a map blip, and copying a line to the clipboard. The game has one of these prompts. Starting it again only changes the words.
 
 `vorp_lib` has to be started before the script that calls it.
 
@@ -11,7 +11,7 @@ Runs in the player's game. This page is the loading prompt, the revolver cylinde
 
 ```lua
 --- Shows the loading prompt. A string is the words. A table may also set how long it stays, in milliseconds.
---- No duration means it stays until SpinnerStop. Nothing comes back.
+--- No duration means it stays until SpinnerStop. Returns nil.
 ---@param data string|table|nil
 ---@return nil
 exports.vorp_lib:SpinnerStart(data)
@@ -44,7 +44,7 @@ Call this when the wait is over, including when the player cancels it. Stopping 
 ## copyToClipBoard
 
 ```lua
---- Copies one line onto the player's clipboard. Nothing comes back.
+--- Copies one line onto the player's clipboard. Returns nil.
 --- A value that is not text is ignored.
 ---@param text string
 ---@return nil
@@ -55,11 +55,11 @@ exports.vorp_lib:copyToClipBoard(text)
 exports.vorp_lib:copyToClipBoard('vector4(-324.16, 803.62, 117.88, 272.93)')
 ```
 
-Call this from the player's game. `text` is the exact line they can paste. The admin menu uses it when an admin copies where they are standing.
+Call this from the client. `text` is the exact line they can paste. The admin menu uses it when an admin copies where they are standing.
 
 ## Blips
 
-A blip is a mark on the map. You create it from the player's game, in the resource that owns the place. `Import` loads the blip module from `vorp_lib`. `vorp_lib` has to be started first.
+A blip is a mark on the map. You create it from the client, in the resource that owns the place. `Import` loads the blip module from `vorp_lib`. `vorp_lib` has to be started first.
 
 `Options.card` is the card that opens when the player hovers that blip on the map. Selecting the blip keeps the card open and writes `footer` on the line that usually names the town. Hovering does not change that line. A blip with no `card` is the same mark as before.
 

@@ -11,13 +11,13 @@ A bag on the ground keeps its own balance. A chest does too. Those dollars are n
 
 One pile holds at most 500 dollars. A larger amount is several piles. `AddCash` fills a pile up to 500, then starts another pile. Each new pile needs an empty cell. 1,200 dollars is two piles of 500 and one of 200.
 
-`source` is the player's number for this visit. An amount is a whole number of dollars. Nothing, written as `nil`, means the call did not do it, and the second value is the reason.
+`source` is the client id of the player who triggered the event. It changes every time they join. An amount is a whole number of dollars. `nil` means the export did not do it, and the second value is the reason.
 
 A bank is a later script. It will take these piles and keep a balance of its own.
 
 Ask `IsReady` first. The server can say `fw_money` has started a moment before the tables are ready. Keep asking for about two minutes.
 
-## Calls
+## Exports
 
 ### IsReady
 
@@ -39,12 +39,12 @@ end
 
 Runs on the server. The dollars this character can spend. A pouch still in the satchel counts. A bag on the ground, or a chest, does not. The first time you ask, the balance is created at 0.
 
-Nothing when no character is selected, or the balance cannot be read.
+Nil when no character is selected, or the balance cannot be read.
 
 ```lua
 --- The dollars this character can spend.
 --- A pouch still in the satchel counts. A bag on the ground, or a chest, does not.
---- Nothing when no character is selected.
+--- Nil when no character is selected.
 ---@param source integer
 ---@return integer|nil amount
 ---@return string|nil err
@@ -113,7 +113,7 @@ Runs on the server. The same as `GetCash` for a named currency. `cash` is the on
 
 ```lua
 --- The spendable balance for one currency. Same rules as `GetCash`.
---- Nothing when no character is selected, or the name is not a currency.
+--- Nil when no character is selected, or the name is not a currency.
 ---@param source integer
 ---@param name string
 ---@return integer|nil amount
@@ -194,7 +194,7 @@ fw_givemoney 1 200
 fw_cash 1
 ```
 
-## Calls the satchel uses
+## Exports the satchel uses
 
 A counter does not call these. It takes the cash pile on Sell. The satchel uses these when a pile moves between a character and a storage. The amount is the new balance, including 0.
 

@@ -5,13 +5,13 @@ description: "Offer an errand at a store. Finishing a step raises that store's r
 
 Runs on the server. A player reads the errand on the Work tab of the store counter, next to Goods. The server checks where they are standing, what is in the satchel, and whether that step was already finished. The client's ask does not grant the reward.
 
-`source` is the player's number for this visit. A class is a reputation name from [fw_reputation](/api/fw-reputation), such as `general`. The standing words that class already uses are Unknown, Recognized, Trusted, and Established. This resource does not keep a second score. It calls `Add` on fw_reputation.
+`source` is the client id of the player who triggered the event. It changes every time they join. A class is a reputation name from [fw_reputation](/api/fw-reputation), such as `general`. The standing words that class already uses are Unknown, Recognized, Trusted, and Established. This resource does not keep a second score. It calls `Add` on fw_reputation.
 
 An errand belongs to one store, such as `ValentineGeneral`. The reputation it adds belongs to the class on the errand, which for Worths is `general`. A purchase adds its own point. That amount is `FwStoresConfig.purchasePoints` on [fw_stores](/api/fw-stores), and it is the same at every shop.
 
-Nothing, written as `nil`, means the call did not do it, and the second value is the reason. `That errand is already registered.` means the id was used once. `An errand needs a step.` means the list of steps was empty. `The errands are not ready` means the table is not ready yet.
+`nil` means the export did not do it, and the second value is the reason. `That errand is already registered.` means the id was used once. `An errand needs a step.` means the list of steps was empty. `The errands are not ready` means the table is not ready yet.
 
-Ask `IsReady` first. The server can say `fw_missions` has started a moment before the table is ready. Keep asking for about two minutes. You can also listen for `fw_missions:ready`. That message is not queued. Your script has to be running already, or you missed it.
+Ask `IsReady` first. The server can say `fw_missions` has started a moment before the table is ready. Keep asking for about two minutes. You can also listen for `fw_missions:ready`. That event is not queued. Your script has to be running already, or you missed it.
 
 Start it after `fw_inventory`, `fw_reputation`, and `fw_stores`.
 
@@ -47,7 +47,7 @@ The bag is checked, the delivery comes out, the reward goes in, the standing goe
 
 Worths in Valentine already offers The Short Order. The steps add 5, 5, 8, 8, and 4. After the beans, the score is 26, which is Recognized. Trusted stays at 75.
 
-## Calls
+## Exports
 
 ### IsReady
 
@@ -69,7 +69,7 @@ end
 
 Runs on the server. Stores one errand. Yes when it was stored.
 
-Nothing when the id is already used, or a field cannot be used. The second value is the reason.
+Nil when the id is already used, or a field cannot be used. The second value is the reason.
 
 ```lua
 --- Stores one errand. False when the id is already registered or a field cannot be used.
@@ -102,7 +102,7 @@ if not ok then
 end
 ```
 
-## Messages
+## Events
 
 ### fw_missions:ready
 
@@ -133,7 +133,7 @@ Networked. The hold prompt sends it. `missionId` is the errand they are on. The 
 
 ### fw_missions:request
 
-Networked. The player's game sends it after this resource starts, so a mark can come back without a new character select. No reward.
+Networked. The client sends it after this resource starts, so a mark can come back without a new character select. No reward.
 
 ### fw_missions:work
 

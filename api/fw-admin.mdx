@@ -16,9 +16,9 @@ add_principal identifier.license:YOUR_LICENSE group.admin
 
 `fw.admin` passes every admin check, including a smaller one such as `fw.admin.kick`. A helper who should only kick gets that smaller permission, and does not get `fw.admin`.
 
-Type `fw_admin` and a player number in the server window. It writes INFO lines with that player's ids so you can copy the `license:` line.
+Type `fw_admin` and a `source` in the server window. It writes INFO lines with that player's ids so you can copy the `license:` line.
 
-## Calls
+## Exports
 
 ### IsReady
 
@@ -34,16 +34,16 @@ exports.fw_admin:IsReady()
 
 ### IsAdmin
 
-Runs on the server. Yes for the server window, and yes for a player who has `fw.admin`. No for everyone else, and no if you pass something that is not a real player number.
+Runs on the server. Yes for the server window, and yes for a player who has `fw.admin`. No for everyone else, and no if you pass something that is not a real `source`.
 
 ```lua
 --- True when this player may use admin tools.
----@param source integer player number, or 0 for the server window
+---@param source integer `source`, or 0 for the server window
 ---@return boolean
 exports.fw_admin:IsAdmin(source)
 ```
 
-`source` is the player's number for this visit. Use `0` when the check is for the server window itself, not a player.
+`source` is the client id of the player who triggered the event. It changes every time they join. Use `0` when the check is for the server window itself, not a player.
 
 ```lua
 if not exports.fw_admin:IsAdmin(source) then
@@ -57,7 +57,7 @@ Runs on the server. Yes when the player has `fw.admin`, or has the one smaller p
 
 ```lua
 --- True when the player has fw.admin, or the smaller permission you pass.
----@param source integer player number, or 0 for the server window
+---@param source integer `source`, or 0 for the server window
 ---@param permission string|nil such as 'fw.admin.kick'
 ---@return boolean
 exports.fw_admin:HasPermission(source, permission)
@@ -133,9 +133,9 @@ add_ace group.helper fw.admin.kick allow
 add_principal identifier.license:YOUR_LICENSE group.helper
 ```
 
-## Messages
+## Events
 
-These are networked events, sent with `RegisterNetEvent` and `TriggerServerEvent` / `TriggerClientEvent` — not `AddEventHandler`. None of them are queued: the listening side has to already be running when the message is sent, or it is simply missed. fw_admin's own client and server scripts are always running together while the resource is started, so this mostly matters if your own script triggers one of them.
+These are networked events, sent with `RegisterNetEvent` and `TriggerServerEvent` / `TriggerClientEvent` — not `AddEventHandler`. None of them are queued: the listening side has to already be running when the event is sent, or it is simply missed. fw_admin's own client and server scripts are always running together while the resource is started, so this mostly matters if your own script triggers one of them.
 
 A new admin tool should check `IsAdmin` or `HasPermission` itself first, then do its own work. Prefer `AddItem`, `AddCash`, and `SetBan` when you are giving or banning from your own script. The events below belong to the screen. The server ignores an ask when the permission is no.
 
@@ -150,7 +150,7 @@ TriggerClientEvent('fw_admin:openMenu', source)
 
 ### fw_admin:openMenu
 
-Networked, server to the player's game. Opens the admin screen for that player. Their game shows "The admin screen is not running." in the log instead if that screen has not loaded.
+Networked, server to the client. Opens the admin screen for that player. Their game shows "The admin screen is not running." in the log instead if that screen has not loaded.
 
 ```lua
 --- Networked. Trigger this from the server once you have already checked IsAdmin.
@@ -173,7 +173,7 @@ TriggerClientEvent('fw_admin:openSelf', source)
 
 ### fw_admin:log
 
-Networked, server to that player's game. The screen writes the same line in the server window and in their F8 log. When the screen is open, that line is also shown under the panel. `level` is `info`, `warn`, or `error`.
+Networked, server to that client. The screen writes the same line in the server window and in their F8 log. When the screen is open, that line is also shown under the panel. `level` is `info`, `warn`, or `error`.
 
 ```lua
 --- Networked. Sent by fw_admin with a line for that player's F8 log.
@@ -184,7 +184,7 @@ TriggerClientEvent('fw_admin:log', source, message, level)
 
 ### Asks from the screen
 
-Networked, the player's game to the server. `target` is the other player's number for this visit. The server reads where people are standing itself. Send back cannot be aimed at a spot the game invented.
+Networked, the client to the server. `target` is the other `source`. The server reads where people are standing itself. Send back cannot be aimed at a spot the game invented.
 
 | Event | Permission | Arguments |
 | --- | --- | --- |
@@ -231,7 +231,7 @@ TriggerServerEvent('fw_admin:ban', target, hours)
 TriggerServerEvent('fw_admin:self', tool, force)
 ```
 
-### Replies to the player's game
+### Replies to the client
 
 Networked, server to one player. The screen sends these after the check. Another script should not trigger them. If you need to move, give, or ban, do that in your own script with your own check.
 
@@ -260,7 +260,7 @@ TriggerClientEvent('fw_admin:doMove', source, x, y, z, heading)
 
 ### fw_admin:teleportWaypoint
 
-Networked, player's game to the server. Asks to teleport that player to their own map waypoint. The server ignores it unless `IsAdmin` is yes for whoever sent it. The admin screen sends this itself. `/tpm` checks `fw.admin` and then does the same move.
+Networked, client to the server. Asks to teleport that player to their own map waypoint. The server ignores it unless `IsAdmin` is yes for whoever sent it. The admin screen sends this itself. `/tpm` checks `fw.admin` and then does the same move.
 
 ```lua
 --- Networked. Sent by the admin screen. The server ignores it unless IsAdmin is yes for the sender.
@@ -269,7 +269,7 @@ TriggerServerEvent('fw_admin:teleportWaypoint')
 
 ### fw_admin:doTeleportWaypoint
 
-Networked, server to the player's game. Moves that player to their own map waypoint. It is sent back automatically after a `fw_admin:teleportWaypoint` from an admin. If that player has no waypoint set, or the ground under it cannot be found, their F8 log says so and nothing moves.
+Networked, server to the client. Moves that player to their own map waypoint. It is sent back automatically after a `fw_admin:teleportWaypoint` from an admin. If that player has no waypoint set, or the ground under it cannot be found, their F8 log says so and nothing moves.
 
 ```lua
 --- Networked. Sent automatically by fw_admin after a valid fw_admin:teleportWaypoint.
