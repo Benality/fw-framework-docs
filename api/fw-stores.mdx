@@ -235,7 +235,7 @@ Running it again closes the bag. This event opens the screen. Settle is what cha
 
 `/admin`, then Stores, is the screen for this. It needs `fw.admin`. Saving also needs `fw.admin.stores`. `fw.admin` already passes that check, so a current admin does not need a new line in `permissions.cfg`.
 
-Search the list, then choose a shop. The editor opens in a window over the list. Close and Escape leave it without saving. The window is the name, the type, the town, the clerk model and voice, the hours, and whether the shop is open. The place is x, y, z, and the heading. Here fills those from where you are standing. The shelf is each item, its price, and the standing that may buy it. Add trade under a pile lists the items that pay for it instead of dollars, and how many of each. Leave the standing on Anyone and every visit may buy that pile. Buyback is the item and the dollars the clerk pays for one. Save writes the row. Open store closes the admin screen and opens that counter. If someone already holds it, the counter does not open. Reset shelf copies that type's saved shelf onto this shop only. Other shops keep what they already have. Delete asks first.
+Search the list, then choose a shop. The editor opens in a window over the list. Close and Escape leave it without saving. The window is the name, the type, the town, the clerk model and voice, the hours, and whether the shop is open. The place is x, y, z, and the heading. Here fills those from where you are standing. The shelf is each item, its price, and the standing that may buy it. Add trade under a pile lists the items that pay for it instead of dollars, and how many of each. Leave the standing on Anyone and every visit may buy that pile. Buyback is the item and the dollars the clerk pays for one. Save writes the row. Open store closes the admin screen and opens that counter. If someone already holds it, the counter does not open. Apply template copies the shelf you pick onto this shop. Reset shelf copies the shelf named by this shop's type. Other shops keep what they already have. Delete asks first.
 
 Templates, beside New shop, is the shared shelves. The list is the shelf id and how many items are on it. New template asks for an id, such as `general`, and starts empty. Save writes that shelf. Delete asks first. A type that still names a deleted shelf has nothing to copy until you add that id again.
 
@@ -387,6 +387,24 @@ if result == nil then
 end
 ```
 
+`AdminApplyTemplate` copies one saved shelf onto this shop. `templateId` is the shelf id, such as `general`. Other shops stay as they are. The return is the list plus that shop. `That shelf is not in the list.` means that id is not a saved shelf.
+
+```lua
+---@param source integer
+---@param storeId string
+---@param templateId string
+---@return table|nil result
+---@return string|nil err
+exports.fw_stores:AdminApplyTemplate(source, storeId, templateId)
+```
+
+```lua
+local result, err = exports.fw_stores:AdminApplyTemplate(source, 'ValentineGeneral', 'general')
+if result == nil then
+    return
+end
+```
+
 `AdminTemplateList` is the saved shelves. Each row is the id and how many items are on it. The return is the same list the shop screen uses, with `templates` filled in.
 
 ```lua
@@ -489,7 +507,7 @@ The clerk and the counter use their own messages. They are networked, and they a
 
 ## List prices
 
-These numbers are the shared shelf that a new database copies in once. They are not what a shop is selling until New shop or Reset shelf copies that shelf, or you save items on that shop. An empty counter has nothing to buy or sell.
+These numbers are the shared shelf that a new database copies in once. They are not what a shop is selling until you apply that shelf, create a shop, or save items on that shop. An empty counter has nothing to buy or sell.
 
 The number is the list price. An Unknown visit pays that many dollars. Recognized pays 95 percent, Trusted 90 percent, and Established 85 percent, rounded to a whole dollar. A price of at least 1 dollar stays at least 1 dollar.
 
