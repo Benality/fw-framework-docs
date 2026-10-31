@@ -180,6 +180,7 @@ CREATE TABLE IF NOT EXISTS `fw_items` (
   `rotate` tinyint(1) NOT NULL DEFAULT 0,
   `kit` varchar(16) NOT NULL DEFAULT '',
   `hash` varchar(48) NOT NULL DEFAULT '',
+  `detail` json NULL,
   PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
@@ -196,8 +197,9 @@ CREATE TABLE IF NOT EXISTS `fw_items` (
 | `rotate` | `1` when the player can turn it. |
 | `kit` | Set only on a weapon item. Which equip slot it fills: `lasso`, `binoculars`, `lantern`, `bow`, `revolver`, `pistol`, `longarm`, `melee`, or `fishingrod`. Empty string on a non-weapon item. |
 | `hash` | Set only on a weapon item. The game's weapon name, such as `WEAPON_REVOLVER_CATTLEMAN`. Empty string on a non-weapon item. |
+| `detail` | JSON for the fields that are not columns: `image`, `rarity`, `mission`, `currency`, `chamber`, `rounds`, `ammo`, `container`, `context`, and `usable`. NULL on a plain item. A pouch's grid is `container` inside this document. |
 
-An older version of this table had an `image` column instead of `kit` and `hash`. That column is dropped on start if it is still there. The picture is `fw_inventory/images/<name>.png`. An item file can set `image` to another name in that folder, such as `bill_stack_single` for dollars. That name stays on the item file. It is not a column. `rarity` and `mission` stay on the item file too, and they are copied back when the files load. Files in `items/` are written into this table on start and on `fw_items_reload`. A row inserted for an admin tool stays until it is deleted. The field list and the insert example are in [fw_inventory](/api/fw-inventory). The `container` block on a pouch is not a column. It stays on the item file and is merged back onto the catalog when the files load.
+An older version of this table had an `image` column instead of `kit` and `hash`. That column is dropped on start if it is still there. The picture is `fw_inventory/images/<name>.png`. Set `image` inside `detail` when the picture has another name, such as `bill_stack_single` for dollars. The catalog is this table. `fw_items_reload` reads it again. The field list and the insert example are in [fw_inventory](/api/fw-inventory).
 
 ## `fw_storage`
 

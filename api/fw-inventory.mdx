@@ -79,7 +79,7 @@ exports.fw_inventory:OpenRegistered(source, 'chest:valentine_1')
 
 A pouch is an item in the bag. When the player uses it, a second grid opens, the same kind of grid as a chest. You do not call `OpenStorage` for a pouch. The item does that.
 
-You add the pouch the same way you add any other item: a file in `items/`, or `RegisterItem`. The extra part is `container`.
+You add the pouch the same way you add any other item: a row in `fw_items`, or `RegisterItem`. The extra part is `container`. On a row you write yourself, that block is the `container` key inside `detail`. [Item row](#item-row) shows the insert.
 
 ```lua
 local ok, err = exports.fw_inventory:RegisterItem({
@@ -103,10 +103,6 @@ if not ok then
 end
 ```
 
-The same fields work in an item file. The name is the key, so you leave `name` out of the file. The [item file](#item-file) section shows that shape.
-
-`items/container.lua` already ships with a pouch named `herb_pouch`, 2 by 2 in the bag with a 6-by-10 grid inside that only takes herbs. You can give that one to a player without registering anything, the same way you'd give any other item that ships in that folder.
-
 What you pass:
 
 - `category` on the pouch itself is `container`. That is the filter on the left of the bag. The list inside `container.categories` is what the pouch accepts.
@@ -114,7 +110,7 @@ What you pass:
 - `container.width` and `container.height` are how many squares are inside the pouch, from 1 to 24. Here that is 4 by 4.
 - `container.label` is the title of that second grid.
 - `container.categories` follows the same rules as a chest. Leave it out and the pouch takes anything. `{ 'herbs' }` takes herbs only. A pouch still cannot hold another pouch. The player sees `A container cannot go in there.`
-- `container.contents` is optional. The same list as a chest: `{ name = 'bread', count = 2 }`. The first time that pouch is opened, those piles are packed in. After that it is a normal pouch. The player can put piles back in. Opening it again does not pack the list a second time. Dollars in that list count on the character who is carrying the pouch, the same way dollars already in a carried pouch do. A name that is not an item, a container, a mission item, the wrong category, or a pile that does not fit makes that pouch refuse to open. The server window shows the reason when the item files load.
+- `container.contents` is optional. The same list as a chest: `{ name = 'bread', count = 2 }`. The first time that pouch is opened, those piles are packed in. After that it is a normal pouch. The player can put piles back in. Opening it again does not pack the list a second time. Dollars in that list count on the character who is carrying the pouch, the same way dollars already in a carried pouch do. A name that is not an item, a container, a mission item, the wrong category, or a pile that does not fit makes that pouch refuse to open. The server window shows the reason when the item list loads.
 - A pouch always holds a count of 1. Two pouches cannot share one square, because each one has its own contents.
 
 A picture named `seed_pouch.png` goes in `fw_inventory/images/`. A new picture shows up after `ensure fw_inventory`.
@@ -122,7 +118,7 @@ A picture named `seed_pouch.png` goes in `fw_inventory/images/`. A new picture s
 Give it to the player with `AddItem`:
 
 ```lua
-local ok, err = exports.fw_inventory:AddItem(source, 'herb_pouch', 1)
+local ok, err = exports.fw_inventory:AddItem(source, 'seed_pouch', 1)
 if not ok then
     print(err)
     return
@@ -149,30 +145,18 @@ Drop sets the pouch on the ground in front of the player. The contents stay, and
 
 A parcel is a pouch the player only takes things out of. It is for a starter package, or anything else you hand over already packed. Give it with `AddItem`, the same way as any other item. This does not hand one out when a character is created. Your script does that when you want it to.
 
-```lua
-starter_parcel = {
-    label = 'Starter parcel',
-    category = 'container',
-    width = 2,
-    height = 2,
-    stack = 1,
-    description = 'A parcel packed for a new arrival.',
-    container = {
-        label = 'Starter parcel',
-        width = 4,
-        height = 4,
-        parcel = true,
-        give = false,
-        contents = {
-            { name = 'bread', count = 2 },
-            { name = 'canned_beans', count = 2 },
-            { name = 'biscuits', count = 1 },
-        },
-    },
-}
+```sql
+INSERT INTO fw_items (name, label, description, width, height, stack, weapon, item_group, rotate, kit, hash, detail)
+VALUES (
+    'starter_parcel',
+    'Starter parcel',
+    'A parcel packed for a new arrival.',
+    2, 2, 1, 0, 'container', 0, '', '',
+    '{"container":{"label":"Starter parcel","width":4,"height":4,"parcel":true,"give":false,"contents":[{"name":"bread","count":2},{"name":"canned_beans","count":2},{"name":"biscuits","count":1}]}}'
+);
 ```
 
-`items/container.lua` already has that parcel. A picture named `starter_parcel.png` belongs in `fw_inventory/images/`.
+Run `fw_items_reload` after the insert, or restart `fw_inventory`. The names in `contents` have to be rows already. A picture named `starter_parcel.png` belongs in `fw_inventory/images/`.
 
 ```lua
 local ok, err = exports.fw_inventory:AddItem(source, 'starter_parcel', 1)
@@ -186,7 +170,7 @@ What you pass, on top of a pouch:
 
 - `container.parcel = true` makes it a parcel. Leave it out, or set it false, and the item is a normal pouch.
 - `container.give = true` lets the player give that parcel, or put it on a trade offer. Leave it out and the parcel stays with them. Give is ignored on a pouch that is not a parcel. The player sees `That has to stay with you.`
-- `container.contents` is required on a parcel. At least one `{ name, count }`. The same rules as a pouch: a real item, not a container, not a mission item, a category the parcel accepts, and the piles have to fit. A parcel with no list, or a list that cannot be packed, refuses to open. The server window shows the reason when the item files load.
+- `container.contents` is required on a parcel. At least one `{ name, count }`. The same rules as a pouch: a real item, not a container, not a mission item, a category the parcel accepts, and the piles have to fit. A parcel with no list, or a list that cannot be packed, refuses to open. The server window shows the reason when the item list loads.
 
 The player right-clicks the parcel and chooses Open. The piles are packed the first time. They drag what they want into the bag. Dragging something from the bag into the parcel is refused with `You can only take things out of that.` Moving piles around inside the parcel still works.
 
@@ -214,7 +198,7 @@ end
 
 ### RegisterItem
 
-Runs on the server. Adds an item type, or replaces one that already exists. The same fields as an item file, plus `name`. Connected players get the new definition without a restart.
+Runs on the server. Adds an item type, or replaces one that already exists. The same fields as an [item row](#item-row). `name` is in the table you pass. Connected players get the new definition without a restart. The row is written, including `detail`, so a restart keeps it.
 
 ```lua
 --- Adds or replaces an item type.
@@ -241,7 +225,7 @@ if not ok then
 end
 ```
 
-A later reload from `items/` updates a name that also has a file. A name that exists only from this call is left in place, because it was already written to the database the first time you registered it.
+`fw_items_reload` reads `fw_items` again. This call already wrote the row, so the item is still there after a reload or a restart.
 
 `usable` is `true` or left out. Left out means the item is not usable, so the right-click menu leaves Use off. Set `usable = true` when the player should see Use. `RegisterUsable` turns Use on as well, for as long as that callback stays registered.
 
@@ -380,7 +364,7 @@ if not ok then
 end
 ```
 
-If `name` is not a registered item, but it looks like a known RDR3 weapon, such as `weapon_revolver_cattleman`, this resource creates that item type for you on the spot and then gives it. Any other unknown name fails with `Unknown item.` — register it first with `RegisterItem` or a file in `items/`.
+If `name` is not a registered item, but it looks like a known RDR3 weapon, such as `weapon_revolver_cattleman`, this resource creates that item type for you on the spot and then gives it. Any other unknown name fails with `Unknown item.` Insert the row first, or call `RegisterItem`.
 
 ### RemoveItem
 
@@ -933,46 +917,50 @@ This resource does not set one. The bag screen reads `fwInventoryBusy` from [fw_
 
 | Command | Where | What it does |
 | --- | --- | --- |
-| `fw_items_reload` | Server console, or `/fw_items_reload` by an in-game admin | Reads `items/` again and re-saves every item. A player who is not an admin gets `You are not an admin.` in the log. An admin gets an INFO line for how many items were reloaded. |
+| `fw_items_reload` | Server console, or `/fw_items_reload` by an in-game admin | Reads `fw_items` again. An insert you just made shows up in open satchels. A player who is not an admin gets `You are not an admin.` in the log. An admin gets an INFO line for how many items were reloaded. |
 | `fw_giveitem <serverId> <name> [count]` | Server console only | Calls `AddItem` for that player. A player who types it gets a warning in the log. The server window gets the same warning. |
 | `fw_gridbonus <serverId> <key> <extraWidth> <extraHeight>` | Server console only | Calls `SetGridBonus` for that player. Same console-only behavior as `fw_giveitem`. |
 
-## Item file
+## Item row
 
-Put a Lua file in `resources/[framework]/fw_inventory/items/`. The file returns a map. The key is the item name: lowercase letters, digits, and underscores, up to 32 characters.
+An item is a row in `fw_items`. `name` is lowercase letters, digits, and underscores, up to 32 characters. After the insert, run `fw_items_reload`, or restart `fw_inventory`, so open satchels pick it up.
 
-```lua
-return {
-    dried_meat = {
-        label = 'Dried Meat',
-        category = 'food',
-        width = 1,
-        height = 1,
-        stack = 20,
-        description = 'Smoked and dried. Keeps for a long time.',
-    },
-}
+```sql
+INSERT INTO fw_items (name, label, description, width, height, stack, weapon, item_group, rotate, kit, hash, detail)
+VALUES (
+    'dried_meat',
+    'Dried Meat',
+    'Smoked and dried. Keeps for a long time.',
+    1, 1, 20, 0, 'food', 0, '', '',
+    NULL
+);
 ```
 
-| Field | Default | Meaning |
-| --- | --- | --- |
-| `label` | The name | Text in the satchel. Clipped to 48 characters. |
-| `description` | empty | Line in the satchel. Clipped to 200 characters. |
-| `width`, `height` | Required, 1–12 | How many cells the item covers before it is turned. |
-| `category` | Required | `ammo`, `animals`, `documents`, `food`, `herbs`, `horse`, `medical`, `tools`, `valuables`, `currency`, `weapons`, `materials`, or `container`. A pouch uses `container`. Dollars use `currency`. |
-| `stack` | 1 | How many copies share one footprint. Maximum 1000. |
-| `weapon` | false | When true, the item never stacks. |
-| `rotate` | false | The player can turn it. |
-| `kit` | none | Which weapon slot can hold it: `revolver`, `pistol`, `longarm`, `bow`, `lasso`, `melee`, `lantern`, `binoculars`, or `fishingrod`. |
-| `hash` | none | Weapon name, such as `WEAPON_REVOLVER_CATTLEMAN`. Required when `kit` is set. |
-| `container` | none | Opens a second grid when the player right-clicks the item and chooses Open. Stack is forced to 1. `parcel`, `give`, and `contents` are described in [A parcel](#a-parcel). `contents` on a pouch is described in [A pouch](#a-pouch-or-any-item-that-holds-other-items). |
-| `usable` | false | `true` puts Use on the right-click menu. Left out, or `false`, leaves Use off unless `RegisterUsable` has a callback for this name. A pouch still shows Open. |
-| `context` | none | Extra right-click rows. A list of `{ id = 'sharpen', label = 'Sharpen' }`, or id strings. The player’s choice arrives as `fw_inventory:contextOption`. |
-| `ammo` | none | A box or a bundle of arrows. `key` is the game ammo name, such as `AMMO_REVOLVER`. `fits` is which guns take it: `revolver`, `pistol`, `repeater`, `rifle`, `elephant`, `shotgun`, `arrow`, or `varmint`. `max` is the most of that kind on the character, from 1 to 999. `refill` is how many one use adds, and it cannot be higher than `max`. `instant` skips the open wait. Arrows set it. `stack` is how many of the item the satchel can hold. |
-| `chamber` | filled in for shipped guns | Which `fits` value this gun accepts. Set it yourself on a new gun. |
-| `rounds` | filled in for shipped guns | How many rounds that gun holds. A Cattleman is 6. A bow is 20. From 1 to 100. |
-| `rarity` | ordinary | `uncommon`, `rare`, `epic`, or `legendary`. Leave it out for an ordinary item. |
-| `mission` | no | `true` when the item has to stay in the satchel. |
+A script inserts the same item with `RegisterItem`. That writes the row for you. `category` in that call is the `item_group` column. `weapon` and `rotate` are `1` or `0` in the table, and `true` or `false` in the call. `kit` and `hash` are empty strings when the item is not a gun.
+
+`detail` is JSON. Leave it NULL on a plain item. A pouch, a parcel, ammo, a picture name, a rarity, a mission flag, a context row, and `usable` live there.
+
+| Field | Where | Default | Meaning |
+| --- | --- | --- | --- |
+| `label` | column | The name | Text in the satchel. Clipped to 48 characters. |
+| `description` | column | empty | Line in the satchel. Clipped to 200 characters. |
+| `width`, `height` | column | Required, 1–12 | How many cells the item covers before it is turned. |
+| `item_group` | column | Required | `ammo`, `animals`, `documents`, `food`, `herbs`, `horse`, `medical`, `tools`, `valuables`, `currency`, `weapons`, `materials`, or `container`. A pouch uses `container`. Dollars use `currency`. `RegisterItem` calls this `category`. |
+| `stack` | column | 1 | How many copies share one footprint. Maximum 1000. |
+| `weapon` | column | 0 | `1` when the item never stacks. |
+| `rotate` | column | 0 | `1` when the player can turn it. |
+| `kit` | column | empty | Which weapon slot can hold it: `revolver`, `pistol`, `longarm`, `bow`, `lasso`, `melee`, `lantern`, `binoculars`, or `fishingrod`. |
+| `hash` | column | empty | Weapon name, such as `WEAPON_REVOLVER_CATTLEMAN`. Required when `kit` is set. |
+| `container` | `detail` | none | Opens a second grid when the player right-clicks the item and chooses Open. Stack is forced to 1. `parcel`, `give`, and `contents` are described in [A parcel](#a-parcel). `contents` on a pouch is described in [A pouch](#a-pouch-or-any-item-that-holds-other-items). |
+| `usable` | `detail` | false | `true` puts Use on the right-click menu. Left out, or `false`, leaves Use off unless `RegisterUsable` has a callback for this name. A pouch still shows Open. The callback itself is `RegisterUsable`. It is not stored in the row. |
+| `context` | `detail` | none | Extra right-click rows. A list of `{ "id": "sharpen", "label": "Sharpen" }`. The player’s choice arrives as `fw_inventory:contextOption`. The words are stored. The work those words do is the event another resource hears. |
+| `ammo` | `detail` | none | A box or a bundle of arrows. `key` is the game ammo name, such as `AMMO_REVOLVER`. `fits` is which guns take it: `revolver`, `pistol`, `repeater`, `rifle`, `elephant`, `shotgun`, `arrow`, or `varmint`. `max` is the most of that kind on the character, from 1 to 999. `refill` is how many one use adds, and it cannot be higher than `max`. `instant` skips the open wait. Arrows set it. `stack` on the row is how many of the item the satchel can hold. |
+| `chamber` | `detail` | filled in for a known gun | Which `fits` value this gun accepts. Leave it out on a known gun and the weapon list fills it. Set it yourself on a gun that list does not know. |
+| `rounds` | `detail` | filled in for a known gun | How many rounds that gun holds. A Cattleman is 6. A bow is 20. From 1 to 100. Leave it out on a known gun and the weapon list fills it. |
+| `currency` | `detail` | none | Set on a pile of money, such as `cash` for dollars. Shops spend that balance through [fw_money](/api/fw-money). |
+| `image` | `detail` | the item name | Picture file in `fw_inventory/images`, without `.png`, when it is not the item name. |
+| `rarity` | `detail` | ordinary | `uncommon`, `rare`, `epic`, or `legendary`. Leave it out for an ordinary item. |
+| `mission` | `detail` | no | `true` when the item has to stay in the satchel. |
 
 ### Rarity
 
@@ -987,18 +975,15 @@ Leave `rarity` out and the satchel draws the plain slot. Set one of these words 
 
 `common` is the same as leaving it out. Any other word is rejected. `RegisterItem` comes back false, and the reason is `unknown rarity`.
 
-The name is the key in the item file, the same as any other item.
-
-```lua
-letter = {
-    label = 'Folded Letter',
-    category = 'documents',
-    width = 1,
-    height = 1,
-    stack = 1,
-    rarity = 'rare',
-    description = 'The seal is still intact.',
-},
+```sql
+INSERT INTO fw_items (name, label, description, width, height, stack, weapon, item_group, rotate, kit, hash, detail)
+VALUES (
+    'letter',
+    'Folded Letter',
+    'The seal is still intact.',
+    1, 1, 1, 0, 'documents', 0, '', '',
+    '{"rarity":"rare"}'
+);
 ```
 
 `mission = true` is separate from the frame. The player cannot give that item, trade it, sell it, throw it away, drop it, or put it in a pouch or a chest. Leave `rarity` out and the frame is the gold one. Set a rarity as well when you want a different color. The card says Mission item either way.
@@ -1007,25 +992,35 @@ A pouch that already holds a mission item cannot be dropped or thrown away until
 
 Another script can still take the item with `RemoveItem`. That is how a job finishes and collects the letter. The player cannot do that from the satchel.
 
-`rarity` and `mission` are not columns in `fw_items`. They stay on the item file, and they are put back when the files load. Put them in the file when they have to survive a restart. An item that exists only from `RegisterItem` keeps its row, and these two fields on that call last until the next start.
+`rarity` and `mission` are keys in `detail`. They stay on the row, so a restart keeps them. `RegisterItem` writes them into that same JSON.
 
-```lua
-warrant = {
-    label = 'Arrest Warrant',
-    category = 'documents',
-    width = 1,
-    height = 1,
-    stack = 1,
-    mission = true,
-    description = 'It carries the court seal.',
-},
+```sql
+INSERT INTO fw_items (name, label, description, width, height, stack, weapon, item_group, rotate, kit, hash, detail)
+VALUES (
+    'warrant',
+    'Arrest Warrant',
+    'It carries the court seal.',
+    1, 1, 1, 0, 'documents', 0, '', '',
+    '{"mission":true}'
+);
 ```
 
-Shipped guns already have `chamber` and `rounds`. You only set those two when you add a gun the list does not know. Shipped ammo is in `items/ammo.lua`. A revolver box adds 12, up to 200. An explosive box adds 10, and 10 is the cap. Arrows add 10, up to 40, and they apply as soon as they are used. Fire, poison, and dynamite arrows add fewer. The satchel holds 20 of any one ammo item.
+A box of revolver rounds is a row whose `detail` holds `ammo`. This one adds 12, up to 200, and the satchel holds 20 of the box:
 
-If the item's name, or the `hash` you set, matches a known RDR3 weapon such as `weapon_revolver_cattleman` or `WEAPON_BOW`, you can leave `kit`, `hash`, `width`, `height`, and `rotate` out entirely — they are worked out for you from that name. The shipped `items/weapons.lua` sets them by hand anyway, so the shape is easy to see and change.
+```sql
+INSERT INTO fw_items (name, label, description, width, height, stack, weapon, item_group, rotate, kit, hash, detail)
+VALUES (
+    'ammo_revolver',
+    'Revolver Cartridges',
+    '',
+    1, 1, 20, 0, 'ammo', 0, '', '',
+    '{"ammo":{"key":"AMMO_REVOLVER","fits":"revolver","max":200,"refill":12}}'
+);
+```
 
-The picture is `fw_inventory/images/<name>.png`. Set `image` on the item file when the picture has another name. Dollars use `bill_stack_single`. Leave off the `.png`. A new picture is not served until `ensure fw_inventory`.
+If the item's name, or the `hash` you set, matches a known RDR3 weapon such as `weapon_revolver_cattleman` or `WEAPON_BOW`, you can leave `kit`, `hash`, `width`, `height`, `rotate`, `chamber`, and `rounds` out. They are worked out from that name. Set `chamber` and `rounds` in `detail` only when the gun is not on that list, or when you want a different number.
+
+The picture is `fw_inventory/images/<name>.png`. Set `image` in `detail` when the picture has another name. Dollars use `bill_stack_single`. Leave off the `.png`. A new picture is not served until `ensure fw_inventory`.
 
 ### Picture size
 
@@ -1044,30 +1039,24 @@ A `rope`, 3 wide and 1 tall, is `148x48`. A `herb_pouch`, 2 by 2, is `98x98`.
 
 The satchel's cell can grow up to 88 pixels on a tall window, so a picture made at double the table above holds up better on a bigger screen. There's no setting for this — it's just a size to draw at.
 
-`fw_items_reload` reads `items/` again, as described in [Commands](#commands). This resource always loads `ammo.lua`, `container.lua`, `currency.lua`, `food.lua`, `materials.lua`, `medical.lua`, `tools.lua`, and `weapons.lua`, plus any other `.lua` file it finds in that folder, in alphabetical order. The file name is the list you open. Each item still has its own `category`. If two files define the same name, the one that sorts later wins.
+`fw_items_reload` reads `fw_items` again, as described in [Commands](#commands).
 
 ## Container items
 
-The walkthrough is [A pouch](#a-pouch-or-any-item-that-holds-other-items). This is the item that ships in `items/container.lua`. The name is the key, so `name` is not repeated inside.
+The walkthrough is [A pouch](#a-pouch-or-any-item-that-holds-other-items). This pouch is 2 by 2 in the bag, with a 6-by-10 grid inside that only takes herbs.
 
-```lua
-herb_pouch = {
-    label = 'Herb Pouch',
-    category = 'container',
-    width = 2,
-    height = 2,
-    stack = 1,
-    description = 'A pouch for herbs.',
-    container = {
-        label = 'Herb pouch',
-        width = 6,
-        height = 10,
-        categories = { 'herbs' },
-    },
-}
+```sql
+INSERT INTO fw_items (name, label, description, width, height, stack, weapon, item_group, rotate, kit, hash, detail)
+VALUES (
+    'herb_pouch',
+    'Herb Pouch',
+    'A pouch for herbs.',
+    2, 2, 1, 0, 'container', 0, '', '',
+    '{"container":{"label":"Herb pouch","width":6,"height":10,"categories":["herbs"]}}'
+);
 ```
 
-`container` lives in the item file, or in the `RegisterItem` call. It is not a column you fill in by hand. A reload of the item files puts it back.
+`container` is the `container` key inside `detail`, or the `container` field on `RegisterItem`. A reload reads that row again.
 
 ## Satchel screen
 
