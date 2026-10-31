@@ -306,3 +306,233 @@ CREATE TABLE IF NOT EXISTS `fw_reputation` (
 | `character_id` | `fw_characters.id`. Deleting the character deletes the row. |
 | `class` | The class name from `fw_reputation` config, such as `general`. |
 | `score` | The whole number stored for that class. 0 is Unknown. |
+
+## `fw_reputation_class`
+
+Created by `fw_reputation` when it starts. One row per class, including a union saved from the Missions page. Do not write this table from your script. Use [fw_reputation](/api/fw-reputation) `RegisterClass`.
+
+```sql
+CREATE TABLE IF NOT EXISTS `fw_reputation_class` (
+  `name` varchar(32) NOT NULL,
+  `label` varchar(64) NOT NULL,
+  PRIMARY KEY (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
+| Column | Meaning |
+| --- | --- |
+| `name` | The class id, such as `general`. |
+| `label` | The words a player sees, such as General Merchants' Union. |
+
+## `fw_mission`
+
+Created by `fw_missions` from `resources/[framework]/fw_missions/sql/missions.sql`. One row per character and mission. Extra columns are added on start when they are missing: `revision`, `accepted`, `progress`, `issuer_store`, `completed_at`, `rewarded`, `paid`, and `pending`. Do not write this table from your script. Use [fw_missions](/api/fw-missions).
+
+```sql
+CREATE TABLE IF NOT EXISTS `fw_mission` (
+  `character_id` int unsigned NOT NULL,
+  `mission_id` varchar(64) NOT NULL,
+  `status` varchar(16) NOT NULL,
+  `step` int unsigned NOT NULL DEFAULT 1,
+  `revision` int unsigned NULL,
+  `accepted` json NULL,
+  `progress` json NULL,
+  `issuer_store` varchar(64) NULL,
+  `completed_at` int unsigned NULL,
+  `rewarded` tinyint unsigned NOT NULL DEFAULT 0,
+  `paid` tinyint unsigned NOT NULL DEFAULT 0,
+  `pending` json NULL,
+  PRIMARY KEY (`character_id`, `mission_id`),
+  CONSTRAINT `fk_fw_mission_character`
+    FOREIGN KEY (`character_id`) REFERENCES `fw_characters` (`id`)
+    ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
+| Column | Meaning |
+| --- | --- |
+| `character_id` | `fw_characters.id`. Deleting the character deletes the row. |
+| `mission_id` | The mission id. |
+| `status` | `active`, `complete`, or `abandoned`. |
+| `step` | The stage they are on, starting at 1. |
+| `revision` | The published revision they accepted. |
+| `accepted` | The copy of the mission at accept. Later edits do not change this. |
+| `progress` | Counts already handed over. |
+| `issuer_store` | The clerk who gave the work. |
+| `completed_at` | Unix time when it was finished. Empty until then. |
+| `rewarded` | 1 after the finish has been recorded, before the dollars are confirmed. |
+| `paid` | 1 after the dollars and the standing were saved. |
+| `pending` | Goods taken out of the satchel that are not on the progress yet. |
+
+## `fw_mission_def`
+
+Created by `fw_missions` from `resources/[framework]/fw_missions/sql/defs.sql`. The editable copy of a mission. Do not write this table from your script.
+
+```sql
+CREATE TABLE IF NOT EXISTS `fw_mission_def` (
+  `id` varchar(64) NOT NULL,
+  `status` varchar(16) NOT NULL,
+  `body` json NOT NULL,
+  `published_revision` int unsigned NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
+| Column | Meaning |
+| --- | --- |
+| `id` | The mission id. |
+| `status` | `draft`, `published`, or `disabled`. |
+| `body` | The fields the admin saved. |
+| `published_revision` | The revision new accepts copy. Empty on a draft. |
+
+## `fw_mission_revision`
+
+One snapshot per publish. Rows are not updated or deleted.
+
+```sql
+CREATE TABLE IF NOT EXISTS `fw_mission_revision` (
+  `mission_id` varchar(64) NOT NULL,
+  `revision` int unsigned NOT NULL,
+  `body` json NOT NULL,
+  PRIMARY KEY (`mission_id`, `revision`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
+| Column | Meaning |
+| --- | --- |
+| `mission_id` | The mission id. |
+| `revision` | Starts at 1 and goes up on each publish. |
+| `body` | The published copy. |
+
+## `fw_union`
+
+A union is a reputation class, plus the shop type it gates when it has one.
+
+```sql
+CREATE TABLE IF NOT EXISTS `fw_union` (
+  `id` varchar(32) NOT NULL,
+  `label` varchar(64) NOT NULL,
+  `store_type` varchar(32) NULL,
+  `enabled` tinyint unsigned NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
+| Column | Meaning |
+| --- | --- |
+| `id` | The class id, such as `general`. It does not change after create. |
+| `label` | The name on the Work tab. |
+| `store_type` | The shop type, or empty when this union does not gate a shelf. |
+| `enabled` | 0 stops new accepts of its missions. |
+
+## `fw_season`
+
+A season wipes standing, and mission rows, for the unions it names. Dollars are not in this table.
+
+```sql
+CREATE TABLE IF NOT EXISTS `fw_season` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(64) NOT NULL,
+  `starts_at` int unsigned NOT NULL,
+  `ends_at` int unsigned NOT NULL,
+  `unions` json NOT NULL,
+  `reset_standing` tinyint unsigned NOT NULL DEFAULT 1,
+  `reset_missions` tinyint unsigned NOT NULL DEFAULT 1,
+  `applied_at` int unsigned NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
+| Column | Meaning |
+| --- | --- |
+| `id` | The season id. |
+| `name` | The name on the admin list. |
+| `starts_at` | Unix time when it starts. |
+| `ends_at` | Unix time when it runs, if it has not been ended early. |
+| `unions` | The class ids it wipes. |
+| `reset_standing` | 1 sets those scores to 0. |
+| `reset_missions` | 1 clears mission rows for those unions. |
+| `applied_at` | Unix time when it ran. Empty until then. A filled value is not edited. |
+
+## `fw_reputation_archive`
+
+Scores copied before a season sets them to 0.
+
+```sql
+CREATE TABLE IF NOT EXISTS `fw_reputation_archive` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `season_id` int unsigned NOT NULL,
+  `character_id` int unsigned NOT NULL,
+  `class` varchar(32) NOT NULL,
+  `score` int unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
+| Column | Meaning |
+| --- | --- |
+| `season_id` | The season that copied the row. |
+| `character_id` | `fw_characters.id`. |
+| `class` | The union. |
+| `score` | The score before it was set to 0. |
+
+## `fw_mission_archive`
+
+Mission rows copied before a season clears them.
+
+```sql
+CREATE TABLE IF NOT EXISTS `fw_mission_archive` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `season_id` int unsigned NOT NULL,
+  `character_id` int unsigned NOT NULL,
+  `mission_id` varchar(64) NOT NULL,
+  `status` varchar(16) NOT NULL,
+  `step` int unsigned NOT NULL,
+  `accepted` json NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
+| Column | Meaning |
+| --- | --- |
+| `season_id` | The season that copied the row. |
+| `character_id` | `fw_characters.id`. |
+| `mission_id` | The mission id. |
+| `status` | The status at the wipe. |
+| `step` | The stage they were on. |
+| `accepted` | The copy they had accepted. |
+
+## `fw_group`
+
+Created by `fw_group` from `resources/[framework]/fw_group/sql/group.sql`. One company, and its members. Do not write these tables from your script. Use [fw_group](/api/fw-group).
+
+```sql
+CREATE TABLE IF NOT EXISTS `fw_group` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `leader_id` int unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_fw_group_leader` (`leader_id`),
+  CONSTRAINT `fk_fw_group_leader`
+    FOREIGN KEY (`leader_id`) REFERENCES `fw_characters` (`id`)
+    ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `fw_group_member` (
+  `group_id` int unsigned NOT NULL,
+  `character_id` int unsigned NOT NULL,
+  PRIMARY KEY (`character_id`),
+  KEY `idx_fw_group_member_group` (`group_id`),
+  CONSTRAINT `fk_fw_group_member_group`
+    FOREIGN KEY (`group_id`) REFERENCES `fw_group` (`id`)
+    ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_fw_group_member_character`
+    FOREIGN KEY (`character_id`) REFERENCES `fw_characters` (`id`)
+    ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
+| Column | Meaning |
+| --- | --- |
+| `leader_id` | `fw_characters.id` of the leader. Deleting the character deletes the company. |
+| `group_id` | The company. |
+| `character_id` | A member who is not the leader. One company per character. |

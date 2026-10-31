@@ -62,12 +62,13 @@ The folder `resources/[framework]/` is only a category. The resource name is the
 | [fw_satchel](/api/fw-satchel) | The bag screen. It has no calls of its own. |
 | [fw_reputation](/api/fw-reputation) | Raise or lower a character's reputation in a class, and read the standing word. |
 | [fw_stores](/api/fw-stores) | Open a store counter and settle a purchase into the bag. |
-| [fw_missions](/api/fw-missions) | Offer an errand at a store, and raise reputation when a step is finished. |
+| [fw_missions](/api/fw-missions) | Offer union work at a clerk, and pay the character who finishes it. |
+| [fw_group](/api/fw-group) | Keep one company per character, and count how many of them are online. |
 | [fw_trade](/api/fw-trade) | Trade with a nearby player, or give them one item. |
 | [fw_guide](/api/fw-guide) | Open the help screen. |
 | [Database](/api/database) | See which id to store on your own table. |
 
-`fw_core` creates the account when a player connects. `fw_loading` covers the screen until the character list is ready, and again while that character's clothes and weapons settle. `fw_characters` creates the character when something calls `CreateCharacter`. The character menu does that for players. `fw_clothing` saves worn clothes on that character. `fw_inventory` saves the satchel. `fw_money` saves the dollars that character is carrying. `fw_weapons` saves the equipped kit. `fw_satchel` is the screen. `fw_reputation` keeps a score per class for that character. `fw_stores` is the store counter. `fw_missions` is the errand on that counter's Work tab. `fw_trade` is two players trading what is in those satchels. `fw_guide` is the help screen.
+`fw_core` creates the account when a player connects. `fw_loading` covers the screen until the character list is ready, and again while that character's clothes and weapons settle. `fw_characters` creates the character when something calls `CreateCharacter`. The character menu does that for players. `fw_clothing` saves worn clothes on that character. `fw_inventory` saves the satchel. `fw_money` saves the dollars that character is carrying. `fw_weapons` saves the equipped kit. `fw_satchel` is the screen. `fw_reputation` keeps a score per class for that character. `fw_stores` is the store counter. `fw_missions` is the work on that counter's Work tab. `fw_group` is the company that higher-tier work can require. `fw_trade` is two players trading what is in those satchels. `fw_guide` is the help screen.
 
 Cash is [fw_money](/api/fw-money). A bank and jobs are not here yet. Store `fw_characters.id` for something that belongs to one character, and `fw_players.id` for something that belongs to the account.
 

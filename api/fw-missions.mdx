@@ -1,60 +1,68 @@
 ---
 title: "fw_missions"
-description: "Offer an errand at a store. Finishing a step raises that store's reputation."
+description: "Offer union work at a clerk, and pay the character who finishes it."
 ---
 
-Runs on the server. A player reads the errand on the Work tab of the store counter, next to Goods. The server checks where they are standing, what is in the satchel, and whether that step was already finished. The client's ask does not grant the reward.
+Runs on the server. A player reads the work on the Work tab of the store counter, next to Goods. The server checks the clerk, the satchel, the company, and whether that work was already finished. The client's ask does not grant the dollars or the standing.
 
-`source` is the client id of the player who triggered the event. It changes every time they join. A class is a reputation name from [fw_reputation](/api/fw-reputation), such as `general`. The standing words that class already uses are Unknown, Recognized, Trusted, and Established. This resource does not keep a second score. It calls `Add` on fw_reputation.
+`source` is the client id of the player who triggered the event. It changes every time they join. A union is a reputation class from [fw_reputation](/api/fw-reputation), such as `general`. The standing words that class already uses are Unknown, Recognized, Trusted, and Established. This resource does not keep a second score. When a mission names an unlock, it calls `Set` once, and only upward.
 
-An errand belongs to one store, such as `ValentineGeneral`. The reputation it adds belongs to the class on the errand, which for Worths is `general`. A purchase adds its own point. That amount is `FwStoresConfig.purchasePoints` on [fw_stores](/api/fw-stores), and it is the same at every shop.
+`nil` means the export did not do it, and the second value is the reason. `That errand is already registered.` means the id was used once. `The errands are not ready.` means the tables are not ready yet.
 
-`nil` means the export did not do it, and the second value is the reason. `That errand is already registered.` means the id was used once. `An errand needs a step.` means the list of steps was empty. `The errands are not ready` means the table is not ready yet.
+Ask `IsReady` first. The server can say `fw_missions` has started a moment before the tables are ready. Keep asking for about two minutes. You can also listen for `fw_missions:ready`. That event is not queued. Your script has to be running already, or you missed it.
 
-Ask `IsReady` first. The server can say `fw_missions` has started a moment before the table is ready. Keep asking for about two minutes. You can also listen for `fw_missions:ready`. That event is not queued. Your script has to be running already, or you missed it.
-
-Start it after `fw_inventory`, `fw_reputation`, and `fw_stores`.
+Start it after `fw_inventory`, `fw_reputation`, `fw_stores`, `fw_money`, and `fw_group`.
 
 ```
 ensure fw_inventory
 ensure fw_reputation
 ensure fw_stores
+ensure fw_money
+ensure fw_group
 ensure fw_missions
 ```
 
-## Add an errand
+Buying at a counter does not raise standing. `FwStoresConfig.purchasePoints` on [fw_stores](/api/fw-stores) is `0`. A tier moves when a finished mission calls `Set`.
 
-Call `RegisterMission` from your own resource. Do not edit `fw_missions` to add one. The table you pass is copied. Changing it later does not change the errand that was stored.
+## The shape of a mission
 
-The id is a plain word: a letter, then letters, numbers, or `_`. It can be up to 64 characters. The class uses the same kind of word, up to 32 characters, and it has to be a class fw_reputation already has or the standing will be refused when the step finishes. `store` is the store name, such as `ValentineGeneral`.
+Call `RegisterMission` from your own resource when the mission is ready to publish. Do not edit `fw_missions` to add one. The table you pass is copied into a draft and then published. An open run keeps the copy it accepted. Changing the definition later does not change that run.
 
-`requires` is another errand id. Leave it out and this one can be accepted on its own. The player does not see this errand until that earlier one is finished.
+An admin can do the same work from the Missions page in [fw_admin](/api/fw-admin). Save draft stores a body that is not ready yet. Publish refuses it until the fields below are filled, and the screen marks the field. Disable stops new accepts. A run that is already open can still be finished. Duplicate copies the body onto a new id and leaves it as a draft.
 
-`enabled` left out, or `true`, means the clerk offers it. `false` keeps it registered and hidden.
+The id is a plain word: a letter, then letters, numbers, or `_`. It can be up to 64 characters. `union` is the same kind of word, up to 32 characters, and it has to be a union that is still offered.
 
-Each step has a `kind`:
+- `title` and `text` are what the clerk says.
+- `offers` is the list of store ids that may hand the work out. Each store's type has to match the union's shop type, when the union has one.
+- `requires` is earlier mission ids in the same union. A cycle is refused. Leave it empty and this one can be accepted on its own.
+- `repeatable` left out, or false, means once. After they finish it, they cannot take it again. True means they can take it again after the cooldown. Leave `cooldownMinutes` empty and that wait is 24 hours. A number is the wait in minutes.
+- `minStanding` is optional: `Recognized`, `Trusted`, or `Established`.
+- `minGroup` is how many of the company must be online. Leave it out and it is 1. The cap is 4 unless `shared/config.lua` says otherwise. The check runs on accept, and again on the submit that finishes the work. [fw_group](/api/fw-group) counts who is online. Someone who is not in a company counts as one.
+- `reward` is a whole number of dollars, or `0`. An empty reward can be saved as a draft. Publish refuses it.
+- `unlockStanding` is optional. On the finish, the score is set to that word's line when their score is still below it.
+- `doneText` is the line they see when it is finished.
+- `stages` is the ordered work. Each stage is `supply`, `deliver`, or `introduce`.
 
-- `visit` — they hold at a place. No item.
-- `recover` — they hold at a place. The server puts `item` in the satchel if they do not already have `count`. Set `mission = true` on that item in fw_inventory, so they cannot drop it, give it, sell it, or put it in a pouch.
-- `deliver` — they are close, and the satchel has enough of `item`. Bought, found, or traded goods all count. A pouch does not count. The server takes `count`. `atStore = true` means they turn it in on the Work tab at the clerk named in `store`. A place means they hand it over there.
-- `work` — they clean or repair. Their game plays the progress bar. The server accepts it only while they are still at the place.
+A stage has `text`, `contact`, and `items`. `contact` is `issuer` or one store id. A supply stage is turned in at the clerk who gave the work. A deliver or an introduce stage needs the other clerk. `items` is `{ name, count, hint }`. The name has to be an item the satchel already knows. Introduce may also `grant` one mission item, such as `letter_merchants_introduction`. That item needs `mission = true` in fw_inventory. The server puts one in the satchel when that stage is current, and only if they are not already holding one.
 
-`coords` is the place. A delivery at the clerk does not need one. `distance` is how close they must be, in metres. Leave it out and the distance in `shared/config.lua` is used, 2.5 unless you change it. `durationMs` is how long a clean or a repair takes, in milliseconds. Leave it out and the config time is used, 4000 unless you change it. `reputation` is the whole number added to the class when that step is saved. Leave it out and the step adds nothing.
+`visit`, `recover`, and `work` are not stages. A definition that still uses them will not publish.
 
-`reward.items` is optional. Those items are placed in the satchel when the last step is saved. Dollars are an item too, named `cash`, if you want to pay them.
+Accept copies the published body onto the run. Turn-in reads that copy. A later publish does not change an open run. Disable does not cancel one either.
 
-The bag is checked, the delivery comes out, the reward goes in, the standing goes up, and then the row is saved. If the reward does not fit, the delivery is put back and the step stays open. If the save fails, the standing and the items are put back. If that undo fails, the server window shows an error.
+Partial turn-in stores the counts already handed over. The client may send a quantity. The server clamps it to what is left and what the satchel holds. Submit available is that clamp. Opening the counter does not take goods. Goods in a pouch do not count.
 
-Worths in Valentine already offers The Short Order. The steps add 5, 5, 8, 8, and 4. After the beans, the score is 26, which is Recognized. Trusted stays at 75.
+Abandon is allowed from the journal and from Work. Handed-in goods stay handed in. A letter this mission gave is removed. One-time work can be accepted again after abandon. Complete cannot. Repeatable work can be accepted again after the cooldown, on a new copy.
+
+The twelve starter jobs are drafts. They are not offered until an admin sets the payment and publishes them. A contact that is still empty is marked when they try to publish.
 
 ## Exports
 
 ### IsReady
 
-Runs on the server. Yes after the mission table exists.
+Runs on the server. Yes after the mission tables exist.
 
 ```lua
---- True when an errand can be saved.
+--- True when a mission can be saved.
 ---@return boolean
 exports.fw_missions:IsReady()
 ```
@@ -67,13 +75,13 @@ end
 
 ### RegisterMission
 
-Runs on the server. Stores one errand. Yes when it was stored.
+Runs on the server. Stores one mission and publishes it. Yes when it was published.
 
-Nil when the id is already used, or a field cannot be used. The second value is the reason.
+False when the id is already used, or a field cannot be published. The second value is the reason. A draft may still be sitting in the list when publish fails. Fix it on the Missions page, or pick a new id.
 
 ```lua
---- Stores one errand. False when the id is already registered or a field cannot be used.
----@param definition table id, class, store, title, text, objectives, and optional requires, enabled, and reward
+--- Stores one mission and publishes it. False when the id is taken or a field cannot be used.
+---@param definition table id, title, text, union, offers, stages, reward, and optional requires, repeatable, cooldownMinutes, minStanding, minGroup, unlockStanding, doneText
 ---@return boolean ok
 ---@return string|nil err
 exports.fw_missions:RegisterMission(definition)
@@ -81,18 +89,19 @@ exports.fw_missions:RegisterMission(definition)
 
 ```lua
 local ok, err = exports.fw_missions:RegisterMission({
-    id = 'worths_short_order',
-    class = 'general',
-    store = 'ValentineGeneral',
-    title = 'The Short Order',
-    text = 'Worths is short on tins, and a list for the station never got there.',
-    objectives = {
+    id = 'gmu_beans',
+    title = 'A short order',
+    text = 'The clerk is short on tins.',
+    union = 'general',
+    offers = { 'ValentineGeneral' },
+    reward = 2,
+    minGroup = 1,
+    stages = {
         {
-            kind = 'visit',
-            label = 'The platform',
-            text = 'Go to the Valentine station platform.',
-            coords = vector3(-174.39, 633.78, 114.09),
-            reputation = 5,
+            kind = 'supply',
+            text = 'Hand over the tins.',
+            contact = 'issuer',
+            items = { { name = 'canned_beans', count = 1, hint = 'A general store still sells them.' } },
         },
     },
 })
@@ -102,11 +111,145 @@ if not ok then
 end
 ```
 
+### AdminList
+
+Runs on the server. The Missions page asks for this. Another script can call it too. Pass the admin's `source`. Nil when they do not have `fw.admin.missions`. The second value is the reason.
+
+The table has `missions`, `unions`, `stores`, `types`, and `seasons`.
+
+```lua
+--- The lists for the Missions page. Nil when this player cannot edit missions.
+---@param source integer
+---@return table|nil list
+---@return string|nil err
+exports.fw_missions:AdminList(source)
+```
+
+### AdminRead
+
+Runs on the server. One mission, plus the field errors a publish would raise. The same lists as `AdminList` come back with `mission` set. Nil when the id is missing or they cannot edit missions.
+
+```lua
+--- One mission and the field errors. Nil when it is missing or this player cannot edit missions.
+---@param source integer
+---@param id string
+---@return table|nil list
+---@return string|nil err
+exports.fw_missions:AdminRead(source, id)
+```
+
+### AdminSave
+
+Runs on the server. Saves a draft, including one that is not ready to publish. The id cannot change after the first save. Returns the read list. Nil when the body cannot be stored.
+
+```lua
+--- Saves a draft. Nil when the body cannot be stored.
+---@param source integer
+---@param body table
+---@return table|nil list
+---@return string|nil err
+exports.fw_missions:AdminSave(source, body)
+```
+
+### AdminPublish
+
+Runs on the server. Publishes the saved draft and appends a revision. Published revisions are not edited. Returns the read list. When a field is wrong, the list still comes back, `mission.errors` marks the fields, and the second value says to fix them. Nil when the mission is missing.
+
+```lua
+--- Publishes the saved draft. The list still comes back when a field must be fixed.
+---@param source integer
+---@param id string
+---@return table|nil list
+---@return string|nil err
+exports.fw_missions:AdminPublish(source, id)
+```
+
+### AdminDisable
+
+Runs on the server. Stops new accepts. An open run can still be finished. Returns the read list. Nil when the mission is missing.
+
+```lua
+--- Stops new accepts. Nil when the mission is missing.
+---@param source integer
+---@param id string
+---@return table|nil list
+---@return string|nil err
+exports.fw_missions:AdminDisable(source, id)
+```
+
+### AdminDuplicate
+
+Runs on the server. Copies a mission onto a new draft id. Returns the read list for the copy. Nil when the new id is already used or the source is missing.
+
+```lua
+--- Copies a mission onto a new draft id.
+---@param source integer
+---@param sourceId string
+---@param newId string
+---@return table|nil list
+---@return string|nil err
+exports.fw_missions:AdminDuplicate(source, sourceId, newId)
+```
+
+### AdminUnionSave
+
+Runs on the server. Creates a union, or changes its name, shop type, and whether it is offered. The id does not change after create. An empty shop type means the union does not gate a shelf. Returns the list. Nil when the id or the name cannot be used.
+
+This also calls [fw_reputation](/api/fw-reputation) `RegisterClass`, so the score can be read under that id.
+
+```lua
+--- Creates a union or updates its name. The id does not change after create.
+---@param source integer
+---@param payload table id, label, storeType, enabled
+---@return table|nil list
+---@return string|nil err
+exports.fw_missions:AdminUnionSave(source, payload)
+```
+
+### AdminUnionRemove
+
+Runs on the server. Deletes a union that no mission and no score still uses. When something still uses it, the union is disabled instead, the list comes back, and the second value says why. Nil when the union is missing.
+
+```lua
+--- Removes a union nothing still uses. Otherwise it is disabled and the reason comes back.
+---@param source integer
+---@param id string
+---@return table|nil list
+---@return string|nil err
+exports.fw_missions:AdminUnionRemove(source, id)
+```
+
+### AdminSeasonSave
+
+Runs on the server. Saves a season that has not run. `startsAt` and `endsAt` are unix times, and the end has to be later. `unions` names the classes to wipe. `resetStanding` and `resetMissions` default to yes. Pass `id` to update one that has not run. A season that already ran is refused. Returns the list.
+
+```lua
+--- Saves a season that has not run.
+---@param source integer
+---@param payload table name, startsAt, endsAt, unions, and optional id, resetStanding, resetMissions
+---@return table|nil list
+---@return string|nil err
+exports.fw_missions:AdminSeasonSave(source, payload)
+```
+
+### AdminSeasonEnd
+
+Runs on the server. Runs that season now. Standing for the named unions is copied, then set to 0. Mission rows for those unions are copied, then removed. Dollars and items stay. A season that already ran is refused. Returns the list. Nil when it could not run.
+
+```lua
+--- Runs a season now. Nil when it already ran or it is missing.
+---@param source integer
+---@param seasonId integer
+---@return table|nil list
+---@return string|nil err
+exports.fw_missions:AdminSeasonEnd(source, seasonId)
+```
+
 ## Events
 
 ### fw_missions:ready
 
-Local. It fires on the server when the table is ready. It is not queued. A listener that starts later has missed it. Use `IsReady` if your script may start second.
+Local. It fires on the server when the tables are ready. It is not queued. A listener that starts later has missed it. Use `IsReady` if your script may start second.
 
 ```lua
 AddEventHandler('fw_missions:ready', function()
@@ -121,15 +264,23 @@ The server does not grant anything for a list.
 
 ### fw_missions:accept
 
-Networked. The counter sends it when they press Accept. `storeId` is the open store. `missionId` is the errand id. They have to be at that clerk. The answer is `fw_missions:work`.
+Networked. The counter sends it when they press Accept. `storeId` is the open store. `missionId` is the mission id. They have to be at that clerk, the mission has to be published, and the company has to be large enough when `minGroup` is more than 1. The answer is `fw_missions:work`.
 
 ### fw_missions:turnIn
 
-Networked. The counter sends it when they press Turn in. Same arguments as accept. It only finishes a delivery whose step says `atStore = true`.
+Networked. The counter sends it when they press Submit. `storeId` is the open store. `missionId` is the mission id. `request` may include `lines` as `{ name, count }`, and `available` as true to hand over whatever the satchel has. The server clamps the count. The answer is `fw_missions:work`.
 
-### fw_missions:advance
+### fw_missions:abandon
 
-Networked. The hold prompt sends it. `missionId` is the errand they are on. The server checks the distance. A delivery at the clerk is refused here. Press Turn in on Work for that step.
+Networked. The counter or the journal sends it. `missionId` is the mission. `storeId` is set when they are at the counter, and left out from the journal. The answer is `fw_missions:work` or `fw_missions:journal` for that player only.
+
+### fw_missions:reissue
+
+Networked. Asks for the stage letter again when the satchel has none. Same arguments as abandon.
+
+### fw_missions:journal
+
+Networked. The bag sends it. The answer is `fw_missions:journal` to that player only: the work they have accepted, and the abandon policy. The server does not grant anything for a journal.
 
 ### fw_missions:request
 
@@ -137,8 +288,8 @@ Networked. The client sends it after this resource starts, so a mark can come ba
 
 ### fw_missions:work
 
-Sent to that player only. It is the list the Work tab shows: each errand's title, text, current step, and whether Accept or Turn in is available. The reward was already decided on the server. Do not grant items because this list arrived.
+Sent to that player only. It is the list the Work tab shows. Each card has the title, the step, the lines, and whether Accept, Submit, or Abandon is available. The dollars were already decided on the server. Do not grant items because this list arrived.
 
 ### fw_missions:steps
 
-Sent to that player only. It is the places for the steps they are on, so their map can show a mark. A delivery at the clerk is a mark with no hold prompt. Do not grant items because a mark arrived.
+Sent to that player only. It is the contact for the stage they are on, so their map can show a mark. Do not grant items because a mark arrived.

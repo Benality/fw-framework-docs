@@ -146,7 +146,7 @@ A pile's own `standing` still locks that pile. A tin of peaches stays Recognized
 
 `FwStoresConfig.useReputation` is `true`. The counter asks fw_reputation for this visit's standing. Set it to `false` and every visit is Unknown again. Everyone can buy an unlocked pile. Selling and barter stay closed while the standing is below the access line. The rates and the access lines stay in the file either way.
 
-`purchasePoints` is how many points one purchase adds to that store's class. It is one number for every shop. The count is once for the visit, when the player leaves with at least one good, not once for each item. Dollars handed back do not count. A sale that only hands goods in does not count. `0` turns it off. `1` is the number written now. Recognized is 25, so one purchase does not cross a tier by itself.
+`purchasePoints` is how many points one purchase adds to that store's class. It is one number for every shop. The count is once for the visit, when the player leaves with at least one good, not once for each item. Dollars handed back do not count. A sale that only hands goods in does not count. `0` turns it off, and that is the number written now. A tier moves when a finished mission calls `Set`.
 
 `fw_reputation` keeps the score. `source` is the client id of the player who triggered the event. It changes every time they join. `storeType` is the type key, such as `'general'`. The class name in `fw_reputation` has to be that same word.
 
@@ -179,6 +179,34 @@ end
 ```
 
 `store.type` is the class, such as `general`. `store.spot` is a coordinate.
+
+### ListStores
+
+Runs on the server. Every shop id, type, town, and name. A shop that is turned off is still in the list, so an admin can still name it.
+
+```lua
+--- Every shop id, type, town, and name. Disabled shops are included.
+---@return table stores
+exports.fw_stores:ListStores()
+```
+
+```lua
+local stores = exports.fw_stores:ListStores()
+```
+
+### ListTypes
+
+Runs on the server. Shop types an admin can attach a union to. Each entry has `id` and `label`.
+
+```lua
+--- Shop types. Each entry has id and label.
+---@return table types
+exports.fw_stores:ListTypes()
+```
+
+```lua
+local types = exports.fw_stores:ListTypes()
+```
 
 ### HoldsCounter
 

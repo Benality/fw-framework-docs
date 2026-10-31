@@ -83,6 +83,7 @@
             "pages": [
               "api/fw-stores",
               "api/fw-missions",
+              "api/fw-group",
               "api/fw-trade",
               "api/fw-reputation"
             ]
@@ -187,6 +188,7 @@
     { "source": "/fw-reputation", "destination": "/api/fw-reputation" },
     { "source": "/fw-stores", "destination": "/api/fw-stores" },
     { "source": "/fw-missions", "destination": "/api/fw-missions" },
+    { "source": "/fw-group", "destination": "/api/fw-group" },
     { "source": "/fw-trade", "destination": "/api/fw-trade" },
     { "source": "/vorp-lib", "destination": "/api/vorp-lib" },
     { "source": "/database", "destination": "/api/database" },

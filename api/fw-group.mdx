@@ -1,0 +1,114 @@
+---
+title: "fw_group"
+description: "Keep one company per character, and count how many of them are online."
+---
+
+Runs on the server. A company is a small list of characters. One character is in one company. The leader invites someone who is standing nearby. They have to accept. The cap is 4 unless `shared/config.lua` says otherwise. The invite distance is 8 metres unless that file says otherwise.
+
+`source` is the client id of the player who triggered the event. It changes every time they join. The company is stored by `fw_characters.id`, so it is still there after they leave and come back. Someone who is offline stays on the list and does not count as online.
+
+`nil` is not used here. `IsReady` is no until the tables exist. `OnlineCount` returns 1 when they are not in a company, or when the list is not ready. That 1 is the player themselves.
+
+Ask `IsReady` first. The server can say `fw_group` has started a moment before the tables are ready. Keep asking for about two minutes.
+
+Start it before a resource that gates work on the company, such as [fw_missions](/api/fw-missions).
+
+```
+ensure fw_group
+ensure fw_missions
+```
+
+The player opens the list with `/company`. It does not open on its own when they join. The leader picks Invite. That uses the nearby-player picker from vorp_lib. The server checks the distance, the cap, and that the other character is not already in a company. The other player gets Join or No. Clicking a member, when you are the leader, removes them. Leave takes you off the list. If the leader leaves, the company ends.
+
+A mission that needs more than one person calls `OnlineCount` on accept, and again on the submit that finishes it. The leader is the one who accepted the work. They carry the goods and they are paid. The company does not share the progress.
+
+## Exports
+
+### IsReady
+
+Runs on the server. Yes after the company tables exist.
+
+```lua
+--- True when the company list can be read.
+---@return boolean
+exports.fw_group:IsReady()
+```
+
+```lua
+while not exports.fw_group:IsReady() do
+    Wait(100)
+end
+```
+
+### OnlineCount
+
+Runs on the server. How many of this character's company are in the game. A character with no company counts as one. The same 1 comes back when no character is selected, or the list is not ready.
+
+```lua
+--- How many of the company are in the game. A character with no company counts as one.
+---@param source integer
+---@return integer count
+exports.fw_group:OnlineCount(source)
+```
+
+```lua
+local count = exports.fw_group:OnlineCount(source)
+if count < 2 then
+    return
+end
+```
+
+### IsLeader
+
+Runs on the server. Yes when this player leads a company. No when they are a member, they have no company, no character is selected, or the list is not ready.
+
+```lua
+--- True when this player leads a company.
+---@param source integer
+---@return boolean
+exports.fw_group:IsLeader(source)
+```
+
+```lua
+if not exports.fw_group:IsLeader(source) then
+    return
+end
+```
+
+## Events
+
+These are networked. They are not queued. The listening side has to already be running.
+
+### fw_group:open
+
+The client sends it for `/company`. The server answers that player only, on `fw_group:roster`.
+
+### fw_group:invite
+
+The client sends it with the other player's `source`. The server checks the distance, the cap, and that they are not already in a company. The other player gets `fw_group:invited`.
+
+### fw_group:answer
+
+The invited player sends true to join, or false to refuse.
+
+### fw_group:remove
+
+The leader sends another character's id. That character leaves the company.
+
+### fw_group:leave
+
+The player sends it to leave. If they lead the company, the company ends.
+
+### fw_group:roster
+
+Sent to that player only. `leader` is whether they lead it. `people` is the list. Each person has `characterId`, `name`, `leader`, and `online`. `cap` is the limit. Opening this does not change the company.
+
+### fw_group:invited
+
+Sent to the invited player only. The argument is the leader's name. Their screen asks Join or No.
+
+## Commands
+
+| Command | Who | What happens |
+| --- | --- | --- |
+| `/company` | A player in the game | Opens their company list. It does not open when they join. |

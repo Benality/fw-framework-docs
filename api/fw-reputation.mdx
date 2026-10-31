@@ -5,7 +5,7 @@ description: "Keep a reputation score for a character, by class, and read the st
 
 Runs on the server. Other scripts raise or lower a score. The score belongs to the character they are playing, and to one class, such as `general`.
 
-`source` is the client id of the player who triggered the event. It changes every time they join. A class is a name from `server/config.lua` in `fw_reputation`. A store passes its type, and the names already in that file match those types. A mission needs its own line in that file before it can change a score. The name has to be one word: a letter, then letters, numbers, or `_`.
+`source` is the client id of the player who triggered the event. It changes every time they join. A class is a name from `server/config.lua` in `fw_reputation`, or a union saved from the Missions page. `general` is the General Merchants' Union. `doctor` is the Medical Supply Union. A store passes its type, and those two names match those types. A new union is `RegisterClass`. The name has to be one word: a letter, then letters, numbers, or `_`.
 
 The score is a whole number from 0 to 1000. A class with no row yet is 0. These scores are the standing words stores already use:
 
@@ -18,7 +18,7 @@ The score is a whole number from 0 to 1000. A class with no row yet is 0. These 
 
 A higher line wins. 40 is Recognized. 150 and above is Established. The lines and the 1000 cap are in the config. Change them there.
 
-`nil` means the export did not do it, and the second value is the reason. `Select a character first.` means they are not playing a character. `Unknown class.` means that name is not in the config. `fw_reputation is not ready` means the table is not ready yet.
+`nil` means the export did not do it, and the second value is the reason. `Select a character first.` means they are not playing a character. `Unknown class.` means that name is not in the config and no union registered it. `fw_reputation is not ready` means the table is not ready yet.
 
 Ask `IsReady` first. The server can say `fw_reputation` has started a moment before the table is ready. Keep asking for about two minutes.
 
@@ -198,6 +198,52 @@ if score == nil then
     print(err)
     return
 end
+```
+
+### RegisterClass
+
+Runs on the server. Adds a class, or leaves an existing label as it is when you pass the same id again from config. The Missions page uses this when an admin saves a union, and that call does change the label. False when the name is not a plain word, the label is empty, or the table is not ready. The second value is the reason.
+
+```lua
+--- Adds a class, or changes its label when a union is saved. The id does not change.
+---@param name string
+---@param label string
+---@return boolean ok
+---@return string|nil err
+exports.fw_reputation:RegisterClass(name, label)
+```
+
+```lua
+local ok, err = exports.fw_reputation:RegisterClass('general', "General Merchants' Union")
+if not ok then
+    print(err)
+    return
+end
+```
+
+### ForgetAll
+
+Runs on the server. Drops the cached scores after a season has set those rows to 0, and tells online players. Call it after the rows are already 0. It does not write the table itself. It does nothing when the table is not ready.
+
+```lua
+--- Drops cached scores after a season sets them to 0.
+---@return nil
+exports.fw_reputation:ForgetAll()
+```
+
+### StandingScore
+
+Runs on the server. The score a standing word starts at. Nil when the word is not Unknown, Recognized, Trusted, or Established.
+
+```lua
+--- The score a standing word starts at. Nil when the word is not one of the four.
+---@param name string
+---@return integer|nil score
+exports.fw_reputation:StandingScore(name)
+```
+
+```lua
+local score = exports.fw_reputation:StandingScore('Trusted')
 ```
 
 ## Events
