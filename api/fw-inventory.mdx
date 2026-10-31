@@ -311,7 +311,7 @@ end
 
 ### AdminDelete
 
-Runs on the server. Removes that row from `fw_items` and from the catalog. A pile already in a satchel keeps the name. The bag no longer knows the type.
+Runs on the server. Removes that row from `fw_items` and from the catalog. Every pile of that name is taken out of satchels, pouches, and chests. A balance that item was carrying stays. It shows up as piles again only if you add a currency item for that same balance.
 
 ```lua
 --- Removes one item type.
@@ -1004,13 +1004,13 @@ This resource does not set one. The bag screen reads `fwInventoryBusy` from [fw_
 
 | Command | Where | What it does |
 | --- | --- | --- |
-| `fw_items_reload` | Server console, or `/fw_items_reload` by an in-game admin | Reads `fw_items` again. An insert you just made shows up in open satchels. A player who is not an admin gets `You are not an admin.` in the log. An admin gets an INFO line for how many items were reloaded. |
+| `fw_items_reload` | Server console, or `/fw_items_reload` by an in-game admin | Reads `fw_items` again. An insert you just made shows up in open satchels. A name that is no longer in the table is taken out of satchels, pouches, and chests. A player who is not an admin gets `You are not an admin.` in the log. An admin gets an INFO line for how many items were reloaded. |
 | `fw_giveitem <serverId> <name> [count]` | Server console only | Calls `AddItem` for that player. A player who types it gets a warning in the log. The server window gets the same warning. |
 | `fw_gridbonus <serverId> <key> <extraWidth> <extraHeight>` | Server console only | Calls `SetGridBonus` for that player. Same console-only behavior as `fw_giveitem`. |
 
 ## Item row
 
-An item is a row in `fw_items`. `name` is lowercase letters, digits, and underscores, up to 32 characters. After the insert, run `fw_items_reload`, or restart `fw_inventory`, so open satchels pick it up.
+An item is a row in `fw_items`. `name` is lowercase letters, digits, and underscores, up to 32 characters. After the insert, run `fw_items_reload`, or restart `fw_inventory`, so open satchels pick it up. A pile whose name is not in that table is removed from satchels, pouches, and chests at the same time. Deleting the row and then reloading does the same thing.
 
 ```sql
 INSERT INTO fw_items (name, label, description, width, height, stack, weapon, item_group, rotate, kit, hash, detail)

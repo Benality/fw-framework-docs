@@ -165,7 +165,7 @@ CREATE TABLE IF NOT EXISTS `fw_inventory` (
 
 ## `fw_items`
 
-Created by `fw_inventory` from `resources/[framework]/fw_inventory/sql/items.sql`. One row per item type. This is not a satchel. Placements stay in `fw_inventory.grid`.
+Created by `fw_inventory` from `resources/[framework]/fw_inventory/sql/items.sql`. One row per item type. This is not a satchel. Placements stay in `fw_inventory.grid`. A pile whose name is not in this table is removed from that grid, and from `fw_storage`, when the catalog is loaded or an item is deleted.
 
 ```sql
 CREATE TABLE IF NOT EXISTS `fw_items` (
