@@ -177,6 +177,27 @@ Runs on the server. Stops new accepts. An open run can still be finished. Return
 exports.fw_missions:AdminDisable(source, id)
 ```
 
+### AdminClearCompletions
+
+Runs on the server. Deletes the finished row for every character on this mission. A run still in hand stays. Those characters can take the job again. Dollars and standing they were already paid stay. Returns the read list. Nil when the mission is missing or this player cannot edit missions.
+
+```lua
+--- Clears who finished this mission. A run still in hand stays.
+---@param source integer
+---@param id string
+---@return table|nil list
+---@return string|nil err
+exports.fw_missions:AdminClearCompletions(source, id)
+```
+
+```lua
+local list, err = exports.fw_missions:AdminClearCompletions(source, 'gmu_small_favor')
+if list == nil then
+    print(err)
+    return
+end
+```
+
 ### AdminDuplicate
 
 Runs on the server. Copies a mission onto a new draft id. Returns the read list for the copy. Nil when the new id is already used or the source is missing.
