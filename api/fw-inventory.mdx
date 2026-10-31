@@ -257,6 +257,93 @@ end)
 
 If the name you register, or the `hash` you give it, looks like a known RDR3 weapon such as `WEAPON_REVOLVER_SCHOFIELD`, you can leave `kit`, `hash`, `width`, `height`, and `rotate` out. They are filled in for you.
 
+### AdminList
+
+Runs on the server. Every item the admin screen can edit, in label order. Each row has the same fields as `GetDefinition`, and a pouch also includes `container.contents`. `GetCatalog` still leaves that packed list off, so a satchel does not receive it.
+
+```lua
+--- Every item, including a parcel's packed list.
+--- Nil when fw_inventory is not ready.
+---@return table|nil items
+---@return string|nil err
+exports.fw_inventory:AdminList()
+```
+
+```lua
+local items, err = exports.fw_inventory:AdminList()
+if items == nil then
+    print(err)
+    return
+end
+```
+
+### AdminSave
+
+Runs on the server. The same write as `RegisterItem`. A bad field comes back as the same reason, and nothing is written. Open satchels get the saved item.
+
+```lua
+--- Adds or replaces an item type.
+--- False and a reason when the name or a field is rejected, or the row cannot be saved.
+---@param def table
+---@return boolean ok
+---@return string|nil err
+exports.fw_inventory:AdminSave(def)
+```
+
+```lua
+local ok, err = exports.fw_inventory:AdminSave({
+    name = 'gold',
+    label = 'Gold',
+    category = 'currency',
+    width = 1,
+    height = 1,
+    stack = 500,
+    currency = 'gold',
+    image = 'gold_bar',
+})
+if not ok then
+    print(err)
+    return
+end
+```
+
+`category = 'currency'` with `currency` set is a spendable balance. `currency` is the name `GetCurrency` uses, such as `cash` or `gold`. It can differ from the item name. `stack` is how many fit in one pile. One item can carry each balance name. A second item with the same name comes back as `currency already used`. A pouch cannot also be a balance. That comes back as `a container cannot be currency`.
+
+### AdminDelete
+
+Runs on the server. Removes that row from `fw_items` and from the catalog. A pile already in a satchel keeps the name. The bag no longer knows the type.
+
+```lua
+--- Removes one item type.
+--- False and a reason when the name is missing, or the row cannot be removed.
+---@param name string
+---@return boolean ok
+---@return string|nil err
+exports.fw_inventory:AdminDelete(name)
+```
+
+```lua
+local ok, err = exports.fw_inventory:AdminDelete('dried_meat')
+if not ok then
+    print(err)
+    return
+end
+```
+
+### ListImages
+
+Runs on the server. The picture names in `fw_inventory/images` that a row is allowed to use. Each name is lowercase letters, digits, and underscores, without `.png`. A new file shows up after `ensure fw_inventory`.
+
+```lua
+--- Picture names the item editor can offer.
+---@return table names
+exports.fw_inventory:ListImages()
+```
+
+```lua
+local names = exports.fw_inventory:ListImages()
+```
+
 ### RegisterUsable
 
 Runs on the server. Runs your function when the player uses that item from the satchel. The item is not removed unless you call `RemoveItem`.
