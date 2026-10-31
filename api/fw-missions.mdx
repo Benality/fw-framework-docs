@@ -28,7 +28,7 @@ Buying at a counter does not raise standing. `FwStoresConfig.purchasePoints` on 
 
 Call `RegisterMission` from your own resource when the mission is ready to publish. Do not edit `fw_missions` to add one. The table you pass is copied into a draft and then published. An open run keeps the copy it accepted. Changing the definition later does not change that run.
 
-An admin can do the same work from the Missions page in [fw_admin](/api/fw-admin). Save draft stores a body that is not ready yet. Publish refuses it until the fields below are filled, and the screen marks the field. Disable stops new accepts. A run that is already open can still be finished. Duplicate copies the body onto a new id and leaves it as a draft.
+An admin can do the same work from the Missions page in [fw_admin](/api/fw-admin). Save draft stores the body, and the clerks named on it offer that draft. Publish refuses it until the fields below are filled, and the screen marks the field. After publish, a new accept uses that published copy. Disable stops new accepts. A run that is already open can still be finished. Duplicate copies the body onto a new id and leaves it as a draft.
 
 The id is a plain word: a letter, then letters, numbers, or `_`. It can be up to 64 characters. `union` is the same kind of word, up to 32 characters, and it has to be a union that is still offered.
 
@@ -47,13 +47,13 @@ A stage has `text`, `contact`, and `items`. `contact` is `issuer` or one store i
 
 `visit`, `recover`, and `work` are not stages. A definition that still uses them will not publish.
 
-Accept copies the published body onto the run. Turn-in reads that copy. A later publish does not change an open run. Disable does not cancel one either.
+Accept copies the published body onto the run. A mission that has never been published copies the draft instead. Turn-in reads that copy. A later edit does not change an open run. A goods line with no item name is not asked for. Disable does not cancel an open run either.
 
 Partial turn-in stores the counts already handed over. The client may send a quantity. The server clamps it to what is left and what the satchel holds. Submit available is that clamp. Opening the counter does not take goods. Goods in a pouch do not count.
 
 Abandon is allowed from the journal and from Work. Handed-in goods stay handed in. A letter this mission gave is removed. One-time work can be accepted again after abandon. Complete cannot. Repeatable work can be accepted again after the cooldown, on a new copy.
 
-The twelve starter jobs are drafts. They are not offered until an admin sets the payment and publishes them. A contact that is still empty is marked when they try to publish.
+The twelve starter jobs are drafts, and the clerks they name already offer them. A goods line with no item is left off the hand-in. An empty payment pays nothing. Publish still refuses that body until the payment and every item name are set. A contact that is still empty is marked when they try to publish. A later job stays on the list, and Accept stays off until the earlier one is finished.
 
 ## Exports
 
