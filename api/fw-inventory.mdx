@@ -307,7 +307,7 @@ if not ok then
 end
 ```
 
-`category = 'currency'` with `currency` set is a spendable balance. `currency` is the name `GetCurrency` uses, such as `cash` or `gold`. It can differ from the item name. `stack` is how many fit in one pile. One item can carry each balance name. A second item with the same name comes back as `currency already used`. A pouch cannot also be a balance. That comes back as `a container cannot be currency`.
+`category = 'currency'` with `currency` set is a spendable balance. `currency` is the name `GetCurrency` uses, such as `cash` or `gold`. It can differ from the item name. Leave `currency` out and the item name is used, when that name starts with a letter and is at most 16 characters. `stack` is how many fit in one pile. One item can carry each balance name. A second item with the same name comes back as `currency already used`. A pouch cannot also be a balance. That comes back as `a container cannot be currency`.
 
 ### AdminDelete
 
