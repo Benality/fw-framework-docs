@@ -222,6 +222,38 @@ CREATE TABLE IF NOT EXISTS `fw_storage` (
 | `groups` | JSON list of item groups this row accepts. `NULL` accepts every group. |
 | `updated_at` | Set by the database when the row is written. |
 
+## `fw_box`
+
+Created by `fw_storage` from `resources/[framework]/fw_storage/sql/boxes.sql`. One row per box in the world. This is the place and the size. The piles inside stay on `fw_storage`. Change `x`, `y`, and `z` here, then restart `fw_storage`. The prompt moves. Set `enabled` to `0` to hide a box. An empty table gets Worth's box back on the next start.
+
+```sql
+CREATE TABLE IF NOT EXISTS `fw_box` (
+  `id` varchar(64) NOT NULL,
+  `label` varchar(48) NOT NULL,
+  `width` tinyint unsigned NOT NULL,
+  `height` tinyint unsigned NOT NULL,
+  `shared` tinyint(1) NOT NULL DEFAULT 1,
+  `accept_weapons` tinyint(1) NOT NULL DEFAULT 0,
+  `distance` double NOT NULL DEFAULT 2,
+  `x` double NOT NULL,
+  `y` double NOT NULL,
+  `z` double NOT NULL,
+  `enabled` tinyint(1) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
+| Column | Meaning |
+| --- | --- |
+| `id` | The storage name, such as `box:worths`. The piles are saved under this same id. |
+| `label` | The words on the Hold prompt. |
+| `width`, `height` | Squares in the grid, from 1 to 24. |
+| `shared` | `1` means one grid for everyone. `0` means each character has their own. |
+| `accept_weapons` | `1` lets a gun go in. `0` refuses it. |
+| `distance` | How close the player must stand, in metres. |
+| `x`, `y`, `z` | The spot in the world. |
+| `enabled` | `0` hides the prompt. The piles stay. |
+
 ## `fw_currency`
 
 Created by `fw_money` from `resources/[framework]/fw_money/sql/currency.sql`. One row per character and currency name. This is the dollars that character is carrying in the satchel. Do not write this table from your script. Use [fw_money](/api/fw-money).
