@@ -39,6 +39,7 @@ The id is a plain word: a letter, then letters, numbers, or `_`. It can be up to
 - `minStanding` is optional: `Recognized`, `Trusted`, or `Established`.
 - `minGroup` is how many of the company must be online. Leave it out and it is 1. The cap is 4 unless `shared/config.lua` says otherwise. The check runs on accept, and again on the submit that finishes the work. [fw_group](/api/fw-group) counts who is online. Someone who is not in a company counts as one.
 - `reward` is a whole number of dollars, or `0`. An empty reward can be saved as a draft. Publish refuses it.
+- `rewardItems` is optional. Each line is `{ name, count }`. The name has to be an item the satchel already knows. Count is from 1 to 100, and there can be up to 8 lines. Those items are put in the satchel when the work is finished, along with the dollars. If the satchel cannot hold them, the dollars are put back and the work stays open.
 - `unlockStanding` is optional. On the finish, the score is set to that word's line when their score is still below it.
 - `doneText` is the line they see when it is finished.
 - `stages` is the ordered work. Each stage is `supply`, `deliver`, or `introduce`.
@@ -53,7 +54,7 @@ Partial turn-in stores the counts already handed over. The client may send a qua
 
 Abandon is allowed from the journal and from Work. Handed-in goods stay handed in. A letter this mission gave is removed. One-time work can be accepted again after abandon. Complete cannot. Repeatable work can be accepted again after the cooldown, on a new copy.
 
-The list starts empty. Add a job from the Missions page. A goods line with no item is left off the hand-in. An empty payment pays nothing. Publish still refuses that body until the payment and every item name are set. A contact that is still empty is marked when they try to publish. A later job stays on the list, and Accept stays off until the earlier one is finished.
+The list starts empty. Add a job from the Missions page. A goods line with no item is left off the hand-in. An empty payment pays nothing. Publish still refuses that body until the payment and every item name are set. A contact that is still empty is marked when they try to publish. A later job stays on the list as Unavailable until the earlier one is finished. The line under the title names that earlier job, and the standing, when that is what is missing. Accept stays off until those are met.
 
 ## Exports
 
