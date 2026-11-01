@@ -319,7 +319,7 @@ if not ok then
 end
 ```
 
-The game also reports where the ped is standing. Those reports update the coordinates `GetCharacter` returns, and they are written to the database on a timer, on disconnect, and when the character is cleared. `SaveState` writes immediately.
+The game also reports where the ped is standing. Those reports update the coordinates `GetCharacter` returns, and they are written to the database on a timer, on disconnect, and when the character is cleared. On a disconnect the server also writes health, the two cores, and whether they are dead. It reads those from the ped when the ped is still there, and otherwise keeps the last values it already saved. A client event cannot set them on the way out. `SaveState` writes immediately.
 
 ### DeleteCharacter
 
@@ -413,7 +413,7 @@ end)
 
 ### fw_characters:released
 
-Sent to that client when the character is cleared, including a switch and a delete. It is not sent when they drop, and `/leave` does not send it, because their game is closing. Listen on the client. `characterId` is the character that just ended. Clear anything you were keeping for that character.
+Sent to that client when the character is cleared, including a switch and a delete. It is not sent when they drop, and `/logout` does not send it, because their game is closing. Listen on the client. `characterId` is the character that just ended. Clear anything you were keeping for that character.
 
 ```lua
 --- The character on this client just ended.
@@ -437,9 +437,9 @@ TriggerServerEvent('fw_characters:relog')
 
 ### fw_characters:leave
 
-Networked. The client sends it. `/leave` does that. The command name is `leaveCommand` in `server/config.lua`.
+Networked. The client sends it. `/logout` does that. The command name is `leaveCommand` in `server/config.lua`, and it starts as `logout`.
 
-The same save runs when a character is selected. Their game is not told to wipe, because the connection is about to close. The server puts them in the main session, then drops them on the next tick with `leaveReason`, which starts as `Left the server.` There is no wait between switches for this one. Someone on the character list, with no character selected, is dropped without a save.
+The server refuses, and writes a warning, for the same reasons as `/relog` when a character is selected. A success saves place, health, and cores, clears the character, and writes an info line. Their game is not told to wipe, because the connection is about to close. The server puts them in the main session, then drops them on the next tick with `leaveReason`, which starts as `Left the server.` Someone on the character list, with no character selected, is dropped without a save.
 
 ```lua
 --- Asks to save and return to the RedM menu.
