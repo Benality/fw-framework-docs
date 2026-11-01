@@ -9,6 +9,8 @@ The dollars are a real stack in the satchel. The number you spend is the balance
 
 A bag on the ground keeps its own balance. A chest does too. Those dollars are not part of `GetCash` until someone takes them out.
 
+The first time a character is played, and they have no cash balance yet, the server puts `startingCash` dollars in the satchel. That number is in `fw_money` `server/config.lua`. The default is 5. The client does not choose it. A character who already has a balance, including zero, is left as they are.
+
 One pile holds at most 500 dollars. A larger amount is several piles. `AddCash` fills a pile up to 500, then starts another pile. Each new pile needs an empty cell. 1,200 dollars is two piles of 500 and one of 200.
 
 `source` is the client id of the player who triggered the event. It changes every time they join. An amount is a whole number of dollars. `nil` means the export did not do it, and the second value is the reason.

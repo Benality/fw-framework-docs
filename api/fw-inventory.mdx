@@ -790,7 +790,7 @@ That box is personal. Each character gets their own items the first time they ho
 
 ### OpenRegistered
 
-Runs on the server. Opens a storage you registered. It checks the character, the character list, `adminOnly`, and `shared`, then opens the grid. The player must be playing a character.
+Runs on the server. Opens a storage you registered. It checks the character, the character list, `adminOnly`, and `shared`, then opens the grid. When the registration has `locations`, the player also has to be standing at one of those spots. The player must be playing a character.
 
 ```lua
 --- Opens a registered storage for this player.
@@ -811,6 +811,7 @@ exports.fw_inventory:OpenRegistered(source, id)
 | `Finish the trade first.` | This player is in a trade. |
 | `Invalid storage.` | Nothing is registered under that name, or the personal name would be longer than 64 characters. |
 | `You cannot open that.` | `adminOnly` is set and this player is not an admin, or `characters` is set and this character is not on the list. |
+| `Step closer.` | This storage has a spot in the world, and this player is farther than that spot's distance. A storage with no `locations`, such as a horse bag, does not check distance. |
 | `Someone is using that.` | Another player already has this grid open. |
 
 ```lua
