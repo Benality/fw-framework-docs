@@ -249,7 +249,7 @@ end
 
 Settle takes Offer out of the bag and places Want in the bag. Dollars leave the stack when you put them on Offer, including dollars in a pouch you are still carrying. Settle puts back whatever the price did not use. Closing the counter puts the shelf back the way the store lists it, and puts those dollars back as well. The bag keeps what the clerk already handed over.
 
-`fw_stores:settle` is networked. The client sends one table, the deal on Offer and Want. The server settles it only when that `source` holds that store. Anyone else is refused, nothing is taken, and the log says someone is already at the counter. A shop that is turned off or outside its hours is refused first, with the closed line.
+`fw_stores:settle` is networked. The client sends one table, the deal on Offer and Want. The server settles it only when that `source` holds that store and is within `promptDistance` of the clerk. Anyone else is refused, nothing is taken, and the log says someone is already at the counter. A player farther than that distance is refused with `Step closer to the clerk.` A shop that is turned off or outside its hours is refused first, with the closed line. Asking for the shelf from farther away is refused the same way, and that player does not take the counter.
 
 Another script on the client can open the same screen. `visit` is the clerk's goods for that store. `live` is set for you, so the bag on the right is the one the player is carrying.
 

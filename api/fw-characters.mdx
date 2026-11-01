@@ -200,7 +200,9 @@ Runs on the server. Makes this character the one the player is playing. It does 
 exports.fw_characters:SelectCharacter(source, characterId)
 ```
 
-`character not found` means this player does not own that id. Selecting the character they are already playing returns true and fires nothing. Selecting a different one fires `fw_characters:cleared` for the old id, then `fw_characters:selected` with a copy of the new character.
+`character not found` means this player does not own that id. Selecting the character they are already playing returns true and fires nothing. Selecting a different one while none is selected fires `fw_characters:selected` with a copy of the new character.
+
+Selecting a different one while they are already playing a character uses the same refusals as `/relog`, except they do not have to leave the character list first. A trade, a recent switch (`relogCooldownMs`), a missing ped, death, or being hogtied or cuffed returns that reason and leaves the current character in place. When the scene allows it, the current character is saved and cleared, `fw_characters:cleared` fires for the old id, and then `fw_characters:selected` fires for the new one. The cooldown starts on that switch.
 
 ### ClearCharacter
 
