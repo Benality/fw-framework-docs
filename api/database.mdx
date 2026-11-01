@@ -242,6 +242,7 @@ CREATE TABLE IF NOT EXISTS `fw_box` (
   `model` varchar(64) NOT NULL DEFAULT '',
   `class_name` varchar(32) NULL,
   `min_standing` varchar(16) NULL,
+  `key_item` varchar(32) NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -260,6 +261,7 @@ CREATE TABLE IF NOT EXISTS `fw_box` (
 | `model` | The prop name, such as `p_chest01x`. Empty means no prop. |
 | `class_name` | A reputation class, such as `general`. Empty means no standing check. |
 | `min_standing` | `Recognized`, `Trusted`, or `Established`. Empty means anyone. |
+| `key_item` | An item name. Empty means no key. The item has to be in the satchel. It is not used up. |
 | `enabled` | `0` hides the prompt and the prop. The piles stay. |
 
 ## `fw_currency`

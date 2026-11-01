@@ -43,6 +43,7 @@ Hold at that spot opens the chest. A horse bag or a wagon has no `locations`. Yo
 - `adminOnly = true` means only a player `fw_admin` counts as an admin can open it. Anyone else gets `You cannot open that.` It still follows `shared`. A shared admin chest is one grid. A personal admin chest is one grid per admin. Leave it out and it is false.
 - `locations` is optional. Each entry is `coords` and `distance`. With no locations, nothing is placed in the world.
 - `className` and `minStanding` are optional. Leave them out and anyone can open it. `className` is a reputation class, such as `general`. `minStanding` is `Recognized`, `Trusted`, or `Established`. The character's score in that class has to reach the score that word starts at. A lower score comes back as `Recognized standing is required.`, using the word you set. `Unknown`, or leaving `minStanding` out, does not ask for standing. A standing with no class comes back as `Pick a union for that standing.`
+- `keyItem` is optional. Leave it out and no key is needed. It is an item name, such as `stable_key`. The character has to have that item in the satchel. The key stays there. A pouch does not count. If they do not have it, the line says `You need a Stable key.`, using that item's label. A name that is not an item comes back as `Invalid key.` when you register it, or `That box is not ready.` when they try to open it and the item is gone.
 - `contents` is optional. A list of `{ name = 'bread', count = 2 }`. The first time that storage is opened, and it has no saved row yet, those piles are packed in. A later open shows what was left. Taking them out does not pack them again. An empty chest stays empty. A shared chest packs once for everyone. A personal chest (`shared = false`) packs once for each character, because each character has a different saved grid. Dollars in that list stay on the chest until someone takes them out. A bad list comes back from `RegisterStorage` as the reason. Leave `contents` out and the chest starts empty.
 - `width` and `height` are how many squares, from 1 to 24. The example is 8 across and 6 down.
 - `label` is the title the player sees, and the words on the prompt. Leave it out and the title is `Storage`.
@@ -772,6 +773,7 @@ exports.fw_inventory:RegisterStorage(params)
 | `Invalid class.` | `className` is not a short name of letters, digits, and underscore. |
 | `Invalid standing.` | `minStanding` is not a single word. |
 | `Pick a union for that standing.` | `minStanding` is set and `className` is missing. |
+| `Invalid key.` | `keyItem` is not an item name. |
 
 ```lua
 local ok, err = exports.fw_inventory:RegisterStorage({
@@ -794,7 +796,7 @@ That box is personal. Each character gets their own items the first time they ho
 
 ### OpenRegistered
 
-Runs on the server. Opens a storage you registered. It checks the character, the character list, `adminOnly`, `shared`, the spot, and the standing when one was set. When the registration has `locations`, the player also has to be standing at one of those spots. The player must be playing a character.
+Runs on the server. Opens a storage you registered. It checks the character, the character list, `adminOnly`, `shared`, the spot, the standing when one was set, and the key when one was set. When the registration has `locations`, the player also has to be standing at one of those spots. The player must be playing a character.
 
 ```lua
 --- Opens a registered storage for this player.
@@ -817,7 +819,8 @@ exports.fw_inventory:OpenRegistered(source, id)
 | `You cannot open that.` | `adminOnly` is set and this player is not an admin, or `characters` is set and this character is not on the list. |
 | `Step closer.` | This storage has a spot in the world, and this player is farther than that spot's distance. A storage with no `locations`, such as a horse bag, does not check distance. |
 | `Recognized standing is required.` | `minStanding` is set, and this character's score in `className` is below that word. The word in the sentence is the one you set. |
-| `That box is not ready.` | `minStanding` is set, and `fw_reputation` is not started. |
+| `That box is not ready.` | `minStanding` is set and `fw_reputation` is not started, or `keyItem` is set and that item is no longer defined, or the satchel cannot be read. |
+| `You need a Stable key.` | `keyItem` is set, and that item is not in the satchel. The words after `a` are the item's label. |
 | `Someone is using that.` | Another player already has this grid open. |
 
 ```lua

@@ -31,6 +31,8 @@ The model is a prop name, such as `p_chest01x`. Leave it empty and only the prom
 
 Standing is Anyone, Recognized, Trusted, or Established. Anyone does not check reputation. The other three need a union, such as `general`. The character's score in that union has to reach the score that word starts at. If it does not, the line says `Recognized standing is required.`, using the word that was saved. How those words are scored is in [fw_reputation](/api/fw-reputation).
 
+The key is an item name, such as `stable_key`. Leave it empty and no key is needed. Make the item on the Items page first. A name that is not an item is refused. The key has to be in the satchel. It is not used up. The line says `You need a Stable key.`, using that item's label. Standing and a key are separate. A box can ask for either, both, or neither.
+
 Removing a box hides the place. What was already put in it stays, under that same id. Adding the id again shows those piles.
 
 Worth's box is added when the table is empty. It is behind Worth's, shared, with no guns and no standing.
@@ -70,7 +72,7 @@ Runs on the server. One box, plus the same lists. Nil when the id is missing.
 exports.fw_storage:AdminRead(source, boxId)
 ```
 
-`payload.box` is the editor fields: `id`, `label`, `width`, `height`, `shared`, `acceptWeapons`, `distance`, `x`, `y`, `z`, `h`, `model`, `className`, `minStanding`, and `enabled`.
+`payload.box` is the editor fields: `id`, `label`, `width`, `height`, `shared`, `acceptWeapons`, `distance`, `x`, `y`, `z`, `h`, `model`, `className`, `minStanding`, `keyItem`, and `enabled`.
 
 ```lua
 local payload, err = exports.fw_storage:AdminRead(source, 'box:worths')
@@ -106,6 +108,9 @@ exports.fw_storage:AdminSave(source, body)
 | `That union is not in the list.` | The class is not one of the eight. |
 | `That standing is not one of the four.` | The standing is not Anyone, Recognized, Trusted, or Established. |
 | `Pick a union for that standing.` | A standing is set and the union is empty. |
+| `The key name can use lowercase letters, numbers, and underscore.` | The key is not an item name. |
+| `That item is not in the list.` | No item uses that name. Make it on the Items page first. |
+| `The items are not running.` | `fw_inventory` is not started. |
 | `The box could not be saved.` | The database refused the write. |
 
 ```lua
@@ -124,6 +129,7 @@ local payload, err = exports.fw_storage:AdminSave(source, {
     model = 'p_chest01x',
     className = 'general',
     minStanding = 'Recognized',
+    keyItem = 'stable_key',
     enabled = true,
 })
 if payload == nil then
@@ -163,6 +169,7 @@ local payload, err = exports.fw_storage:AdminCreate(source, {
     model = '',
     className = '',
     minStanding = '',
+    keyItem = '',
     enabled = true,
 })
 if payload == nil then
