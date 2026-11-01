@@ -82,6 +82,7 @@
             "group": "World",
             "pages": [
               "api/fw-stores",
+              "api/fw-storage",
               "api/fw-missions",
               "api/fw-group",
               "api/fw-trade",
@@ -187,6 +188,7 @@
     { "source": "/fw-satchel", "destination": "/api/fw-satchel" },
     { "source": "/fw-reputation", "destination": "/api/fw-reputation" },
     { "source": "/fw-stores", "destination": "/api/fw-stores" },
+    { "source": "/fw-storage", "destination": "/api/fw-storage" },
     { "source": "/fw-missions", "destination": "/api/fw-missions" },
     { "source": "/fw-group", "destination": "/api/fw-group" },
     { "source": "/fw-trade", "destination": "/api/fw-trade" },

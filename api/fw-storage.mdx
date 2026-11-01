@@ -1,0 +1,199 @@
+---
+title: "fw_storage"
+description: "Place a box in the world, and say who can open it."
+---
+
+Runs on the server. A box is a spot, a prompt, and an optional prop. The piles inside are a storage in [fw_inventory](/api/fw-inventory), saved under the same id. Your script does not place a box by editing this resource. An admin does that from `/admin`, on Boxes. Another script that needs its own chest still calls `RegisterStorage`.
+
+`source` is the client id of the player who triggered the event. It changes every time they join. `nil` means there is no value.
+
+Ask `IsReady` first. It stays no until the box table exists. The server can say `fw_storage` has started a moment before this is true.
+
+```lua
+--- True once the box table has been read.
+---@return boolean
+exports.fw_storage:IsReady()
+```
+
+```lua
+while not exports.fw_storage:IsReady() do
+    Wait(200)
+end
+```
+
+## What an admin saves
+
+The screen checks `fw.admin.boxes`. `fw.admin` already includes it. Each call checks that permission again.
+
+A box has an id, a label, a width and height from 1 to 24, a distance from 0.5 to 20 metres, a place, and a heading. Shared means one grid for everyone. Leave shared off and each character has their own. Guns off refuses a weapon. Open off hides the prompt and the prop. The piles stay.
+
+The model is a prop name, such as `p_chest01x`. Leave it empty and only the prompt is placed. The prop appears when a player is within 50 metres, and it goes away when they walk off.
+
+Standing is Anyone, Recognized, Trusted, or Established. Anyone does not check reputation. The other three need a union, such as `general`. The character's score in that union has to reach the score that word starts at. If it does not, the line says `Recognized standing is required.`, using the word that was saved. How those words are scored is in [fw_reputation](/api/fw-reputation).
+
+Removing a box hides the place. What was already put in it stays, under that same id. Adding the id again shows those piles.
+
+Worth's box is added when the table is empty. It is behind Worth's, shared, with no guns and no standing.
+
+### AdminList
+
+Runs on the server. The boxes, the unions, and the standing words. Nil when they cannot edit boxes, or the table is not ready.
+
+```lua
+--- The boxes, the unions, and the standing words.
+---@param source integer
+---@return table|nil payload
+---@return string|nil err
+exports.fw_storage:AdminList(source)
+```
+
+`payload.boxes` is `{ id, label, enabled, model, className, minStanding }`. `payload.classes` is `{ id, label }`. `payload.standings` starts with Anyone, then Recognized, Trusted, and Established.
+
+```lua
+local payload, err = exports.fw_storage:AdminList(source)
+if payload == nil then
+    print(err)
+    return
+end
+```
+
+### AdminRead
+
+Runs on the server. One box, plus the same lists. Nil when the id is missing.
+
+```lua
+--- One box for the editor.
+---@param source integer
+---@param boxId string
+---@return table|nil payload
+---@return string|nil err
+exports.fw_storage:AdminRead(source, boxId)
+```
+
+`payload.box` is the editor fields: `id`, `label`, `width`, `height`, `shared`, `acceptWeapons`, `distance`, `x`, `y`, `z`, `h`, `model`, `className`, `minStanding`, and `enabled`.
+
+```lua
+local payload, err = exports.fw_storage:AdminRead(source, 'box:worths')
+if payload == nil then
+    print(err)
+    return
+end
+```
+
+### AdminSave
+
+Runs on the server. Writes a box that is already in the list. The id stays. The piles stay. After it is saved, each connected player gets the new place. The return is the list plus that box.
+
+```lua
+--- Writes a box that is already in the list. The id stays. The piles stay.
+---@param source integer
+---@param body table
+---@return table|nil payload
+---@return string|nil err
+exports.fw_storage:AdminSave(source, body)
+```
+
+| `err` | When |
+| --- | --- |
+| `You cannot do that.` | This player does not have `fw.admin.boxes`. |
+| `The boxes are not ready.` | The table has not been read yet. |
+| `That box is not in the list.` | The id is missing, or it is not a saved box. |
+| `Type a label.` | The label is empty or longer than 48 characters. |
+| `Width and height are whole numbers from 1 to 24.` | A size is outside that range. |
+| `Distance is from 0.5 to 20 metres.` | The distance is outside that range. |
+| `Type the place.` | x, y, z, or the heading is not a number. |
+| `The model name can use letters, numbers, and underscore.` | The model has a space or another mark. |
+| `That union is not in the list.` | The class is not one of the eight. |
+| `That standing is not one of the four.` | The standing is not Anyone, Recognized, Trusted, or Established. |
+| `Pick a union for that standing.` | A standing is set and the union is empty. |
+| `The box could not be saved.` | The database refused the write. |
+
+```lua
+local payload, err = exports.fw_storage:AdminSave(source, {
+    id = 'box:worths',
+    label = "Worth's box",
+    width = 8,
+    height = 6,
+    shared = true,
+    acceptWeapons = false,
+    distance = 2,
+    x = -336.79,
+    y = 827.16,
+    z = 117.45,
+    h = 90,
+    model = 'p_chest01x',
+    className = 'general',
+    minStanding = 'Recognized',
+    enabled = true,
+})
+if payload == nil then
+    print(err)
+    return
+end
+```
+
+### AdminCreate
+
+Runs on the server. Adds a box. The id uses lowercase letters, digits, underscore, colon, and hyphen, and it must not start with `item:`. The piles for that id, if any were already saved, stay. The return is the list plus the new box.
+
+```lua
+--- Adds a box. The piles for that id, if any were already saved, stay.
+---@param source integer
+---@param body table
+---@return table|nil payload
+---@return string|nil err
+exports.fw_storage:AdminCreate(source, body)
+```
+
+The fields are the same as `AdminSave`, plus `id`. A bad id comes back as `The name can use letters, numbers, underscore, colon, and hyphen.` An id that is already saved comes back as `That name is already in use.` The other reasons are the same as `AdminSave`.
+
+```lua
+local payload, err = exports.fw_storage:AdminCreate(source, {
+    id = 'box:stables',
+    label = 'Stable box',
+    width = 8,
+    height = 6,
+    shared = true,
+    acceptWeapons = false,
+    distance = 2,
+    x = -336.79,
+    y = 827.16,
+    z = 117.45,
+    h = 0,
+    model = '',
+    className = '',
+    minStanding = '',
+    enabled = true,
+})
+if payload == nil then
+    print(err)
+    return
+end
+```
+
+### AdminDelete
+
+Runs on the server. Removes the place. The piles saved under that id stay. The return is the list, with `cleared` set.
+
+```lua
+--- Removes the place. The piles saved under that id stay.
+---@param source integer
+---@param boxId string
+---@return table|nil payload
+---@return string|nil err
+exports.fw_storage:AdminDelete(source, boxId)
+```
+
+```lua
+local payload, err = exports.fw_storage:AdminDelete(source, 'box:stables')
+if payload == nil then
+    print(err)
+    return
+end
+```
+
+## Opening it
+
+The prompt is Hold, on G, at the spot. That opens the storage through [fw_inventory](/api/fw-inventory) `OpenRegistered`. A script that already has the player at the box can call that too. The id is the box id, such as `box:worths`.
+
+The prop is only what the player sees. It does not hold the items. The items are the storage row.

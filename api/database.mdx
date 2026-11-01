@@ -224,7 +224,7 @@ CREATE TABLE IF NOT EXISTS `fw_storage` (
 
 ## `fw_box`
 
-Created by `fw_storage` from `resources/[framework]/fw_storage/sql/boxes.sql`. One row per box in the world. This is the place and the size. The piles inside stay on `fw_storage`. Change `x`, `y`, and `z` here, then restart `fw_storage`. The prompt moves. Set `enabled` to `0` to hide a box. An empty table gets Worth's box back on the next start.
+Created by `fw_storage` from `resources/[framework]/fw_storage/sql/boxes.sql`. One row per box in the world. This is the place, the size, the prop, and who may open it. The piles inside stay on `fw_storage`. The admin screen writes this table. Set `enabled` to `0` to hide a box. An empty table gets Worth's box back on the next start. Deleting a row hides the place. The piles saved under that id stay.
 
 ```sql
 CREATE TABLE IF NOT EXISTS `fw_box` (
@@ -238,6 +238,10 @@ CREATE TABLE IF NOT EXISTS `fw_box` (
   `x` double NOT NULL,
   `y` double NOT NULL,
   `z` double NOT NULL,
+  `heading` double NOT NULL DEFAULT 0,
+  `model` varchar(64) NOT NULL DEFAULT '',
+  `class_name` varchar(32) NULL,
+  `min_standing` varchar(16) NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -252,7 +256,11 @@ CREATE TABLE IF NOT EXISTS `fw_box` (
 | `accept_weapons` | `1` lets a gun go in. `0` refuses it. |
 | `distance` | How close the player must stand, in metres. |
 | `x`, `y`, `z` | The spot in the world. |
-| `enabled` | `0` hides the prompt. The piles stay. |
+| `heading` | Which way the prop faces. |
+| `model` | The prop name, such as `p_chest01x`. Empty means no prop. |
+| `class_name` | A reputation class, such as `general`. Empty means no standing check. |
+| `min_standing` | `Recognized`, `Trusted`, or `Established`. Empty means anyone. |
+| `enabled` | `0` hides the prompt and the prop. The piles stay. |
 
 ## `fw_currency`
 
