@@ -108,7 +108,7 @@ CREATE TABLE IF NOT EXISTS `fw_characters` (
 | `last_name` | `lastName` | 1–50 characters. |
 | `nickname` | `nickname` | NULL when unset. |
 | `gender` | `gender` | `male` or `female`. |
-| `birth_date` | `birthDate` | `YYYY-MM-DD` or NULL. Year must sit in `FwCharactersConfig` (1800–1899). |
+| `birth_date` | `birthDate` | `YYYY-MM-DD` or NULL. The character menu asks for an age. That age is stored as January 1 of 1899 minus the age. Year must sit in `FwCharactersConfig` (1800–1899). |
 | `description` | `description` | Lore, up to 2000 characters. Always sent on insert, including `''`. |
 | `appearance` | `appearance` | Body and face JSON. NULL until `SetAppearance`. The creator stores the menu ped-data table here. |
 | `clothing` | `clothing` | Worn clothes, outfits, and wearable state. NULL until `fw_clothing` saves it. The shape is on [fw_clothing](/api/fw-clothing). |

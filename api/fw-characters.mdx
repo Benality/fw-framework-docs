@@ -123,7 +123,7 @@ exports.fw_characters:CreateCharacter(source, data)
 | `firstName` | yes | 1–50 characters. |
 | `lastName` | yes | Same as the first name. |
 | `gender` | yes | `male` or `female`. `Male` is accepted and stored in lowercase. |
-| `birthDate` | no | `YYYY-MM-DD` between the configured years, or leave it out. `''` stores nothing. |
+| `birthDate` | no | `YYYY-MM-DD` between the configured years, or leave it out. `''` stores nothing. The character menu does not ask for this. It asks for an age, from 18 to 80, and stores January 1 of 1899 minus that age. |
 | `nickname` | no | 1–50 characters, or `''` to store nothing. |
 | `description` | no | Up to 2000 characters. Leave it out and it is stored as empty. |
 | `slot` | no | A free slot from 1 through this account's character limit. Leave it out and the lowest free slot is used. |
