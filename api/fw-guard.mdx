@@ -58,6 +58,8 @@ exports.fw_guard:Record(fact)
 - `cause` is who decided: `player`, `shop`, `mission`, `admin`, `weapon`, or `start`. Leave it out and the cause is `player`.
 - `otherSource` is the other player's `source` when the fact is a give or a trade. The guard reads that player's account and character. Leave it out when nobody else was involved.
 
+The guard also stores `location` from that player's ped on the server. Do not put coordinates on the fact. Staff can read the spot on a fact row, and on an open alert, to see whether a shop buy or a transfer happened near the place it claims.
+
 ```lua
 local reason = exports.fw_guard:Record({
     source = source,
@@ -100,6 +102,6 @@ Facts and alerts older than 90 days are deleted when the guard becomes ready. Th
 
 Do not write these from your script. `Record` is the call.
 
-`fw_guard_fact` is one row per `Record`. `player_id` is the account. `character_id` is the character. `other_player_id`, `other_character_id`, and `other_character_name` are the other player when you passed `otherSource`. `action`, `subject`, `flow`, `items`, `cash`, `detail`, and `cause` are the fields you passed. `created_at` is when the batch was written.
+`fw_guard_fact` is one row per `Record`. `player_id` is the account. `character_id` is the character. `other_player_id`, `other_character_id`, and `other_character_name` are the other player when you passed `otherSource`. `action`, `subject`, `flow`, `items`, `cash`, `detail`, and `cause` are the fields you passed. `location` is where that player was standing when `Record` ran, as `x,y,z` from the server ped. You do not pass it. Empty when the ped was gone. `created_at` is when the batch was written.
 
 `fw_guard_alert` is one row when a rule says `alert` or `refuse`. `read_at` stays empty until a staff member dismisses it. The columns are on the [database](/api/database) page.
