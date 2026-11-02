@@ -1,0 +1,69 @@
+---
+title: "fw_hud"
+description: "Shows health and stamina cores on screen, and lets the player rearrange them."
+---
+
+Runs on the client for the rings, and on the server for the saved layout. This is the custom HUD. It replaces the game's native cores while a character is selected. Hunger, thirst, stress, and consumables are not in this resource yet.
+
+`source` is the client id of the player who triggered the event. `nil` means there is no value.
+
+Close the satchel, the shop, and the admin screen before you open the settings panel. The HUD page takes mouse focus while that panel is open.
+
+## Exports
+
+### IsReady
+
+Runs on the server. Yes after the settings table exists and the resource has checked in with [fw_core](/api/fw-core).
+
+```lua
+--- True when a layout can be loaded or saved.
+---@return boolean
+exports.fw_hud:IsReady()
+```
+
+```lua
+while not exports.fw_hud:IsReady() do
+    Wait(100)
+end
+```
+
+## Commands
+
+These run on the client for the player who typed them. They do nothing until a character is selected.
+
+| Command | What it does |
+| --- | --- |
+| `/hud` | Hides or shows the custom HUD. |
+| `/hudsettings` | Opens the layout editor. Type it again, or press Cancel, to close without saving. |
+
+The words are `FWConfig.commands` in `shared/config.lua`.
+
+## Events
+
+### fw_hud:requestLayout
+
+Networked. The client asks the server for this account's saved layout after a character is selected. You do not call this from another resource.
+
+### fw_hud:layout
+
+Networked. Sent to one client. The argument is the layout table to draw. When there is no saved row, or the layout version changed, the server sends the default from config.
+
+### fw_hud:saveLayout
+
+Networked. The client sends the layout table from the editor. The server stores it on `fw_players.id`. Oversized or empty tables are refused. Saves are rate limited.
+
+### fw_hud:resetLayout
+
+Networked. The client asks the server to delete this account's saved layout. The editor then shows the default layout again. Save is still required if the player wants that default written back later.
+
+## Layout
+
+A layout has `scale`, `opacity`, `grid`, `shape`, `version`, and `elements`. Each element has a position in percent of the screen, a size, and the fields that element uses. Health, stamina, horse health, and horse stamina are rings. Logo and clock are optional. Job, cash, and player id are not drawn in this version.
+
+Raise `FWConfig.layoutVersion` in `shared/config.lua` when you change the default layout and want every account to start over.
+
+## Tables
+
+Do not write these from your script. The commands and the editor are the calls.
+
+`fw_hud_settings` is one row per account. `player_id` is `fw_players.id`. `layout` is the JSON layout. The columns are on the [database](/api/database) page.

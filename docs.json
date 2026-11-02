@@ -47,7 +47,8 @@
               "player/money",
               "player/shops",
               "player/weapons",
-              "player/characters"
+              "player/characters",
+              "player/hud"
             ]
           }
         ]
@@ -95,6 +96,7 @@
             "pages": [
               "api/fw-menu",
               "api/fw-guide",
+              "api/fw-hud",
               "api/fw-loading",
               "api/fw-creator",
               "api/fw-clothing",

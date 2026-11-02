@@ -312,6 +312,25 @@ CREATE TABLE IF NOT EXISTS `fw_guard_fact` (
 | `location` | Where the player stood when the fact was recorded, as `x,y,z`. Empty when the ped was gone. |
 | `created_at` | When the batch was written. A fact can be about a minute behind the move. Rows still in memory are lost if the server crashes. Rows older than 90 days are deleted when `fw_guard` starts. |
 
+## `fw_hud_settings`
+
+Created by `fw_hud` from `resources/[framework]/fw_hud/sql/hud.sql`. One row per account. Do not write this table from your script. Use [fw_hud](/api/fw-hud).
+
+```sql
+CREATE TABLE IF NOT EXISTS `fw_hud_settings` (
+  `player_id` int NOT NULL,
+  `layout` longtext NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`player_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
+| Column | Meaning |
+| --- | --- |
+| `player_id` | `fw_players.id`, the account. |
+| `layout` | The JSON layout from `/hudsettings`. |
+| `updated_at` | When that layout was last saved. |
+
 ## `fw_guard_alert`
 
 One row when a rule says alert or refuse. `read_at` stays empty until a staff member dismisses it. Dismiss does not undo the move.
