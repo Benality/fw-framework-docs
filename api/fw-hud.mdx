@@ -3,7 +3,7 @@ title: "fw_hud"
 description: "Shows health and stamina cores on screen, and lets the player rearrange them."
 ---
 
-Runs on the client for the rings, and on the server for the saved layout. This is the custom HUD. It replaces the game's native cores while a character is selected. Hunger, thirst, stress, and consumables are not in this resource yet.
+Runs on the client for the rings, and on the server for the saved layout. This is the custom HUD. It replaces the game's native cores while a character is selected. Health, stamina, hunger, thirst, and horse cores are drawn. Hunger and thirst read `LocalPlayer.state.hunger` and `LocalPlayer.state.thirst` when those exist, and show full when they do not. Nothing in this resource drains them yet. Stress, addiction, and drunk are not drawn.
 
 `source` is the client id of the player who triggered the event. `nil` means there is no value.
 
@@ -58,7 +58,7 @@ Networked. The client asks the server to delete this account's saved layout. The
 
 ## Layout
 
-A layout has `scale`, `opacity`, `grid`, `shape`, `version`, and `elements`. Each element has a position in percent of the screen, a size, and the fields that element uses. Health, stamina, horse health, and horse stamina are rings. Logo and clock are optional. Job, cash, and player id are not drawn in this version.
+A layout has `scale`, `opacity`, `grid`, `shape`, `version`, and `elements`. Each element has a position in percent of the screen, a size, and the fields that element uses. Health, stamina, hunger, thirst, horse health, and horse stamina are rings with state art from `img/`. Logo and clock are optional. Job, cash, and player id are not drawn in this version.
 
 Raise `FWConfig.layoutVersion` in `shared/config.lua` when you change the default layout and want every account to start over.
 
