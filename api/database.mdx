@@ -302,7 +302,7 @@ CREATE TABLE IF NOT EXISTS `fw_guard_fact` (
 | `cash` | Whole dollars, or empty. |
 | `detail` | Extra words as JSON, or empty. |
 | `cause` | `player`, `shop`, `mission`, `admin`, or `start`. |
-| `created_at` | When the fact was stored. Rows older than 90 days are deleted. |
+| `created_at` | When the fact was stored. Rows older than 90 days are deleted when `fw_guard` starts. |
 
 ## `fw_guard_alert`
 
@@ -318,7 +318,7 @@ One row when a rule says alert or refuse. `read_at` stays empty until a staff me
 | `other_name` | The other character of that account. |
 | `message` | The warning staff see. |
 | `read_at` | Empty while the alert is open. |
-| `created_at` | When the alert was stored. Rows older than 90 days are deleted. |
+| `created_at` | When the alert was stored. Rows older than 90 days are deleted when `fw_guard` starts. |
 
 ## `fw_currency`
 
