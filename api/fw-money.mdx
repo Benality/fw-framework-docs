@@ -67,14 +67,18 @@ Runs on the server. Adds dollars to the satchel and to the balance. Fills piles 
 
 False, and nothing changes, when the satchel has no room for the new piles. The amount has to be from 1 to 100000.
 
+The third value is who decided: `player`, `shop`, `mission`, `admin`, or `start`. Leave it out and the cause is `player`. Pass `false` when you are about to report these same dollars yourself, such as a mission payout on [fw_guard](/api/fw-guard). A shop passes `shop`. Starting dollars pass `start`. An admin gift passes `admin`.
+
 ```lua
 --- Adds dollars to the satchel.
 --- False, and nothing changes, when the new piles do not fit.
+--- cause nil is player. False means the caller reports this change itself.
 ---@param source integer
 ---@param amount integer
+---@param cause string|false|nil
 ---@return boolean ok
 ---@return string|nil err
-exports.fw_money:AddCash(source, amount)
+exports.fw_money:AddCash(source, amount, cause)
 ```
 
 ```lua
@@ -91,14 +95,18 @@ Runs on the server. Takes dollars out of the piles and lowers the balance by the
 
 False, and nothing changes, when those piles and the balance are not both large enough. A bag on the ground and a chest are left alone. Dollars set aside in an open trade stay there, and the reason is `That item is in a trade.`
 
+The third value is the same cause as `AddCash`. Pass `false` when these dollars are already part of a fact you write yourself.
+
 ```lua
 --- Takes dollars this character can spend. Loose piles go first, then a carried pouch.
 --- False, and nothing changes, when the piles and the balance are not both large enough.
+--- cause nil is player. False means the caller reports this change itself.
 ---@param source integer
 ---@param amount integer
+---@param cause string|false|nil
 ---@return boolean ok
 ---@return string|nil err
-exports.fw_money:RemoveCash(source, amount)
+exports.fw_money:RemoveCash(source, amount, cause)
 ```
 
 ```lua

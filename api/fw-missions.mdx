@@ -24,6 +24,8 @@ ensure fw_missions
 
 Buying at a counter does not raise standing. `FwStoresConfig.purchasePoints` on [fw_stores](/api/fw-stores) is `0`. A tier moves when a finished mission calls `Set`.
 
+Accepting work, leaving it, and the payout are each one fact on [fw_guard](/api/fw-guard). The payout fact carries the mission, the dollars, the item rewards, and the standing word. Those dollars are not written again as a cash line.
+
 ## The shape of a mission
 
 Call `RegisterMission` from your own resource when the mission is ready to publish. Do not edit `fw_missions` to add one. The table you pass is copied into a draft and then published. An open run keeps the copy it accepted. Changing the definition later does not change that run.

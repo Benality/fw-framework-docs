@@ -264,6 +264,62 @@ CREATE TABLE IF NOT EXISTS `fw_box` (
 | `key_item` | An item name. Empty means no key. The item has to be in the satchel. It is not used up. |
 | `enabled` | `0` hides the prompt and the prop. The piles stay. |
 
+## `fw_dropped`
+
+Created by `fw_inventory`. One row is a pouch on the ground. The piles stay in `fw_storage` under `item:` plus `container_id`. `player_id` is the account that set it down. `character_id` is the character. An older row can have both empty.
+
+## `fw_guard_fact`
+
+Created by `fw_guard` from `resources/[framework]/fw_guard/sql/guard.sql`. One row per `Record`. Do not write this table from your script. Use [fw_guard](/api/fw-guard).
+
+```sql
+CREATE TABLE IF NOT EXISTS `fw_guard_fact` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `player_id` int NOT NULL,
+  `character_id` int NULL,
+  `character_name` varchar(96) NULL,
+  `action` varchar(32) NOT NULL,
+  `subject` varchar(64) NULL,
+  `flow` varchar(8) NULL,
+  `items` json NULL,
+  `cash` int NULL,
+  `detail` json NULL,
+  `cause` varchar(16) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
+| Column | Meaning |
+| --- | --- |
+| `player_id` | `fw_players.id`, the account. |
+| `character_id` | `fw_characters.id`. |
+| `character_name` | The name stored with the fact. |
+| `action` | The short name the caller chose, such as `drop` or `mission.paid`. |
+| `subject` | The container, the box, the mission, or the class. Empty when the fact has none. |
+| `flow` | `in`, `out`, or empty. |
+| `items` | JSON list of names and counts. |
+| `cash` | Whole dollars, or empty. |
+| `detail` | Extra words as JSON, or empty. |
+| `cause` | `player`, `shop`, `mission`, `admin`, or `start`. |
+| `created_at` | When the fact was stored. Rows older than 90 days are deleted. |
+
+## `fw_guard_alert`
+
+One row when a rule says alert or refuse. `read_at` stays empty until a staff member dismisses it. Dismiss does not undo the move.
+
+| Column | Meaning |
+| --- | --- |
+| `fact_id` | The fact that raised it. |
+| `player_id` | The account. |
+| `rule_name` | `sameAccountSubject` or `sameAccountGoods`. |
+| `action` | The action on that fact. |
+| `character_name` | The character on this fact. |
+| `other_name` | The other character of that account. |
+| `message` | The warning staff see. |
+| `read_at` | Empty while the alert is open. |
+| `created_at` | When the alert was stored. Rows older than 90 days are deleted. |
+
 ## `fw_currency`
 
 Created by `fw_money` from `resources/[framework]/fw_money/sql/currency.sql`. One row per character and currency name. This is the dollars that character is carrying in the satchel. Do not write this table from your script. Use [fw_money](/api/fw-money).

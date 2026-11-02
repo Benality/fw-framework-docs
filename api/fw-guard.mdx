@@ -1,0 +1,100 @@
+---
+title: "fw_guard"
+description: "Report one fact after your script commits a change. The guard stores it, and a rule can ask you to stop."
+---
+
+Runs on the server. This is the log the rest of the framework writes to. A pouch, a mission payout, and a reputation change are the same kind of fact. Your script calls `Record` from the function that just decided to make the change. You do not edit `fw_guard` to be included, and you do not keep a second log.
+
+`source` is the client id of the player who triggered the event. It changes every time they join. `nil` means there is no value.
+
+A player cannot join while this resource is not ready. [fw_core](/api/fw-core) asks `IsReady` and turns them away when the answer is not yes. The line they see is `The server log is not running. Try again in a moment.`
+
+Ask `IsReady` only when your script starts and wants to know the log can take a fact. A player who is already in the world got past that door. If `Record` still returns a reason, stop the move. Nothing should change when the fact could not be stored.
+
+## Exports
+
+### IsReady
+
+Runs on the server. Yes after the fact table exists. A resource that has only started is not ready yet.
+
+```lua
+--- True when a fact can be stored.
+---@return boolean
+exports.fw_guard:IsReady()
+```
+
+```lua
+while not exports.fw_guard:IsReady() do
+    Wait(100)
+end
+```
+
+### Record
+
+Runs on the server. Stores one fact, then looks at the rules. You get `nil` when the fact is stored and the move may continue. You get a reason when you must stop. The fact is still stored in that case, when the reason came from a rule. When the fact itself could not be stored, the reason is `The server log is not running.`
+
+Call it in the same function, with the cause you already know, before the write that the player would notice. If you get a reason, return before that write.
+
+```lua
+--- Stores one fact for this player.
+--- Nil when the move may continue. A reason when the caller must stop.
+---@param fact table
+---@return string|nil reason
+exports.fw_guard:Record(fact)
+```
+
+`fact` is a table.
+
+- `source` is the player. The guard reads the account and the character they are playing.
+- `characterId` is optional. Pass it when the character is not the one they are playing yet, such as the moment they are created. It still has to be a character on that account.
+- `action` is a short name you choose, such as `drop`, `give`, `cash.in`, `reputation.add`, or `mission.paid`. Use lowercase letters, digits, underscore, and a dot. Keep it to 32 characters.
+- `subject` is the container, the box, the mission, or the reputation class. Leave it out when the fact is only about items or dollars.
+- `flow` is `in` when something arrived, or `out` when something left. Leave it out when nothing moved.
+- `items` is a list of `{ name = 'canned_beans', count = 4 }`. Leave it out when no items moved.
+- `cash` is whole dollars. Leave it out when no dollars moved.
+- `detail` is a small table of extra words, such as the union and the standing. It is stored as JSON.
+- `cause` is who decided: `player`, `shop`, `mission`, `admin`, or `start`. Leave it out and the cause is `player`.
+
+```lua
+local reason = exports.fw_guard:Record({
+    source = source,
+    action = 'mission.paid',
+    subject = 'gen_small_favor',
+    items = { { name = 'canned_beans', count = 1 } },
+    cash = 5,
+    detail = { union = 'general', standing = 'Recognized' },
+    cause = 'mission',
+    flow = 'in',
+})
+if reason ~= nil then
+    return
+end
+```
+
+Report the decision your script made. A mission payout is one `mission.paid` fact. Do not also write a cash line for those same dollars. Pass `false` as the cause on [fw_money](/api/fw-money) `AddCash` when the payout fact already includes the dollars.
+
+## Rules
+
+The rules live in `fw_guard` `shared/config.lua`. A rule has an action.
+
+- `log` stores the fact. Every `Record` does this.
+- `alert` also shows it to staff.
+- `refuse` also gives `Record` a reason, and your script stops. The sentence is `That could not be done.` unless that file says another one.
+
+Two rules ship as `alert`, so the drop, the payout, and the reputation change still happen.
+
+`sameAccountSubject` notices when this account already touched the same container or box on a different character. `sameAccountGoods` notices when the same item names left one character and arrived on another character of that account. A shop, a mission, an admin, or the starting dollars do not raise that second rule. They stay in the log.
+
+Staff change the action in that file. They do not edit your script to silence a rule.
+
+An alert is a row staff can read on the admin screen, and a warning in the server window. Dismiss marks it read. It does not undo the move. `webhook` is empty. When a URL is set, that same alert is posted as JSON.
+
+Facts and alerts older than 90 days are deleted. That number is `keepDays`. The same-account rules only look back 72 hours.
+
+## Tables
+
+Do not write these from your script. `Record` is the call.
+
+`fw_guard_fact` is one row per `Record`. `player_id` is the account. `character_id` is the character. `action`, `subject`, `flow`, `items`, `cash`, `detail`, and `cause` are the fields you passed. `created_at` is when it was stored.
+
+`fw_guard_alert` is one row when a rule says `alert` or `refuse`. `read_at` stays empty until a staff member dismisses it. The columns are on the [database](/api/database) page.

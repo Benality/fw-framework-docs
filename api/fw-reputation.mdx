@@ -133,10 +133,13 @@ If the score does not change, you still get that score back. `fw_reputation:chan
 ---@param source integer
 ---@param className string
 ---@param amount integer
+---@param cause string|false|nil who decided. Nil is player. False skips the log line.
 ---@return integer|nil score
 ---@return string|nil err
-exports.fw_reputation:Add(source, className, amount)
+exports.fw_reputation:Add(source, className, amount, cause)
 ```
+
+After the score is saved, the change is one fact on [fw_guard](/api/fw-guard). Leave `cause` out and it is `player`. A mission that calls `Set` passes `mission`. Pass `false` when you do not want a second line.
 
 ```lua
 local score, err = exports.fw_reputation:Add(source, 'general', 5)
@@ -160,9 +163,10 @@ If the score does not change, you still get that score back. `fw_reputation:chan
 ---@param source integer
 ---@param className string
 ---@param amount integer
+---@param cause string|false|nil who decided. Nil is player. False skips the log line.
 ---@return integer|nil score
 ---@return string|nil err
-exports.fw_reputation:Remove(source, className, amount)
+exports.fw_reputation:Remove(source, className, amount, cause)
 ```
 
 ```lua
@@ -187,9 +191,10 @@ If the stored score is already that number, you still get it back. `fw_reputatio
 ---@param source integer
 ---@param className string
 ---@param score integer
+---@param cause string|false|nil who decided. Nil is player. False skips the log line.
 ---@return integer|nil score
 ---@return string|nil err
-exports.fw_reputation:Set(source, className, score)
+exports.fw_reputation:Set(source, className, score, cause)
 ```
 
 ```lua

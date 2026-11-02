@@ -924,6 +924,8 @@ end
 
 [fw_trade](/api/fw-trade) is the screen that locks two offers and then calls this.
 
+A drop, a pickup, opening a pouch on the ground, putting something in a box, taking something out, and this trade are each one fact on [fw_guard](/api/fw-guard). The pouch row also stores the account and the character that set it down.
+
 ## Events
 
 A server event is heard with `AddEventHandler`. A client event from the server is heard with `RegisterNetEvent`. The client sends one with `TriggerServerEvent`. Your script hears one only if it is already running. Put the listener at the top of your script.

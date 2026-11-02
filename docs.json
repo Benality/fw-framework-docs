@@ -65,6 +65,7 @@
             "group": "Core",
             "pages": [
               "api/fw-core",
+              "api/fw-guard",
               "api/fw-characters",
               "api/database"
             ]
@@ -175,6 +176,7 @@
   "redirects": [
     { "source": "/index", "destination": "/introduction" },
     { "source": "/fw-core", "destination": "/api/fw-core" },
+    { "source": "/fw-guard", "destination": "/api/fw-guard" },
     { "source": "/fw-menu", "destination": "/api/fw-menu" },
     { "source": "/fw-guide", "destination": "/api/fw-guide" },
     { "source": "/fw-admin", "destination": "/api/fw-admin" },

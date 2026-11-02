@@ -32,6 +32,8 @@ Runs on the server. Ask this before you use anything else on this page.
 
 It stays no until two things are done. `fw_core` has a normal version, such as `1.1.0`, and the player list has been created in the database. If the version is wrong, or the player list cannot be created, the server window shows an error. `IsReady` stays no. People trying to join are turned away.
 
+A join is also refused when [fw_guard](/api/fw-guard) does not answer that it is ready. The server window names `fw_guard`. The player sees `The server log is not running. Try again in a moment.`
+
 The server can say `fw_core` has started a moment before this is true. Checking once is too early. Keep checking for about two minutes. The example on the [Write a script](/guides/first-resource) does that.
 
 ```lua
