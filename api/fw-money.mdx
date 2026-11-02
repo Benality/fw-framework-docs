@@ -175,7 +175,7 @@ local paid, err = exports.fw_money:RemoveCurrency(source, 'cash', 50)
 
 Splitting, giving, and dropping a pile is on the [money](/player/money) page. Dragging dollars into a pouch the character is still carrying leaves `GetCash` the same. Dropping that pouch takes those dollars out of `GetCash`.
 
-`AddItem` and `RemoveItem` on the item `cash` change the same balance. A counter takes the cash pile the player puts on Sell. A charge with no grid, such as the tailor, calls `RemoveCash`.
+`AddItem` and `RemoveItem` on the item `cash` change the same balance, and they queue `cash.in` or `cash.out` on [fw_guard](/api/fw-guard). `AddCash` and `RemoveCash` already queue that row, so the pile change does not queue a second one. A counter takes the cash pile the player puts on Sell. A charge with no grid, such as the tailor, calls `RemoveCash`.
 
 ## Reasons you can get back
 

@@ -1,6 +1,6 @@
 ---
 title: "fw_guard"
-description: "Report one fact after your script commits a change. The guard stores it, and a rule can ask you to stop."
+description: "Report one fact after your script commits a change. The guard writes it in a batch."
 ---
 
 Runs on the server. This is the log the rest of the framework writes to. A pouch, a mission payout, and a reputation change are the same kind of fact. Your script calls `Record` from the function that just decided to make the change. You do not edit `fw_guard` to be included, and you do not keep a second log.
@@ -9,7 +9,7 @@ Runs on the server. This is the log the rest of the framework writes to. A pouch
 
 A player cannot join while this resource is not ready. [fw_core](/api/fw-core) asks `IsReady` and turns them away when the answer is not yes. The line they see is `The server log is not running. Try again in a moment.`
 
-Ask `IsReady` only when your script starts and wants to know the log can take a fact. A player who is already in the world got past that door. If `Record` still returns a reason, stop the move. Nothing should change when the fact could not be stored.
+Ask `IsReady` only when your script starts and wants to know the log can take a fact. A player who is already in the world got past that door. If `Record` still returns a reason, stop the move. That reason means the guard is not ready, or the fact is not usable. A fact that was accepted can still be sitting in memory. A later database problem does not undo the move.
 
 ## Exports
 
@@ -31,12 +31,14 @@ end
 
 ### Record
 
-Runs on the server. Stores one fact, then looks at the rules. You get `nil` when the fact is stored and the move may continue. You get a reason when you must stop. The fact is still stored in that case, when the reason came from a rule. When the fact itself could not be stored, the reason is `The server log is not running.`
+Runs on the server. Checks the fact and keeps it in memory. You get `nil` when the move may continue. You get a reason when you must stop. The reason is `The server log is not running.` when the guard cannot take the fact, or `Select a character first.` when that player has no character.
+
+The row reaches the database in a batch, about once a minute, or sooner when about 100 facts are waiting. Those two numbers are `flushSeconds` and `flushCount` in `shared/config.lua`. A restart writes what is still waiting. A crash can lose the facts that have not been written yet. The time on the row is when the batch was written, so it can be about a minute after the move.
 
 Call it in the same function, with the cause you already know, before the write that the player would notice. If you get a reason, return before that write.
 
 ```lua
---- Stores one fact for this player.
+--- Queues one fact for this player.
 --- Nil when the move may continue. A reason when the caller must stop.
 ---@param fact table
 ---@return string|nil reason
@@ -52,8 +54,9 @@ exports.fw_guard:Record(fact)
 - `flow` is `in` when something arrived, or `out` when something left. Leave it out when nothing moved.
 - `items` is a list of `{ name = 'canned_beans', count = 4 }`. Leave it out when no items moved.
 - `cash` is whole dollars. Leave it out when no dollars moved.
-- `detail` is a small table of extra words, such as the union and the standing. It is stored as JSON.
-- `cause` is who decided: `player`, `shop`, `mission`, `admin`, or `start`. Leave it out and the cause is `player`.
+- `detail` is a small table of extra words, such as the union and the standing. A dropped or given pouch uses it for the pouch name, the piles inside, and the dollars in those piles. It is stored as JSON.
+- `cause` is who decided: `player`, `shop`, `mission`, `admin`, `weapon`, or `start`. Leave it out and the cause is `player`.
+- `otherSource` is the other player's `source` when the fact is a give or a trade. The guard reads that player's account and character. Leave it out when nobody else was involved.
 
 ```lua
 local reason = exports.fw_guard:Record({
@@ -73,15 +76,17 @@ end
 
 Report the decision your script made. A mission payout is one `mission.paid` fact. Do not also write a cash line for those same dollars. Pass `false` as the cause on [fw_money](/api/fw-money) `AddCash` when the payout fact already includes the dollars.
 
+[fw_inventory](/api/fw-inventory) `AddItem` and `RemoveItem` already queue `item.in`, `item.out`, `cash.in`, or `cash.out`. Pass `false` as the cause when your own fact already describes that same pile. A give, a drop, and a pickup are written by the inventory. You do not call `Record` again for those.
+
 ## Rules
 
 The rules live in `fw_guard` `shared/config.lua`. A rule has an action.
 
-- `log` stores the fact. Every `Record` does this.
-- `alert` also shows it to staff.
-- `refuse` also gives `Record` a reason, and your script stops. The sentence is `That could not be done.` unless that file says another one.
+- `log` keeps the fact. Every `Record` does this.
+- `alert` also shows it to staff, after the batch is written.
+- `refuse` is kept for a file that wants it. It does not stop the move. The batch is written after the move has already happened. The sentence in that file is not shown to the player.
 
-Two rules ship as `alert`, so the drop, the payout, and the reputation change still happen.
+Two rules ship as `alert`. The drop, the payout, and the reputation change still happen. The alert can be about a minute later than the move.
 
 `sameAccountSubject` notices when this account already touched the same container or box on a different character. `sameAccountGoods` notices when the same item names left one character and arrived on another character of that account. A shop, a mission, an admin, or the starting dollars do not raise that second rule. They stay in the log.
 
@@ -95,6 +100,6 @@ Facts and alerts older than 90 days are deleted when the guard becomes ready. Th
 
 Do not write these from your script. `Record` is the call.
 
-`fw_guard_fact` is one row per `Record`. `player_id` is the account. `character_id` is the character. `action`, `subject`, `flow`, `items`, `cash`, `detail`, and `cause` are the fields you passed. `created_at` is when it was stored.
+`fw_guard_fact` is one row per `Record`. `player_id` is the account. `character_id` is the character. `other_player_id`, `other_character_id`, and `other_character_name` are the other player when you passed `otherSource`. `action`, `subject`, `flow`, `items`, `cash`, `detail`, and `cause` are the fields you passed. `created_at` is when the batch was written.
 
 `fw_guard_alert` is one row when a rule says `alert` or `refuse`. `read_at` stays empty until a staff member dismisses it. The columns are on the [database](/api/database) page.

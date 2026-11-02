@@ -426,12 +426,15 @@ Runs on the server. Puts items into the satchel of the character this player is 
 ---@param name string
 ---@param count integer|nil
 ---@param metadata table|nil
+---@param cause string|false|nil who decided. Nil is player. False skips the log row.
 ---@return boolean ok
 ---@return string|nil err
-exports.fw_inventory:AddItem(source, name, count, metadata)
+exports.fw_inventory:AddItem(source, name, count, metadata, cause)
 ```
 
 `count` defaults to 1. The maximum for one call is 500. Stacks that already match the name and metadata are filled first. A weapon never stacks on another weapon. A container item receives its own `metadata.containerId` on each new placement.
+
+A normal item queues `item.in` on [fw_guard](/api/fw-guard). The cash item queues `cash.in` and the count is the dollars. `cause` is `shop`, `mission`, `admin`, or `weapon` when that is who decided. Leave it out and the cause is `player`. Pass `false` when another fact already describes this same pile, such as the dollars inside `AddCash`. The row is written in a batch. If the guard cannot take the fact, nothing is added and you get the reason.
 
 Ammo is a box, or a bundle of arrows. `stack` is the most of that item the satchel can hold. Giving more than that fails with `You cannot carry any more of those.` Using the item from the satchel puts `refill` rounds on the character, up to `max`. A box takes about two seconds. The bag stays open while the revolver-cylinder loading prompt shows at the bottom right. Backspace closes the bag. A box that is still opening is cancelled, and the box stays in the bag. Arrows apply right away. The box is not used up when the character is already at `max`. A shop sells one box:
 
@@ -465,10 +468,13 @@ Runs on the server. Takes that many of the name out of the satchel. If the playe
 ---@param source integer
 ---@param name string
 ---@param count integer
+---@param cause string|false|nil who decided. Nil is player. False skips the log row.
 ---@return boolean ok
 ---@return string|nil err
-exports.fw_inventory:RemoveItem(source, name, count)
+exports.fw_inventory:RemoveItem(source, name, count, cause)
 ```
+
+A normal item queues `item.out`. The cash item queues `cash.out`. The cause is the same word `AddItem` takes. Pass `false` when another fact already describes this same pile.
 
 ```lua
 local ok, err = exports.fw_inventory:RemoveItem(source, 'dried_meat', 2)
@@ -482,7 +488,7 @@ end
 
 Runs on the server. Takes dollars off one stack. `itemId` is that stack's id. `storageId` is the pouch when the stack is inside one you are still carrying, such as `item:` followed by the pouch id. Leave `storageId` empty when the stack is loose in the satchel. The count comes off that stack, and the character's dollar total drops by the same amount. If either change cannot be saved, neither one is kept.
 
-A pouch on the ground, or a chest, is refused. So is a stack that is not dollars, and a stack that is sitting in a trade.
+A pouch on the ground, or a chest, is refused. So is a stack that is not dollars, and a stack that is sitting in a trade. The dollars queue `cash.out`. `cause` is the same word `RemoveItem` takes. Leave it out and the cause is `player`.
 
 ```lua
 --- Takes dollars off one stack.
@@ -491,9 +497,10 @@ A pouch on the ground, or a chest, is refused. So is a stack that is not dollars
 ---@param itemId string
 ---@param count integer
 ---@param storageId string|nil pouch id, or nil when the stack is loose
+---@param cause string|false|nil who decided. Nil is player. False skips the log row.
 ---@return boolean ok
 ---@return string|nil err
-exports.fw_inventory:TakeCurrency(source, itemId, count, storageId)
+exports.fw_inventory:TakeCurrency(source, itemId, count, storageId, cause)
 ```
 
 ```lua
@@ -508,7 +515,7 @@ end
 
 Runs on the server. Takes a count off one stack that is not dollars. `itemId` is that stack's id. `storageId` is the pouch when the stack is inside one you are still carrying. Leave `storageId` empty when the stack is loose in the satchel. Dollars are refused. Use `TakeCurrency` for those, because the dollar total has to drop with the stack.
 
-A pouch on the ground, or a chest, is refused. So is a stack that is sitting in a trade. If the stack does not hold that many, nothing is taken.
+A pouch on the ground, or a chest, is refused. So is a stack that is sitting in a trade. If the stack does not hold that many, nothing is taken. The stack queues `item.out`. `cause` is the same word `RemoveItem` takes.
 
 ```lua
 --- Takes a count off one stack that is not dollars.
@@ -517,9 +524,10 @@ A pouch on the ground, or a chest, is refused. So is a stack that is sitting in 
 ---@param itemId string
 ---@param count integer
 ---@param storageId string|nil pouch id, or nil when the stack is loose
+---@param cause string|false|nil who decided. Nil is player. False skips the log row.
 ---@return boolean ok
 ---@return string|nil err
-exports.fw_inventory:TakePlacement(source, itemId, count, storageId)
+exports.fw_inventory:TakePlacement(source, itemId, count, storageId, cause)
 ```
 
 ```lua
@@ -542,10 +550,13 @@ The waiting writes go out together about every five seconds. The satchel is also
 ---@param source integer
 ---@param name string
 ---@param count integer
+---@param cause string|false|nil who decided. Nil is player. False skips the log row.
 ---@return boolean ok
 ---@return string|nil err
-exports.fw_inventory:RemoveItemDeferred(source, name, count)
+exports.fw_inventory:RemoveItemDeferred(source, name, count, cause)
 ```
+
+The log row is the same `item.out` or `cash.out` that `RemoveItem` queues.
 
 ```lua
 local ok, err = exports.fw_inventory:RemoveItemDeferred(source, 'dried_meat', 1)
@@ -924,7 +935,7 @@ end
 
 [fw_trade](/api/fw-trade) is the screen that locks two offers and then calls this.
 
-A drop, a pickup, opening a pouch on the ground, putting something in a box, taking something out, and this trade are each one fact on [fw_guard](/api/fw-guard). The pouch row also stores the account and the character that set it down.
+A drop, a pickup, opening a pouch on the ground, putting something in a box, taking something out, and this trade are each one fact on [fw_guard](/api/fw-guard). The pouch row stores the account and the character that set it down. A drop and a pickup also store the pouch name, the piles inside, and the dollars in those piles. A give or a trade stores the other character on both sides. One pouch also stores its id. Several pouches store each id with its piles.
 
 ## Events
 

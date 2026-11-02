@@ -285,6 +285,9 @@ CREATE TABLE IF NOT EXISTS `fw_guard_fact` (
   `cash` int NULL,
   `detail` json NULL,
   `cause` varchar(16) NOT NULL,
+  `other_player_id` int NULL,
+  `other_character_id` int NULL,
+  `other_character_name` varchar(96) NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -301,8 +304,11 @@ CREATE TABLE IF NOT EXISTS `fw_guard_fact` (
 | `items` | JSON list of names and counts. |
 | `cash` | Whole dollars, or empty. |
 | `detail` | Extra words as JSON, or empty. |
-| `cause` | `player`, `shop`, `mission`, `admin`, or `start`. |
-| `created_at` | When the fact was stored. Rows older than 90 days are deleted when `fw_guard` starts. |
+| `cause` | `player`, `shop`, `mission`, `admin`, `weapon`, or `start`. |
+| `other_player_id` | The other account, when the fact names one. Empty when nobody else was involved. |
+| `other_character_id` | That account's character. |
+| `other_character_name` | That character's name. |
+| `created_at` | When the batch was written. A fact can be about a minute behind the move. Rows still in memory are lost if the server crashes. Rows older than 90 days are deleted when `fw_guard` starts. |
 
 ## `fw_guard_alert`
 
