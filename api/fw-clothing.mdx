@@ -282,7 +282,7 @@ end
 
 ### GetTemperatureProtection
 
-Runs on the client. The same kind of result as the server call, plus `categories`, the list of worn category names. A cold-weather script on the player's computer can read it without asking the server.
+Runs on the client. The same kind of result as the server call, plus `categories`, the list of worn category names. Only pieces that are on the ped right now count — a shirt still in the outfit but toggled off with the clothing wheel is skipped. A cold-weather script on the player's computer can read it without asking the server.
 
 ```lua
 --- Warm and cold counts for the clothes on this computer.
