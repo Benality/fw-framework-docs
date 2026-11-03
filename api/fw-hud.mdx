@@ -7,6 +7,8 @@ Runs on the client for the rings, and on the server for the saved layout. This i
 
 While a character is selected it also blocks the stock reveal-HUD path (Alt / the same control Tab often trips) and keeps the top cash widget faded out, the same way vorp_core does. Turn those off with `FWConfig.suppressNativeRevealHud` and `FWConfig.hideNativeCash` in `shared/config.lua` if you need the base game chrome back.
 
+The minimap stays hidden by default. Press Alt to show it for `FWConfig.minimap.peekMs` (5000 ms). Set `FWConfig.minimap.hidden` to `false` to leave the minimap on all the time.
+
 `source` is the client id of the player who triggered the event. `nil` means there is no value.
 
 Close the satchel, the shop, and the admin screen before you open the settings panel. The HUD page takes mouse focus while that panel is open.
