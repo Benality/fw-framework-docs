@@ -5,6 +5,8 @@ description: "Shows health and stamina cores on screen, and lets the player rear
 
 Runs on the client for the rings, and on the server for the saved layout. This is the custom HUD. It replaces the game's native cores while a character is selected. Health, stamina, hunger, thirst, and horse cores are drawn. Hunger and thirst read `LocalPlayer.state.hunger` and `LocalPlayer.state.thirst` when those exist, and show full when they do not. Nothing in this resource drains them yet. Stress, addiction, and drunk are not drawn.
 
+While a character is selected it also blocks the stock reveal-HUD path (Alt / the same control Tab often trips) and keeps the top cash widget faded out, the same way vorp_core does. Turn those off with `FWConfig.suppressNativeRevealHud` and `FWConfig.hideNativeCash` in `shared/config.lua` if you need the base game chrome back.
+
 `source` is the client id of the player who triggered the event. `nil` means there is no value.
 
 Close the satchel, the shop, and the admin screen before you open the settings panel. The HUD page takes mouse focus while that panel is open.
