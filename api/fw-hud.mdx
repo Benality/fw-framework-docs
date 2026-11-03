@@ -365,9 +365,9 @@ Networked. The server registers each name in `FwHudConsumables`. Use from the sa
 
 ## Layout
 
-A layout has `scale`, `opacity`, `grid`, `shape`, `ring`, `icon`, `version`, and `elements`.
+A layout has `scale`, `opacity`, `grid`, `shape`, `ring`, `version`, and `elements`.
 
-`shape` is global: `circle`, `square`, or `hexagon`. Top-level `ring` and `icon` are the default colors. Each core element can override them, and also has `thickness`, `segments` (0 = solid ring, 2–20 = pie pieces), `showValue`, `visible`, `x`, `y`, and `size`. Outer meters are SVG rings. Inner fill still uses the PNG state art under `img/`. Logo and clock are optional. Clock uses `color` / `icon` for text and the clock glyph.
+`shape` is global: `circle`, `square`, or `hexagon`. Top-level `ring` is the default SVG ring color. Each core element can override `ring`, and also has `thickness`, `segments` (0 = solid ring, 2–20 = pie pieces), `showValue`, `visible`, `x`, `y`, and `size`. Outer meters are SVG rings. Inner fill uses the PNG state art under `img/` and is not recolored. Logo and clock are optional. Clock uses `color` / `icon` for text and the clock glyph.
 
 The `/hudsettings` editor opens on a **General** tab for the global fields. Every other tab is one element. `FwHudLayout.mergeDefaults` fills missing fields from `FWConfig.defaultLayout` before the page draws.
 
