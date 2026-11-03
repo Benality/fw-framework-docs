@@ -299,7 +299,7 @@ exports.fw_hud:AddTemperatureModifier(amount, seconds)
 exports.fw_hud:GetTemperature()
 ```
 
-The temperature icon uses `FWConfig.temperature`. Set `enabled` to `false` to hide the icon and stop cold / heat damage. `unit` is `C` or `F` for the number under the icon.
+The temperature icon uses `FWConfig.temperature`. Set `enabled` to `false` to hide the icon and stop cold / heat damage. `unit` is `C` or `F` for the number under the icon. `min`, `max`, and `comfort` stay in Celsius. The game native returns a float in the player's own temperature setting; `fw_hud` converts that to Celsius for the thresholds, then to `unit` for the label.
 
 ## State bags
 
