@@ -365,9 +365,9 @@ Networked. The server registers each name in `FwHudConsumables`. Use from the sa
 
 ## Layout
 
-A layout has `scale`, `opacity`, `grid`, `shape`, `ring`, `version`, and `elements`.
+A layout has `scale`, `opacity`, `grid`, `shape`, `ring`, `voiceRangeRing`, `version`, and `elements`.
 
-`shape` is global: `circle`, `square`, or `hexagon`. Top-level `ring` is the default SVG ring color. Each core element can override `ring`, and also has `thickness`, `segments` (0 = solid ring, 2–20 = pie pieces), `showValue`, `visible`, `x`, `y`, and `size`. Outer meters are SVG rings. Inner fill uses the PNG state art under `img/` and is not recolored. Logo and clock are optional. Clock uses `color` / `icon` for text and the clock glyph.
+`shape` is global: `circle`, `square`, or `hexagon`. Top-level `ring` is the default SVG ring color. `voiceRangeRing` is yes when changing [pma-voice](https://github.com/AvarianKnight/pma-voice) proximity should draw a ground ring for a short time. Each core element can override `ring`, and also has `thickness`, `segments` (0 = solid ring, 2–20 = pie pieces), `showValue`, `visible`, `x`, `y`, and `size`. Outer meters are SVG rings. Inner fill uses the PNG state art under `img/` and is not recolored. Logo, clock, and voice are optional. Clock uses `color` / `icon` for text and the clock glyph. Voice swaps `img/voice*.png` from `FWConfig.voice` by proximity index, talking, and radio.
 
 The `/hudsettings` editor opens on a **General** tab for the global fields. Every other tab is one element. `FwHudLayout.mergeDefaults` fills missing fields from `FWConfig.defaultLayout` before the page draws.
 
@@ -377,7 +377,9 @@ Raise `FWConfig.layoutVersion` in `shared/config.lua` when you change the defaul
 
 ## Metabolism config
 
-`FWConfig.cores`, `hunger`, `thirst`, `starving`, `death`, `horse`, `stress`, `temperature`, `smoking`, and `notifications` live in `shared/config.lua`. Consumable rows are `FwHudConsumables` in `shared/items.lua`. Animations are `FwHudAnimations` in `shared/animations.lua`.
+`FWConfig.cores`, `hunger`, `thirst`, `starving`, `death`, `horse`, `stress`, `temperature`, `voice`, `smoking`, and `notifications` live in `shared/config.lua`. Consumable rows are `FwHudConsumables` in `shared/items.lua`. Animations are `FwHudAnimations` in `shared/animations.lua`.
+
+Voice needs `pma-voice` started. The client listens for `pma-voice:setTalkingMode` and `pma-voice:radioActive`, and reads `LocalPlayer.state.proximity`. Without that resource the voice icon stays off.
 
 Item names must exist in `fw_items`. A seed list is `sql/consumable_items.sql`. Missing names warn at register time and skip that usable.
 
