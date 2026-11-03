@@ -331,6 +331,29 @@ CREATE TABLE IF NOT EXISTS `fw_hud_settings` (
 | `layout` | The JSON layout from `/hudsettings`. |
 | `updated_at` | When that layout was last saved. |
 
+## `fw_hud_needs`
+
+Created by `fw_hud` from `resources/[framework]/fw_hud/sql/hud.sql`, and again on start if the table is missing. One row per character. Do not write this table from your script. Use [fw_hud](/api/fw-hud).
+
+```sql
+CREATE TABLE IF NOT EXISTS `fw_hud_needs` (
+  `character_id` int NOT NULL,
+  `hunger` decimal(6,2) NOT NULL DEFAULT 100.00,
+  `thirst` decimal(6,2) NOT NULL DEFAULT 100.00,
+  `stress` decimal(6,2) NOT NULL DEFAULT 0.00,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`character_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
+| Column | Meaning |
+| --- | --- |
+| `character_id` | `fw_characters.id`. |
+| `hunger` | 0–100. |
+| `thirst` | 0–100. |
+| `stress` | 0–100. |
+| `updated_at` | When those needs were last saved. |
+
 ## `fw_guard_alert`
 
 One row when a rule says alert or refuse. `read_at` stays empty until a staff member dismisses it. Dismiss does not undo the move.

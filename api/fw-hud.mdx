@@ -1,11 +1,13 @@
 ---
 title: "fw_hud"
-description: "Shows health and stamina cores on screen, and lets the player rearrange them."
+description: "Custom cores HUD, metabolism, needs, and consumables."
 ---
 
-Runs on the client for the rings, and on the server for the saved layout. This is the custom HUD. It replaces the game's native cores while a character is selected. Health, stamina, hunger, thirst, and horse cores are drawn. Hunger and thirst read `LocalPlayer.state.hunger` and `LocalPlayer.state.thirst` when those exist, and show full when they do not. Nothing in this resource drains them yet. Stress, addiction, and drunk are not drawn.
+Runs on the client for the rings and metabolism, and on the server for layout, needs, and consumable use. This is the custom HUD. It replaces the game's native cores while a character is selected. Health, stamina, hunger, thirst, and horse cores are drawn.
 
-While a character is selected it also blocks the stock reveal-HUD path (Alt / the same control Tab often trips) and keeps the top cash widget faded out, the same way vorp_core does. Turn those off with `FWConfig.suppressNativeRevealHud` and `FWConfig.hideNativeCash` in `shared/config.lua` if you need the base game chrome back.
+Metabolism drains hunger and thirst over time, chips the stamina core when the outer bar empties, starves outer health at 0 needs, and registers consumables from `shared/items.lua` through [fw_inventory](/api/fw-inventory) `RegisterUsable`. Stress and temperature run when their config blocks are enabled.
+
+While a character is selected it also blocks the stock reveal-HUD path (Alt / the same control Tab often trips) and keeps the top cash widget faded out. Turn those off with `FWConfig.suppressNativeRevealHud` and `FWConfig.hideNativeCash` in `shared/config.lua` if you need the base game chrome back.
 
 The minimap stays hidden by default. Press Alt to show it for `FWConfig.minimap.peekMs` (5000 ms). Set `FWConfig.minimap.hidden` to `false` to leave the minimap on all the time.
 
@@ -29,6 +31,43 @@ exports.fw_hud:IsReady()
 while not exports.fw_hud:IsReady() do
     Wait(100)
 end
+```
+
+### AddNeed (server)
+
+Runs on the server. Adds a delta to hunger, thirst, or stress on that client's metabolism.
+
+```lua
+--- Changes one need for a connected player.
+---@param source integer
+---@param name string 'hunger' | 'thirst' | 'stress'
+---@param amount number
+---@return boolean
+exports.fw_hud:AddNeed(source, name, amount)
+```
+
+```lua
+exports.fw_hud:AddNeed(source, 'hunger', 25)
+```
+
+### Client attribute helpers
+
+These run on the client for the local ped.
+
+```lua
+exports.fw_hud:AddStaminaOuter(pct)
+exports.fw_hud:AddHealthOuter(pct)
+exports.fw_hud:AddStaminaCore(amount)
+exports.fw_hud:AddHealthCore(amount)
+exports.fw_hud:GetStaminaOuter()
+exports.fw_hud:GetStaminaCore()
+exports.fw_hud:GetHealthOuter()
+exports.fw_hud:GetHealthCore()
+exports.fw_hud:AddNeed(name, amount)
+exports.fw_hud:SetNeed(name, value)
+exports.fw_hud:GetNeed(name)
+exports.fw_hud:AddTemperatureModifier(amount, seconds)
+exports.fw_hud:GetTemperature()
 ```
 
 ## Commands
@@ -60,14 +99,35 @@ Networked. The client sends the layout table from the editor. The server stores 
 
 Networked. The client asks the server to delete this account's saved layout. The editor then shows the default layout again. Save is still required if the player wants that default written back later.
 
+### fw_hud:staminaExhausted
+
+Local client event. Fires when outer stamina hits empty and the stamina core is chipped. The argument is the new core value.
+
+```lua
+AddEventHandler('fw_hud:staminaExhausted', function(coreValue)
+end)
+```
+
+### Consumable flow
+
+Networked. The server registers each name in `FwHudConsumables`. Use from the satchel starts `fw_hud:useItem` on the client. When the progress finishes, the client sends `fw_hud:finishItem`. The server removes the item (unless `keep`), then sends `fw_hud:applyItem` so the client applies `needs`, `heal`, `gold`, `temp`, and `screenFx`. Cancel with `fw_hud:cancelItem`. Amounts always come from the shared config on the server path — the client does not invent rewards.
+
 ## Layout
 
-A layout has `scale`, `opacity`, `grid`, `shape`, `version`, and `elements`. Each element has a position in percent of the screen, a size, and the fields that element uses. Health, stamina, hunger, thirst, horse health, and horse stamina are rings with state art from `img/`. Logo and clock are optional. Job, cash, and player id are not drawn in this version.
+A layout has `scale`, `opacity`, `grid`, `shape`, `version`, and `elements`. Each element has a position in percent of the screen, a size, and the fields that element uses. Health, stamina, hunger, thirst, horse health, and horse stamina are rings with state art from `img/`. Logo and clock are optional.
 
 Raise `FWConfig.layoutVersion` in `shared/config.lua` when you change the default layout and want every account to start over.
+
+## Metabolism config
+
+`FWConfig.cores`, `hunger`, `thirst`, `starving`, `death`, `horse`, `stress`, `temperature`, `smoking`, and `notifications` live in `shared/config.lua`. Consumable rows are `FwHudConsumables` in `shared/items.lua`. Animations are `FwHudAnimations` in `shared/animations.lua`.
+
+Item names must exist in `fw_items`. A seed list is `sql/consumable_items.sql`. Missing names warn at register time and skip that usable.
 
 ## Tables
 
 Do not write these from your script. The commands and the editor are the calls.
 
-`fw_hud_settings` is one row per account. `player_id` is `fw_players.id`. `layout` is the JSON layout. The columns are on the [database](/api/database) page.
+`fw_hud_settings` is one row per account. `player_id` is `fw_players.id`. `layout` is the JSON layout.
+
+`fw_hud_needs` is one row per character. `character_id` is `fw_characters.id`. `hunger`, `thirst`, and `stress` are 0–100. The columns are on the [database](/api/database) page.
