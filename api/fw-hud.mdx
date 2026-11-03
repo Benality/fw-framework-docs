@@ -39,19 +39,19 @@ end
 
 ### FillVitals
 
-Runs on the server. Tells that player's client to fill outer health and the health core. Pass `true` as the second argument to fill outer stamina and the stamina core as well.
+Runs on the server. Tells that player's client to fill health, stamina, hunger, and thirst, and clear stress. The second argument is kept for older callers and is ignored.
 
 ```lua
---- Fills health. With includeStamina true, stamina is filled too.
+--- Fills health, stamina, hunger, and thirst. Clears stress.
 ---@param source integer
----@param includeStamina boolean|nil
+---@param includeStamina boolean|nil kept for older callers; ignored
 ---@return boolean ok
 ---@return string|nil err
 exports.fw_hud:FillVitals(source, includeStamina)
 ```
 
 ```lua
-local ok, err = exports.fw_hud:FillVitals(source, true)
+local ok, err = exports.fw_hud:FillVitals(source)
 if not ok then
     print(err)
 end
@@ -198,14 +198,14 @@ exports.fw_hud:IsCharacterActive()
 ### FillVitals
 
 ```lua
---- Fills outer health and the health core. Pass true to fill stamina too.
----@param includeStamina boolean|nil
+--- Fills health, stamina, hunger, and thirst. Clears stress.
+---@param includeStamina boolean|nil kept for older callers; ignored
 ---@return nil
 exports.fw_hud:FillVitals(includeStamina)
 ```
 
 ```lua
-exports.fw_hud:FillVitals(true)
+exports.fw_hud:FillVitals()
 ```
 
 ### Outer and core (set / add / get)

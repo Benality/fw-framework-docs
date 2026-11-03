@@ -103,7 +103,7 @@ Statistics, Whitelist, Reports, Admins, Logs, Admin Chat, Live Map, Blips, Spawn
 
 The small menu has three lists.
 
-- **Player.** God mode, no clip, invisible, unlimited ammo, fill health, and revive. Fill health fills health and stamina through [fw_hud](/api/fw-hud) `FillVitals` when that resource is started, so the custom cores match the ped. A toggle shows On or Off. No clip moves with W and S, up with Q, down with Z. Shift changes the speed. Delete stops it. Turning no clip on closes the small menu, so those keys work. Page Up opens it again.
+- **Player.** God mode, no clip, invisible, unlimited ammo, fill health, and revive. Fill health fills health, stamina, hunger, and thirst (and clears stress) through [fw_hud](/api/fw-hud) `FillVitals` when that resource is started, so the custom cores match the ped. A toggle shows On or Off. No clip moves with W and S, up with Q, down with Z. Shift changes the speed. Delete stops it. Turning no clip on closes the small menu, so those keys work. Page Up opens it again.
 - **Teleport.** Waypoint, Guarma, and return.
 - **Display.** Show coordinates draws them on the screen while you play. The copy lines are the same four as Coords.
 
@@ -202,7 +202,7 @@ Networked, the client to the server. `target` is the other `source`. The server 
 | `fw_admin:bring` | `fw.admin.players` | `target` |
 | `fw_admin:sendBack` | `fw.admin.players` | `target` |
 | `fw_admin:freeze` | `fw.admin.players` | `target`. Choose it again to let them move. |
-| `fw_admin:heal` | `fw.admin.players` | `target`, `stamina`. The panel always sends `stamina` true so both cores fill. |
+| `fw_admin:heal` | `fw.admin.players` | `target`, `stamina`. The panel always fills health, stamina, hunger, and thirst. |
 | `fw_admin:revive` | `fw.admin.players` | `target` |
 | `fw_admin:spectate` | `fw.admin.players` | `target`. The same target again stops it. |
 | `fw_admin:spectateLost` | `fw.admin` | None. Their game sends this when the person can no longer be watched. |
