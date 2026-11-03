@@ -3,7 +3,7 @@ title: "fw_hud"
 description: "Custom cores HUD, metabolism, needs, consumables, and vitals API."
 ---
 
-Runs on the client for the rings and metabolism, and on the server for layout, needs, and consumable use. This is the custom HUD. It replaces the game's native cores while a character is selected. Health, stamina, hunger, thirst, and horse cores are drawn.
+Runs on the client for the rings and metabolism, and on the server for layout, needs, and consumable use. This is the custom HUD. It replaces the game's native cores while a character is selected. Health, stamina, hunger, thirst, temperature, and horse cores are drawn.
 
 The HUD stays hidden until the character is in the world and outer health has stopped climbing (creator HoldVitals). That way the rings appear at their real values instead of filling on screen.
 
@@ -294,10 +294,12 @@ exports.fw_hud:AddTemperatureModifier(amount, seconds)
 ```
 
 ```lua
---- Current temperature reading used by the HUD.
+--- Felt temperature in Celsius (before unit display).
 ---@return number
 exports.fw_hud:GetTemperature()
 ```
+
+The temperature icon uses `FWConfig.temperature`. Set `enabled` to `false` to hide the icon and stop cold / heat damage. `unit` is `C` or `F` for the number under the icon.
 
 ## State bags
 
