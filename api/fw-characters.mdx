@@ -271,10 +271,10 @@ end
 
 ### SaveState
 
-Runs on the server. Saves where they are standing, and their health, for the character this player is playing. It does not change the name or the saved body, clothes, or hair. It does not send the `fw_characters:updated` event.
+Runs on the server. Saves where they are standing, their health and cores, and hunger / thirst / stress, for the character this player is playing. It does not change the name or the saved body, clothes, or hair. It does not send the `fw_characters:updated` event.
 
 ```lua
---- Saves position and health for the active character.
+--- Saves position, health, cores, and needs for the active character.
 ---@param source integer
 ---@param state table
 ---@return boolean|nil ok
@@ -290,6 +290,7 @@ Every field is optional, but position is all or nothing. If you send any of `x`,
 | `health` | Whole number from 0 to 65535. |
 | `healthCore` | Whole number from 0 to 100. |
 | `staminaCore` | Whole number from 0 to 100. |
+| `hunger`, `thirst`, `stress` | Numbers from 0 to 100. [fw_hud](/api/fw-hud) writes these. |
 | `isDead` | True or false. |
 
 | `err` | When |
@@ -301,6 +302,9 @@ Every field is optional, but position is all or nothing. If you send any of `x`,
 | `health must be an integer from 0 to 65535` | Health is out of range. |
 | `healthCore must be an integer from 0 to 100` | Health core is out of range. |
 | `staminaCore must be an integer from 0 to 100` | Stamina core is out of range. |
+| `hunger must be a number from 0 to 100` | Hunger is not a number. |
+| `thirst must be a number from 0 to 100` | Thirst is not a number. |
+| `stress must be a number from 0 to 100` | Stress is not a number. |
 | `isDead must be true or false` | `isDead` is not a boolean. |
 | `nothing to save` | None of these fields were sent. |
 | `character not found` | The selected character no longer exists. |
@@ -319,7 +323,7 @@ if not ok then
 end
 ```
 
-The game also reports where the ped is standing. Those reports update the coordinates `GetCharacter` returns, and they are written to the database on a timer, on disconnect, and when the character is cleared. On a disconnect the server also writes health, the two cores, and whether they are dead. It reads those from the ped when the ped is still there, and otherwise keeps the last values it already saved. A client event cannot set them on the way out. `SaveState` writes immediately.
+The game also reports where the ped is standing. Those reports update the coordinates `GetCharacter` returns, and they are written to the database on a timer, on disconnect, and when the character is cleared. On a disconnect the server also writes health, the two cores, hunger, thirst, stress, and whether they are dead. Health and the cores are read from the ped when the ped is still there. Needs use the last values `SaveState` already put on the character. A client event cannot set them on the way out. `SaveState` writes immediately.
 
 ### DeleteCharacter
 
@@ -352,6 +356,8 @@ exports.fw_characters:DeleteCharacter(source, characterId)
 | `x`, `y`, `z`, `heading` | Last known position. A recent sample can be newer than the last database write. |
 | `health` | 0–65535. A new character starts at 600. |
 | `healthCore`, `staminaCore` | 0–100. A new character starts at 100. |
+| `hunger`, `thirst` | 0–100. A new character starts at 100. |
+| `stress` | 0–100. A new character starts at 0. |
 | `isDead` | True or false. |
 | `createdAt` | When the row was created. |
 | `lastPlayed` | When they last played it. Nil until the first selection. |

@@ -379,4 +379,4 @@ Do not write these from your script. The commands and the editor are the calls.
 
 `fw_hud_settings` is one row per account. `player_id` is `fw_players.id`. `layout` is the JSON layout.
 
-`fw_hud_needs` is one row per character. `character_id` is `fw_characters.id`. `hunger`, `thirst`, and `stress` are 0–100. The columns are on the [database](/api/database) page.
+Hunger, thirst, and stress live on the [character row](/api/database#fw_characters). `fw_hud` reads them from [fw_characters](/api/fw-characters) and saves them with `SaveState`. Do not write those columns from your script.

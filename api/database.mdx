@@ -86,6 +86,9 @@ CREATE TABLE IF NOT EXISTS `fw_characters` (
   `health` smallint unsigned NOT NULL DEFAULT 600,
   `health_core` tinyint unsigned NOT NULL DEFAULT 100,
   `stamina_core` tinyint unsigned NOT NULL DEFAULT 100,
+  `hunger` decimal(6,2) NOT NULL DEFAULT 100.00,
+  `thirst` decimal(6,2) NOT NULL DEFAULT 100.00,
+  `stress` decimal(6,2) NOT NULL DEFAULT 0.00,
   `is_dead` tinyint(1) NOT NULL DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `last_played` timestamp NULL DEFAULT NULL,
@@ -118,13 +121,16 @@ CREATE TABLE IF NOT EXISTS `fw_characters` (
 | `health` | `health` | 0–65535. Default 600. |
 | `health_core` | `healthCore` | 0–100. Default 100. |
 | `stamina_core` | `staminaCore` | 0–100. Default 100. |
+| `hunger` | `hunger` | 0–100. Default 100. Written by [fw_hud](/api/fw-hud) through `SaveState`. |
+| `thirst` | `thirst` | 0–100. Default 100. |
+| `stress` | `stress` | 0–100. Default 0. |
 | `is_dead` | `isDead` | `0` or `1`. Lua uses `true` / `false`. |
 | `created_at` | `createdAt` | Insert time. |
 | `last_played` | `lastPlayed` | Select, clear, or player drop. NULL until the first selection. |
 
 **Indexes**: primary key `id`, unique `(player_id, slot)` — listing one account uses this index. The JSON columns are not indexed. `ROW_FORMAT=DYNAMIC` keeps a large document off the main row.
 
-**Write paths**: `SaveState` updates position and health only — it never rewrites `appearance`, `clothing`, or `barber`. Each of those documents must encode to at most 262144 bytes. `GetCharacters` never selects the JSON columns; it selects `(appearance IS NOT NULL) AS has_appearance` (and the same for clothing/barber) and returns those as `hasAppearance`, `hasClothing`, `hasBarber`.
+**Write paths**: `SaveState` updates position, health, cores, and needs only — it never rewrites `appearance`, `clothing`, or `barber`. Each of those documents must encode to at most 262144 bytes. `GetCharacters` never selects the JSON columns; it selects `(appearance IS NOT NULL) AS has_appearance` (and the same for clothing/barber) and returns those as `hasAppearance`, `hasClothing`, `hasBarber`. On an existing database, `fw_characters` adds the needs columns at start and copies any leftover `fw_hud_needs` rows onto them, then drops that table.
 
 **Calls**: [`fw_characters`](/api/fw-characters). The fields you get back are the [character record](/api/fw-characters#character-record).
 
@@ -330,29 +336,6 @@ CREATE TABLE IF NOT EXISTS `fw_hud_settings` (
 | `player_id` | `fw_players.id`, the account. |
 | `layout` | The JSON layout from `/hudsettings`. |
 | `updated_at` | When that layout was last saved. |
-
-## `fw_hud_needs`
-
-Created by `fw_hud` from `resources/[framework]/fw_hud/sql/hud.sql`, and again on start if the table is missing. One row per character. Do not write this table from your script. Use [fw_hud](/api/fw-hud).
-
-```sql
-CREATE TABLE IF NOT EXISTS `fw_hud_needs` (
-  `character_id` int NOT NULL,
-  `hunger` decimal(6,2) NOT NULL DEFAULT 100.00,
-  `thirst` decimal(6,2) NOT NULL DEFAULT 100.00,
-  `stress` decimal(6,2) NOT NULL DEFAULT 0.00,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`character_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-```
-
-| Column | Meaning |
-| --- | --- |
-| `character_id` | `fw_characters.id`. |
-| `hunger` | 0–100. |
-| `thirst` | 0–100. |
-| `stress` | 0–100. |
-| `updated_at` | When those needs were last saved. |
 
 ## `fw_guard_alert`
 
