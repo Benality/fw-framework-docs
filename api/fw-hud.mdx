@@ -1,9 +1,11 @@
 ---
 title: "fw_hud"
-description: "Custom cores HUD, metabolism, needs, and consumables."
+description: "Custom cores HUD, metabolism, needs, consumables, and vitals API."
 ---
 
 Runs on the client for the rings and metabolism, and on the server for layout, needs, and consumable use. This is the custom HUD. It replaces the game's native cores while a character is selected. Health, stamina, hunger, thirst, and horse cores are drawn.
+
+The HUD stays hidden until the character is in the world and outer health has stopped climbing (creator HoldVitals). That way the rings appear at their real values instead of filling on screen.
 
 Metabolism drains hunger and thirst over time, chips the stamina core when the outer bar empties, starves outer health at 0 needs, and registers consumables from `shared/items.lua` through [fw_inventory](/api/fw-inventory) `RegisterUsable`. Stress and temperature run when their config blocks are enabled.
 
@@ -15,7 +17,9 @@ The minimap stays hidden by default. Press Alt to show it for `FWConfig.minimap.
 
 Close the satchel, the shop, and the admin screen before you open the settings panel. The HUD page takes mouse focus while that panel is open.
 
-## Exports
+Heal and revive in [fw_admin](/api/fw-admin) call `FillVitals` on this resource when it is started. Prefer these exports from your own scripts too, so the rings and the game ped stay in sync.
+
+## Server exports
 
 ### IsReady
 
@@ -33,12 +37,96 @@ while not exports.fw_hud:IsReady() do
 end
 ```
 
-### AddNeed (server)
+### FillVitals
 
-Runs on the server. Adds a delta to hunger, thirst, or stress on that client's metabolism.
+Runs on the server. Tells that player's client to fill outer health and the health core. Pass `true` as the second argument to fill outer stamina and the stamina core as well.
 
 ```lua
---- Changes one need for a connected player.
+--- Fills health. With includeStamina true, stamina is filled too.
+---@param source integer
+---@param includeStamina boolean|nil
+---@return boolean ok
+---@return string|nil err
+exports.fw_hud:FillVitals(source, includeStamina)
+```
+
+```lua
+local ok, err = exports.fw_hud:FillVitals(source, true)
+if not ok then
+    print(err)
+end
+```
+
+### SetHealthOuter / SetStaminaOuter
+
+Runs on the server. Sets that player's outer bar to a 0–100 percent of max.
+
+```lua
+--- Outer health as a percent of max.
+---@param source integer
+---@param pct number
+---@return boolean ok
+---@return string|nil err
+exports.fw_hud:SetHealthOuter(source, pct)
+```
+
+```lua
+--- Outer stamina as a percent of max.
+---@param source integer
+---@param pct number
+---@return boolean ok
+---@return string|nil err
+exports.fw_hud:SetStaminaOuter(source, pct)
+```
+
+```lua
+exports.fw_hud:SetHealthOuter(source, 75)
+exports.fw_hud:SetStaminaOuter(source, 50)
+```
+
+### SetHealthCore / SetStaminaCore
+
+Runs on the server. Sets that player's inner core to 0–100.
+
+```lua
+--- Health core 0-100.
+---@param source integer
+---@param value number
+---@return boolean ok
+---@return string|nil err
+exports.fw_hud:SetHealthCore(source, value)
+```
+
+```lua
+--- Stamina core 0-100.
+---@param source integer
+---@param value number
+---@return boolean ok
+---@return string|nil err
+exports.fw_hud:SetStaminaCore(source, value)
+```
+
+```lua
+exports.fw_hud:SetHealthCore(source, 100)
+exports.fw_hud:SetStaminaCore(source, 80)
+```
+
+### SetNeed / AddNeed
+
+Runs on the server. Changes hunger, thirst, or stress on that client's metabolism. `SetNeed` writes an absolute 0–100 value. `AddNeed` adds a delta (negative drains).
+
+```lua
+--- Sets one need for a connected player.
+---@param source integer
+---@param name string 'hunger' | 'thirst' | 'stress'
+---@param value number
+---@return boolean ok
+---@return string|nil err
+exports.fw_hud:SetNeed(source, name, value)
+```
+
+```lua
+--- Changes one need for a connected player by a delta.
 ---@param source integer
 ---@param name string 'hunger' | 'thirst' | 'stress'
 ---@param amount number
@@ -47,28 +135,181 @@ exports.fw_hud:AddNeed(source, name, amount)
 ```
 
 ```lua
-exports.fw_hud:AddNeed(source, 'hunger', 25)
+exports.fw_hud:SetNeed(source, 'hunger', 100)
+exports.fw_hud:AddNeed(source, 'thirst', -10)
 ```
 
-### Client attribute helpers
+### Show / Hide
 
-These run on the client for the local ped.
+Runs on the server. Forces that client's custom HUD on or off. Hide wins over the normal character-selected show. Clear it with Show when you are done.
 
 ```lua
-exports.fw_hud:AddStaminaOuter(pct)
+--- Clears a forced hide so the HUD can show again.
+---@param source integer
+---@return boolean ok
+---@return string|nil err
+exports.fw_hud:Show(source)
+```
+
+```lua
+--- Hides the custom HUD for that player.
+---@param source integer
+---@return boolean ok
+---@return string|nil err
+exports.fw_hud:Hide(source)
+```
+
+```lua
+exports.fw_hud:Hide(source)
+-- cutscene…
+exports.fw_hud:Show(source)
+```
+
+## Client exports
+
+These run on the client for the local ped. Use them from another client script (admin self-heal, medical, missions). Prefer the server exports when you are acting on another player from the server.
+
+### Visibility
+
+```lua
+--- Clears a forced hide.
+---@return nil
+exports.fw_hud:Show()
+```
+
+```lua
+--- Forces the HUD off until Show.
+---@return nil
+exports.fw_hud:Hide()
+```
+
+```lua
+--- True when a character is active and the HUD is not force-hidden.
+---@return boolean
+exports.fw_hud:IsVisible()
+```
+
+```lua
+--- True after spawn settle, while a character is selected.
+---@return boolean
+exports.fw_hud:IsCharacterActive()
+```
+
+### FillVitals
+
+```lua
+--- Fills outer health and the health core. Pass true to fill stamina too.
+---@param includeStamina boolean|nil
+---@return nil
+exports.fw_hud:FillVitals(includeStamina)
+```
+
+```lua
+exports.fw_hud:FillVitals(true)
+```
+
+### Outer and core (set / add / get)
+
+Outer values are 0–100 percent of max. Core values are 0–100.
+
+```lua
+exports.fw_hud:SetHealthOuter(pct)
+exports.fw_hud:SetStaminaOuter(pct)
+exports.fw_hud:SetHealthCore(value)
+exports.fw_hud:SetStaminaCore(value)
+
 exports.fw_hud:AddHealthOuter(pct)
-exports.fw_hud:AddStaminaCore(amount)
+exports.fw_hud:AddStaminaOuter(pct)
 exports.fw_hud:AddHealthCore(amount)
-exports.fw_hud:GetStaminaOuter()
-exports.fw_hud:GetStaminaCore()
+exports.fw_hud:AddStaminaCore(amount)
+
 exports.fw_hud:GetHealthOuter()
+exports.fw_hud:GetStaminaOuter()
 exports.fw_hud:GetHealthCore()
+exports.fw_hud:GetStaminaCore()
+```
+
+```lua
+local health = exports.fw_hud:GetHealthOuter()
+if health < 40 then
+    exports.fw_hud:AddHealthOuter(25)
+end
+```
+
+### Needs
+
+```lua
+--- Adds a delta to hunger, thirst, or stress.
+---@param name string
+---@param amount number
+---@return nil
 exports.fw_hud:AddNeed(name, amount)
+```
+
+```lua
+--- Sets hunger, thirst, or stress to an absolute 0-100 value.
+---@param name string
+---@param value number
+---@return nil
 exports.fw_hud:SetNeed(name, value)
+```
+
+```lua
+--- Current need value, or nil when the name is unknown.
+---@param name string
+---@return number|nil
 exports.fw_hud:GetNeed(name)
+```
+
+```lua
+exports.fw_hud:SetNeed('hunger', 100)
+local thirst = exports.fw_hud:GetNeed('thirst')
+```
+
+### Horse (read)
+
+The game owns horse drain. These return the last snapshot the HUD drew, or `nil` when the player is not on a horse.
+
+```lua
+exports.fw_hud:GetHorseHealthOuter()
+exports.fw_hud:GetHorseHealthCore()
+exports.fw_hud:GetHorseStaminaOuter()
+exports.fw_hud:GetHorseStaminaCore()
+```
+
+### Exhaustion and temperature
+
+```lua
+--- True while outer stamina emptied and the stamina core was chipped.
+---@return boolean
+exports.fw_hud:IsExhausted()
+```
+
+```lua
+--- Adds a temporary temperature offset for a number of seconds.
+---@param amount number
+---@param seconds number
+---@return nil
 exports.fw_hud:AddTemperatureModifier(amount, seconds)
+```
+
+```lua
+--- Current temperature reading used by the HUD.
+---@return number
 exports.fw_hud:GetTemperature()
 ```
+
+## State bags
+
+While a character is selected, the client writes these on `LocalPlayer.state` (replicated):
+
+| Key | Meaning |
+| --- | --- |
+| `hunger` | 0–100 |
+| `thirst` | 0–100 |
+| `stress` | 0–100 |
+
+Read them from another resource if you only need the number. Change them through `SetNeed` / `AddNeed` so the HUD and the save path stay consistent.
 
 ## Commands
 
@@ -99,6 +340,10 @@ Networked. The client sends the layout table from the editor. The server stores 
 
 Networked. The client asks the server to delete this account's saved layout. The editor then shows the default layout again. Save is still required if the player wants that default written back later.
 
+### fw_hud:fillVitals / setHealthOuter / setStaminaOuter / setHealthCore / setStaminaCore / setNeed / addNeed / setForcedOff
+
+Networked. Sent to one client by the matching server export. Prefer the export from your script; these names are the wire underneath.
+
 ### fw_hud:staminaExhausted
 
 Local client event. Fires when outer stamina hits empty and the stamina core is chipped. The argument is the new core value.
@@ -117,6 +362,8 @@ Networked. The server registers each name in `FwHudConsumables`. Use from the sa
 A layout has `scale`, `opacity`, `grid`, `shape`, `version`, and `elements`. Each element has a position in percent of the screen, a size, and the fields that element uses. Health, stamina, hunger, thirst, horse health, and horse stamina are rings with state art from `img/`. Logo and clock are optional.
 
 Raise `FWConfig.layoutVersion` in `shared/config.lua` when you change the default layout and want every account to start over.
+
+`FWConfig.spawnReady` controls how long the client waits after character select before showing rings (`sampleMs`, `stableSamples`, `timeoutMs`).
 
 ## Metabolism config
 

@@ -70,7 +70,7 @@ The folder `resources/[framework]/` is only a category. The resource name is the
 | [fw_group](/api/fw-group) | Keep one company per character, and count how many of them are online. |
 | [fw_trade](/api/fw-trade) | Trade with a nearby player, or give them one item. |
 | [fw_guide](/api/fw-guide) | Open the help screen. |
-| [fw_hud](/api/fw-hud) | Show the custom cores, and save how the player arranged them. |
+| [fw_hud](/api/fw-hud) | Custom cores, metabolism, needs, consumables, and vitals API. |
 | [Database](/api/database) | See which id to store on your own table. |
 
 `fw_core` creates the account when a player connects. A player is turned away until [fw_guard](/api/fw-guard) answers that it is ready. `fw_loading` covers the screen until the character list is ready, and again while that character's clothes and weapons settle. `fw_characters` creates the character when something calls `CreateCharacter`. The character menu does that for players. `fw_clothing` saves worn clothes on that character. `fw_inventory` saves the satchel. `fw_money` saves the dollars that character is carrying. `fw_weapons` saves the equipped kit. `fw_satchel` is the screen. `fw_reputation` keeps a score per class for that character. `fw_stores` is the store counter. `fw_storage` is a box in the world. The piles stay in `fw_inventory`. `fw_missions` is the work on that counter's Work tab. `fw_group` is the company that higher-tier work can require. `fw_trade` is two players trading what is in those satchels. `fw_guide` is the help screen. `fw_hud` is the custom health and stamina cores.
