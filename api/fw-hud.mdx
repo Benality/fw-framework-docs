@@ -5,7 +5,7 @@ description: "Custom cores HUD, metabolism, needs, consumables, and vitals API."
 
 Runs on the client for the rings and metabolism, and on the server for layout, needs, and consumable use. This is the custom HUD. It replaces the game's native cores while a character is selected. Health, stamina, hunger, thirst, temperature, and horse cores are drawn.
 
-The HUD stays hidden until the character is in the world and outer health has stopped climbing (creator HoldVitals). That way the rings appear at their real values instead of filling on screen.
+The HUD stays hidden until the spawn loading card is gone (`fw_loading:IsCoverActive` is no), the ped is drawn, and outer health has stopped climbing (creator HoldVitals). That way the rings appear after the player can see the world, at their real values instead of filling on screen.
 
 Metabolism drains hunger and thirst over time, chips the stamina core when the outer bar empties, starves outer health at 0 needs, and registers consumables from `shared/items.lua` through [fw_inventory](/api/fw-inventory) `RegisterUsable`. Stress and temperature run when their config blocks are enabled.
 
@@ -365,7 +365,7 @@ A layout has `scale`, `opacity`, `grid`, `shape`, `version`, and `elements`. Eac
 
 Raise `FWConfig.layoutVersion` in `shared/config.lua` when you change the default layout and want every account to start over.
 
-`FWConfig.spawnReady` controls how long the client waits after character select before showing rings (`sampleMs`, `stableSamples`, `timeoutMs`).
+`FWConfig.spawnReady` controls how long the client waits after character select before showing rings (`sampleMs`, `stableSamples`, `timeoutMs`, `afterCoverMs`). The wait also blocks while [fw_loading](/api/fw-loading#iscoveractive) still has the spawn cover up.
 
 ## Metabolism config
 

@@ -130,7 +130,8 @@ The menu also uses these messages. A new script should keep using [fw_characters
 | `fw_creator:bodyReady` | Local, client | The saved body is on the ped. Clothes and hair still follow. The spawn cover waits for this before it will accept the clothes or the hair. |
 | `fw_creator:bodyBare` | Local, client | This apply had no clothes to put on. The spawn cover treats it like `fw_clothing:applied`, once `fw_creator:bodyReady` has arrived. |
 | `fw_creator:barberReady` | Local, client | The hair and makeup are on, or this character has none. The spawn cover does not wait on it. A later barber script should send the same event when its own apply finishes. |
-| `fw_creator:appearanceReady` | Local, client | The spawn cover sends this once the body and the clothes have finished, or when that wait runs out. `fw_weapons` puts the kit on and answers with `fw_weapons:kitApplied`. |
+| `fw_creator:appearanceReady` | Local, client | The spawn cover sends this once the body and the clothes have finished, or when that wait runs out. `fw_weapons` puts the kit on and answers with `fw_weapons:kitApplied`. The loading card is still up at this point. |
+| `fw_creator:spawnReady` | Local, client | The spawn cover has come down and the ped is on screen. Body, clothes, and the weapon kit have all had their wait. Prefer this when something must wait until no loading card is showing. |
 | `murphy_creator:client:characterCreated` | Local, client | The new character was just saved by the menu. No arguments. |
 | `murphy_creator:applystarteroutfit` | Networked, server to client | Dresses the character in the configured starter outfit again. See [below](#applying-the-starter-outfit-again). |
 | `murphy_barber_creator:loadbarberoverlay` | Networked, client | Puts the saved hair and makeup back on. |

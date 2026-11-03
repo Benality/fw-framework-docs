@@ -18,7 +18,7 @@ The spawn cover, after a character is chosen, tries a random entry from `FWConfi
 
 ## Exports
 
-`Show`, `Hide`, `ReleaseConnectScreen`, `StreamScene`, and `MaxWaitMs` run on the client. `Handover` runs on the server.
+`Show`, `Hide`, `ReleaseConnectScreen`, `StreamScene`, `MaxWaitMs`, and `IsCoverActive` run on the client. `Handover` runs on the server.
 
 ### Show
 
@@ -121,6 +121,22 @@ exports.fw_loading:MaxWaitMs()
 
 ```lua
 local waitMs = exports.fw_loading:MaxWaitMs()
+```
+
+### IsCoverActive
+
+Yes while the spawn cutscene, video, or native loading card is up. No once `Hide` has finished, or when nothing was shown. Use this when something must wait until the card is gone — for example the custom cores HUD.
+
+```lua
+--- True while the spawn cover is still on screen.
+---@return boolean
+exports.fw_loading:IsCoverActive()
+```
+
+```lua
+while exports.fw_loading:IsCoverActive() do
+    Wait(200)
+end
 ```
 
 ## Events
