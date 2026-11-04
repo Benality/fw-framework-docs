@@ -1,13 +1,13 @@
 ---
 title: "fw_hud"
-description: "Custom cores HUD, metabolism, needs, consumables, and vitals API."
+description: "Custom cores HUD, metabolism, needs, food use effects, and vitals API."
 ---
 
-Runs on the client for the rings and metabolism, and on the server for layout, needs, and consumable use. This is the custom HUD. It replaces the game's native cores while a character is selected. Health, stamina, hunger, thirst, temperature, and horse cores are drawn.
+Runs on the client for the rings and metabolism, and on the server for layout, needs, and food use. This is the custom HUD. It replaces the game's native cores while a character is selected. Health, stamina, hunger, thirst, temperature, and horse cores are drawn.
 
 The HUD stays hidden until the spawn loading card is gone (`fw_loading:IsCoverActive` is no), the ped is drawn, and outer health has stopped climbing (creator HoldVitals). That way the rings appear after the player can see the world, at their real values instead of filling on screen.
 
-Metabolism drains hunger and thirst over time, chips the stamina core when the outer bar empties, starves outer health at 0 needs, and registers consumables from `shared/items.lua` through [fw_inventory](/api/fw-inventory) `RegisterUsable`. Stress and temperature run when their config blocks are enabled.
+Metabolism drains hunger and thirst over time, chips the stamina core when the outer bar empties, starves outer health at 0 needs, and registers Use for every [fw_items](/api/fw-inventory#tables) row that has `detail.use`. Create those effects in [fw_admin](/api/fw-admin) Items (When used). Stress and temperature run when their config blocks are enabled.
 
 While a character is selected it also blocks the stock reveal-HUD path (Alt / the same control Tab often trips) and keeps the top cash widget faded out. Turn those off with `FWConfig.suppressNativeRevealHud` and `FWConfig.hideNativeCash` in `shared/config.lua` if you need the base game chrome back.
 
@@ -359,9 +359,9 @@ AddEventHandler('fw_hud:staminaExhausted', function(coreValue)
 end)
 ```
 
-### Consumable flow
+### Food and medical use flow
 
-Networked. The server registers each name in `FwHudConsumables`. Use from the satchel starts `fw_hud:useItem` on the client. When the progress finishes, the client sends `fw_hud:finishItem`. The server removes the item (unless `keep`), then sends `fw_hud:applyItem` so the client applies `needs`, `heal`, `gold`, `temp`, and `screenFx`. Cancel with `fw_hud:cancelItem`. Amounts always come from the shared config on the server path — the client does not invent rewards.
+Networked. On start, and again when [fw_inventory](/api/fw-inventory) fires `fw_inventory:definitionsChanged`, the server clears its old Use callbacks and registers every item that has `detail.use`. Use from the satchel starts `fw_hud:useItem` on the client with the effect table for the anim. When the progress finishes, the client sends `fw_hud:finishItem`. The server removes the item (unless `keep`), then sends `fw_hud:applyItem` with the **server** effect table so the client applies `needs`, `heal`, `gold`, `temp`, and `screenFx`. Cancel with `fw_hud:cancelItem`. The client must not invent hunger or heal amounts.
 
 ## Layout
 
@@ -377,11 +377,11 @@ Raise `FWConfig.layoutVersion` in `shared/config.lua` when you change the defaul
 
 ## Metabolism config
 
-`FWConfig.cores`, `hunger`, `thirst`, `starving`, `death`, `horse`, `stress`, `temperature`, `voice`, `smoking`, and `notifications` live in `shared/config.lua`. Consumable rows are `FwHudConsumables` in `shared/items.lua`. Animations are `FwHudAnimations` in `shared/animations.lua`.
+`FWConfig.cores`, `hunger`, `thirst`, `starving`, `death`, `horse`, `stress`, `temperature`, `voice`, `smoking`, and `notifications` live in `shared/config.lua`. Use effects live on the item row as `detail.use` (edit in `/admin` → Items → When used). Animations are `FwHudAnimations` in `shared/animations.lua`; `detail.use.anim` is a key in that table.
 
 Voice needs `pma-voice` started. The client listens for `pma-voice:setTalkingMode` and `pma-voice:radioActive`, and reads `LocalPlayer.state.proximity`. Without that resource the voice icon stays off.
 
-Item names must exist in `fw_items`. A seed list is `sql/consumable_items.sql`. Missing names warn at register time and skip that usable.
+A seed list with `detail.use` filled in is `sql/consumable_items.sql`. Run it, then `fw_items_reload`. Items without `detail.use` are not registered by `fw_hud`.
 
 ## Tables
 
